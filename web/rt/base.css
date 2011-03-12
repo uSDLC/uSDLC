@@ -1,0 +1,266 @@
+/*
+ * Copyright 2011 Paul Marrington for http://usdlc.net
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/*
+  External style sheets: TFGI (Thank God for Includes)
+ */
+@import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.6.custom.css";
+@import "/lib/jquery/css/fg.menu.css";
+
+/*
+ Document level styles
+ */
+body {
+	margin: 0;
+	padding: 0;
+}
+
+blockquote {
+	font-style: italic;
+}
+
+.hidden, .ui-dialog #pageTitle, div#pasteList {
+	position: absolute;
+	top: 0;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+/*
+ Page Title Area
+ */
+table#pageTitle {
+	width: 100%;
+	height: 140px;
+}
+
+img#pageTitle {
+	float: right;
+}
+
+td#pageTitle {
+	vertical-align: middle;
+	padding-bottom: 15px;
+	width: 100%;
+	background-repeat: repeat-y;
+}
+
+td#pageTitle h1, td#pageTitle h2, div.inclusion h1, div.inclusion h2 {
+	text-align: center;
+}
+
+td#pageTitle h2, div.inclusion h2 {
+	font-size: 0.9em;
+}
+
+div.section h1 {
+	text-align: left;
+	font-size: 1.2em;
+}
+
+div.section h2 {
+	text-align: left;
+	font-size: 1em;
+}
+
+.toolbar {
+	padding: 3px 4px 5px;
+}
+
+.toolbar .ui-button-text {
+	font-size: 0.5em;
+}
+
+/*
+ Page contents region and control
+ */
+table#pageContents {
+	width: 100%;
+}
+
+td#pageContents {
+	width: 90%;
+}
+
+div#pageContents {
+	margin: 0;
+	padding: 5px 5px 5px 5px;
+	border: #f2f2f2 2px solid;
+	overflow: hidden;
+}
+
+td#pageContentSlider {
+	width: 20px;
+	padding: 0;
+}
+
+div#pageContentSlider {
+	font-size: small;
+}
+
+td#contentTree {
+	vertical-align: top;
+}
+
+/*
+ Button style modifiers
+ */
+button.ui-button-icon-only {
+	width: 20px;
+	height: 20px;
+}
+
+/*
+ Menus
+ */
+div.contextMenu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+ul.fg-menu {
+	font-size: 0.7em;
+	font-weight: bolder;
+}
+
+div.fg-menu-container {
+	padding: 4px;
+}
+
+.fg-menu a, .fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
+	padding: 1px 1px 1px 4px;
+	display: block;
+	cursor: pointer;
+}
+
+.fg-menu-breadcrumb {
+	font-size: 0.7em;
+}
+
+/*
+ CKEdiTOR
+ */
+div.editable {
+	min-height: 1em;
+	margin: 0;
+	padding: 0 1em;
+}
+
+p {
+	margin: 0.5em 0;
+}
+
+div.section:not(.inFocus) {
+	border-bottom: #f2f2f2 1px solid;
+}
+
+div.section, #pageTitle {
+	background-repeat: repeat-y;
+	background-position: 0 -40px;
+}
+
+div.inclusion {
+	color: #191970;
+}
+
+/*
+ Alert message box
+*/
+div#alertBox div.ui-state-error {
+	padding: 0 .7em;
+	position: absolute;
+	z-index: 9999;
+}
+
+div#alertBox div.ui-icon {
+	float: left;
+	margin-right: 0.3em;
+}
+
+/*
+ Modal Mask
+  */
+#modalMask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9000;
+	background-color: #000;
+}
+
+.cke_editor, #editAreaContainer {
+	position: relative;
+	z-index: 9990;
+}
+
+form {
+	border: #f5f5dc thin solid;
+	padding: 2px 10px 2px 10px; /*margin: 5px;*/
+}
+
+a.sourceLink, a.sourceLink:visited {
+	color: #8b0000;
+	font-style: oblique;
+}
+
+a.sourceLink:hover {
+	color: #b22222;
+}
+
+a.running {
+	background-color: #ffe4b5;
+}
+
+a.hasResults {
+	background-color: #d3d3d3;
+}
+
+.error {
+	color: red;
+}
+
+a.error {
+	color: white;
+	background-color: red;
+}
+
+a.ok {
+	background-color: #adff2f;
+}
+
+a.runOnClick {
+	background-color: #e0ffff;
+}
+
+a kbd {
+	float: right;
+}
+
+a span.ui-icon {
+	float: right;
+}
+
+li.jstree-leaf > ins.jstree-icon {
+	opacity: 0.2;
+	filter: alpha(opacity = 20)
+}

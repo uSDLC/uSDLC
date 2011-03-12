@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>htmlunit</groupId>
+  <artifactId>htmlunit</artifactId>
+  <version>1.14</version>
+
+  <distributionManagement>
+    <relocation>
+      <groupId>net.sourceforge.htmlunit</groupId>
+    </relocation>
+  </distributionManagement>
+
+</project>

@@ -1,0 +1,5 @@
+task whoAmI << {
+    println "name = $project.name"
+    println "path = $project.path"
+    println "description = $project.description"
+}

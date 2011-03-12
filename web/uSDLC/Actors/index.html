@@ -1,0 +1,289 @@
+<div id="pageTitle" class="editable"><h1>
+	Actors</h1>
+
+	<h2>
+		Scripts that know how to give uSDLC what it needs</h2>
+</div>
+<div id="s2" class="editable section" contextmenu="section"><p>
+	Actors are scripts or static files that send data back to the uSDLC client that control and inform. Any text is
+	displayed in a box connected to any running links.&nbsp;</p>
+</div>
+
+<div id="s3" class="editable section" contextmenu="section"><h1>
+	Transport</h1>
+
+	<p>
+		Actors receive all information from standard input and can send all results as HTML to standard out.</p>
+</div>
+<div id="s4" class="editable section" contextmenu="section"><h1>
+	Input</h1>
+
+	<p>
+		Actors read from standard input (stdin). They can read until end-of-file which is when standard input is closed
+		by the server. Apart from the command specific input, there is also a dictionary of environment specific header
+		information. How this is passed depends on the actor. For Groovy scripts (and all JSR-223 compliant languages),
+		for example, it is in a global called <em>env</em>. For true CGI scripts it is in the operating system
+		environment variables.</p>
+</div>
+<div id="s5" class="editable section" contextmenu="section"><h2>
+	Header Information</h2>
+
+	<p>
+		Standard input is reserved for script data. Environmental data is also provided in a script specific fashion as
+		a dictionary of name/value pairs.</p>
+	<ul>
+		<li>
+			accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5]
+		</li>
+		<li>
+			acceptencoding: gzip,deflate,sdch
+		</li>
+		<li>
+			acceptcharset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+		</li>
+		<li>
+			acceptlanguage: en-US,en;q=0.8
+		</li>
+		<li>
+			clientType=html
+		</li>
+		<li>
+			cookie: name=value;second=secondvalue;etc=more
+		</li>
+		<li>
+			fragment: after # on address line
+		</li>
+		<li>
+			host: 127.0.0.1:9000
+		</li>
+		<li>
+			method: GET
+		</li>
+		<li>
+			querystring: name=valye&amp;etc=more
+		</li>
+		<li>
+			script: script-name
+		</li>
+		<li>
+			referrer: uri-of-referring-page
+		</li>
+		<li>
+			uri: /uSDLC/index.html
+		</li>
+		<li>
+			useragent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko)
+			Chrome/8.0.552.224 Safari/534.10]
+		</li>
+	</ul>
+	<p>
+		Cookies have some uSDLC-specific parameters set:</p>
+	<ul>
+		<li>
+			session: unique id for this browser session
+		</li>
+		<li>
+			user: Id for user logged in or anon
+		</li>
+	</ul>
+</div>
+<div id="s6" class="editable section" contextmenu="section"><h2>
+	Output</h2>
+
+	<p>
+		The server and browser both expect HTML output. Script tags are interpreted and the rest recorded and
+		displayed.</p>
+</div>
+<div id="s1" class="editable section" contextmenu="section"><h3>
+	Response</h3>
+
+	<p>
+		The active components are inside script tags (e.g. &lt;script&gt;usdlc.action()&lt;/script&gt;). You can run any
+		Javascript or Jquery command in addition to the uSDLC ones supplied. Every actor should include either
+		usdlc.passed() or usdlc.failed().</p>
+	<ul>
+		<li>
+			<em>usdlc.passed()</em> - Call to mark actor as working correctly.
+		</li>
+		<li>
+			<em>usdlc.failed()</em> - Call to mark actor as failing to work as expected.
+		</li>
+	</ul>
+	<ul>
+		<li>
+			<em>usdlc.alert(messagePage)</em> - Display an alert message given in a file. If it ends in <em>.htm</em>
+			then it will reside in <em>/rt/alerts/*.htm</em>, otherwise it can be in a page created within this system -
+			with one or more sections. <a href="javascript:usdlc.alert('SampleAlert.html?action=raw','#s1a0')" id="s1a0a">This link</a> will display a <a class="usdlc" href="SampleAlert.html" id="s1a1a" action="consumer">sample alert</a>.
+		</li>
+		<li>
+			<em>usdlc.highlight(colour)</em> - Put a coloured strip on the left of the current section. Colour can be <a href="javascript:usdlc.highlight('blue');return false" id="s1a0">blue</a>, <a href="javascript:usdlc.highlight('brown');return false" id="s1a1">brown</a>, <a href="javascript:usdlc.highlight('green');return false" id="s1a2">green</a>, <a href="javascript:usdlc.highlight('pink');return false" id="s1a3">pink</a>, <a href="javascript:usdlc.highlight('red');return false" id="s1a4">red</a>, <a href="javascript:usdlc.highlight('sky');return false" id="s1a5">sky</a> or <a href="javascript:usdlc.highlight('yellow');return false" id="s1a6">yellow</a>.
+		</li>
+		<li>
+			<em>usdlc.runPage()</em> - Run the whole page as if the user had clicked the play button on the tool-bar
+		</li>
+		<li>
+			<em>usdlc.runFromSectionInFocus() </em>- Run the highlighted section and all those below
+		</li>
+		<li>
+			<em>usdlc.runSectionInFocus()</em> - Run the highlighed section
+		</li>
+		<li>
+			<em>usdlc.setEditMode(true|false)</em> - Change the page mode so that the default is edit or run on
+			double-clicking a section.
+		</li>
+	</ul>
+</div><div id="s7" class="editable section" contextmenu="section"><h1>
+	Actors</h1>
+</div><div id="s17" class="editable section" contextmenu="section"><p style="display: block; ">
+	&nbsp;</p>
+
+</div><div id="s8" class="editable section synopsis" contextmenu="section"><p>
+	<a href="Groovy/index.html" id="s7a0" class="usdlc" action="page">Groovy</a></p>
+</div><div id="s12" class="editable section" contextmenu="section"><p>
+	gsp actor</p>
+</div><div id="s16" class="editable section synopsis" contextmenu="section"><p>
+	<a class="usdlc" href="HtmlUnitActor/index.html" id="s16a0" action="page">HtmlUnit</a></p>
+
+</div><div id="s13" class="editable section" contextmenu="section"><p>
+	HyperSQL Actor</p>
+</div><div id="s9" class="editable section synopsis" contextmenu="section"><p>
+	<a href="Java/index.html" id="s7a1" class="usdlc" action="page">Java</a></p>
+</div><div id="s15" class="editable section synopsis" contextmenu="section"><p>
+	<a class="usdlc" href="JUnit/index.html" id="s15a0" action="page">JUnit</a></p>
+
+</div><div id="s14" class="editable section" contextmenu="section"><p>
+	&nbsp;</p>
+<div>
+	.net actor proxy</div>
+<div>
+	ABCL (lisp) actor</div>
+<div>
+	AWK Actor</div>
+<div>
+	Ada actor</div>
+<div>
+	Applescript actor</div>
+<div>
+	BeanShell actor</div>
+<div>
+	Bex actor</div>
+<div>
+	C Actor</div>
+<div>
+	CajuScript actor</div>
+<div>
+	Fortran actor</div>
+<div>
+	Freemarker actor</div>
+<div>
+	Go actor</div>
+<div>
+	GroovyUnit Actor</div>
+<div>
+	JEP actor</div>
+<div>
+	JUEL actor</div>
+<div>
+	JWSCS - Clojure Actor</div>
+<div>
+	JWSCS - JRuby Actor</div>
+<div>
+	JWSCS - JavaScript Actor</div>
+<div>
+	JWSCS - Jython Actor</div>
+<div>
+	JWSCS - Scala Actor</div>
+<div>
+	Jaskell actor</div>
+<div>
+	JavaFX actor</div>
+<div>
+	Javascript in browser actor</div>
+<div>
+	Jelly actor</div>
+<div>
+	Jexl actor</div>
+<div>
+	JudoScript actor</div>
+<div>
+	MathEclipse actor</div>
+<div>
+	Mono - Boo Actor</div>
+<div>
+	Mono - Pascal Actor</div>
+<div>
+	Mono - VB Actor</div>
+<div>
+	OCaml actor</div>
+<div>
+	OGNL actor</div>
+<div>
+	Object C Actor</div>
+<div>
+	PHP actor</div>
+<div>
+	PWSCS - Python Actor</div>
+<div>
+	Perl Actor</div>
+<div>
+	Pnuts actor</div>
+<div>
+	Scheme actor</div>
+<div>
+	Sleep actor</div>
+<div>
+	Smalltalk actor</div>
+<div>
+	Tcl actor</div>
+<div>
+	Velocity actor</div>
+<div>
+	XPath actor</div>
+<div>
+	XSLC actor</div>
+<div>
+	ant actor</div>
+<div>
+	autohotkey actor</div>
+<div>
+	c# actor</div>
+<div>
+	c++ actor</div>
+<div>
+	cgi Actor</div>
+<div>
+	groovy actor as class</div>
+<div>
+	jsr223 actor</div>
+<div>
+	llvm actor</div>
+<div>
+	lua actor</div>
+<div>
+	parrot actor</div>
+<div>
+	&nbsp;</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
