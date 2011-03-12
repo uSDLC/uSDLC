@@ -1,0 +1,6 @@
+out/
+.idea/
+clipboard/
+lib/jars/optional
+lib/javadoc
+lib/source
