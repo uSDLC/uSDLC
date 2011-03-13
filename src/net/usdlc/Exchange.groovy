@@ -45,48 +45,52 @@ class Exchange {
 
 	/**
 	 * Initialiser is passed the request header as a map. At a minimum it will require a REQUEST_URI entry.
+	 *
+	 * Environment:
+	 * <ul>
+	 * <li>in:  request body (set by server)
+	 * <li>out: response body (set by server)
+	 * <li>header: supplemented request header
+	 * <li>script: path to and name of script or page
+	 * <li>clientType: Client extension (as in html or jpg)
+	 * <li>query: map of name/value items from the command line.
+	 * <li>cookies: mape of cookie values sent from browser
+	 * <li>userId: User id or anon for none.
+	 * </ul>
 	 */
-	Exchange(Map hdr) {
-		hdr.each { key, value ->
-			requestHeader[key.toLowerCase().replaceAll(badHeaderChars, '')] = value
+	Exchange(Map header) {
+		def my = Environment.data()
+		// Normalise HTTP request header map - by making lower case and removing bad characters
+		my.header = [:]
+		header.each { key, value ->
+			my.header[key.toLowerCase().replaceAll(badHeaderChars, '')] = value
 		}
-		path = requestHeader.uri
+		// Massage the path so that it will point to the correct place for this server
+		path = my.header.uri
 		if (path.startsWith(Config.web.urlBase)) {
-			/*
-			For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
-			 */
+			// For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
 			path = path.substring(Config.web.urlBase.size())
 		}
-		/*
-		Filer is full of magic - including deciding whether a file is client or server.
-		 */
+		//Filer is full of magic - including deciding whether a file is client or server.
 		file = new Filer(path)
 		if (!file.fullExt) {
-			/*
-			The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
-			 */
+			// The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
 			file = new Filer(path = Config.web.rootFile)
 		}
-		/*
-		Now that we have a definitive script name, save it for use in executing the Actor.
-		 */
-		requestHeader.script = path
-		requestHeader.clientType = file.clientExt
-		/*
-		 Convert internal maps to a more usable form
-		 */
-		requestHeader.query = Dictionary.query(requestHeader.query)
-		requestHeader.cookies = Dictionary.cookies(requestHeader.cookies)
-		requestHeader.userId = requestHeader.cookies.userId ?: 'anon'
-		if (!requestHeader.cookies.session) {
-			responseHeader['Set-cookie'] = "session=$session"
-			requestHeader.cookies.session = session.toString()
+		// Now that we have a definitive script name, save it for use in executing the Actor.
+		my.script = path
+		my.clientType = file.clientExt
+		// Convert internal maps to a more usable form
+		my.query = Dictionary.query(my.header.query)
+		my.cookies = Dictionary.cookies(my.header.cookies)
+		// We might store more permanent information under the user or session ID.
+		my.userId = my.cookies.userId ?: 'anon'
+		if (!my.cookies.session) {
+			my.cookies.session = session as String
+			responseHeader['Set-cookie'] = "session=$my.cookies.session"
 			session++
 		}
-		requestHeader.session = requestHeader.cookies.session
-		/*
-		Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
-		 */
+		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
 		responseHeader['Content-Type'] = file.mimeType()
 		responseHeader['Connection'] = 'close'
 	}
@@ -99,28 +103,33 @@ class Exchange {
 	 * @return
 	 */
 	def talk() {
+		def my = Environment.data()
 		try {
-			switch (requestHeader.query.action) {
+			switch (my.query.action) {
 				case 'save':    // saves html and actors
 					// Contents to write are sent from the browser. Get them and save them to the file
-					file.save(requestHeader.userId, requestHeader.in.text)
-					Browser.js(requestHeader.out).highlight('sky')
+					file.save(my.userId, my.in.text)
+					Browser.js().highlight('sky')
 					break
 				case 'edit':    // so actors are send to browser for editing instead of running
-					requestHeader.out.write file.rawContents
+					my.out.write file.rawContents
 					break
 				default:        // act for active, return content for static content
 					if (file.actor) {
-						file.actor.run requestHeader
+						file.actor.run my.script
 					} else {
-						requestHeader.out.write file.contents
+						my.out.write file.contents
 					}
 			}
 		} catch (problem) {
 			problem.printStackTrace()
 		} finally {
 			// No matter what we want to close the connection. Otherwise the browser spins forever (since we are not providing a content length in the response header.
-			requestHeader.out.close()
+			my.out.close()
 		}
 	}
+	/**
+	 * Point Apache Commons logging to a uSDLC proxy.
+	 */
+	static { Log.apacheCommons() }
 }

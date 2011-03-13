@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-
-
-
-
-
-
-
-
 doc.span(class: 'ui-widget-header ui-corner-all toolbar') {
-	if (env.userId == 'anon') {
+	if (userId == 'anon') {
 		button('Log In', icon: 'unlocked')
 	} else {
-		button("Log out $env.userId", icon: 'locked')
+		button("Log out $userId", icon: 'locked')
 	}
 	button('Run Page', icon: 'play', onClick: 'usdlc.runPage()')
 	span(class: 'buttonset') {

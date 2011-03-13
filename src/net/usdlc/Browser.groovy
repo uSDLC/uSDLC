@@ -25,9 +25,12 @@ import groovy.xml.MarkupBuilder
  * Time: 2:07 PM
  */
 class Browser {
-	Browser(PrintStream out) {
-		this.out = new PrintWriter(out, true)
+	Browser() {
+		my = Environment.data()
+		this.out = new PrintWriter(my.out as PrintStream, true)
 	}
+
+	def my
 	PrintWriter out
 	boolean hasMarkup = false
 	/*
@@ -45,15 +48,14 @@ class Browser {
 	 * Static builder for Javascript response to the browser
 	 * @return Browser instance ready to go
 	 */
-	static Browser js(out) {
-		def browser = new Browser(out)
+	static Browser js() {
+		def browser = new Browser()
 		browser.scriptFile = true
 		return browser
 	}
 
-	static Browser html(out) {
-		def browser = new Browser(out)
-		return browser
+	static Browser html() {
+		return new Browser()
 	}
 
 	private scriptFile = false

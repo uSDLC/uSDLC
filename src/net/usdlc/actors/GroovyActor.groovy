@@ -17,6 +17,7 @@ package net.usdlc.actors
 
 import net.usdlc.Browser
 import net.usdlc.Config
+import net.usdlc.Environment
 import net.usdlc.Store
 
 /**
@@ -26,39 +27,31 @@ import net.usdlc.Store
  * Date: 14/01/11
  * Time: 7:26 PM
  */
-class GroovyActor implements Runnable {
-	static run(env) {
-		new GroovyActor(env: env).run()
+class GroovyActor {
+	static run(script) {
+		def actor = new GroovyActor()
+		def root = Store.root(script).parent.replaceAll('\\\\', '/')
+		def browser = new Browser()
+		def print = { browser.text it }
+		actor.binding = Environment.data() + [
+				browser: browser,
+				doc: browser.html,
+				print: print,
+				gse: new GroovyScriptEngine(Config.classPath as String[]),
+				include: { actor.runScript "$root/$it" },
+				template: { actor.runScript "$root/rt/${it}.html.groovy" }
+		]
+		actor.runScript(script)
+		browser.close()
 	}
-	/**
-	 * Environment as documented in /uSDLC/TechnicalArchitecture/Actors/
-	 */
-	HashMap env
 	/**
 	 * Data that comes out as global scope to the groovy script as in /uSDLC/TechnicalArchitecture/Actors/Groovy
 	 */
 	Binding binding
-
-	void run() {
-		def root = Store.root(env.script).parent.replaceAll('\\\\', '/')
-		def browser = new Browser(env.out)
-		def print = { browser.text it }
-		binding = [
-				env: env,
-				in: env.in,
-				out: env.out,
-				browser: browser,
-				doc: browser.html,
-				bodyWriter: { env.bodyWriter(print) },
-				print: print,
-				gse: new GroovyScriptEngine(Config.classPath as String[]),
-				include: { runScript "$root/$it" },
-				template: { runScript "$root/rt/${it}.html.groovy" }
-		]
-		runScript(env.script)
-		browser.close()
-	}
-
+	/**
+	 * Could be recursive if a script calls include()
+	 * @param scriptName Path and name of script relative to uSDLC root.
+	 */
 	def runScript(scriptName) {
 		def script = scriptName
 		// Drop the leading slash - always part of the URL, but we don't want to go from the root of the drive.

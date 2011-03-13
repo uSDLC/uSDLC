@@ -24,53 +24,50 @@ import net.usdlc.*
  * Date: 23/11/10
  * Time: 6:22 PM
  */
-class HtmlActor implements Runnable {
-	static run(env) {
-		new HtmlActor(env: env).run()
+class HtmlActor {
+	static run(script) {
+		new HtmlActor().runScript()
 	}
-	/**
-	 * Environment as documented in /uSDLC/TechnicalArchitecture/Actors/
-	 */
-	HashMap env
+
+	def my = Environment.data()
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
-	void run() {
-		def file = new Filer(env.script)
+	void runScript() {
+		def file = new Filer(my.script)
 
-		switch (env.query.action) {
+		switch (my.query.action) {
 			case "run":
-				env.bodyWriter = { printer -> Run.file(file, printer).selection(env.query.section, env.query.continuation) }
 				cgi "rt", 'run.html.groovy'
 				break
 			case 'history':
-				def end = (env.query._index_ ?: '-1').toInteger()
-				env.out.println file.history.restore(end)
+				def end = (my.query._index_ ?: '-1').toInteger()
+				my.out.println file.history.restore(end)
 				break
 			case 'raw':
-				env.out.println new String(file.rawContents)
+				my.out.println new String(file.rawContents)
 				break
 			case 'cut':
 			case 'copy':
 				def base = file.store.parent
-				def targetPath = Store.base('clipboard').uniquePath(env.query.title).replace('\\', '/')
-				env.query.dependents.tokenize(',').each {
-					Store.base("$base/$it").copy(targetPath, env.query.action)
+				def targetPath = Store.base('clipboard').uniquePath(my.query.title).replace('\\', '/')
+				my.query.dependents.tokenize(',').each {
+					Store.base("$base/$it").copy(targetPath, my.query.action)
 				}
 				Store.base("$targetPath/Section.html").write(System.in.text.bytes)
-				Browser.js(env.out).script("usdlc."+env.query.action+"SectionSuccessful('$env.query.title','$targetPath')")
+				Browser.js().script("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','$targetPath')")
 				break
 			case 'paste':
 				def target = file.store.parent
-				def from = Store.base(env.query.from)
+				def from = Store.base(my.query.from)
 				from.dir(~/[^.]*/).each {
 					Store.base(it).copy(target, 'move')
 				}
-				env.out.println new String(Store.base("$env.query.from/Section.html").read())
+				my.out.println new String(Store.base("$my.query.from/Section.html").read())
 				from.rmdir()
 				break
 			default:    // Suck the HTML file contents - converting from byte[] to String.
-				env.out.println new String(file.contents)
+				my.out.println new String(file.contents)
 				break
 		}
 	}
@@ -96,7 +93,7 @@ class HtmlActor implements Runnable {
 		/*
 		 Filer does the real work if executing the CGI - since it knows all the details.
 		 */
-		file = new Filer(env.script = "$dir/$script")
-		file.actor.run env
+		file = new Filer(my.script = "$dir/$script")
+		file.actor.run my
 	}
 }

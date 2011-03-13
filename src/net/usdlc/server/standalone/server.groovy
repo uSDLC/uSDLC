@@ -20,6 +20,7 @@ import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
 import net.usdlc.Config
+import net.usdlc.Environment
 import net.usdlc.Exchange
 import net.usdlc.Store
 
@@ -31,12 +32,17 @@ import net.usdlc.Store
  */
 def host = InetAddress.localHost.hostName
 println "Starting uSDLC on http://$host:$Config.web.port/$Config.web.urlBase from ${new File(Store.webBase as String).absolutePath}"
-// Point grape cache to a place inside of uSDLC. If you are mixing with an IDE or the Grape command line, you may want to use "mklink /j" to connect ~/.groovy and usdlc/lib directories
-System.setProperty('grape.root', "${new File(Config.web.grapeRoot as String).canonicalPath}")
+\
+
+
 
 HttpServer server = HttpServer.create(new InetSocketAddress(Config.web.port), 0)
 server.createContext '/', { HttpExchange httpExchange ->
+	// Set environment to have streams for data input (body of request) and output (body of response).
+	def my = Environment.data()
 	try {
+		my.in = httpExchange.requestBody
+		my.out = new PrintStream(httpExchange.responseBody, true)
 		/*
 		 * Fetch the header from the client and load in additional needed information.
 		 */
@@ -45,8 +51,6 @@ server.createContext '/', { HttpExchange httpExchange ->
 		header.query = httpExchange.requestURI.query
 		header.uri = httpExchange.requestURI.path
 		header.fragment = httpExchange.requestURI.fragment
-		header.in = httpExchange.requestBody
-		header.out = new PrintStream(httpExchange.responseBody, true)
 		/*
 		 Call uSDLC common code to create a HTTP exchange object. It prepares ready to send the response header. This means that all connections close between exchanges. This is the best approach for local programs as it keeps things clean. For Internet applications, static files give their length in the response header so that the connection with the browser can stay open for multiple exchanges. Most HTTP servers pre-process the request and response headers and don't allow is to write anything to the client until the response header is done. Since we want longer running responses to display progress information in the browser we need a connection that is available immediately and is closed when done.
 		 */

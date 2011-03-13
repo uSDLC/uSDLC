@@ -15,12 +15,12 @@
 */
 package net.usdlc
 
- /**
-* User: Paul
-* Date: 25/02/11
-*/
+/**
+ * User: Paul
+ * Date: 25/02/11
+ */
 class WebClient {
-	 com.gargoylesoftware.htmlunit.WebClient webClient = new  com.gargoylesoftware.htmlunit.WebClient()
+	com.gargoylesoftware.htmlunit.WebClient webClient = new com.gargoylesoftware.htmlunit.WebClient()
 	def current
 	def elements
 	/**
@@ -38,6 +38,7 @@ class WebClient {
 	static WebClient load(url) {
 		return new WebClient(url)
 	}
+
 	def xpath(String xpath) {
 		elements = current.getByXPath(xpath)
 		if (size() != 0) {
@@ -45,18 +46,23 @@ class WebClient {
 		}
 		return this
 	}
+
 	def size() {
 		return elements.size()
 	}
+
 	def click() {
 		return current.click()
 	}
+
 	def hasClass(name) {
 		return classes.find(name)
 	}
+
 	def getClasses() {
 		return current.getAttribute('class').split(' ')
 	}
+
 	def getAt(idx) {
 		return elements[idx]
 	}

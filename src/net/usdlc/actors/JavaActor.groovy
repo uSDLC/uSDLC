@@ -18,6 +18,7 @@ package net.usdlc.actors
 import javax.tools.ToolProvider
 import net.usdlc.Browser
 import net.usdlc.Config
+import net.usdlc.Environment
 import net.usdlc.Filer
 import net.usdlc.actors.JavaFileObjects.ClassFileManager
 
@@ -27,36 +28,25 @@ import net.usdlc.actors.JavaFileObjects.ClassFileManager
  * Date: 14/01/11
  * Time: 3:54 PM
  */
-abstract class JavaActor implements Runnable {
+abstract class JavaActor {
 	/**
 	 * Environment as documented in /uSDLC/TechnicalArchitecture/Actors/
 	 */
-	protected HashMap env
+	protected HashMap env = Environment.data()
 	/**
 	 * Instance of browser object for sending results back.
 	 * @see Browser
 	 */
-	protected Browser doc
-	/**
-	 * Constructor called by the actor driver - compile.run(script.env)
-	 * @param env Environment to store
-	 */
-	def init(HashMap env) {
-		this.env = env
-		doc = new Browser(env.out)
-		return this
-	}
+	protected Browser doc = new Browser()
 	/**
 	 * Called by uSDLC to start a java actor. It will compile the source if it is out of date, load the class,
-	 * instantiate it and call the run() method.
-	 * @param script Name of script (ends in .java)
-	 * @param env Environment to pass to the afflicted.
+	 * instantiate it and call the runScript() method.
 	 * @return True if the run worked
 	 */
-	static run(env) {
+	static run(String script) {
 		try {
 			// load, instantiate and run - all in one.
-			JavaClassLoader.instance.loadClass(new Filer(env.script)).newInstance().init(env).run()
+			JavaClassLoader.instance.loadClass(new Filer(script)).newInstance().runScript()
 		} catch (e) {
 			e.printStackTrace()
 			return false

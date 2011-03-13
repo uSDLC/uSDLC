@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package usdlc.TechnicalArchitecture.Actors.Java;
+package uSDLC.Actors.Java;
 
 import net.usdlc.actors.JavaActor;
 
