@@ -84,8 +84,8 @@ $(function() {
 	 */
 	function setPageLayout() {
 		var w = $(window)
-		var ptt = $('table#pageTitle')
-		var pc = $('table#pageContents')
+		var ptt = $('table#pageTitleTable')
+		var pc = $('table#pageContentsTable')
 		var pcd = $('div#pageContents')
 		var pad = pc.outerHeight() - pcd.height()
 		var h = w.height() - ptt.outerHeight() - pad

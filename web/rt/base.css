@@ -89,11 +89,11 @@ div.section h2 {
 /*
  Page contents region and control
  */
-table#pageContents {
+table#pageContentsTable {
 	width: 100%;
 }
 
-td#pageContents {
+td#pageContentsTd {
 	width: 90%;
 }
 
@@ -104,7 +104,7 @@ div#pageContents {
 	overflow: hidden;
 }
 
-td#pageContentSlider {
+td#pageContentSliderTd {
 	width: 20px;
 	padding: 0;
 }

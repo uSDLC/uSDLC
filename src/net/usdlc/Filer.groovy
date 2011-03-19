@@ -58,7 +58,7 @@ class Filer {
 				}
 			} else {
 				clientExt = match[-2][1]
-				if (! actor  &&  mimeTypes[serverExt]) {
+				if (!actor && mimeTypes[serverExt]) {
 					fullExt = clientExt = serverExt
 					serverExt = ''
 				} else {
@@ -218,7 +218,7 @@ class Filer {
 			jpe: "image/jpeg",
 			jpeg: "image/jpeg",
 			jpg: "image/jpeg",
-			js: "application/x-javascript",
+			js: "application/javascript",
 			latex: "application/x-latex",
 			lha: "application/octet-stream",
 			lsf: "video/x-la-asf",

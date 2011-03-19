@@ -38,14 +38,14 @@ $(function() {
 		},
 		runLink: runLink,
 		/**
-		 * Command to run the current section.
+		 * Command to run the page section.
 		 */
 		runSectionInFocus: function() {
 			var section = $('.inFocus')
 			runSections(section)
 		},
 		/**
-		 * Command to run a section of the page or from the current section to the end of the page.
+		 * Command to run a section of the page or from the page section to the end of the page.
 		 */
 		runFromSectionInFocus: function() {
 			var section = $('.inFocus')
@@ -63,7 +63,7 @@ $(function() {
 		},
 
 		runningLinkClass: function(links, name) {
-			links.removeClass('runOnClick hasResults running error ok').addClass(name)
+			$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
 		},
 		clearRunningLinkClass: function(inside) {
 			$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
@@ -72,12 +72,13 @@ $(function() {
 
 	function enqueue(link, options, action) {
 		var a = link.get(0)
+		var search = (a.search || '?') + '&linkId=' + link.attr('id')
 		usdlc.queue(action || $.ajax, $.extend({}, {
 			cache : false,
 			parallel : true,
 			processData : false,
 			type : 'GET',
-			url : a.pathname + a.search,
+			url : a.pathname + search,
 			success : function(data) {
 				usdlc.runningLinkClass(link, 'hasResults')
 				results(link).html(data).dialog((options && options.dialogCommand) || 'open')
@@ -95,12 +96,12 @@ $(function() {
 			dialog = usdlc.dialog(container || '<div/>', $.extend({}, {
 				title: link.text(),
 				autoOpen: false,
+				width: '50%',
 				open: function() {
 					var widget = dialog.dialog("widget")
 					widget.position({
 						of: link, my: 'bottom', at: 'top', collision: 'flip',
 						using: function(position) {
-							// damn it is out by current position of the widget - relative or absolute?
 							var from = widget.offset()
 							widget.animate({top:position.top + from.top, left:position.left + from.left})
 						}

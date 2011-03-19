@@ -19,7 +19,7 @@ $(function() {
 
 	$.extend(true, window.usdlc, {
 		/**
-		 * Called by the server to highlight the current selection.
+		 * Called by the server to highlight the page selection.
 		 * @param colour Colour to highlight the section with.
 		 */
 		highlight : function (colour, section) {

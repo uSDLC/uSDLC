@@ -15,7 +15,6 @@
  */
 package net.usdlc.actors
 
-import net.usdlc.Browser
 import net.usdlc.Config
 import net.usdlc.Environment
 import net.usdlc.Store
@@ -29,20 +28,18 @@ import net.usdlc.Store
  */
 class GroovyActor {
 	static run(script) {
+		def my = Environment.data()
 		def actor = new GroovyActor()
 		def root = Store.root(script).parent.replaceAll('\\\\', '/')
-		def browser = new Browser()
-		def print = { browser.text it }
-		actor.binding = Environment.data() + [
-				browser: browser,
-				doc: browser.html,
+		def print = { my.html.text it }
+		actor.binding = my + [
 				print: print,
 				gse: new GroovyScriptEngine(Config.classPath as String[]),
 				include: { actor.runScript "$root/$it" },
 				template: { actor.runScript "$root/rt/${it}.html.groovy" }
 		]
 		actor.runScript(script)
-		browser.close()
+		my.doc.close()
 	}
 	/**
 	 * Data that comes out as global scope to the groovy script as in /uSDLC/TechnicalArchitecture/Actors/Groovy

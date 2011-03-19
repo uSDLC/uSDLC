@@ -15,7 +15,7 @@
  */
 
 $(function() {
-	var pageTitle = $('td#pageTitle')
+	var pageTitle = $('td#pageTitleTd')
 	$.extend(true, window.usdlc, {
 		/*
 		 When the page loads, set the edit mode to the default.
@@ -29,14 +29,14 @@ $(function() {
 				usdlc.clearRunningLinkClass('')
 			} else {
 				color = 'yellow'
-				usdlc.runningLinkClass($('a.usdlc'), 'runOnClick')
+				usdlc.runningLinkClass('a.usdlc', 'runOnClick')
 			}
 			$('.section').each(function() {
 				usdlc.highlight(color, $(this))
 			})
 		},
 		/**
-		 * Give notice to an error by highlighting the current selection and displaying a message.
+		 * Give notice to an error by highlighting the page selection and displaying a message.
 		 * @param messageFile File/script to produce message to display
 		 */
 		alert : function (messageFile, parent) {

@@ -90,6 +90,7 @@ class Exchange {
 			responseHeader['Set-cookie'] = "session=$my.cookies.session"
 			session++
 		}
+		my.doc = new HtmlBuilder()
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
 		responseHeader['Content-Type'] = file.mimeType()
 		responseHeader['Connection'] = 'close'
@@ -109,19 +110,25 @@ class Exchange {
 				case 'save':    // saves html and actors
 					// Contents to write are sent from the browser. Get them and save them to the file
 					file.save(my.userId, my.in.text)
-					Browser.js().highlight('sky')
+					my.doc.text("highlight('sky')")
 					break
 				case 'edit':    // so actors are send to browser for editing instead of running
 					my.out.write file.rawContents
 					break
 				default:        // act for active, return content for static content
 					if (file.actor) {
-						file.actor.run my.script
+						try {
+							file.actor.run my.script
+						} catch (AssertionError problem) {
+							my.doc.error problem.message
+							//problem.printStackTrace()
+						}
 					} else {
 						my.out.write file.contents
 					}
 			}
 		} catch (problem) {
+			my.doc.error problem.message
 			problem.printStackTrace()
 		} finally {
 			// No matter what we want to close the connection. Otherwise the browser spins forever (since we are not providing a content length in the response header.

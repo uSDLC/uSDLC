@@ -37,7 +37,11 @@ class Log extends SimpleLog {
 	 * @param buffer buffer the logger has prepared for the record
 	 */
 	protected void write(StringBuffer buffer) {
-		my.out.println buffer
+		if (level > 4) {
+			my.out.println "$buffer<br>"
+		} else {
+			println buffer
+		}
 	}
 	/**
 	 * The most likely (and in fact only) use for this class is the interception Apache Commons logging -
@@ -45,6 +49,8 @@ class Log extends SimpleLog {
 	 * @return
 	 */
 	static apacheCommons() {
-		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "net.usdlc.Log");
+		LogFactory.factory.setAttribute("org.apache.commons.logging.Log", "net.usdlc.Log");
+		// "trace", "debug", "info", "warn", "error", or "fatal"
+		System.properties["org.apache.commons.logging.simplelog.defaultlog"] = "error";
 	}
 }

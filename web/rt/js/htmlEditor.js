@@ -17,7 +17,7 @@
 $(function() {
 	$.extend(true, window.usdlc, {
 		/**
-		 * Used from a menu to edit the current section.
+		 * Used from a menu to edit the page section.
 		 */
 		editSectionInFocus : function() {
 			$('.inFocus').each(function() {
@@ -69,7 +69,7 @@ $(function() {
 						self.attr('id', targetId)
 					}
 					var href = self.attr('href')
-					self.removeClass()  // removes all classes so we can re-add them by current standards.
+					self.removeClass()  // removes all classes so we can re-add them by page standards.
 					if (href && href.indexOf(':') == -1) {
 						pageLinkCount++
 						self.addClass('usdlc')

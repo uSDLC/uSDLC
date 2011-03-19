@@ -17,7 +17,7 @@ package rt.maintenance.Dependencies
 
 import net.usdlc.Ivy
 
- /**
+/**
  * User: Paul Marrington
  * Date: 6/03/11
  * Time: 11:27 AM
@@ -32,5 +32,5 @@ import net.usdlc.Ivy
  * http://rt/maintenance/Dependencies/ivy.groovy?group=jars/optional&amp;resolve=organisation:org.codehaus.groovy module:groovy conf:default
  */
 doc.pre {
-	Ivy.retriever(doc).load(env.query.group ?: 'jars/optional', env.query.resolve, env.query.remove)
+	Ivy.retriever(doc).load(query.group ?: 'jars/optional', query.resolve, query.remove)
 }

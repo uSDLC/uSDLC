@@ -1,3 +1,4 @@
+package net.usdlc.server.standalone
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.usdlc.server.standalone
 
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
@@ -31,10 +31,9 @@ import net.usdlc.Store
  * environments where uSDLC is on a sub-path - as in http://askowl.com.au/usdlc.
  */
 def host = InetAddress.localHost.hostName
-println "Starting uSDLC on http://$host:$Config.web.port/$Config.web.urlBase from ${new File(Store.webBase as String).absolutePath}"
-\
-
-
+println """Starting uSDLC on http://$host:$Config.web.port/$Config.web.urlBase
+    from ${new File(Store.webBase as String).absolutePath}
+"""
 
 HttpServer server = HttpServer.create(new InetSocketAddress(Config.web.port), 0)
 server.createContext '/', { HttpExchange httpExchange ->

@@ -15,7 +15,10 @@
  */
 package net.usdlc.filters
 
-import net.usdlc.*
+import net.usdlc.Config
+import net.usdlc.Environment
+import net.usdlc.Filer
+import net.usdlc.Store
 
 /**
  * uSDLC supports actors and filters. This filter provides HTML templating. By default it runs templates/template.html.groovy that provides header, body and scrolling elements.
@@ -55,7 +58,7 @@ class HtmlActor {
 					Store.base("$base/$it").copy(targetPath, my.query.action)
 				}
 				Store.base("$targetPath/Section.html").write(System.in.text.bytes)
-				Browser.js().script("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','$targetPath')")
+				my.doc.text("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','$targetPath')")
 				break
 			case 'paste':
 				def target = file.store.parent

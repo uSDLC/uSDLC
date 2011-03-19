@@ -15,55 +15,76 @@
 */
 package net.usdlc
 
+import be.roam.hue.doj.Doj
+import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.CollectingAlertHandler
+
 /**
  * User: Paul
  * Date: 25/02/11
  */
 class WebClient {
-	com.gargoylesoftware.htmlunit.WebClient webClient = new com.gargoylesoftware.htmlunit.WebClient()
-	def current
-	def elements
+	/**
+	 * @See http://hue.googlecode.com/svn/api/1.1/index.html
+	 */
+	@Delegate Doj doj
 	/**
 	 * Constructor - creates an instance and loads a page
 	 * @param url Page to load
 	 */
 	WebClient(String url) {
-		current = webClient.getPage(url)
+		webClient = new com.gargoylesoftware.htmlunit.WebClient(BrowserVersion.FIREFOX_3_6)
+		def collectedAlerts = [];
+		webClient.alertHandler = new CollectingAlertHandler(collectedAlerts);
+		try {
+			doj = Doj.on(webClient.getPage(url))
+			webClient.waitForBackgroundJavaScript(10000)
+		} finally {
+			collectedAlerts.each { System.err.println(it); }
+		}
 	}
 	/**
-	 * Builder - creates an instance and loads a page
-	 * @param url Page to load
-	 * @return Instance of WebTest already primed
+	 * Get a page element based on a selector
+	 * @param selector
+	 * @return this for chaining
+	 *
+	 * webClient.table.a.span
 	 */
-	static WebClient load(url) {
-		return new WebClient(url)
+	def propertyMissing(String selector) {
+		return getAt(selector)
+	}
+	/**
+	 * Get a page element based on a selector
+	 * @param selector
+	 * @return this for chaining
+	 *
+	 * webClient['img#logo']
+	 */
+	def getAt(String selector) {
+		return new WebClient(doj.get(selector))
 	}
 
-	def xpath(String xpath) {
-		elements = current.getByXPath(xpath)
-		if (size() != 0) {
-			current = elements[0]
+	def getAt(Integer selector) {
+		return new WebClient(doj.get(selector))
+	}
+	/**
+	 * Dump element as XML to standard error for review
+	 * @return this for chaining
+	 */
+	def dump() {
+		doj.allElements().each {
+			System.err.println(it.asXml())
 		}
 		return this
 	}
-
-	def size() {
-		return elements.size()
+	/**
+	 * Emulate closing the browser window
+	 */
+	def close() {
+		webClient.closeAllWindows()
 	}
 
-	def click() {
-		return current.click()
-	}
+	private WebClient(Doj doj) { this.doj = doj }
 
-	def hasClass(name) {
-		return classes.find(name)
-	}
-
-	def getClasses() {
-		return current.getAttribute('class').split(' ')
-	}
-
-	def getAt(idx) {
-		return elements[idx]
-	}
+	def webClient
 }

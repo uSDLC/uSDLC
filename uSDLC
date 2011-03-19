@@ -1,0 +1,20 @@
+#!/bin/bash
+if  [[ "$OSTYPE" == "cygwin32" ]]
+then sep=';'
+else sep=':'
+fi
+
+cp=.${sep}uSDLC.jar
+for i in `echo lib/jars/required/*.jar`
+do
+	cp=${cp}${sep}${i}
+done
+for i in `echo lib/jars/optional/*.jar`
+do
+	cp=${cp}${sep}${i}
+done
+
+CLASSPATH=$cp$sep$CLASSPATH
+export CLASSPATH
+
+java "-Dtools.jar=${JAVA_HOME}\..\lib\tools.jar" "-Dgroovy.home=lib\jars\required" org.codehaus.groovy.tools.GroovyStarter --main net.usdlc.server.standalone.server

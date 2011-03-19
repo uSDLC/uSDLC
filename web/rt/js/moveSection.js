@@ -38,13 +38,13 @@ $(function() {
 			return section.data
 		},
 		/**
-		 * Used in a menu to insert a section above the current selection then edit it.
+		 * Used in a menu to insert a section above the page selection then edit it.
 		 */
 		insertSectionAboveFocus : function() {
 			insertSection("insertBefore")
 		},
 		/**
-		 * Used in a menu to insert a section below the current selection then edit it.
+		 * Used in a menu to insert a section below the page selection then edit it.
 		 */
 		insertSectionBelowFocus : function() {
 			insertSection("insertAfter")

@@ -33,7 +33,7 @@ doc.html {
 	}
 	body(style: 'display:none') {
 		// Tables still provide a good layout structure. Here the top section has a title and logo. The centre is a notification bar on the left, content in the centre and scroll region on the right.
-		table(id: 'pageTitle') {
+		table(id: 'pageTitleTable') {
 			tr {
 				td(id: 'pageTitle', contextMenu: 'title')
 				td(rowspan: '2') {
@@ -47,7 +47,7 @@ doc.html {
 				}
 			}
 		}
-		table(id: 'pageContents') {
+		table(id: 'pageContentsTable') {
 			tr {
 				td(id: 'contentTree') {
 					ul {
@@ -56,10 +56,10 @@ doc.html {
 						}
 					}
 				}
-				td(id: 'pageContents') {
+				td(id: 'pageContentsTd') {
 					div(id: 'pageContents')
 				}
-				td(id: 'pageContentSlider') {
+				td(id: 'pageContentSliderTd') {
 					div(id: 'pageContentSlider')
 				}
 			}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uSDLC.Vision.LeveragingThirdPartySystems.Actors.Java;
+package uSDLC.Actors.Java;
 
 import net.usdlc.actors.JavaActor;
 
@@ -22,7 +22,7 @@ class StandAloneWithMarkup extends JavaActor {
 	public void run() {
 		doc.tag("div class='message'").tag("span").
 				text("\n    Test Java Script\n").
-				script("usdlc.highlight('blue')");
+				tag("script").text("usdlc.highlight('blue')");
 		// no easy equivalent of include
 		// include 'StandAloneSendingBackRawHtml.htm.groovy'
 	}
