@@ -35,7 +35,7 @@ doc.html {
 		// Tables still provide a good layout structure. Here the top section has a title and logo. The centre is a notification bar on the left, content in the centre and scroll region on the right.
 		table(id: 'pageTitleTable') {
 			tr {
-				td(id: 'pageTitle', contextMenu: 'title')
+				td(id: 'pageTitleTd', contextMenu: 'title')
 				td(rowspan: '2') {
 					a(href: "/root") {
 						img(id: 'pageTitle', src: '/rt/base.logo.png',

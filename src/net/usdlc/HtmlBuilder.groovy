@@ -30,7 +30,6 @@ class HtmlBuilder extends MarkupBuilder {
 	 * @return The builder so you can string them together.
 	 */
 	HtmlBuilder text(content) {
-		"".splitEachLine(/a/) {}
 		mkp.yieldUnescaped content
 		return this
 	}

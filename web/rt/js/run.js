@@ -81,7 +81,12 @@ $(function() {
 			url : a.pathname + search,
 			success : function(data) {
 				usdlc.runningLinkClass(link, 'hasResults')
-				results(link).html(data).dialog((options && options.dialogCommand) || 'open')
+				var rdb = results(link).html(data)
+				if (rdb.text().length > 5) {
+					rdb.dialog((options && options.dialogCommand) || 'open')
+				} else {
+					usdlc.runningLinkClass(link, 'ok')
+				}
 			},
 			error : function(xmlHttpRequest, textStatus) {
 				console.log(textStatus)

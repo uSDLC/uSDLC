@@ -53,18 +53,18 @@ img#pageTitle {
 	float: right;
 }
 
-td#pageTitle {
+td#pageTitleTd {
 	vertical-align: middle;
 	padding-bottom: 15px;
 	width: 100%;
 	background-repeat: repeat-y;
 }
 
-td#pageTitle h1, td#pageTitle h2, div.inclusion h1, div.inclusion h2 {
+td#pageTitleTd h1, td#pageTitleTd h2, div.inclusion h1, div.inclusion h2 {
 	text-align: center;
 }
 
-td#pageTitle h2, div.inclusion h2 {
+td#pageTitleTd h2, div.inclusion h2 {
 	font-size: 0.9em;
 }
 
@@ -174,7 +174,7 @@ div.section:not(.inFocus) {
 	border-bottom: #f2f2f2 1px solid;
 }
 
-div.section, #pageTitle {
+div.section, #pageTitleTd {
 	background-repeat: repeat-y;
 	background-position: 0 -40px;
 }

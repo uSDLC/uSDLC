@@ -16,7 +16,6 @@
 package net.usdlc
 
 import java.util.regex.Pattern
-import name.fraser.neil.plaintext.diff_match_patch
 
 /**
  * When changing pages, scripts or data we save the difference between versions. Expected creation is:

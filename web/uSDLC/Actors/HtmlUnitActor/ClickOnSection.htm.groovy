@@ -1,6 +1,6 @@
 doc.div(class: 'text') {
 	// Load index.html from a page in scratch. Does not matter if it does not exist.
-	def client = new net.usdlc.WebClient("http://${header.host[0]}/scratch")
+	def client = new net.usdlc.WebClient("http://${header.host[0]}/Sandbox/scratch")
 	// Make sure page decorations have loaded by looking for the uSDLC image
 	assert client["img#pageTitle"].size() == 1
 	// Fetch the list uf uSDLC sections.
