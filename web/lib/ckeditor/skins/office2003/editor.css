@@ -384,23 +384,19 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_toolgroup {
 
-#float:none
-
-;
-#display:inline
-
-;
+	#float: none;
+	#display: inline;
 }
+
 .cke_skin_office2003 .cke_rtl .cke_toolgroup {
 	float: right;
 }
 
 .cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolgroup {
 
-#float:none
-
-;
+	#float: none;
 }
+
 .cke_skin_office2003 .cke_separator {
 	display: inline-block;
 	float: left;
@@ -411,23 +407,19 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_separator {
 
-#float:none
-
-;
-#display:inline
-
-;
+	#float: none;
+	#display: inline;
 }
+
 .cke_skin_office2003 .cke_rtl .cke_separator {
 	float: right;
 }
 
 .cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_separator {
 
-#float:none
-
-;
+	#float: none;
 }
+
 .cke_skin_office2003 .cke_break {
 	clear: left;
 }
@@ -449,13 +441,10 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_toolbar_start {
 
-#float:none
-
-;
-#display:inline
-
-;
+	#float: none;
+	#display: inline;
 }
+
 .cke_skin_office2003 .cke_rtl .cke_toolbar_start {
 	background-position: -27px -816px;
 	float: right;
@@ -463,10 +452,9 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolbar_start {
 
-#float:none
-
-;
+	#float: none;
 }
+
 .cke_skin_office2003 .cke_toolbar_end {
 	display: inline-block;
 	background-image: url(images/sprites.png);
@@ -480,13 +468,10 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_toolbar_end {
 
-#float:none
-
-;
-#display:inline
-
-;
+	#float: none;
+	#display: inline;
 }
+
 .cke_skin_office2003 .cke_rtl .cke_toolbar_end {
 	background-position: -29px -907px;
 	float: right;
@@ -494,10 +479,9 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolbar_end {
 
-#float:none
-
-;
+	#float: none;
 }
+
 .cke_skin_office2003 .cke_button a, .cke_skin_office2003 .cke_button a:hover, .cke_skin_office2003 .cke_button a:focus, .cke_skin_office2003 .cke_button a:active, .cke_skin_office2003 .cke_button a.cke_off {
 	border: solid 1px transparent;
 	border-radius: 3px;
@@ -853,23 +837,19 @@ a:hover.cke_colorauto, a:hover.cke_colormore, a:focus.cke_colorauto, a:focus.cke
 
 .cke_skin_office2003 .cke_browser_ie .cke_rcombo {
 
-#float:none
-
-;
-#display:inline
-
-;
+	#float: none;
+	#display: inline;
 }
+
 .cke_skin_office2003 .cke_rtl .cke_rcombo {
 	float: right;
 }
 
 .cke_skin_office2003 .cke_browser_ie .cke_rcombo {
 
-#float:none
-
-;
+	#float: none;
 }
+
 .cke_skin_office2003 .cke_rcombopanel {
 	border: 1px solid #316ac5;
 	-moz-border-radius-topleft: 0;
