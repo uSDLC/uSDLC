@@ -90,9 +90,10 @@ class Exchange {
 			responseHeader['Set-cookie'] = "session=$my.cookies.session"
 			session++
 		}
-		my.doc = new HtmlBuilder()
+		my.mimeType = my.query.mimeType ?: file.mimeType()
+		my.doc = BrowserBuilder.newInstance()
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
-		responseHeader['Content-Type'] = file.mimeType()
+		responseHeader['Content-Type'] = my.mimeType
 		responseHeader['Connection'] = 'close'
 	}
 

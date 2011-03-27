@@ -227,6 +227,15 @@ a.sourceLink:hover {
 	color: #b22222;
 }
 
+a.star {
+	text-decoration: none;
+	color: #0000cd;
+}
+
+a.star:hover {
+	background-color: #daa520;
+}
+
 a.running {
 	background-color: #ffe4b5;
 }

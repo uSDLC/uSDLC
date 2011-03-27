@@ -30,9 +30,10 @@ $(function() {
 			usdlc.savePageContents()
 		},
 		camelCase : function(text) {
-			return text.replace(/(\s'"+.)/g, function($1) {
-				return $1.toUpperCase().charAt($1.length - 1)
-			});
+			return text.replace(/(^|[\s'"\-]+)(\w)/g,
+				function(a, s, c) {
+					return c.toUpperCase()
+				}).replace(/\s*/, '');
 		}
 	})
 	/*
@@ -74,6 +75,9 @@ $(function() {
 						pageLinkCount++
 						self.addClass('usdlc')
 						href = usdlc.camelCase(href)
+						if (self.text() == '*') {
+							self.addClass('star')
+						}
 						if (href.charAt(href.length - 1) == '/') {
 							href += "index.html"
 						} else if (href.indexOf('.') == -1) {
@@ -104,7 +108,9 @@ $(function() {
 					// Once the editor is ready for action keep a copy of the unchanged contents and sent the focus.
 					ev.editor.focus()
 				}
-			}
+			},
+			extraPlugins : 'autogrow'
+			//autoGrow_maxHeight : 800
 		})
 	}
 
@@ -130,10 +136,108 @@ $(function() {
 		if (dialogName == 'link') {
 			var infoTab = dialogDefinition.getContents('info');
 			var protocol = infoTab.get("protocol")
-			protocol.items.unshift([
-				'local',''
-			])
+			protocol.items.unshift(['local',''])
 			protocol['default'] = 'local'
+			var urlField, linkSelect, linkRadio, initialising = false
+			// Called when user selects a type of link
+			function setLinkType() {
+				var type = linkRadio.getValue()
+				$.cookie('linkRadioDefault', type)
+				if (type == 'Actor') {
+					type = linkSelect.getValue()
+					$.cookie('actorDefault', type)
+				}
+
+				var name = usdlc.splitUrl(urlField.getValue()).name
+				if (type) {
+					name += '.' + type
+				}
+				urlField.setValue(name)
+			}
+
+			// Actors can have various extensions defining client and server languags
+			var actorItems = []
+			var actorDefault = $.cookie('actorDefault') || 'groovy'
+			var linkRadioDefault = $.cookie('linkRadioDefault') || ''
+			var actorTypes = ($.cookie('actorTypes') || 'groovy').split(',')
+			for (actorType in actorTypes) {
+				actorItems.push([actorTypes[actorType]])
+			}
+
+			dialogDefinition.onFocus = function() {
+				urlField = this.getContentElement('info', 'url');
+				linkSelect = this.getContentElement('info', 'linkSelect');
+				linkRadio = this.getContentElement('info', 'linkRadio');
+				var url = urlField.getValue()
+				if (url) {
+					var ext = usdlc.splitUrl(urlField.getValue()).ext
+					switch (ext) {
+						case '':
+							linkRadioDefault = ext
+							break
+						case 'html':
+							if (url.indexOf("/index.html") != -1) {
+								url = url.substring(0, url.length - 11)
+								urlField.setValue(url)
+								ext = ''
+							}
+							linkRadioDefault = ext
+							break
+						default:
+							linkRadioDefault = 'Actor'
+							actorDefault = ext
+							break
+					}
+				} else {
+					var highlightedText = ev.editor.getSelection().getNative().toString()
+					urlField.setValue(usdlc.camelCase(highlightedText))
+				}
+				initialising = true
+				linkRadio.setValue(linkRadioDefault)
+				linkSelect.setValue(actorDefault)
+				initialising = false
+			}
+
+			var urlOptions = infoTab.get('urlOptions').children.push({
+				type : 'hbox',
+				children : [
+					{
+						type : 'radio',
+						id : 'linkRadio',
+						label : 'Link Type',
+						items : [
+							['Child Page',''],
+							['Sibling Page','html'],
+							['Actor']
+						],
+						onClick : function() {
+							setLinkType()
+						}
+					},
+					{
+						type : 'select',
+						id : 'linkSelect',
+						label : 'Actor Type',
+						items : actorItems,
+						onChange : function() {
+							if (! initialising) {
+								linkRadio.setValue('Actor')
+								setLinkType()
+							}
+						},
+						validate : function() {
+							var ext = usdlc.splitUrl(urlField.getValue()).ext
+							if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
+								actorTypes.push(ext)
+								actorTypes.sort()
+								this.add(ext)
+								$.cookie('actorTypes', actorTypes.toString(), {expires : 1000})
+							}
+							return true
+						}
+					}
+				]
+			})
 		}
 	})
 })

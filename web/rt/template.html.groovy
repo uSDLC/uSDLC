@@ -1,5 +1,3 @@
-import net.usdlc.Store
-
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -15,6 +13,7 @@ import net.usdlc.Store
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import net.usdlc.Store
 
 /**
  Filter used to wrap html page with decorations and necessary functions.
@@ -77,7 +76,7 @@ doc.html {
 					int shade = 0x0000FF - (age / 60000)   // blue to black over 4 hours
 					def colour = Integer.toHexString((shade < 0) ? 0 : shade)
 
-					a(item.title, href: item.path, style: "color:$colour;")
+					a(item.title, href: "/$item.path", style: "color:$colour;")
 				}
 			}
 		}
@@ -98,7 +97,7 @@ doc.html {
 			script('', type: jsType, src: '/lib/jquery/js/jquery.url.js')
 			script('', type: jsType, src: '/lib/jquery/js/fg.menu.js')
 			script('', type: jsType, src: '/lib/ckeditor/ckeditor.js')
-			script('', type: jsType, src: '/lib/ckeditor/adapters/jquery-ckeditor-adapter.js')
+			script('', type: jsType, src: '/lib/ckeditor/adapters/jquery.js')
 			script('', type: jsType, src: '/lib/edit_area/edit_area_full.js')
 			script('', type: jsType, src: '/rt/js/menu.js')
 			script('', type: jsType, src: '/rt/js/htmlEditor.js')

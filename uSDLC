@@ -4,7 +4,8 @@ then sep=';'
 else sep=':'
 fi
 
-cp=.${sep}uSDLC.jar
+cp uSDLC.jar running.jar
+cp=.${sep}running.jar
 for i in `echo lib/jars/required/*.jar`
 do
 	cp=${cp}${sep}${i}

@@ -16,6 +16,25 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
+		splitUrl : function(url) {
+			var result = {}
+			var slash = url.lastIndexOf('/')
+			if (slash != -1) {
+				result.path = url.substring(0, slash)
+				url = url.substring(slash + 1)
+			} else {
+				result.path = ''
+			}
+			var dot = url.indexOf('.')
+			if (dot != -1) {
+				result.name = url.substring(0, dot)
+				result.ext = url.substring(dot + 1)
+			} else {
+				result.name = url
+				result.ext = ''
+			}
+			return result
+		},
 		mimeType : function(href) {
 			var extentions = href.match(/\.\w+/g)
 			var rc = {}

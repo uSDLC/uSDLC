@@ -130,12 +130,12 @@ $(function() {
 			return $('<div/>').attr('id', 'pageTitle').addClass('editable').append($('<h1/>').append(heading)).append($('<h2/>').append(subtitle))
 		}
 	})
-
+	/**
+	 * When you open uSDLC without asking for a page, the last page displayed will return. /root is a special case so you can go to the uSDLC D3 root.
+	 */
 	var path = window.location.pathname
 	if (path == '/') {
-		if (!(path = $.cookie('currentPage'))) {
-			path = '/'
-		}
+		path = $.cookie('currentPage') || '/'
 	} else if (path == '/root') {
 		path = '/'
 	}

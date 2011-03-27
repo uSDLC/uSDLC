@@ -1,25 +1,25 @@
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 package net.usdlc.actors
 
 import javax.tools.ToolProvider
+import net.usdlc.BrowserBuilder
 import net.usdlc.Config
 import net.usdlc.Environment
 import net.usdlc.Filer
-import net.usdlc.HtmlBuilder
 import net.usdlc.actors.JavaFileObjects.ClassFileManager
 
 /**
@@ -35,9 +35,9 @@ abstract class JavaActor {
 	protected HashMap env = Environment.data()
 	/**
 	 * Instance of browser object for sending results back.
-	 * @see HtmlBuilder
+	 * @see net.usdlc.BrowserBuilder
 	 */
-	protected HtmlBuilder doc = env.doc
+	protected BrowserBuilder doc = env.doc
 	/**
 	 * Called by uSDLC to start a java actor. It will compile the source if it is out of date, load the class,
 	 * instantiate it and call the runScript() method.

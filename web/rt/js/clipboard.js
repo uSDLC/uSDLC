@@ -14,19 +14,16 @@
  *  limitations under the License.
  */
 
-$(function()
-{
+$(function() {
 	$.extend(true, window.usdlc, {
-		copySectionInFocus : function(cutOrCopy)
-		{
+		copySectionInFocus : function(cutOrCopy) {
 			var toCut = usdlc.inFocus
 			if (toCut) {
 				var toMove = {}, toMoveList = [
 				]
-				toCut.find('a.usdlc').each(function()
-				{
+				toCut.find('a.usdlc').each(function() {
 					var link = $(this)
-					if (link.parents('div.synopsis').length == 0) {
+					if (link.parents('div.synopsis').length === 0) {
 						var href = link.attr('href')
 						var relative = (href[0] != '/')
 						if (relative) {
@@ -45,7 +42,7 @@ $(function()
 				usdlc.cleanSections(toCut)
 				var focus = toCut.next()
 				var html = $('<div/>').html(toCut.clone()).html()
-				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).name), html, $.globalEval)
+				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).name + "&mimeType=application/javascript"), html, $.globalEval)
 				usdlc.sectionBeingCut = toCut
 				usdlc.modalOff()
 				usdlc.setFocus(focus)
@@ -53,8 +50,7 @@ $(function()
 			}
 			return false
 		},
-		copySectionSuccessful : function(title, href)
-		{
+		copySectionSuccessful : function(title, href) {
 			var toCut = usdlc.sectionBeingCut
 			if (toCut) {
 				usdlc.sectionBeingCut = null
@@ -64,26 +60,22 @@ $(function()
 			}
 			return toCut
 		},
-		cutSectionSuccessful : function(title, href)
-		{
+		cutSectionSuccessful : function(title, href) {
 			var toCut = usdlc.copySectionSuccessful(title, href)
 			if (toCut) {
 				toCut.remove()
 				usdlc.savePage()
 			}
 		},
-		paste : function(idx)
-		{
+		paste : function(idx) {
 			var clip = $('div#pasteList a').eq(idx).remove()
 			if (clip.length == 1) {
-				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, 'paste&from=' + clip[0].pathname), function(data)
-				{
+				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, 'paste&from=' + clip[0].pathname), function(data) {
 					var id = usdlc.nextSectionId()
 					var section = $(data).attr('id', id)
 					id += 'a'
 					var idx = 0
-					$('a.usdlc', section).attr('id', function()
-					{
+					$('a.usdlc', section).attr('id', function() {
 						return id + (idx++)
 					})
 					section.insertAfter(usdlc.inFocus || $('div.section:last'))
@@ -96,13 +88,11 @@ $(function()
 
 	// bind paste keys
 	var doc = $(document)
-	doc.bind('keydown', 'ctrl+V', function()
-	{
+	doc.bind('keydown', 'ctrl+V', function() {
 		usdlc.paste(0)
 	})
 	for (digit = 1; digit < 10; digit++) {
-		doc.bind('keydown', 'ctrl+' + digit, function()
-		{
+		doc.bind('keydown', 'ctrl+' + digit, function() {
 			usdlc.paste(digit)
 		})
 	}
