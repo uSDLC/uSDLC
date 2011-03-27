@@ -1,17 +1,17 @@
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 package net.usdlc.actors
 
@@ -28,18 +28,22 @@ import net.usdlc.Store
  */
 class GroovyActor {
 	static run(script) {
+		def actor = new GroovyActor().load(script)
+		actor.runScript script
+		actor.binding.doc.close()
+	}
+
+	protected load(script, moreBinding = []) {
 		def my = Environment.data()
-		def actor = new GroovyActor()
 		def root = Store.root(script).parent.replaceAll('\\\\', '/')
-		def print = { my.html.text it }
-		actor.binding = my + [
+		def print = { my.doc.text it }
+		binding = my + [
 				print: print,
 				gse: new GroovyScriptEngine(Config.classPath as String[]),
-				include: { actor.runScript "$root/$it" },
-				template: { actor.runScript "$root/rt/${it}.html.groovy" }
-		]
-		actor.runScript(script)
-		my.doc.close()
+				include: { runScript "$root/$it" },
+				template: { runScript "$root/rt/${it}.html.groovy" }
+		] + moreBinding
+		return this
 	}
 	/**
 	 * Data that comes out as global scope to the groovy script as in /uSDLC/TechnicalArchitecture/Actors/Groovy

@@ -55,7 +55,11 @@ class HtmlActor {
 				def base = file.store.parent
 				def targetPath = Store.base('clipboard').uniquePath(my.query.title).replace('\\', '/')
 				my.query.dependents.tokenize(',').each {
-					Store.base("$base/$it").copy(targetPath, my.query.action)
+					//noinspection GroovyNestedSwitch
+					switch (my.query.action) {
+						case 'copy': Store.base("$base/$it").copy(targetPath); break
+						case 'cut': Store.base("$base/$it").move(targetPath); break
+					}
 				}
 				def contents = my.in.text.bytes
 				Store.base("$targetPath/Section.html").write(contents)

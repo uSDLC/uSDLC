@@ -1,0 +1,28 @@
+client.load("http://${header.host[0]}/Sandbox/scratch")
+/*
+ * Copyright 2011 Paul Marrington for http://usdlc.net
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+// Make sure page decorations have loaded by looking for the uSDLC image
+assert client["img#pageTitle"].size() == 1
+// Fetch the list uf uSDLC sections.
+def sections = client["div.section"]
+// Even an empty file will have one from the template
+assert sections.size() > 0
+// When you load a page there should not be a section in focus
+assert !sections[0].hasClass('inFocus')
+// Click on a section will trigger JQuery to place it in focus
+sections[0].click()
+// Confirm that the section has focus
+assert sections[0].hasClass('inFocus')

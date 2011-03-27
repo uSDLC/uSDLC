@@ -1,24 +1,25 @@
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 
 
 package net.usdlc
 
-import static groovy.io.FileType.*
+import static groovy.io.FileType.FILES
+
 /**
  Not all platforms that will use uSDLC will have access to a traditional file system. Google Appengine, for example, only allows data to be stored in BigTable - the database. For this reason, all uSDLC uses Store for persistence. The long-term plan is to more the base persistence calls the platform specific code.
 
@@ -153,7 +154,7 @@ class Store {
 		def list = []
 		//noinspection GroovyEmptyCatchBlock
 		try {
-			file.traverse(type : FILES,  nameFilter : mask) { list << it.path.replaceAll(sloshRE, '/') }
+			file.traverse(type: FILES, nameFilter: mask) { list << it.path.replaceAll(sloshRE, '/') }
 		} catch (e) {}
 		return list
 	}
@@ -197,13 +198,15 @@ class Store {
 	static sloshRE = ~"\\\\"
 	static dateStampFormat = "yyyy-MM-dd_HH-mm-ss"
 	/**
-	 * Move a file or directory to a target directory.
-	 * @param to Directory to move to.
-	 * @param action can be 'move' or 'copy'
+	 * Copy a file or directory to a target directory.
+	 * @param to Directory to copy to.
 	 */
-	def copy(to, action = 'copy') {
-		ant[action](file: file.path, toDir: to)
-	}
+	def copy(to) { ant.copy(file: file.path, toDir: to) }
+	/**
+	 * move a file or directory to a target directory.
+	 * @param to Directory to move to.
+	 */
+	def move(to) { ant.move(file: file.path, toDir: to) }
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */

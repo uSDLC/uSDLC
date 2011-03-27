@@ -36,7 +36,7 @@ import java.util.regex.Pattern
 
 class Exchange {
 	/*
-	{cookie=[session=1515897161; session=1515897155; session=1515897153; jstree_open=%23%20uSDLC%2C%23%20uSDLC%20Actors; jstree_select=%23%20uSDLC%20Actors%20HtmlUnitActor; currentPage=%2FuSDLC%2FActors%2FHtmlUnitActor%2Findex.html; session=1515897166], host=[127.0.0.1:9000], contenttype=[application/x-www-form-urlencoded], query=action=save, acceptencoding=[gzip,deflate,sdch], acceptcharset=[ISO-8859-1,utf-8;q=0.7,*;q=0.3], contentlength=[35], origin=[http://127.0.0.1:9000], uri=/uSDLC/Actors/HtmlUnitActor/ClickOnSection.htm.groovy, connection=[keep-alive], acceptlanguage=[en-US,en;q=0.8], referer=[http://127.0.0.1:9000/], method=POST, xrequestedwith=[XMLHttpRequest], useragent=[Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.13 (KHTML, like Gecko) Chrome/9.0.597.98 Safari/534.13], fragment=null, accept=[]}
+	{cookie=[session=1515897161; session=1515897155; session=1515897153; jstree_open=%23%20uSDLC%2C%23%20uSDLC%20Actors; jstree_select=%23%20uSDLC%20Actors%20HtmlUnitActor; currentPage=%2FuSDLC%2FActors%2FHtmlUnitActor%2Findex.html; session=1515897166], host=[127.0.0.1:9000], contenttype=[application/x-www-form-urlencoded], query=action=save, acceptencoding=[gzip,deflate,sdch], acceptcharset=[ISO-8859-1,utf-8;q=0.7,*;q=0.3], contentlength=[35], origin=[http://127.0.0.1:9000], uri=/uSDLC/Actors/HtmlunitActor/ClickOnSection.htmlunit, connection=[keep-alive], acceptlanguage=[en-US,en;q=0.8], referer=[http://127.0.0.1:9000/], method=POST, xrequestedwith=[XMLHttpRequest], useragent=[Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.13 (KHTML, like Gecko) Chrome/9.0.597.98 Safari/534.13], fragment=null, accept=[]}
 	 */
 	def requestHeader = [:]
 	def responseHeader = [:]
