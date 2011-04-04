@@ -26,7 +26,6 @@ $(function() {
 		},
 		savePage : function() {
 			// clean up html of crap that builds up
-			usdlc.cleanSections($('div.editable'))
 			usdlc.savePageContents()
 		},
 		camelCase : function(text) {
@@ -34,7 +33,8 @@ $(function() {
 				function(a, s, c) {
 					return c.toUpperCase()
 				}).replace(/\s*/, '');
-		}
+		},
+		actorDefault : usdlc.cookie("actorDefault") || 'groovy'
 	})
 	/*
 	 Triggered by the user when they choose to edit a paragraph. creates a CKEDITOR,
@@ -144,8 +144,8 @@ $(function() {
 				var type = linkRadio.getValue()
 				$.cookie('linkRadioDefault', type)
 				if (type == 'Actor') {
-					type = linkSelect.getValue()
-					$.cookie('actorDefault', type)
+					type = usdlc.actorDefault = linkSelect.getValue()
+					usdlc.setCookie('actorDefault', type)
 				}
 
 				var name = usdlc.splitUrl(urlField.getValue()).name
@@ -157,14 +157,14 @@ $(function() {
 
 			// Actors can have various extensions defining client and server languags
 			var actorItems = []
-			var actorDefault = $.cookie('actorDefault') || 'groovy'
-			var linkRadioDefault = $.cookie('linkRadioDefault') || ''
-			var actorTypes = ($.cookie('actorTypes') || 'groovy').split(',')
+			var linkRadioDefault = usdlc.cookie('linkRadioDefault') || ''
+			var actorTypes = (usdlc.cookie('actorTypes') || 'groovy').split(',')
 			for (actorType in actorTypes) {
 				actorItems.push([actorTypes[actorType]])
 			}
 
 			dialogDefinition.onFocus = function() {
+				var actorDefault = usdlc.actorDefault
 				urlField = this.getContentElement('info', 'url');
 				linkSelect = this.getContentElement('info', 'linkSelect');
 				linkRadio = this.getContentElement('info', 'linkRadio');
@@ -191,6 +191,7 @@ $(function() {
 				} else {
 					var highlightedText = ev.editor.getSelection().getNative().toString()
 					urlField.setValue(usdlc.camelCase(highlightedText))
+					linkRadioDefault = ''
 				}
 				initialising = true
 				linkRadio.setValue(linkRadioDefault)
@@ -231,7 +232,7 @@ $(function() {
 								actorTypes.push(ext)
 								actorTypes.sort()
 								this.add(ext)
-								$.cookie('actorTypes', actorTypes.toString(), {expires : 1000})
+								usdlc.setCookie('actorTypes', actorTypes.toString())
 							}
 							return true
 						}

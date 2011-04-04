@@ -172,13 +172,15 @@ class Store {
 	def uniquePath(end) {
 		def timestamp = new Date().format(dateStampFormat)
 		def uniquifier = 0
-		def uniquePath = "${timestamp}_${uniquifier}_${end}"
+		def uniquePath = "${timestamp}_${uniquifier}_${end.replaceAll(cleanFileNameRE, '')}"
 		def unique
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquifier++;
 		}
 		return unique.path
 	}
+
+	static cleanFileNameRE = ~/\W/
 	/**
 	 * Later we will want to gather information from the unique name created
 	 * @param uniqueName unique name created by uniquePath()
@@ -201,19 +203,25 @@ class Store {
 	 * Copy a file or directory to a target directory.
 	 * @param to Directory to copy to.
 	 */
-	def copy(to) { ant.copy(file: file.path, toDir: to) }
+	def copy(to) {
+		ant.copy(toDir: to) {
+			filelist(files: file.path)
+		}
+	}
 	/**
 	 * move a file or directory to a target directory.
 	 * @param to Directory to move to.
 	 */
-	def move(to) { ant.move(file: file.path, toDir: to) }
+	def move(to) {
+		ant.move(toDir: to) {
+			filelist(files: file.path)
+		}
+	}
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */
 	def rmdir() {
-		capture {
-			ant.delete(dir: file.path, includeemptydirs: true)
-		}
+		capture { ant.delete(dir: file.path, includeemptydirs: true) }
 	}
 
 	@Lazy ant = new AntBuilder()

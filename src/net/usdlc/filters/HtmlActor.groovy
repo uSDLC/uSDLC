@@ -63,13 +63,13 @@ class HtmlActor {
 				}
 				def contents = my.in.text.bytes
 				Store.base("$targetPath/Section.html").write(contents)
-				my.doc.js("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','$targetPath')")
+				my.doc.js("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','/$targetPath')")
 				break
 			case 'paste':
 				def target = file.store.parent
 				def from = Store.base(my.query.from)
 				from.dir(~/[^.]*/).each {
-					Store.base(it).copy(target, 'move')
+					Store.base(it).move(target)
 				}
 				my.out.println new String(Store.base("$my.query.from/Section.html").read())
 				from.rmdir()

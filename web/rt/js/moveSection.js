@@ -133,7 +133,7 @@ $(function() {
 			var newPageName = section.name + '/index.html'
 			header = usdlc.createPageTitle(section.title, section.subtitle).replaceAll(section.header).after($('<div/>').attr('id', 's1').addClass('editable section').attr('contextmenu', "section").append(section.content))
 			usdlc.save(newPageName, usdlc.inFocus.html())
-			usdlc.inFocus.addClass('synopsis').empty().append($('<h1/>').append($('<a/>').attr('href', section.name + '/index.html').attr('id', id + 'a0').addClass('usdlc').attr('action', 'page').text(section.title)))
+			usdlc.inFocus.addClass('synopsis').empty().append($('<h1/>').append($('<a/>').attr('href', section.name + '/index.html').attr('id', section.id + 'a0').addClass('usdlc').attr('action', 'page').text(section.title)))
 			usdlc.savePageContents()
 			return true
 		}

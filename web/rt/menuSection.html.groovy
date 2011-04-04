@@ -43,8 +43,8 @@ doc.ul {
 			li { a('Join with Above', onclick: 'usdlc.joinSectionAbove()') {kbd('(alt+up)') } }
 			li { a('Join with Below', onclick: 'usdlc.joinSectionBelow()') {kbd('(alt+down)') } }
 			li { hr() }
-			li { a('Split up Sections', onclick: 'usdlc.splitIntoSections()') { kbd('(^S)') } }
-			li { a('Extract to New Page', onclick: 'usdlc.extractSectionInFocus()') { kbd('(^T)') } }
+			li { a('Split up Sections', onclick: 'usdlc.splitIntoSections()') { kbd('(alt+S)') } }
+			li { a('Extract to New Page', onclick: 'usdlc.extractSectionInFocus()') { kbd('(alt+E)') } }
 		}
 	}
 	li {

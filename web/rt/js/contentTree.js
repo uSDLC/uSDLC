@@ -49,6 +49,7 @@ $(function() {
 			f2 : function() {
 			}
 		},
+		cookies : { cookie_options : {expires : 1000} },
 		plugins : ['html_data', 'ui', 'cookies', 'themeroller', 'hotkeys']
 	})
 })

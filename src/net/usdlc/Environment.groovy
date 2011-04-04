@@ -33,7 +33,10 @@ class Environment {
 	 */
 	static data() {
 		def key = getKey()
-		if (!dataMap.containsKey(key)) { dataMap[key] = [:] }
+		if (!dataMap[key]) { dataMap[key] = [:] }
+		if (!dataMap.containsKey(key)) {
+			throw new Error("what the ???")
+		}
 		return dataMap[key]
 	}
 	/**

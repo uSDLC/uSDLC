@@ -94,7 +94,7 @@ $(function() {
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
 			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
 			$('base').attr('href', base)
-			$.cookie('currentPage', usdlc.pageContentsURL)
+			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 			$.get(usdlc.pageContentsURL, function(data) {
 				usdlc.pageContentSlider.slider('value', 100)
 				usdlc.pageContents.html(data)
@@ -121,6 +121,7 @@ $(function() {
 			/*
 			 Give back to the server - after moving page title back into the body temporarily.
 			 */
+			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
 			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html())
 			usdlc.synopses()
@@ -135,7 +136,7 @@ $(function() {
 	 */
 	var path = window.location.pathname
 	if (path == '/') {
-		path = $.cookie('currentPage') || '/'
+		path = usdlc.cookie('currentPage') || '/'
 	} else if (path == '/root') {
 		path = '/'
 	}

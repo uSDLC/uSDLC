@@ -23,7 +23,7 @@ $(function() {
 				]
 				toCut.find('a.usdlc').each(function() {
 					var link = $(this)
-					if (link.parents('div.synopsis').length === 0) {
+					if (link.parents('div.inclusion').length === 0) {
 						var href = link.attr('href')
 						var relative = (href[0] != '/')
 						if (relative) {

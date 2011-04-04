@@ -49,12 +49,11 @@ $(function() {
 		},
 
 		serverActionUrl : function(where, what) {
-			var l = window.location
 			if (! where || where == '/') {
 				where = '/index.html'
 			}
 			var sep = (where.indexOf('?') == -1) ? '?' : '&'
-			return l.protocol + '//' + l.host + where + sep + "action=" + what
+			return where + sep + "action=" + what
 		},
 		/**
 		 Load a page into an iframe that is displayed in a dialog box on the same page.
