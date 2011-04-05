@@ -34,6 +34,7 @@ $(function() {
 			if (section.data.title.length > 32) {
 				section.data.subtitle = section.data.title
 				section.data.title = section.data.title.substring(0, 32)
+				section.data.name = usdlc.camelCase(section.data.title)
 			}
 			return section.data
 		},

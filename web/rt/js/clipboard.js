@@ -27,7 +27,7 @@ $(function() {
 						var href = link.attr('href')
 						var relative = (href[0] != '/')
 						if (relative) {
-							var dir = href.substring(0, href.indexOf('/'))
+							var dir = href.substring(0, href.indexOf('/')) || href
 							var hrefMatchedLinkSections = $('a[href^=' + dir).parents('div.section')
 							if (hrefMatchedLinkSections.not(toCut.get(0)).size() === 0) {
 								if (! (dir in toMove)) {

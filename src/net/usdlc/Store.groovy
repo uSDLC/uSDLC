@@ -204,19 +204,16 @@ class Store {
 	 * @param to Directory to copy to.
 	 */
 	def copy(to) {
-		ant.copy(toDir: to) {
-			filelist(files: file.path)
+		capture {
+			def includes = (file.directory) ? "$file.name/*" : file.name
+			ant.copy(toDir: to) { fileset(dir: file.parent, includes: includes) }
 		}
 	}
 	/**
 	 * move a file or directory to a target directory.
 	 * @param to Directory to move to.
 	 */
-	def move(to) {
-		ant.move(toDir: to) {
-			filelist(files: file.path)
-		}
-	}
+	def move(to) { capture { ant.move(toDir: to) { fileset(dir: file.parent, includes: "$file.name/*") } } }
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */
@@ -226,12 +223,16 @@ class Store {
 
 	@Lazy ant = new AntBuilder()
 
-	def capture(Closure actions) {
-		def out = System.out
-		def buffer = new ByteArrayOutputStream()
-		System.out = new PrintStream(buffer)
-		actions()
-		System.out = out
-		return buffer.toString()
+	private capture(Closure actions) {
+		catcher {
+			def out = System.out
+			def buffer = new ByteArrayOutputStream()
+			System.out = new PrintStream(buffer)
+			actions()
+			System.out = out
+			return buffer.toString()
+		}
 	}
+
+	private catcher(Closure actions) { try { actions() } catch (err) { System.err.println err.message } }
 }
