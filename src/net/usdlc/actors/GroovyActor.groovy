@@ -37,7 +37,7 @@ class GroovyActor {
 		def my = Environment.data()
 		def root = Store.root(script).parent.replaceAll('\\\\', '/')
 		def print = { my.doc.text it }
-		binding = my + [
+		binding = my += [
 				print: print,
 				gse: new GroovyScriptEngine(Config.classPath as String[]),
 				include: { runScript "$root/$it" },

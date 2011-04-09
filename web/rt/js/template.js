@@ -72,8 +72,10 @@ $(function() {
 		 * @param where Address to post to
 		 * @param what Data for the body of the post
 		 */
-		save: function(where, what) {
-			$.post(usdlc.serverActionUrl(where, 'save'), what, $.globalEval)
+		save: function(where, what, more) {
+			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what, function(code) {
+				$.globalEval(code)
+			})
 		},
 
 		maskEverything: function(dim) {

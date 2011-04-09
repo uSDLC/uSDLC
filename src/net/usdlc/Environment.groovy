@@ -25,6 +25,9 @@ package net.usdlc
  * The age-old problem if holding on to data that is to be kept for a conversation or similar temporal event.
  */
 class Environment {
+	def my = data()
+
+	def propertyMissing(name) { return my[name] }
 	/**
 	 * This base solution assumes that immediate data can be retrieved from the thread name. Typically instantiated in any method that needs access to environmental data:
 	 *

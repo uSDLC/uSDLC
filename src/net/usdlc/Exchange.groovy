@@ -111,9 +111,12 @@ class Exchange {
 				case 'save':    // saves html and actors
 					// Contents to write are sent from the browser. Get them and save them to the file
 					file.save(my.userId, my.in.text)
-					my.doc.text("highlight('sky')")
+					my.out.write "usdlc.highlight('sky');"
+					if (my.query?.after) {
+						my.out.write my.query.after
+					}
 					break
-				case 'edit':    // so actors are send to browser for editing instead of running
+				case 'raw':    // so actors are send to browser for editing instead of running
 					my.out.write file.rawContents
 					break
 				default:        // act for active, return content for static content

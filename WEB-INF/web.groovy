@@ -25,7 +25,7 @@ rootFile = "/rt/template.html.groovy"
  Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.
  */
 //noinspection GroovyUnusedAssignment
-srcPath = ['web', 'src']
+srcPath = ['web/Actors', 'web', 'src']
 libPath = ['web/lib/jars', 'lib/jars', '.']
 /*
  If the file does not exist, use a template file for that server and client side extension.

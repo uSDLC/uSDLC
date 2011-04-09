@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 import net.usdlc.Store
 
 /**
@@ -28,6 +29,7 @@ doc.html {
 		title('')
 		// Core CSS file loads other required CSS files.
 		link(type: "text/css", rel: "stylesheet", href: "/rt/base.css")
+		link(type: "text/css", rel: "stylesheet", href: "/lib/google-code-prettify/prettify.css")
 		base(href: "/")
 	}
 	body(style: 'display:none') {
@@ -101,6 +103,7 @@ doc.html {
 			script('', type: jsType, src: '/lib/edit_area/edit_area_full.js')
 			script('', type: jsType, src: '/rt/js/menu.js')
 			script('', type: jsType, src: '/rt/js/htmlEditor.js')
+			script('', type: jsType, src: '/lib/google-code-prettify/prettify.js')
 			script('', type: jsType, src: '/rt/js/sourceEditor.js')
 
 			script('', type: jsType, src: '/rt/js/clipboard.js')

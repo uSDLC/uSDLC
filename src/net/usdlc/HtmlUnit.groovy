@@ -18,16 +18,16 @@ package net.usdlc
 import be.roam.hue.doj.Doj
 import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.CollectingAlertHandler
+import com.gargoylesoftware.htmlunit.html.HtmlPage
 
 /**
  * User: Paul
  * Date: 25/02/11
  */
 class HtmlUnit {
-	/**
-	 * @See http://hue.googlecode.com/svn/api/1.1/index.html
-	 */
 	@Delegate Doj doj
+	HtmlPage page
+
 	/**
 	 * Constructor - creates an instance and loads a page
 	 * @param url Page to load
@@ -37,11 +37,19 @@ class HtmlUnit {
 		def collectedAlerts = [];
 		webClient.alertHandler = new CollectingAlertHandler(collectedAlerts);
 		try {
-			doj = Doj.on(webClient.getPage(url))
+			doj = Doj.on(page = webClient.getPage(url))
 			webClient.waitForBackgroundJavaScript(10000)
 		} finally {
 			collectedAlerts.each { System.err.println(it); }
 		}
+	}
+	/**
+	 * Run JavaScript as if from the page
+	 * @param script valid Javascript to execute in page context
+	 */
+	public executeJavaScript(script) {
+		client.page.executeJavaScript(script)
+		webClient.waitForBackgroundJavaScript(2000)
 	}
 	/**
 	 * Get a page element based on a selector

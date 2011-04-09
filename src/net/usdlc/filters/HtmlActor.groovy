@@ -47,9 +47,6 @@ class HtmlActor {
 				def end = (my.query._index_ ?: '-1').toInteger()
 				my.out.println file.history.restore(end)
 				break
-			case 'raw':
-				my.out.println new String(file.rawContents)
-				break
 			case 'cut':
 			case 'copy':
 				def base = file.store.parent
