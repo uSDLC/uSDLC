@@ -52,11 +52,35 @@ $(function() {
 		hideSynopsis : function(section) {
 			section.children().show()
 			$('div.inclusion', section).hide()
+		},
+		checkForSynopsis : function(section) {
+			if (isSynopsis($("a[action=page]", section), true) ||
+				isSynopsis($("a[action=runnable]", section), false)) {
+				section.addClass('synopsis')
+			} else {
+				section.removeClass('synopsis')
+			}
 		}
 	})
 
 	var sourceLoads = 0
 	var done = function() {
+	}
+
+	function isSynopsis(link, above) {
+		var count = link.size()
+		if (count) {
+			if (count == 1) {
+				while (link && !link.hasClass('section')) {
+					if ((above ? link.prevAll() : link.nextAll()).size()) {
+						return false
+					}
+					link = link.parent()
+				}
+				return true
+			}
+		}
+		return false
 	}
 
 	function loadSynopsis(link, processor) {

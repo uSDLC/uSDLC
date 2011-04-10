@@ -51,7 +51,6 @@ $(function() {
 			bodyClass: "wayOnTop",
 			saveFunction : function(editor) {
 				var updateContents = editor.checkDirty()
-				//usdlc.sectionEditor = null
 				usdlc.modalOff()
 				// Get rid of the editor so that it does not show up in the saved content.
 				editor.destroy()
@@ -61,7 +60,6 @@ $(function() {
 				// Special case for the title - move it back where it belongs.
 				var baseId = $section.attr('id');
 				baseId += 'a'
-				var pageLinkCount = 0
 				// Process links to see what they should do
 				$('a', $section).removeAttr('action').each(function(idx) {
 					var self = $(this)
@@ -72,7 +70,6 @@ $(function() {
 					var href = self.attr('href')
 					self.removeClass()  // removes all classes so we can re-add them by page standards.
 					if (href && href.indexOf(':') == -1) {
-						pageLinkCount++
 						self.addClass('usdlc')
 						href = usdlc.camelCase(href)
 						if (self.text() == '*') {
@@ -95,12 +92,7 @@ $(function() {
 						}
 					}
 				})
-				// See if we load synopsis from inner page link
-				if (pageLinkCount == 1) {
-					$section.addClass('synopsis')
-				} else {
-					$section.removeClass('synopsis')
-				}
+				usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
 				usdlc.savePage()
 			},
 			on : {

@@ -21,7 +21,7 @@ assert client["img#pageTitle"].size() == 1
 // Fetch the list uf uSDLC sections.
 def sections = client["div.section"]
 // Even an empty file will have one from the template
-assert sections.size() > 0
+assert sections.size() > 1
 // When you load a page there should not be a section in focus
 assert !sections[0].hasClass('inFocus')
 // Click on a section will trigger JQuery to place it in focus
