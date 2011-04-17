@@ -90,8 +90,7 @@ class Exchange {
 			responseHeader['Set-cookie'] = "session=$my.cookies.session"
 			session++
 		}
-		my.mimeType = my.query.mimeType ?: file.mimeType()
-		my.doc = BrowserBuilder.newInstance()
+		my.doc = BrowserBuilder.newInstance(my.query.mimeType ?: file.mimeType())
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
 		responseHeader['Content-Type'] = my.mimeType
 		responseHeader['Connection'] = 'close'
@@ -105,38 +104,38 @@ class Exchange {
 	 * @return
 	 */
 	def talk() {
-		def my = Environment.data()
+		def env = Environment.data()
 		try {
-			switch (my.query.action) {
+			switch (env.query.action) {
 				case 'save':    // saves html and actors
 					// Contents to write are sent from the browser. Get them and save them to the file
-					file.save(my.userId, my.in.text)
-					my.out.write "usdlc.highlight('sky');"
-					if (my.query?.after) {
-						my.out.write my.query.after
+					file.save(env.userId, env.in.text)
+					env.out.write "usdlc.highlight('sky');"
+					if (env.query?.after) {
+						env.out.write env.query.after
 					}
 					break
 				case 'raw':    // so actors are send to browser for editing instead of running
-					my.out.write file.rawContents
+					env.out.write file.rawContents
 					break
 				default:        // act for active, return content for static content
 					if (file.actor) {
 						try {
-							file.actor.run my.script
+							file.actor.newInstance()
 						} catch (AssertionError problem) {
-							my.doc.error problem.message
+							env.doc.error problem.message
 							//problem.printStackTrace()
 						}
 					} else {
-						my.out.write file.contents
+						env.out.write file.contents
 					}
 			}
 		} catch (problem) {
-			my.doc.error problem.message
+			env.doc.error problem.message
 			problem.printStackTrace()
 		} finally {
 			// No matter what we want to close the connection. Otherwise the browser spins forever (since we are not providing a content length in the response header.
-			my.out.close()
+			try { env.out.close() } catch (wasNotOpen) {}
 		}
 	}
 	/**

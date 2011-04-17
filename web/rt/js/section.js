@@ -51,9 +51,6 @@ $(function() {
 			if (!section.hasClass("inFocus")) {
 				usdlc.clearFocus()
 				usdlc.inFocus = section.addClass('inFocus ui-state-highlight')
-				if ($('div.inclusion', section).size() > 0) {
-					usdlc.hideSynopsis(usdlc.inFocus)
-				}
 				usdlc.contentTree.jstree('disable_hotkeys')
 				return true //yup - we changed focus
 			}
@@ -64,9 +61,6 @@ $(function() {
 				return
 			}
 			var lostFocus = $('.inFocus').removeClass('inFocus ui-state-highlight')
-			if ($('div.inclusion', lostFocus).size() > 0) {
-				usdlc.showSynopsis(lostFocus)
-			}
 			usdlc.lastFocus = usdlc.inFocus
 			usdlc.inFocus = null
 			usdlc.contentTree.jstree('enable_hotkeys')

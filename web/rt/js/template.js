@@ -125,8 +125,7 @@ $(function() {
 			 */
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
-			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html())
-			usdlc.synopses()
+			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')
 			usdlc.setPageTitle()
 		},
 		createPageTitle : function(heading, subtitle) {

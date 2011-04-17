@@ -45,6 +45,7 @@ $(function() {
 		var $section = $(section)
 		usdlc.setFocus($section)
 		usdlc.highlight(false) // remove highlighting so save will stand out
+		usdlc.clearSynopses()
 		$section.ckeditor(function() {
 			usdlc.modalOn()
 		}, {
@@ -55,6 +56,7 @@ $(function() {
 				// Get rid of the editor so that it does not show up in the saved content.
 				editor.destroy()
 				if (!updateContents) {
+					usdlc.synopses()
 					return
 				}
 				// Special case for the title - move it back where it belongs.
@@ -106,9 +108,25 @@ $(function() {
 		})
 	}
 
+	CKEDITOR.config.toolbar_Full = [
+		['Source','-','Save',/*'NewPage','Preview','-',*/'Templates'],
+		['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+		['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+		['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
+		'/',
+		['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+		['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+		['BidiLtr','BidiRtl'],
+		['Link','Unlink','Anchor'],
+		['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+		'/',
+		['Styles','Format','Font','FontSize'],
+		['TextColor','BGColor'],
+		['Maximize','ShowBlocks','-','About']
+	]
 	/*
-	 By default CKEDIT does not have a ready save button unless it is inside a form element. As we are ajaxing it,
-	 enable save and make sure it does the job we want.
+	 By default CKEDIT does not have a ready save button unless it is inside a form element. As we are ajaxing it, enable save and make sure it does the job we want.
 	 */
 	CKEDITOR.plugins.registered['save'] = {
 		init : function(editor) {

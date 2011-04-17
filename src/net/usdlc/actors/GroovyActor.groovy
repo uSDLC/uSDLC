@@ -18,6 +18,7 @@ package net.usdlc.actors
 import net.usdlc.Config
 import net.usdlc.Environment
 import net.usdlc.Store
+import org.codehaus.groovy.runtime.metaclass.MissingMethodExceptionNoStack
 
 /**
  * The Groovy actor calls the named groovy script
@@ -27,28 +28,42 @@ import net.usdlc.Store
  * Time: 7:26 PM
  */
 class GroovyActor {
-	static run(script) {
-		def actor = new GroovyActor().load(script)
-		actor.runScript script
-		actor.binding.doc.close()
-	}
-
-	protected load(script, moreBinding = []) {
-		def my = Environment.data()
-		def root = Store.root(script).parent.replaceAll('\\\\', '/')
-		def print = { my.doc.text it }
-		binding = my += [
-				print: print,
+	GroovyActor() {
+		binding = Environment.data()
+		def root = Store.root(binding.script).parent.replaceAll('\\\\', '/')
+		bind(
+				print: { binding.doc.text it },
 				gse: new GroovyScriptEngine(Config.classPath as String[]),
 				include: { runScript "$root/$it" },
 				template: { runScript "$root/rt/${it}.html.groovy" }
-		] + moreBinding
+		).bind()
+		runScript binding.script
+		binding.doc.close()
+	}
+	/**
+	 * Add to the binding that called scripts see.
+	 * @param moreBinding more binding data
+	 * @return actor for chaining
+	 */
+	protected bind(Map moreBinding) {
+		binding.variables << moreBinding
 		return this
 	}
+	/**
+	 * Overridden to add actor specific binding.
+	 * @return actor for chaining
+	 */
+	protected bind() { return this }
 	/**
 	 * Data that comes out as global scope to the groovy script as in /uSDLC/TechnicalArchitecture/Actors/Groovy
 	 */
 	Binding binding
+	/**
+	 * Any sub-class can assign a delegate instance that is called if the class does not have a matching one. Used for DSL transparency of functionality. Typically set in bind()
+	 */
+	protected getDelegate() { binding.$delegate }
+
+	protected setDelegate(delegate) { binding.$delegate = delegate }
 	/**
 	 * Could be recursive if a script calls include()
 	 * @param scriptName Path and name of script relative to uSDLC root.
@@ -59,5 +74,16 @@ class GroovyActor {
 		if (script[0] == '/') { script = script[1..-1] }
 		// Enter Groovy land to build up and execute groovy code as a script.
 		binding.gse.run script, binding
+	}
+
+	static {
+		Script.metaClass.methodMissing = { method, args ->
+			def $delegate = delegate.binding.variables.$delegate
+			if ($delegate) {
+				return $delegate.invokeMethod(method, args)
+			} else {
+				throw new MissingMethodExceptionNoStack(method, delegate.class, args, false);
+			}
+		}
 	}
 }

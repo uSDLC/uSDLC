@@ -1,0 +1,12 @@
+source(true)
+organisation('org.seleniumhq.selenium') {
+	module('selenium-remote-control').optional()
+	module('selenium-server').optional()
+	source('selenium-htmlunit-driver')
+	source('selenium-firefox-driver')
+	source('selenium-support')
+	source('selenium-api')
+	source('selenium-remote-driver')
+}
+organisation('net.sourceforge.htmlunit').module('htmlunit').optional()
+organisation('organisation:be.roam.hue').module('hue').optional()

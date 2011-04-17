@@ -31,16 +31,16 @@ class Environment {
 	/**
 	 * This base solution assumes that immediate data can be retrieved from the thread name. Typically instantiated in any method that needs access to environmental data:
 	 *
-	 * def my = Environment.data()
-	 * my.header = requestHeader
+	 * def env = Environment.data()
+	 * env.header = requestHeader
 	 */
-	static data() {
+	static Map data() {
 		def key = getKey()
 		if (!dataMap[key]) { dataMap[key] = [:] }
 		if (!dataMap.containsKey(key)) {
 			throw new Error("what the ???")
 		}
-		return dataMap[key]
+		return dataMap[key] as Map
 	}
 	/**
 	 * Over-ride this method if your environment can't use the thread name to retrieve data during a single conversation exchange.

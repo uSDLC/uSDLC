@@ -81,6 +81,9 @@ $(function() {
 			url : a.pathname + search,
 			success : function(data) {
 				usdlc.runningLinkClass(link, 'hasResults')
+				if (data.indexOf('<') != 0) {
+					data = '<pre>' + data + '</pre>'
+				}
 				var rdb = results(link).html(data)
 				if (rdb.text().length > 5) {
 					rdb.dialog((options && options.dialogCommand) || 'open')

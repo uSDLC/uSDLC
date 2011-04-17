@@ -16,7 +16,6 @@
 package net.usdlc.actors
 
 import javax.tools.ToolProvider
-import net.usdlc.BrowserBuilder
 import net.usdlc.Config
 import net.usdlc.Environment
 import net.usdlc.Filer
@@ -28,30 +27,16 @@ import net.usdlc.actors.JavaFileObjects.ClassFileManager
  * Date: 14/01/11
  * Time: 3:54 PM
  */
-abstract class JavaActor {
-	/**
-	 * Environment as documented in /uSDLC/TechnicalArchitecture/Actors/
-	 */
-	protected HashMap env = Environment.data()
-	/**
-	 * Instance of browser object for sending results back.
-	 * @see net.usdlc.BrowserBuilder
-	 */
-	protected BrowserBuilder doc = env.doc
+class JavaActor {
 	/**
 	 * Called by uSDLC to start a java actor. It will compile the source if it is out of date, load the class,
-	 * instantiate it and call the runScript() method.
-	 * @return True if the run worked
-	 */
-	static run(String script) {
-		try {
-			// load, instantiate and run - all in one.
-			JavaClassLoader.instance.loadClass(new Filer(script)).newInstance().runScript()
-		} catch (e) {
-			e.printStackTrace()
-			return false
-		}
-		return true
+	 * instantiate it and call the run() method. Class needs to have a constructor
+	 * that receives one Map parameter for the environment.
+	 *
+	 * public class MyActor {*     MyActor(Map env) { ... }*}*/
+	public JavaActor() {
+		def env = Environment.data()
+		JavaClassLoader.instance.loadClass(new Filer(env.script)).newInstance(env.doc)
 	}
 
 	public static class JavaClassLoader extends ClassLoader {

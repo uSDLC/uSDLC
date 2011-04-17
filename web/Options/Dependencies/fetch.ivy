@@ -1,0 +1,2 @@
+group(query.group ?: 'jars/optional').resolve(query.resolve).fetch().remove(query.remove)
+

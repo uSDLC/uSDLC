@@ -23,8 +23,9 @@ import groovy.xml.MarkupBuilder
  * Time: 6:42 PM
  */
 abstract class BrowserBuilder extends MarkupBuilder {
-	static newInstance() {
+	static newInstance(mimeType) {
 		def my = Environment.data()
+		my.mimeType = mimeType
 		def builder
 		switch (my.mimeType) {
 			case "text/html":

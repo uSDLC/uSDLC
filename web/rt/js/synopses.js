@@ -27,8 +27,7 @@ $(function() {
 			$("div.synopsis a[action=page]").each(function() {
 				loadSynopsis($(this), function(data) {
 					var html = $("<div/>").html(data)
-					return html.children("div#pageTitle").children().
-						add(html.children("div.section").first().children())
+					return html.children("div.section").first().children()
 				})
 			})
 			$("div.synopsis a[action=runnable]").each(function() {
@@ -46,11 +45,11 @@ $(function() {
 			})
 		},
 		showSynopsis : function(section) {
-			section.children().hide()
+			//section.children().hide()
 			$('div.inclusion', section).show()
 		},
 		hideSynopsis : function(section) {
-			section.children().show()
+			//section.children().show()
 			$('div.inclusion', section).hide()
 		},
 		checkForSynopsis : function(section) {
@@ -72,7 +71,9 @@ $(function() {
 		if (count) {
 			if (count == 1) {
 				while (link && !link.hasClass('section')) {
-					if ((above ? link.prevAll() : link.nextAll()).size()) {
+					var sections = above ? link.prevAll() : link.nextAll()
+					var moreText = sections.size()
+					if (moreText) {
 						return false
 					}
 					link = link.parent()

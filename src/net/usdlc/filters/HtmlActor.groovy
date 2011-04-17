@@ -28,51 +28,47 @@ import net.usdlc.Store
  * Time: 6:22 PM
  */
 class HtmlActor {
-	static run(script) {
-		new HtmlActor().runScript()
-	}
-
-	def my = Environment.data()
+	def env = Environment.data()
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
-	void runScript() {
-		def file = new Filer(my.script)
+	HtmlActor() {
+		def file = new Filer(env.script)
 
-		switch (my.query.action) {
+		switch (env.query.action) {
 			case "run":
 				cgi "rt", 'run.html.groovy'
 				break
 			case 'history':
-				def end = (my.query._index_ ?: '-1').toInteger()
-				my.out.println file.history.restore(end)
+				def end = (env.query._index_ ?: '-1').toInteger()
+				env.out.println file.history.restore(end)
 				break
 			case 'cut':
 			case 'copy':
 				def base = file.store.parent
-				def targetPath = Store.base('clipboard').uniquePath(my.query.title).replace('\\', '/')
-				my.query.dependents.tokenize(',').each {
+				def targetPath = Store.base('clipboard').uniquePath(env.query.title).replace('\\', '/')
+				env.query.dependents.tokenize(',').each {
 					//noinspection GroovyNestedSwitch
-					switch (my.query.action) {
+					switch (env.query.action) {
 						case 'copy': Store.base("$base/$it").copy(targetPath); break
 						case 'cut': Store.base("$base/$it").move(targetPath); break
 					}
 				}
-				def contents = my.in.text.bytes
+				def contents = env.in.text.bytes
 				Store.base("$targetPath/Section.html").write(contents)
-				my.doc.js("usdlc." + my.query.action + "SectionSuccessful('$my.query.title','/$targetPath')")
+				env.doc.js("usdlc." + env.query.action + "SectionSuccessful('$env.query.title','/$targetPath')")
 				break
 			case 'paste':
 				def target = file.store.parent
-				def from = Store.base(my.query.from)
+				def from = Store.base(env.query.from)
 				from.dir(~/[^.]*/).each {
 					Store.base(it).move(target)
 				}
-				my.out.println new String(Store.base("$my.query.from/Section.html").read())
+				env.out.println new String(Store.base("$env.query.from/Section.html").read())
 				from.rmdir()
 				break
 			default:    // Suck the HTML file contents - converting from byte[] to String.
-				my.out.println new String(file.contents)
+				env.out.println new String(file.contents)
 				break
 		}
 	}
@@ -98,7 +94,7 @@ class HtmlActor {
 		/*
 		 Filer does the real work if executing the CGI - since it knows all the details.
 		 */
-		file = new Filer(my.script = "$dir/$script")
-		file.actor.run my
+		file = new Filer(env.script = "$dir/$script")
+		file.actor.newInstance()
 	}
 }
