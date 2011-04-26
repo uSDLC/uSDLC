@@ -72,7 +72,7 @@ $(function() {
 
 	function enqueue(link, options, action) {
 		var a = link.get(0)
-		var search = (a.search || '?') + '&linkId=' + link.attr('id')
+		var search = (a.search || '?') + '&action=run&linkId=' + link.attr('id')
 		usdlc.queue(action || $.ajax, $.extend({}, {
 			cache : false,
 			parallel : true,
@@ -81,8 +81,9 @@ $(function() {
 			url : a.pathname + search,
 			success : function(data) {
 				usdlc.runningLinkClass(link, 'hasResults')
-				if (data.indexOf('<') != 0) {
-					data = '<pre>' + data + '</pre>'
+				var tagStart = data.indexOf('<')
+				if (tagStart == -1 || tagStart > 4) {
+					data = '<pre>' + data.replace(/[\r\n]{2,}/g, "\n") + '</pre>'
 				}
 				var rdb = results(link).html(data)
 				if (rdb.text().length > 5) {

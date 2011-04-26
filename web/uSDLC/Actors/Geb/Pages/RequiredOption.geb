@@ -1,0 +1,14 @@
+class ExamplePage5 extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Pages"
+	static content = {
+		theDiv { $('div', id: 'contentB') }
+	}
+}
+browse ExamplePage5
+thrown = false
+try {
+	assert theDiv.text() == "contentA"
+} catch (geb.error.RequiredPageContentNotPresent e) {
+	thrown = true
+}
+assert thrown

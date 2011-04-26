@@ -46,6 +46,7 @@ $(function() {
 		usdlc.setFocus($section)
 		usdlc.highlight(false) // remove highlighting so save will stand out
 		usdlc.clearSynopses()
+		usdlc.scrollTo($section)
 		$section.ckeditor(function() {
 			usdlc.modalOn()
 		}, {
@@ -56,6 +57,7 @@ $(function() {
 				// Get rid of the editor so that it does not show up in the saved content.
 				editor.destroy()
 				if (!updateContents) {
+					usdlc.scrollBack()
 					usdlc.synopses()
 					return
 				}
@@ -96,6 +98,7 @@ $(function() {
 				})
 				usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
 				usdlc.savePage()
+				usdlc.scrollBack()
 			},
 			on : {
 				instanceReady : function(ev) {

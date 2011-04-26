@@ -1,6 +1,6 @@
 package uSDLC.Actors.Java;
 
-import net.usdlc.BrowserBuilder;
+import usdlc.BrowserBuilder;
 
 class Producer {
 	Producer(BrowserBuilder doc) {

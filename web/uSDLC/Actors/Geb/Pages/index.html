@@ -1,0 +1,200 @@
+<div id="pageTitle" class="editable"><h1>
+	Pages</h1>
+
+	<h2>
+		What you see is what you get</h2>
+</div>
+
+<div id="s1" class="editable section" contextmenu="section"><p>
+	The Page Object Pattern allows us to apply the same principles of modularity, reuse and encapsulation that we use in
+	other aspects of programming.</p>
+</div>
+<div id="s3" class="editable section synopsis" contextmenu="section"><p>
+	<a href="Setup.geb" id="s3a0" class="usdlc" action="runnable">Setup</a></p>
+</div>
+<div id="s2" class="editable section synopsis" contextmenu="section"><h1>
+	The Page Object Pattern - why?</h1>
+
+	<p>
+		<a href="WithoutPageObjects.geb" id="s2a0" class="usdlc" action="runnable">Without page objects</a> we would
+		create code like this...</p>
+</div>
+<div id="s4" class="editable section synopsis running" contextmenu="section"><p>
+	This is valid Geb code, and it works well for a one off script but there are two big issues with this approach.
+	Imagine that you have many tests that involve searching and checking results. The implementation of how to search
+	and how to find the results is going to have to be duplicated in every test, maybe many times per test. The Page
+	Object Pattern allows us to apply the same principles of modularity, reuse and encapsulation that we use in other
+	aspects of programming.</p>
+
+	<p>
+		You cannow encapsulated, in a reusable fashion, information about each page and how to interact with it. As
+		anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can
+		become an expensive and frustrating process. A core philosophy of Geb is to address this issue through its
+		content definition DSL.</p>
+
+	<p>
+		Here is the same script, <a class="usdlc" href="UtilisingPageObjects.geb" id="s4a0" action="runnable">utilising
+		page objects</a>…</p>
+</div>
+<div id="s5" class="editable section synopsis" contextmenu="section"><h1>
+	The Content DSL</h1>
+
+	<p>
+		Geb features a DSL for defining page content in a templated fashion, which allows very concise yet flexible page
+		definitions. Pages define a static closure property called content that describes the page content.</p>
+
+	<p>
+		Consider the following HTML…</p>
+
+	<div>
+		&lt;div id="contentA"&gt;contentA&lt;/div&gt;</div>
+	<hr>
+	<div id="contentA">
+		contentA
+	</div>
+	<hr>
+	<p>
+		The structure to the content DSL is…</p>
+	<pre>«name» { «definition» }</pre>
+	<p>
+		Where «definition» is Groovy code that is evaluated against the instance of the page.</p>
+
+	<p>
+		Here is how this <a class="usdlc" href="ContentDSL.geb" id="s5a0" action="runnable">content DSL</a> could be
+		used…</p>
+</div>
+<div id="s6" class="editable section synopsis" contextmenu="section"><p>
+	The Content DSL actually defines <a action="runnable" class="usdlc" href="ContentTemplates.geb" id="s6a0">content
+	templates</a>. There are no restrictions on what arguments can be passed to content templates. This is best
+	illustrated by example…</p>
+</div>
+<div id="s7" class="editable section synopsis" contextmenu="section"><p>
+	<a href="AContentTemplateCanReturnAnything.geb" id="s7a0" class="usdlc" action="runnable">A content template can
+		return anything</a>. Typically they will return a Navigator object through the use of the $ function, but it can
+	be anything.</p>
+</div>
+<div id="s8" class="editable section synopsis" contextmenu="section"><p>
+	It's important to realise that «definition» code is <a href="EvaluatedAgainstThePageInstance.geb" id="s8a0"
+	                                                         class="usdlc" action="runnable">evaluated against the page
+	instance</a>. This allows code like the following…</p>
+</div>
+<div id="s9" class="editable section synopsis running" contextmenu="section"><h2>
+	Template Options</h2>
+
+	<p>
+		Template definitions can take different options. The syntax is…</p>
+
+	<p>
+		«name»(«options map») { «definition» }</p>
+
+	<p>
+		Sample <a class="usdlc" href="TemplateOptions.geb" id="s9a0" action="runnable">template options</a>…</p>
+</div>
+<div id="s10" class="editable section synopsis" contextmenu="section"><h3>
+	required</h3>
+
+	<p>
+		Default value: <em>true</em></p>
+
+	<p>
+		The required option controls whether or not the content returned by the definition has to exist or not. This is
+		only relevant when the definition returns a Navigator object (via the $ function), it is ignored if the
+		definition returns anything else.</p>
+
+	<p>
+		If the <a class="usdlc" href="RequiredOption.geb" id="s10a0" action="runnable">required option</a> is set to
+		true and the returned content does not exist, a geb.error.RequiredPageContentNotPresent exception will be
+		thrown.</p>
+</div>
+<div id="s11" class="editable section synopsis" contextmenu="section"><h3>
+	cache</h3>
+
+	<p>
+		Default value: <em>false</em></p>
+
+	<p>
+		The <a class="usdlc" href="CacheOption.geb" id="s11a0" action="runnable">cache option</a> controls whether or
+		not the definition is evaluated each time the content is requested (the content is cached for each unique set of
+		parameters).&nbsp;Caching is a performance optimisation and is disabled by default. You may want to enable if
+		you notice that the a particular content definition is taking a long time to resolve.</p>
+</div>
+<div id="s12" class="editable section synopsis" contextmenu="section"><h3>
+	to</h3>
+
+	<p>
+		Default value: <em>null</em></p>
+
+	<p>
+		<a class="usdlc" href="TheToOption.geb" id="s12a0" action="runnable">The to option</a> allows the definition of
+		which page the browser will be sent to if the content is clicked.&nbsp;The to value will be implictly used as an
+		argument to the content's click() method, effectively setting the new page type. See the section on clicking
+		content for how this changes the browser's page object.&nbsp;The list variant can also be used…&nbsp;Which on
+		click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent
+		to the page(List&lt;Class&gt;) method which is explained in the section on changing pages.</p>
+</div>
+<div id="s13" class="editable section running synopsis" contextmenu="section"><h1>
+	“At�? Verification</h1>
+
+	<p>
+		Each page can define a way to check whether the underling browser is at the page that the page class actually
+		represents. This is done via a static at closure. This closure can either return a false value or throw an
+		AssertionError (e.g. via the assert method).&nbsp;The verifyAt() method is used by the browser at() method.&nbsp;If
+		using Groovy 1.7, the use of assert in “at�? checkers is recommended because you get the benefit of Groovy's
+		expressive assert output.</p>
+
+	<p>
+		As mentioned previously, when a content template defines a “to�? option of more than one page the page's
+		verifyAt() method is used to determine which one of the pages to use. In this situation, any AssertionErrors
+		thrown by at checkers are suppressed.&nbsp;<a class="usdlc" href="TheAtChecker.geb" id="s13a0"
+		                                              action="runnable">The “at�? checker</a> is evaluated against
+		the page instance, and can access defined content or any other variables or methods…</p>
+</div>
+<div id="s14" class="editable section synopsis" contextmenu="section"><h1>
+	Page URLs</h1>
+
+	<p>
+		Pages can define URLs via the static url property.&nbsp;The url is used when using the browser to() method.</p>
+
+	<p>
+		When URLs are resolved against base URLs, it is done in the same manner as web browsers resolve URLs. Given a
+		base of “http://myapp.com/path�? and a another URL to resolve against it of “/examples�?, the resultant
+		URL will be “http://myapp.com/example�?. The leading “/�? on the non base URL causes it to be treated as
+		an absolute path from the server base. This means that in almost all cases your page URLs should not start with
+		a leading “/�?.</p>
+
+	<p>
+		See the section for <a href="PageURLs.geb" id="s14a0" class="usdlc" action="runnable">Page URLs</a> on Advanced
+		Page Navigation for more information on the to() method.</p>
+</div>
+<div id="s15" class="editable section synopsis" contextmenu="section"><h1>
+	Inheritance</h1>
+
+	<p>
+		&nbsp;</p>
+
+	<p>
+		Pages can be arranged in an <a href="Inheritance.geb" id="s15a0" class="usdlc" action="runnable">inheritance</a>
+		hierarchy. If a subclass defines a content template with the same name as a content template defined in a
+		superclass, the subclass version replaces the version from the superclass.&nbsp;The content definitions are
+		merged…</p>
+</div>
+<div id="s16" class="editable section synopsis running" contextmenu="section"><h1>
+	Lifecycle Hooks</h1>
+
+	<p>
+		Page classes can optionally implement methods that are called when the page is set as the browser's current page
+		and when it is swapped out for another page. This can be used to transfer state between pages.</p>
+
+	<p>
+		The onLoad() method is called with previous page object instance when the page becomes the new page object for a
+		browser.</p>
+
+	<p>
+		The onUnload() <a class="usdlc" href="LifeCycleHook.geb" id="s16a0" action="runnable">life-cycle hook</a> is
+		called with next page object instance when the page is being replaced as the page object for the browser.</p>
+</div>
+
+
+
+
+

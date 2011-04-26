@@ -1,0 +1,19 @@
+class ModuleExample3 extends geb.Module {
+	static content = {
+		innerModule { module InnerModule }
+	}
+}
+class InnerModule extends geb.Module {
+	static content = {
+		uSDLCImage { $("img#pageTitle") }
+	}
+}
+class ModuleTestPage3 extends ThisPage {
+	static content = {
+		uSDLCImageTest { module ModuleExample3 }
+	}
+}
+browse ModuleTestPage3
+assert title == "Modules"
+uSDLCImageTest.innerModule.uSDLCImage.click()
+assert title ==~ /Unifying.*cycle/

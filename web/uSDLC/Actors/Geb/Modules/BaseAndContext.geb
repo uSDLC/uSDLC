@@ -1,0 +1,15 @@
+class BaseAndContextPage extends ThisPage {
+	static content = {
+		formA { module FormModule, $("div.a") }
+		formB { module FormModule, $("div.b") }
+	}
+}
+class FormModule extends geb.Module {
+	static base = { $("form") }
+	static content = {
+		thingValue { thing().value() }
+	}
+}
+browse BaseAndContextPage
+assert formA.thingValue == "a"
+assert formB.thingValue == "b"

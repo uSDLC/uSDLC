@@ -1,0 +1,152 @@
+<div id="pageTitle" class="editable"><h1>
+	Modules</h1>
+
+	<h2>
+		Reuse - a developer's dream</h2>
+</div>
+
+<div id="s1" class="editable section running" contextmenu="section"><p>
+	Modules are re-usable definitions of content that can be used across multiple pages. They are useful for modelling
+	things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in the one
+	page.</p>
+</div>
+<div id="s2" class="editable section synopsis" contextmenu="section"><p>
+	<a href="Setup.geb" id="s2a0" class="usdlc" action="runnable">Setup</a></p>
+</div>
+<div id="s3" class="editable section synopsis" contextmenu="section"><p>
+	'Modules are defined in a manner similar to pages, but extend geb.Module. Pages can include" modules. The module
+	method is a special method only available in content template definitions. It sets the content to an instance of the
+	<a class="usdlc" href="Module.geb" id="s3a0" action="runnable">module</a>.</p>
+</div>
+<div id="s4" class="editable section synopsis" contextmenu="section"><p>
+	Modules can also be <a href="Parameterised.geb" id="s4a0" class="usdlc" action="runnable">parameterised</a> where
+	the parameters are set using the module method...</p>
+</div>
+<div id="s5" class="editable section synopsis" contextmenu="section"><p>
+	Modules can also <a action="runnable" class="usdlc" href="IncludeOtherModules.geb" id="s5a0">include other
+	modules</a>…</p>
+</div>
+<div id="s6" class="editable section" contextmenu="section"><h1>
+	Base And Context</h1>
+
+	<p>
+		Modules can be localised to a specific section of the page that they are used in, or they can specify an
+		absolute context as part of their definition. There are two ways that a modules base/context can be defined.</p>
+
+	<p>
+		It can be defined at inclusion time…</p>
+
+	<p>
+		&nbsp;static content = {<br>
+		form { module FormModule, $("form") }<br>
+		}</p>
+
+	<p>
+		We can define a Navigator context when including the module using the above syntax. This now means that all $
+		function calls that occur within the module are against the given context (in this case, the form element).</p>
+
+	<p>
+		However, module classes can also define their own base…</p>
+<pre>class FormModule extends geb.Module {
+    static base = { $("form") }
+}</pre>
+	<p>
+		This context has the same effect as the code above.</p>
+</div>
+<div id="s7" class="editable section synopsis" contextmenu="section"><p>
+	If the module declares a base, it is always calculated relative to the base given by the including statement. If the
+	including statement does not specify a base, the module's base is calculated relative to the including page's
+	base.</p>
+
+	<p>
+		They can also be combined. Consider the following HTML…</p>
+
+	<p>
+		&lt;div class="a"&gt;<br>
+		&nbsp;&nbsp;&nbsp; &lt;form&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;input name="thing" value="a"/&gt;<br>
+		&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+		&lt;/div&gt;<br>
+		&lt;div class="b"&gt;<br>
+		&nbsp;&nbsp;&nbsp; &lt;form&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;input name="thing" value="b"/&gt;<br>
+		&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+		&lt;/div&gt;</p>
+	<hr>
+	<div class="a">
+		<form style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: dotted; border-right-style: dotted; border-bottom-style: dotted; border-left-style: dotted; border-top-color: rgb(255, 0, 0); border-right-color: rgb(255, 0, 0); border-bottom-color: rgb(255, 0, 0); border-left-color: rgb(255, 0, 0); padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; ">
+			<input name="thing" value="a">&nbsp;</form>
+	</div>
+	<div class="b">
+		<form style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: dotted; border-right-style: dotted; border-bottom-style: dotted; border-left-style: dotted; border-top-color: rgb(255, 0, 0); border-right-color: rgb(255, 0, 0); border-bottom-color: rgb(255, 0, 0); border-left-color: rgb(255, 0, 0); padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; ">
+			<input name="thing" value="b">&nbsp;</form>
+	</div>
+	<hr>
+	<p>
+		And the following <a class="usdlc" href="BaseAndContext.geb" id="s7a0" action="runnable">base and context</a>
+		content definitions…</p>
+</div>
+<div id="s8" class="editable section synopsis" contextmenu="section"><h1>
+	Use Cases</h1>
+
+	<p>
+		As previously stated, modules can be used to model page fragments that are reused across multiple pages. For
+		example, many different types of pages in your application may show information about the user's shopping cart.
+		You could handle this with modules.</p>
+
+	<p>
+		Another not so obvious use case is using modules to deal with complex and/or repeating sections that are only
+		present in one page, such as table rows. Consider the following HTML…</p>
+	<hr>
+	<table id="actors">
+		<tbody>
+		<tr>
+			<th>
+				First Name
+			</th>
+			<th>
+				Last Name
+			</th>
+		</tr>
+		<tr>
+			<td>
+				Bruce
+			</td>
+			<td>
+				Lee
+			</td>
+		</tr>
+		<tr>
+			<td>
+				John
+			</td>
+			<td>
+				Wayne
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<hr>
+	<p>
+		We can model <a class="usdlc" href="TableAccess.geb" id="s8a0" action="runnable">table access</a> with the
+		following…</p>
+</div>
+<div id="s9" class="editable section running" contextmenu="section"><h1>
+	The Content DSL</h1>
+
+	<p>
+		The Content DSL used for modules is exactly the same as the one used for pages, so all of the same options and
+		techniques can be used.</p>
+
+	<h1>
+		Inheritance</h1>
+
+	<p>
+		Modules can use inheritance in the same way that pages can. That is, their content definitions are merged with
+		any content redefined in the subclass taking precedence of the superclass.</p>
+</div>
+
+
+
+
+

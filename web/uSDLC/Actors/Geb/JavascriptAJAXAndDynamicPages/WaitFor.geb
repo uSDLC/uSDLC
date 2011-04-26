@@ -1,0 +1,14 @@
+class DynamicPage extends UsdlcPage {
+	static content = {
+		uSDLCLink { $("#USDLC") }
+		uSDLCCheck(required: false) { $("a[href*=Sandbox]") }
+	}
+
+	def makeRequest() {
+		uSDLCLink.click()
+		waitFor { uSDLCCheck.present }
+	}
+}
+browse DynamicPage
+makeRequest()
+assert uSDLCCheck.text() == "Sandbox"

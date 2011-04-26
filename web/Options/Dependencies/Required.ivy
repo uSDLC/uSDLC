@@ -1,4 +1,3 @@
-source(true)
 organisation('org.codehaus.groovy').module('groovy').required('default,optional')
 organisation('org.apache.ivy').module('ivy').required()
 organisation('commons-logging').module('commons-logging').required()

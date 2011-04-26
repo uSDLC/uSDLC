@@ -1,0 +1,3 @@
+browse ScratchPage
+assert getDriver().getClass().getName() =~
+		/ChromeDriver|FirefoxDriver|InternetExplorerDriver|htmlUnitDriver/

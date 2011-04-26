@@ -1,0 +1,1 @@
+assert $("#s4 p:nth-child(2)").text() =~ /will fetch this paragraph/

@@ -1,0 +1,2 @@
+assert $("div#modalMask").displayed == false
+assert $("table#pageTitleTable").displayed == true

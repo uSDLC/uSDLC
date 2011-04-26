@@ -1,0 +1,3 @@
+browser('http://127.0.0.1:9000/')
+open('/')
+click("xpath=//table[@id='pageTitleTable']/tbody/tr[1]/td[2]/a/img")

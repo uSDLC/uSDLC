@@ -1,0 +1,9 @@
+'Basic web pages used for this activation'
+
+class UsdlcPage extends geb.Page {
+	static authority = usdlc.Environment.host
+	static url = "/root"
+}
+class ThisPage extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Modules"
+}

@@ -26,7 +26,7 @@ rootFile = "/rt/template.html.groovy"
  */
 //noinspection GroovyUnusedAssignment
 srcPath = ['web/Actors', 'web', 'src']
-libPath = ['web/lib/jars', 'lib/jars', '.']
+libPath = ['web/lib/jars', 'lib/jars']
 /*
  If the file does not exist, use a template file for that server and client side extension.
  */

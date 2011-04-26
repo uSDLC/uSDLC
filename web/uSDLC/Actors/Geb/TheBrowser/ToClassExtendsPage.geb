@@ -1,0 +1,5 @@
+browse(UsdlcPage)
+assert page instanceof UsdlcPage
+to(ScratchPage)
+assert $("h1").text() == "Title"
+assert page instanceof ScratchPage

@@ -204,7 +204,7 @@
 		<jar destfile="uSDLC.jar" compress="true" index="true">
 			<fileset dir="out/production/uSDLC" includes="net/**/*.class"/>
 			<manifest>
-				<attribute name="Main-Class" value="net.usdlc.server.standalone.Loader"/>
+				<attribute name="Main-Class" value="usdlc.server.standalone.Loader"/>
 			</manifest>
 		</jar>
 	</target>

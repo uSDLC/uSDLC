@@ -18,4 +18,4 @@ done
 CLASSPATH=$cp$sep$CLASSPATH
 export CLASSPATH
 
-java "-Dtools.jar=${JAVA_HOME}\..\lib\tools.jar" "-Dgroovy.home=lib\jars\required" org.codehaus.groovy.tools.GroovyStarter --main net.usdlc.server.standalone.server
+java "-Dtools.jar=${JAVA_HOME}\..\lib\tools.jar" "-Dgroovy.home=lib\jars\required" org.codehaus.groovy.tools.GroovyStarter --main usdlc.server.standalone.server

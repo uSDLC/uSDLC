@@ -1,4 +1,5 @@
 /*
+ /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,6 +99,22 @@ $(function() {
 		pcd.outerHeight(h)
 		var pcdl = $('div#pageContentSlider')
 		pcdl.outerHeight(h - 20)
+		var lastScrollTop = 0
+
+		usdlc.scrollFiller = function(on) {
+			if (on) {
+				if ($('div.scrollFiller').size() === 0) {
+					pcd.append($("<div/>").height(pcd.height() * 0.6).addClass('scrollFiller'))
+				}
+			} else {
+				$('div.scrollFiller').remove()
+			}
+		}
+		usdlc.scrollFiller(true)
+		function scrollTop(ui) {
+			return lastScrollTop = (100 - ui.value) * ((pcd.attr("scrollHeight") - pcd.height()) / 100)
+		}
+
 		/*
 		 What to do when the slider moves up and down - scrolling.
 		 */
@@ -106,13 +123,17 @@ $(function() {
 			animate: true,
 			value: 100,
 			change: function(e, ui) {
-				var maxScroll = pcd.attr("scrollHeight") - pcd.height();
-				pcd.animate({scrollTop: (100 - ui.value) * (maxScroll / 100) }, 400);
+				pcd.animate({scrollTop: scrollTop(ui) }, 400)
 			},
 			slide: function(e, ui) {
-				var maxScroll = pcd.attr("scrollHeight") - pcd.height();
-				pcd.attr({scrollTop: (100 - ui.value) * (maxScroll / 100) });
+				pcd.attr({scrollTop: scrollTop(ui) })
 			}
 		})
+		usdlc.scrollTo = function(element) {
+			pcd.scrollTo(element)
+		}
+		usdlc.scrollBack = function() {
+			pcd.animate({scrollTop: lastScrollTop}, 400)
+		}
 	}
 })

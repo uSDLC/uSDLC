@@ -1,0 +1,1 @@
+assert $("p", text: ~/p\d/).size() == 2

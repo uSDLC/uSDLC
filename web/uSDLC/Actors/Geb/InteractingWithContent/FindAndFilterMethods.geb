@@ -1,0 +1,2 @@
+assert $("div").find(".navb").text() == "geb"
+assert $("div").filter(".navb").text() == "goodness"

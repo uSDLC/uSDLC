@@ -1,0 +1,5 @@
+browse ScratchPage
+assert $("h1").text() == "Title"
+$('img#pageTitle').click()
+waitFor { title == "Unifying the Software Development Life-cycle" }
+assert $("h1").text() == "Unifying the Software Development Life-cycle"

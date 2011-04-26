@@ -21,24 +21,27 @@ $(function() {
 	$('a.usdlc:not([href$=html])').addClass('sourceLink').live('click', function(ev) {
 		var link = $(ev.currentTarget)
 		var href = ev.currentTarget.pathname
-		usdlc.setFocus(link.parents(".section"))
+		var section = link.parents(".section")
+		usdlc.setFocus(section)
 		usdlc.highlight(false) // remove highlighting so save will stand out
 		var pathName = link.attr('pathname')
 		if (usdlc.editMode) {
 			// We are going to edit - so get the contents to load into a textarea.
 			$.get(pathName + '?action=raw', function(data) {
 				var editArea = $('<textarea/>').attr('id', 'editArea')
-				var editAreaContainer = $('<div/>').attr('id', 'editAreaContainer').append(editArea).hide()
+				var editAreaContainer = $('<div/>').attr('id', 'editAreaContainer').append(editArea)//.hide()
 				link.after(editAreaContainer)
 
 				editArea.html(data)
-				usdlc.saveCallback = function(id, content) {
+				usdlc.sourceSaveCallback = function(id, content) {
 					usdlc.modalOff(editAreaContainer, function() {
 						usdlc.save(href, content, '&after=usdlc.synopses()')
 						editAreaContainer.remove()
 						// Removing editor from the DOM is not enough if the link that we were editing is inside an inline element. Webkit at least leave a like-break there since the now missing editor was in block mode. I hope to find a better way, but for now the best that can be done is to re-insert the html.
 						var parent = link.parents(".section")
 						parent.html(parent.html())
+						//usdlc.scrollFiller(true)
+						usdlc.scrollBack()
 					})
 				}
 				editAreaLoader.init({
@@ -52,9 +55,11 @@ $(function() {
 					, min_height: 400
 					,toolbar: "save, search, go_to_line, |, undo, redo, |, select_font,|, highlight, " +
 						"reset_highlight, word_wrap, |, help"
-					,save_callback: "usdlc.saveCallback"
+					,save_callback: "usdlc.sourceSaveCallback"
 				})
+				usdlc.scrollTo(link)
 				usdlc.modalOn(editAreaContainer)
+
 			})
 		} else {    // Run mode - run or display results if the item has been run.
 			usdlc.linkAction(link)

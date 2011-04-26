@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import net.usdlc.Store
+import usdlc.Store
 
 /**
  Filter used to wrap html page with decorations and necessary functions.
@@ -102,6 +102,7 @@ doc.html {
 			script('', type: jsType, src: '/lib/ckeditor/adapters/jquery.js')
 			script('', type: jsType, src: '/lib/edit_area/edit_area_full.js')
 			script('', type: jsType, src: '/rt/js/menu.js')
+			script('', type: jsType, src: '/lib/jquery/js/jquery.scrollTo.js')
 			script('', type: jsType, src: '/rt/js/htmlEditor.js')
 			script('', type: jsType, src: '/lib/google-code-prettify/prettify.js')
 			script('', type: jsType, src: '/rt/js/sourceEditor.js')

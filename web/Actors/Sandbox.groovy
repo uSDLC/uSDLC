@@ -1,4 +1,4 @@
-import net.usdlc.Environment
+import usdlc.Environment
 
 class Sandbox {
 	/**

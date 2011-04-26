@@ -1,0 +1,2 @@
+browse(ScratchPage)
+assert browser.at(ScratchPage)

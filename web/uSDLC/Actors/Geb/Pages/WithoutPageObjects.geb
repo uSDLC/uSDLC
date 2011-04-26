@@ -1,0 +1,3 @@
+browse ThisPage
+$("img#pageTitle").click()
+assert $("h1").text() =~ /Unifying/

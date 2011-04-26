@@ -1,0 +1,9 @@
+'We define the base page an a commonly used (non-existent) scratch page'
+
+class UsdlcPage extends geb.Page {
+	static authority = usdlc.Environment.host
+	static url = "/root"
+}
+class ScratchPage extends UsdlcPage {
+	static url = "/Sandbox/IDoNotExist"
+}

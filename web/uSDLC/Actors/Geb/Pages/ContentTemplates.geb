@@ -1,0 +1,8 @@
+class ExamplePage extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Pages"
+	static content = {
+		theDiv { id -> $('div', id: id) }
+	}
+}
+browse ExamplePage
+assert theDiv("contentA").text() == "contentA"

@@ -1,0 +1,4 @@
+$("img#pageTitle").click(UsdlcPage)
+page UsdlcPage
+assert $("h1").text() =~ /Unifying/
+browse ThisPage

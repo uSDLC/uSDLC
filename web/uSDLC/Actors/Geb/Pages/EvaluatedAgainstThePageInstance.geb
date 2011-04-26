@@ -1,0 +1,16 @@
+class ExamplePage3 extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Pages"
+	static content = {
+		theDiv { $('div', id: 'contentA') }
+		theDivText { theDiv.text() }
+		// and this is not restricted to other content...
+		theDiv2 { $('div', id: divId) }
+		theDiv3 { $('div', id: getDivId2()) }
+	}
+	def divId = 'contentA'
+	def getDivId2 = { "contentA" }
+}
+browse ExamplePage3
+assert theDivText == "contentA"
+assert theDiv2.text() == "contentA"
+assert theDiv3.text() == "contentA"

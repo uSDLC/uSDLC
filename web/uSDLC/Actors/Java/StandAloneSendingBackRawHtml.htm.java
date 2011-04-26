@@ -1,7 +1,7 @@
 package uSDLC.Actors.Java;
 
-import net.usdlc.BrowserBuilder;
-import net.usdlc.Environment;
+import usdlc.BrowserBuilder;
+import usdlc.Environment;
 
 import java.util.Map;
 

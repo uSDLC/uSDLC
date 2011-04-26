@@ -1,0 +1,1 @@
+assert $("#s2 p", 1).text() =~ /When \$ is not suitable/

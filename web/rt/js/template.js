@@ -27,6 +27,7 @@ $(function() {
 			if (usdlc.editMode = to) {
 				color = false
 				usdlc.clearRunningLinkClass('')
+				$('.usdlc').removeData('results')
 			} else {
 				color = 'yellow'
 				usdlc.runningLinkClass('a.usdlc', 'runOnClick')
@@ -102,6 +103,7 @@ $(function() {
 				usdlc.pageContents.html(data)
 				usdlc.setPageTitle()
 				usdlc.synopses()
+				usdlc.setEditMode(usdlc.editMode)
 			})
 		},
 		relativePageContents : function(path) {
@@ -125,8 +127,10 @@ $(function() {
 			 */
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
+			usdlc.scrollFiller(false)
 			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')
 			usdlc.setPageTitle()
+			usdlc.scrollFiller(true)
 		},
 		createPageTitle : function(heading, subtitle) {
 			return $('<div/>').attr('id', 'pageTitle').addClass('editable').append($('<h1/>').append(heading)).append($('<h2/>').append(subtitle))

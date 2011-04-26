@@ -1,0 +1,2 @@
+$("p.sp").parent(".sa")
+$("p.sa").parent(class: "sa")
