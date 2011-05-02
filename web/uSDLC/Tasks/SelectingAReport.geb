@@ -1,0 +1,7 @@
+reportsTab()
+htmlEditor.with {
+	reportNameSelect.value("/rt/reports/AllTasks.html.groovy")
+	selectTab("Link Info")
+	waitfor { urlInput.value() =~ "/reports/" }
+	assert urlInput.value() =~ "/reports/"
+}

@@ -1,0 +1,9 @@
+def reportsTab() {
+	browse Sandbox
+	firstSection.click()
+	htmlEditor.with {
+		editSection()
+		pressButton("Link")
+		selectTab("Reports")
+	}
+}
