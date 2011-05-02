@@ -44,7 +44,7 @@ class Store {
 	 * @param path Name of file in the usdlc directory.
 	 * @return A reference to a Store object used for further operations
 	 */
-	static template(path) {
+	static runtime(path) {
 		return base(path, "$webBase/rt/")
 	}
 	/**
@@ -141,16 +141,34 @@ class Store {
 		return file.exists()
 	}
 	/**
-	 * Fetch a list of contents of a directory
+	 * Fetch a list of matching contents of a directory
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
-	 * @return Array of results (empty if none)
+	 * @param closure - code to execute for each file in the directory
+	 */
+	public dir(mask, Closure closure) {
+		//noinspection GroovyEmptyCatchBlock
+		try { file.eachFileMatch mask, { closure(it.path) } } catch (e) {}
+	}
+	/**
+	 * Fetch a list of all contents of a directory
+	 * @param closure - code to execute for each file in the directory
+	 */
+	public dir(Closure closure) { dir(~/.*/, closure) }
+	/**
+	 * Fetch a list of matching contents of a directory
+	 * @param mask - anything with isCase - typically a regular expression (~/re/)
+	 * @return list of matching file paths
 	 */
 	public dir(mask) {
 		def list = []
-		//noinspection GroovyEmptyCatchBlock
-		try { file.eachFileMatch mask, { list << it.path } } catch (e) {}
+		dir(mask, { list << it })
 		return list
 	}
+	/**
+	 * Fetch a list of all matching contents of a directory
+	 * @return list of all files in the directory
+	 */
+	public dir() { dir(~/.*/) }
 	/**
 	 * Fetch a list of contents of a directory tree (as in dir /s)
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -196,7 +214,7 @@ class Store {
 		def (all, dateString, uniquifier, title) = uniqueRE.matcher(uniqueName)[0]
 		return [
 				date: Date.parse(dateStampFormat, dateString),
-				title: title.replaceAll(decamelRE, ' $1'),
+				title: decamel(title),
 				path: uniqueName.replaceAll(sloshRE, '/')
 		]
 	}
@@ -205,6 +223,23 @@ class Store {
 	static decamelRE = ~/\B([A-Z])/
 	static sloshRE = ~"\\\\"
 	static dateStampFormat = "yyyy-MM-dd_HH-mm-ss"
+	/**
+	 * Turn a camel-case name back into a sentence
+	 * @param camelCase
+	 * @return camel Case
+	 */
+	static decamel(camelCase) { return camelCase.replaceAll(decamelRE, ' $1') }
+	/**
+	 * Split a fully qualified storage name into path, name ane extension
+	 * @param path to split
+	 * @return [path : path, name : name, ext : ext]
+	 */
+	static split(path) {
+		def matcher = splitRE.matcher(path)[0]
+		return [path: matcher[1], name: matcher[2], ext: matcher[3]]
+	}
+
+	static splitRE = ~/^(.*[\/\\])?([^\.]*)?(.*)?$/
 	/**
 	 * Copy a file or directory to a target directory.
 	 * @param to Directory to copy to.

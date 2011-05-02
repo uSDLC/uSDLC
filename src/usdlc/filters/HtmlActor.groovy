@@ -61,9 +61,7 @@ class HtmlActor {
 			case 'paste':
 				def target = file.store.parent
 				def from = Store.base(env.query.from)
-				from.dir(~/[^.]*/).each {
-					Store.base(it).move(target)
-				}
+				from.dir(~/[^.]*/) { Store.base(it).move(target) }
 				env.out.println new String(Store.base("$env.query.from/Section.html").read())
 				from.rmdir()
 				break

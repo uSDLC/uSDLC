@@ -34,8 +34,33 @@ $(function() {
 					return c.toUpperCase()
 				}).replace(/\s*/, '');
 		},
-		actorDefault : usdlc.cookie("actorDefault") || 'groovy'
+		actorDefault : usdlc.cookie("actorDefault") || 'groovy',
+		reportsTabData : {
+			id : 'reportsTab',
+			label : 'Reports',
+			accessKey : 'R',
+			elements : [
+				{
+					name : "Report Name",
+					type : 'select',
+					label : 'Report Name',
+					id : 'reportName',
+					items : [],
+					onChange : function() {
+						var value = this.getValue()
+						if (value) {
+							usdlc.htmlEditorLinkUrlField.setValue(value)
+						}
+					}
+				}
+			]
+		},
+		reportItems : function(items) {
+			usdlc.reportsTabData.elements[0].items = items
+		}
 	})
+	// fetch data for report form
+	$.ajax({url : "/rt/reports/support/list.js.groovy", dataType : 'script'})
 	/*
 	 Triggered by the user when they choose to edit a paragraph. creates a CKEDITOR,
 	 stashes initial contents and prepares for a save on exit. The save sends a diff string to the server so that
@@ -87,12 +112,8 @@ $(function() {
 						self.attr('href', href)
 						if (usdlc.mimeType(href).clientExt == 'html') {
 							self.attr('action', 'page')
-						} else if (self.attr('action') != 'producer') {
+						} else {
 							self.attr('action', 'runnable')
-							self.closest('th').each(function() {
-								self.attr('action', 'consumer')
-								$(this).next('td').find("a.usdlc").attr('action', 'producer')
-							})
 						}
 					}
 				})
@@ -147,12 +168,15 @@ $(function() {
 		var dialogName = ev.data.name;
 		var dialogDefinition = ev.data.definition;
 		if (dialogName == 'link') {
-			var infoTab = dialogDefinition.getContents('info');
+			//////// Update the Info Tab
+			// Set the protocol to local as the most common type.
+			var infoTab = dialogDefinition.getContents('info')
 			var protocol = infoTab.get("protocol")
 			protocol.items.unshift(['local',''])
 			protocol['default'] = 'local'
+
 			var urlField, linkSelect, linkRadio, initialising = false
-			// Called when user selects a type of link
+			// Called when user selects a type of link (java, groovy, geb, cs, etc)
 			function setLinkType() {
 				var type = linkRadio.getValue()
 				$.cookie('linkRadioDefault', type)
@@ -168,17 +192,17 @@ $(function() {
 				urlField.setValue(name)
 			}
 
-			// Actors can have various extensions defining client and server languags
+			// We save the actor type in a cookie for default - using the extension for existing
 			var actorItems = []
 			var linkRadioDefault = usdlc.cookie('linkRadioDefault') || ''
 			var actorTypes = (usdlc.cookie('actorTypes') || 'groovy').split(',')
 			for (actorType in actorTypes) {
 				actorItems.push([actorTypes[actorType]])
 			}
-
+			// On focus we need to get the actor type from the file extension.
 			dialogDefinition.onFocus = function() {
 				var actorDefault = usdlc.actorDefault
-				urlField = this.getContentElement('info', 'url');
+				urlField = usdlc.htmlEditorLinkUrlField = this.getContentElement('info', 'url');
 				linkSelect = this.getContentElement('info', 'linkSelect');
 				linkRadio = this.getContentElement('info', 'linkRadio');
 				var url = urlField.getValue()
@@ -211,7 +235,7 @@ $(function() {
 				linkSelect.setValue(actorDefault)
 				initialising = false
 			}
-
+			// Add all the new link stuff related to actors and wiki type links.
 			var urlOptions = infoTab.get('urlOptions').children.push({
 				type : 'hbox',
 				children : [
@@ -240,6 +264,7 @@ $(function() {
 							}
 						},
 						validate : function() {
+							// get the extension and update the cookie for actor types & default
 							var ext = usdlc.splitUrl(urlField.getValue()).ext
 							if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
 								actorTypes.push(ext)
@@ -252,6 +277,8 @@ $(function() {
 					}
 				]
 			})
+			//////// Create new reports tab
+			dialogDefinition.addContents(usdlc.reportsTabData);
 		}
 	})
 })

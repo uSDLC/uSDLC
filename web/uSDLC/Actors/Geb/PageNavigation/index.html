@@ -18,7 +18,7 @@
 </div>
 <div id="s4" class="editable section synopsis" contextmenu="section"><p>
 	This is because by default, any arguments passed to the to() method after the page class are converted to a URL path
-	by calling toString() on each argument and joining them with “/�?.</p>
+	by calling toString() on each argument and joining them with "/".</p>
 
 	<p>
 		However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to
@@ -28,7 +28,7 @@
     args ? args*.toString().join('/') : ""
 }</pre>
 	<p>
-		You can either overwrite this catch all method <a href="ControlPathConversion.geb" id="s4a0" class="usdlc"
+		You can either overwrite this catch all method <a class="usdlc" href="ControlPathConversion.geb" id="s4a0"
 		                                                  action="runnable">control path conversion</a> for all
 		invocations, or provide an overloaded version for a specific type signature. Consider the following…</p>
 </div>
@@ -43,9 +43,10 @@
 		are always interpreted as query parameters. Using the classes from the above example…</p>
 	<pre>    to ActorPage, groovy, flag: true</pre>
 	<p>
-		This will result in a request to “<span style="color:#0000ff;"><u>http://localhost:9000/uSDLC/Actors/Groovy?flag=true</u></span>�?.
+		This will result in a request to "<span style="color:#0000ff;"><u>http://localhost:9000/uSDLC/Actors/Groovy?flag=true"</u></span>.
 		The query parameters are not sent to the convertToPath() method.</p>
 </div>
+
 
 
 

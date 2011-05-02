@@ -173,12 +173,12 @@ def waitFor(Double timeoutSeconds, Double intervalSeconds, Closure condition)</p
 void withNoAlert(Closure actions)</pre>
 	<p>
 		The first method, withAlert(), is used to verify actions that will produce an alert() dialog. This method
-		returns the alert message.&nbsp;If an alert dialog is not raised by the given “actions�? closure, an
+		returns the alert message.&nbsp;If an alert dialog is not raised by the given "actions" closure, an
 		AssertionError will be thrown.</p>
 
 	<p>
 		The second method, withNoAlert(), is used to verify actions that will not produce an alert() dialog. If an alert
-		dialog is raised by the given “actions�? closure, an AssertionError will be thrown.</p>
+		dialog is raised by the given "actions" closure, an AssertionError will be thrown.</p>
 	<blockquote>
 		<p>
 			It's a good idea to use withNoAlert() when doing something that might raise an alert. If you don't, the
@@ -308,6 +308,7 @@ void withNoConfirm(Closure actions)</pre>
 		provides a good API for faking these events which makes for a good solution.<br>
 		&nbsp;</p>
 </div>
+
 
 
 

@@ -32,6 +32,7 @@ class GroovyActor {
 		binding = Environment.data()
 		if (!binding.variables.containsKey('gse')) {
 			bind(
+					log: { System.err.println it },
 					print: { binding.doc.text it },
 					gse: new GroovyScriptEngine(Config.classPath as String[]),
 			)

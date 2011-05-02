@@ -32,6 +32,7 @@ class Filer {
 	String fullExt = ''
 	String filePath
 	@Lazy String basePath = filePath[0..-(fullExt.size() + 2)]
+
 	Class actor
 
 	/**
@@ -149,7 +150,7 @@ class Filer {
 	byte[] template(ext) {
 		if (!ext) return [] as byte[]
 		if (!Config.web.template[ext]) return [] as byte[]
-		return Store.template("${Config.web.template[ext]}.$fullExt").read()
+		return Store.runtime("${Config.web.template[ext]}.$fullExt").read()
 	}
 
 	/**

@@ -31,11 +31,19 @@ import usdlc.Store
  * environments where uSDLC is on a sub-path - as in http://askowl.com.au/usdlc.
  */
 def host = InetAddress.localHost.hostName
-println """Starting uSDLC on http://$host:$Config.web.port/$Config.web.urlBase
-    from ${new File(Store.webBase as String).absolutePath}
+def baseUrl = "http://$host:$Config.web.port/$Config.web.urlBase"
+println """Starting uSDLC on $baseUrl
+	from ${new File(Store.webBase as String).absolutePath}
 """
 
-HttpServer server = HttpServer.create(new InetSocketAddress(Config.web.port), 0)
+HttpServer server
+def socket = new InetSocketAddress(Config.web.port)
+try {
+	server = HttpServer.create(socket, 0)
+} catch (BindException be) {
+	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) {}
+	server = HttpServer.create(socket, 0)
+}
 server.createContext '/', { HttpExchange httpExchange ->
 	// Set environment to have streams for data input (body of request) and output (body of response).
 	def my = Environment.data()

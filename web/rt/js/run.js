@@ -149,35 +149,6 @@ $(function() {
 			case 'runnable':
 				enqueue(link)
 				break
-			case 'producer':
-				enqueue(link)
-				break
-			case 'consumer':
-				var consumerId = link.attr('id')
-				var producers = link.closest('th').next('td').find("a.usdlc")
-				producers.each(function() {
-					enqueue($(this), {
-						queueName : consumerId,
-						dialogCommand: 'close'
-					})
-				})
-
-				enqueue(link, {
-					queueName : consumerId,
-					parallel : false
-				}, function(options) {   // called when ready to run
-					var input = "<div>"
-					producers.each(function() {
-						input += results($(this)).html()
-					})
-					input += '</div>'
-					$.ajax($.extend({}, options, {
-						type : 'POST',
-						url : url,
-						data : input
-					}))
-				})
-				break
 		}
 	}
 })

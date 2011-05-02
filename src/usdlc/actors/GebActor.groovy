@@ -18,7 +18,6 @@ package usdlc.actors
 import geb.Browser
 import geb.driver.CachingDriverFactory
 import geb.driver.PropertyBasedDriverFactory
-import org.openqa.selenium.WebDriverException
 import usdlc.Environment
 
 class GebActor extends GroovyActor {
@@ -55,9 +54,11 @@ class Geb {
 	 * Close down browser instance and quit the driver.
 	 */
 	void reset() {
-		if (!CachingDriverFactory.clearCacheAndQuitDriver()) {
-			browserInstance?.driver?.quit()
-		}
+		try {
+			if (!CachingDriverFactory.clearCacheAndQuitDriver()) {
+				//browserInstance?.driver?.quit()
+			}
+		} catch (Exception e) {}
 		browserInstance = null
 		browser = null
 		browser = browserInstance ?: driver()
@@ -72,18 +73,21 @@ class Geb {
 				this.driverList = driverList
 				browser = browserInstance ?: driver()
 			}
-			if (page.class != pc) {
+			if (page.class == pc) {
+				$(0)    // hit the browser and make sure it is still alive
+			} else {
 				if (pc?.authority) { browser.baseUrl = pc.authority }
 				browser.to(pc)
 				browseDepth = 0
 			}
 			return browser
-		} catch (WebDriverException e) {
+		} catch (Exception e) {
 			reset()
-			if (!browseDepth++) { return browse(pc) }
-			return null
+			return (browseDepth++) ? null : browse(pc)
 		}
 	}
+
+
 
 	int browseDepth = 0
 	/**
@@ -91,4 +95,16 @@ class Geb {
 	 * @param list Groovy list of classes [MyPage, YourPage]
 	 */
 	void page(ArrayList list) { page(list as List<Class<? extends geb.Page>>) }
+	/**
+	 * Override runScript to catch and process geb exceptions when talking to the browser.
+	 * @param scriptName
+	 * @return
+	 */
+	def runScript(scriptName) {
+		try {
+			super.runScript(scriptName)
+		} catch (IllegalStateException ise) {
+			reset()
+		}
+	}
 }

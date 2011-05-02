@@ -202,7 +202,7 @@
 
 	<target name="make.jar" depends="" description="Make uSDLC.jar">
 		<jar destfile="uSDLC.jar" compress="true" index="true">
-			<fileset dir="out/production/uSDLC" includes="net/**/*.class"/>
+			<fileset dir="out/production/uSDLC" includes="usdlc/**/*.class"/>
 			<manifest>
 				<attribute name="Main-Class" value="usdlc.server.standalone.Loader"/>
 			</manifest>

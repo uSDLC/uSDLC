@@ -8,13 +8,19 @@
 <div id="s1" class="editable section" contextmenu="section"><p>
 	Every page, section or actor link is a task. Tasks are used to track and assign work.</p>
 </div>
-<div id="s12" class="editable section" contextmenu="section"><h1>
-	Task Report Creation</h1>
+<div id="s12" class="editable section running" contextmenu="section"><h1>
+	Task Report Link Creation</h1>
 
 	<p>
-		uSDLC comes equipped with a Task Report Actor. You generate a report from a tab on the <a
-			href="TaskCreateLinkBox.htmlunit" id="s12a0" class="usdlc" action="runnable">create link box</a> - available
-		from the link button on the tool-bar. From here you decide what task states to display.</p>
+		uSDLC comes equipped with a Task Report Actor. You generate a report from the Reports tab on the <a
+			class="usdlc" href="TaskCreateLinkBox.geb" id="s12a0" action="runnable">create link box</a> - available from
+		the link button on the tool-bar. The first field is a <a class="usdlc" href="ListOfReports.geb" id="s12a1"
+		                                                         action="runnable">list of reports</a> defined in
+		/rt/reports. <a class="usdlc" href="SelectingAReport.geb" id="s12a2" action="runnable">Selecting a report</a>
+		will fill in the link URL.</p>
+</div>
+<div id="s13" class="editable section synopsis" contextmenu="section"><h1>
+	Task Report Location</h1>
 
 	<p>
 		While is it possible to generate report pages anywhere, convention is to put them in the home pages chapter.
@@ -24,7 +30,12 @@
 
 	<p>
 		A project manager or team leader may add reports that represent their interest areas. The members area also
-		includes a member called <strong>Project</strong>. Here resides reports of general interest.</p>
+		includes a member called&nbsp;<strong>Project</strong>. Here resides reports of general interest.</p>
+
+	<p>
+		Clicking on a <a href="/rt/reports/AllTasks.html.groovy" id="s13a0" class="usdlc" action="page">report link</a>
+		will <a class="usdlc" href="GenerateTheReport.geb" id="s13a0" action="runnable">generate the report</a> and
+		present it for review.</p>
 </div>
 <div id="s3" class="editable section" contextmenu="section"><h1>
 	Task State</h1>
@@ -54,6 +65,12 @@
 		<li>
 			Orphaned - pages and actors that do not have a link in the document
 		</li>
+		<li>
+			Waiting - for another task or outside requirement
+		</li>
+		<li>
+			Cancelled - for tasks that will not be done
+		</li>
 	</ol>
 </div>
 <div id="s4" class="editable section" contextmenu="section">
@@ -80,6 +97,24 @@
 <div id="s11" class="editable section" contextmenu="section">
 	Task Notes
 </div>
+<div id="s14" class="editable section" contextmenu="section"><p>
+	<a class="usdlc" href="Setup.geb" id="s14a0" action="runnable">Setup</a>&nbsp;and <a href="Teardown.geb" id="s14a1"
+	                                                                                     class="usdlc"
+	                                                                                     action="runnable">Teardown</a>
+</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

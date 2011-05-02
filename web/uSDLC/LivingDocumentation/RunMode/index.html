@@ -24,7 +24,7 @@
 
 	<p>
 		Absolute links - whether to&nbsp;<a href="http://google.com" id="s5a0">another site</a>&nbsp;or&nbsp;<a
-			href="/idontexist.groovy" id="s5a1" class="usdlc sourceLink" action="consumer">within uSDLC</a> are treated
+			href="/idontexist.groovy" id="s5a1" class="usdlc sourceLink">within uSDLC</a> are treated
 		like any
 		other web application - click on them to follow them. They are not followed as part of the run. When running
 		this page, neither of the two links in this paragraph should cause an error.</p>
@@ -42,7 +42,7 @@
 	Relative Links</h5>
 
 	<p>
-		<a class="usdlc" href="RelativeLinks/index.html" id="s6a2" action="consumer">Relative links</a> do not have a
+		<a class="usdlc" href="RelativeLinks/index.html" id="s6a2">Relative links</a> do not have a
 		domain and do not start with a slash (/). They are followed, and the contents run. This link is a page that
 		should mark as a pass during a test run. Note that it is created by clicking the link icon on the editor
 		tool-bar. Leave the type as local and enter the name as a sentence. For this example, <em>Relative links</em>
@@ -59,8 +59,7 @@
 			style="color:#0000cd;">name.client.server</span>&nbsp;so that we can define action on both sides of the
 		divide. A file <span style="color:#0000cd;">myScript.js.groovy</span> will run a groovy script that is expected
 		to send javascript back to the server. To produce a script that responds with HTML, either don't give it a
-		client extension or use <span style="color:#0000ff;">.htm</span>. Scripts can be free-standing, producers or
-		consumers.</p>
+		client extension or use <span style="color:#0000ff;">.htm</span>.</p>
 </div>
 <div id="s15" class="editable section synopsis" contextmenu="section"><h2>
 	Actor Link Decoration</h2>
@@ -158,63 +157,3 @@
 		actor that will display a simple message. Note that the link changes colour during and after the script has been
 		run.</p>
 </div>
-<div id="s9" class="editable section synopsis" contextmenu="section"><h2>
-	Producers</h2>
-
-	<p>
-		Scripts that returns content (htm, xml, txt, etc) are producers. For free-standing scripts, this is only visual
-		- hover over the link after a run to see the results. A .<a class="usdlc" href="StandAloneTest.htm.groovy"
-		                                                            id="s9a5" action="runnable">htm</a> result can also
-		be active in that script tags are run. This is the normal type of result returned by tests.</p>
-
-	<p>
-		More commonly producers are in tables - other than column 1 if it is a heading column (reserved for
-		consumers).</p>
-</div>
-<div id="s10" class="editable section" contextmenu="section"><h2>
-	Consumers</h2>
-
-	<p>
-		If a script is in column one of a table and that is a heading column it is treated as a consumer. The scripts in
-		the other columns of the same row are executed first and their output is collected and sent to the consumer as
-		the body of a post. Any text in producer cells is sent as well. The example below will send an XML and HTML
-		portion - the latter with additional static text. The consumer will check the results for validity. After
-		running the section will green-line and hovering over the consumer will show the result. Note that the first
-		producer is static data, not a script. Go to edit mode to look at the code and data...</p>
-	<table border="1" cellpadding="1" cellspacing="1">
-		<tbody>
-		<tr>
-			<th scope="row">
-				<a class="usdlc" href="Consumer.htm.groovy" id="s10a6" action="consumer">consumer</a></th>
-			<td>
-				<a class="usdlc" href="Producer.xml" id="s10a7" action="producer">xml producer 1</a></td>
-			<td action="producer">
-				before <a class="usdlc" href="Producer.htm.groovy" id="s10a8" action="runnable">producer 2</a> after
-			</td>
-		</tr>
-		</tbody>
-	</table>
-	<p>
-		&nbsp;</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

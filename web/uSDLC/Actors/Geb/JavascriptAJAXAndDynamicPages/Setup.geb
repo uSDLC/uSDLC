@@ -1,9 +1,4 @@
 'We define the base page an a commonly used (non-existent) scratch page'
-
-class UsdlcPage extends geb.Page {
-	static authority = usdlc.Environment.host
-	static url = "/root"
-}
 class ThisPage extends UsdlcPage {
 	static url = "/uSDLC/Actors/Geb/JavascriptAJAXAndDynamicPages"
 }
