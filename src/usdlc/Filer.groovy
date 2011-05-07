@@ -101,7 +101,7 @@ class Filer {
 	 * Run the actor with the correct parameters.
 	 */
 	void actorRunner() {
-		actor?.newInstance().run(filePath)
+		actor?.newInstance()?.run(filePath)
 	}
 	/**
 	 * Run a set of files in the same directory matching a pattern. Used for setup and teardown.

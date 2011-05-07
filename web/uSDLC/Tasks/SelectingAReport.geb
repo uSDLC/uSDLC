@@ -4,4 +4,5 @@ htmlEditor.with {
 	selectTab("Link Info")
 	waitfor { urlInput.value() =~ "/reports/" }
 	assert urlInput.value() =~ "/reports/"
+	close()
 }

@@ -1,1 +1,1 @@
-organisation('commons-httpclient').module('commons-httpclient').optional()
+organisation('com.h2database').module('h2').required()

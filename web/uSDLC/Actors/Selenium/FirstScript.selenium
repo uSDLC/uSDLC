@@ -1,3 +1,4 @@
-browser('http://127.0.0.1:9000/')
-open('/')
-click("xpath=//table[@id='pageTitleTable']/tbody/tr[1]/td[2]/a/img")
+open "/root"
+waitForPageToLoad
+click "css=#s31 > p"
+assertElementPresent "css=#s31.inFocus"

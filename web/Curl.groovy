@@ -1,2 +1,2 @@
-test = "http://localhost:9000/uSDLC/Tasks/SelectingAReport.geb?action=run"
+test = "http://localhost:9000/uSDLC/Actors/Selenium/FirstScript.selenium?action=run"
 println test.toURL().text

@@ -33,10 +33,9 @@ $(function() {
 				$('<ins/>').html(data).find('a.usdlc[action=page]').each(function() {
 					var a = $(this)
 					var href = a.attr('href')
-					if (href[0] == '/') {
-						href = href.substring(1)
+					if (href[0] != '/') {
+						href = root + href
 					}
-					href = root + href
 					var id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
 					tree += "<li id='" + id + "' class='jstree-closed'><a href='" + href + "' class='contentLink'>" + a.text() + "</a></li>"
 				})

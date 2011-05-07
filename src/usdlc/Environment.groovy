@@ -40,7 +40,7 @@ class Environment {
 	 */
 	static Map data() {
 		def key = getKey()
-		if (!dataMap[key]) { dataMap[key] = [:] }
+		if (!dataMap.containsKey(key)) { return dataMap[key] = [:] }
 		return dataMap[key] as Map
 	}
 	/**

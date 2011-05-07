@@ -55,9 +55,7 @@ class Geb {
 	 */
 	void reset() {
 		try {
-			if (!CachingDriverFactory.clearCacheAndQuitDriver()) {
-				//browserInstance?.driver?.quit()
-			}
+			CachingDriverFactory.clearCacheAndQuitDriver()
 		} catch (Exception e) {}
 		browserInstance = null
 		browser = null

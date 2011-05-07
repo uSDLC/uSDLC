@@ -1,3 +1,6 @@
+import usdlc.Sections
+import usdlc.Store
+
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -18,6 +21,21 @@
  * Date: 1/05/11
  * Time: 2:27 PM
  */
-doc.h1 {
-	"All Tasks"
+// fix: continue after SqlActor is done
+doc.div(id: "pageTitle", 'class': "editable") {
+	h1("")
+	h2("")
+	def sections = []
+	Store.root('').dirs(~/.*\.html$/) {
+		def page = new Sections(it)
+		page.each { html ->
+			def section = [page: page.name]
+			['id', 'state', 'pred', 'depend', 'owner', 'assignee', 'date', 'notes'].each {
+				section[it] = html["@$it"]
+			}
+			sections << section
+		}
+	}
+	doc.div(id: "s1", 'class': "editable section", contextmenu: "section") {
+	}
 }

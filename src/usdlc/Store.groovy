@@ -170,16 +170,24 @@ class Store {
 	 */
 	public dir() { dir(~/.*/) }
 	/**
+	 * Call a closure for the contents of a directory tree (as in dir /s)
+	 * @param mask - anything with isCase - typically a regular expression (~/re/)
+	 * @param closure - for every file that matches
+	 */
+	public dirs(mask, closure) {
+		//noinspection GroovyEmptyCatchBlock
+		try {
+			file.traverse(type: FILES, nameFilter: mask) closure(it.path)
+		} catch (e) {}
+	}
+	/**
 	 * Fetch a list of contents of a directory tree (as in dir /s)
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
 	 * @return Array of results (empty if none)
 	 */
 	public dirs(mask) {
 		def list = []
-		//noinspection GroovyEmptyCatchBlock
-		try {
-			file.traverse(type: FILES, nameFilter: mask) { list << it.path.replaceAll(sloshRE, '/') }
-		} catch (e) {}
+		dirs(mask, { list << it.replaceAll(sloshRE, '/') })
 		return list
 	}
 
@@ -239,7 +247,7 @@ class Store {
 		return [path: matcher[1], name: matcher[2], ext: matcher[3]]
 	}
 
-	static splitRE = ~/^(.*[\/\\])?([^\.]*)?(.*)?$/
+	static splitRE = ~/^(?:(.*)[\/\\])?([^\.]*)?(.*)?$/
 	/**
 	 * Copy a file or directory to a target directory.
 	 * @param to Directory to copy to.
