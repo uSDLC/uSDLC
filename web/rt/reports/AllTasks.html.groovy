@@ -1,4 +1,4 @@
-import usdlc.Sections
+import usdlc.Page
 import usdlc.Store
 
 /*
@@ -21,13 +21,12 @@ import usdlc.Store
  * Date: 1/05/11
  * Time: 2:27 PM
  */
-// fix: continue after SqlActor is done
 doc.div(id: "pageTitle", 'class': "editable") {
 	h1("")
 	h2("")
 	def sections = []
 	Store.root('').dirs(~/.*\.html$/) {
-		def page = new Sections(it)
+		def page = new Page(it)
 		page.each { html ->
 			def section = [page: page.name]
 			['id', 'state', 'pred', 'depend', 'owner', 'assignee', 'date', 'notes'].each {

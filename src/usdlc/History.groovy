@@ -35,7 +35,7 @@ class History {
 	 * History file is stored in a special directory and named file.
 	 * @return
 	 */
-	@Lazy Store store = Store.base("history/$type/${path}.history")
+	@Lazy Store store = Store.base(".history/$type/${path}.history")
 	/**
 	 * Whenever we save a file we can also save the changes from last time.
 	 *

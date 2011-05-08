@@ -1,1 +1,1 @@
-organisation('com.h2database').module('h2').required()
+organisation('org.jasypt').module('jasypt').required()

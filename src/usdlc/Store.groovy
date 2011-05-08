@@ -70,7 +70,7 @@ class Store {
 	}
 
 	static final webBase = {
-		def wb = Config.web.webBase
+		def wb = Config.webBase
 		if (!wb) { return '.' }
 		if (wb.startsWith('/')) { wb = wb[1..-1] }
 		if (wb.endsWith('/')) { wb = wb[0..-2] }

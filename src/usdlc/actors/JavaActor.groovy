@@ -58,7 +58,7 @@ class JavaActor {
 
 		public Class findClass(String name) {
 			// For efficiency we can assume a loaded class won't change - but will it?
-			if (!Config.web.allwaysCheckForRecompile && name in classes) {
+			if (!Config.allwaysCheckForRecompile && name in classes) {
 				return (Class) classes[name]
 			}
 			return readClass(name)

@@ -31,13 +31,13 @@ import usdlc.Store
  * environments where uSDLC is on a sub-path - as in http://askowl.com.au/usdlc.
  */
 def host = InetAddress.localHost.hostName
-def baseUrl = "http://$host:$Config.web.port/$Config.web.urlBase"
+def baseUrl = "http://$host:$Config.port/$Config.urlBase"
 println """Starting uSDLC on $baseUrl
 	from ${new File(Store.webBase as String).absolutePath}
 """
 
 HttpServer server
-def socket = new InetSocketAddress(Config.web.port)
+def socket = new InetSocketAddress(Config.port)
 try {
 	server = HttpServer.create(socket, 0)
 } catch (BindException be) {

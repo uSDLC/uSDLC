@@ -62,17 +62,6 @@ class GroovyActor {
 	 * @return actor for chaining
 	 */
 	protected bind() { return this }
-
-	class Ensure {
-		def binding
-
-		Ensure(binding) { this.binding = binding }
-
-		void setProperty(String key, valueClass) {
-			if (!binding?.variables?."$key") { binding[key] = valueClass.newInstance() }
-		}
-	}
-	@Lazy ensure = new Ensure(binding)
 	/**
 	 * Data that comes out as global scope to the groovy script as in /uSDLC/TechnicalArchitecture/Actors/Groovy
 	 */

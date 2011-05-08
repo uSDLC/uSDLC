@@ -123,16 +123,17 @@ class Filer {
 
 	static HashSet noActors = new HashSet()
 
-	def save(userId, newContents) {
+	def save(newContents) {
 		// If we don't have a history file for any reason, then we should save the contents of the full file first.
 		String before = (history.store.size() < 3) ? "" : new String(contents)
 		// Save changed contents to disk
 		contents = newContents.bytes
 		// Create a history file so we can rebuild any version if and when we want to.
-		history.save(userId, before, newContents)
+		history.save(env.userId, before, newContents)
 	}
 
-	@Lazy def history = new History(path: store.path, type: 'updates')
+	@Lazy history = new History(path: store.path, type: 'updates')
+	@Lazy env = Environment.data()
 
 	/**
 	 * Return the client-side mime-type to put in a response header.
@@ -149,8 +150,8 @@ class Filer {
 	 */
 	byte[] template(ext) {
 		if (!ext) return [] as byte[]
-		if (!Config.web.template[ext]) return [] as byte[]
-		return Store.runtime("${Config.web.template[ext]}.$fullExt").read()
+		if (!Config.template[ext]) return [] as byte[]
+		return Store.runtime("${Config.template[ext]}.$fullExt").read()
 	}
 
 	/**

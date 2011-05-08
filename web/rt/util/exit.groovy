@@ -1,3 +1,5 @@
+import usdlc.db.Database
+
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -19,4 +21,5 @@
  * Time: 5:29 PM
  */
 assert query.action == 'stop'
+Database.close()
 System.exit(0)

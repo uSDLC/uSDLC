@@ -22,7 +22,7 @@ import usdlc.Environment
 
 class SeleniumActor extends GroovyActor {
 	def bind() {
-		ensure.selenium = SeleniumProcessor
+		binding.ensure.selenium = SeleniumProcessor
 		delegate = binding.selenium
 		return this
 	}
@@ -47,7 +47,7 @@ class SeleniumProcessor {
 			browsers.each { key, instance -> if (instance.timeStarted < yesterday) { kill << key } }
 			kill.each { browsers.remove(it) }
 
-			String key = "$authority::$browser::$env.query.session"
+			String key = "$authority::$browser::$env.cookies.session"
 			if (!browsers.containsKey(key)) {
 				browsers[key] = new Browser(authority: authority, browser: browser, commandProcessor: null)
 			}

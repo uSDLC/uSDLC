@@ -1,8 +1,3 @@
-package usdlc.actors
-
-import usdlc.BrowserBuilder
-import usdlc.db.Gsql
-
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -18,20 +13,29 @@ import usdlc.db.Gsql
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package usdlc
 
 /**
  * User: Paul Marrington
- * Date: 5/05/11
- * Time: 9:16 PM
- *
- * jdbc:h2:/data/test;AUTO_SERVER=TRUE
- * jdbc:h2:mem:test:db1;DB_CLOSE_DELAY=-1
+ * Date: 8/05/11
+ * Time: 3:25 PM
  */
-class GsqlActor extends GroovyActor {
-	def bind() {
-		binding.doc = BrowserBuilder.newInstance('text/text')
-		binding.ensure.gsql = Gsql
-		delegate = binding.gsql
-		return this
+// todo: add Timer to tools page
+class Timer {
+	String toString() {
+		long elapsed = System.currentTimeMillis() - start
+		if (elapsed < 1000) { return "$elapsed ms" }
+		def string = new StringBuffer()
+		elapsed /= 1000
+		def seconds = elapsed % 60
+		string.append("$seconds s")
+		elapsed /= 60
+		def minutes = elapsed % 60
+		def hours = elapsed / 60
+		if (hours || minutes) { string.insert(0, "$minutes m ") }
+		if (hours) { string.insert(0, "$hours h ") }
+		return string
 	}
+
+	private start = System.currentTimeMillis()
 }

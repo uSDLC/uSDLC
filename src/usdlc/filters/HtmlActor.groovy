@@ -87,7 +87,7 @@ class HtmlActor {
 			if (script[-1] == '/') {
 				script += 'template.html'
 			}
-			script += '.' + Config.web.defaultScriptLanguage
+			script += '.' + Config.defaultScriptLanguage
 		}
 		/*
 		 Filer does the real work if executing the CGI - since it knows all the details.

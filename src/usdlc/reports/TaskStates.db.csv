@@ -1,0 +1,10 @@
+id,cardinality,state,description
+1,1,Undocumented,as in a page without sections or a section without content.
+2,2,Incomplete,tagged for sections that do not have links to actors to connect passive and active components of the project.
+3,3,Unassigned,a section that is document complete but never activated.
+4,4,Assigned,a section in process for implementation.
+5,5,Ready,tasks ready to activate
+6,6,Failed,tasks where activation has failed
+7,7,Orphaned,pages and actors that do not have a link in the document
+8,8,Waiting,for another task or outside requirement
+9,9,Cancelled,for tasks that will not be done

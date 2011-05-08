@@ -1,8 +1,3 @@
-package usdlc.actors
-
-import usdlc.BrowserBuilder
-import usdlc.db.Gsql
-
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -18,20 +13,23 @@ import usdlc.db.Gsql
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package usdlc.reports
+
+import usdlc.Page
+import usdlc.db.Database
 
 /**
  * User: Paul Marrington
- * Date: 5/05/11
- * Time: 9:16 PM
- *
- * jdbc:h2:/data/test;AUTO_SERVER=TRUE
- * jdbc:h2:mem:test:db1;DB_CLOSE_DELAY=-1
+ * Date: 8/05/11
+ * Time: 9:48 AM
  */
-class GsqlActor extends GroovyActor {
-	def bind() {
-		binding.doc = BrowserBuilder.newInstance('text/text')
-		binding.ensure.gsql = Gsql
-		delegate = binding.gsql
-		return this
+class Tasks {
+	static { Database.version("classpath:/usdlc/reports/Tasks") }
+
+	public processPage(contents) {
+		def page = new Page(contents)
+		page.sections { section ->
+		}
+		return page.updated ? page.toString() : contents
 	}
 }

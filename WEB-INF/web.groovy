@@ -20,6 +20,7 @@
 urlBase = ""
 webBase = "web"
 rootFile = "/rt/template.html.groovy"
+usdlcDatabase = 'jdbc:h2:.db/usdlc'
 
 /*
  Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.

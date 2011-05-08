@@ -1,0 +1,10 @@
+cardinality,id,name,roles,description
+10,mgr,Management,,
+20,pm,Project Manager,,
+30,ba,Business Analysts,,
+40,arch,Architects,,
+50,dev,Developers,,
+60,tw,Technical Writers,,
+70,test,Testers,,
+80,support,Support Staff,,
+90,admin,Administration,*,The power to do anything

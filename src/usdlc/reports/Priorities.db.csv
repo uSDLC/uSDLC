@@ -1,0 +1,7 @@
+id,cardinality,priority,description
+1,1,none,No priority for dropped, deleted or otherwise to be ignored tasks
+2,2,low,Use for tasks that are to be done in the background
+3,3,medium,Tasks that must be done in the normal course of things
+4,4,high,Tasks that are prerequisites for other medium or better tasks with a higher cardinality
+5,5,urgent,Tasks that have priority for operational reasons
+6,6,critical,Tasks that require immediate attention

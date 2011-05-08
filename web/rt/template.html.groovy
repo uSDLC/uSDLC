@@ -72,7 +72,7 @@ doc.html {
 		div('', class: 'contextMenu', id: 'menuTitle')
 		div('', id: 'pasteList') {
 			def now = new Date().time
-			Store.base('clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
+			Store.base('.clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
 				if (clip) {
 					def item = Store.parseUnique(clip)
 					long age = now - item.date.time

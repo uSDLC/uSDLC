@@ -16,6 +16,7 @@
 package usdlc
 
 import java.util.regex.Pattern
+import usdlc.db.Database
 
 /**
  * Core Processor for uSDLC - no matter which web server is in vogue. It is uses as follows for each http request
@@ -67,23 +68,23 @@ class Exchange {
 		}
 		// Massage the path so that it will point to the correct place for this server
 		path = my.header.uri
-		if (path.startsWith(Config.web.urlBase)) {
+		if (path.startsWith(Config.urlBase)) {
 			// For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
-			path = path.substring(Config.web.urlBase.size())
+			path = path.substring(Config.urlBase.size())
 		}
 		//Filer is full of magic - including deciding whether a file is client or server.
 		file = new Filer(path)
 		if (!file.fullExt) {
 			// The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
-			file = new Filer(path = Config.web.rootFile)
+			file = new Filer(path = Config.rootFile)
 		}
 		// Now that we have a definitive script name, save it for use in executing the Actor.
 		my.script = path    // full script/file name
-		my.here = "$Config.web.webBase/${Store.split(file.filePath).path}"    // path we are running in
+		my.here = "$Config.webBase/${Store.split(file.filePath).path}"    // path we are running in
 		my.clientType = file.clientExt  // extension to file
 		// Convert internal maps to a more usable form
 		my.query = Dictionary.query(my.header.query)
-		my.cookies = Dictionary.cookies(my.header.cookies)
+		my.cookies = Dictionary.cookies(my.header.cookie[0])
 		// We might store more permanent information under the user or session ID.
 		my.userId = my.cookies.userId ?: 'anon'
 		if (!my.cookies.session) {
@@ -92,13 +93,14 @@ class Exchange {
 			session++
 		}
 		my.doc = BrowserBuilder.newInstance(my.query.mimeType ?: file.mimeType())
+		Database.connection()
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
 		responseHeader['Content-Type'] = my.mimeType
 		responseHeader['Connection'] = 'close'
 	}
 
 	static badHeaderChars = Pattern.compile(/[\W_]/)
-	static int session = System.currentTimeMillis()
+	static long session = System.currentTimeMillis()
 
 	/**
 	 * Talk back to the client. Decide whether the request was dynamic or static and act accordingly. Sorry, you will have to look at Filer to see the difference.
@@ -110,7 +112,7 @@ class Exchange {
 			switch (env.query.action) {
 				case 'save':    // saves html and actors
 					// Contents to write are sent from the browser. Get them and save them to the file
-					file.save(env.userId, env.in.text)
+					file.save(env.in.text)
 					env.out.write "usdlc.highlight('sky');"
 					if (env.query?.after) {
 						env.out.write env.query.after

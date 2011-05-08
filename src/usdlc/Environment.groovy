@@ -25,38 +25,47 @@ package usdlc
  * The age-old problem if holding on to data that is to be kept for a conversation or similar temporal event.
  */
 class Environment {
-	def my = data()
+	def data = data()
 	/**
 	 * Get a named property
 	 * @param name
 	 * @return
 	 */
-	def propertyMissing(name) { return my.containsKey(name) ? my[name] : null }
+	def propertyMissing(name) { return data.containsKey(name) ? data[name] : null }
 	/**
 	 * This base solution assumes that immediate data can be retrieved from the thread name. Typically instantiated in any method that needs access to environmental data:
 	 *
 	 * def env = Environment.data()
+	 * env.ensure (use as env.ensure(ref) = RefClass to create if not in existence.
 	 * env.header = requestHeader
 	 */
 	static Map data() {
 		def key = getKey()
-		if (!dataMap.containsKey(key)) { return dataMap[key] = [:] }
+		if (!dataMap.containsKey(key)) {
+			dataMap[key] = [:]
+			dataMap[key].ensure = new Ensure(data: dataMap[key])
+		}
 		return dataMap[key] as Map
 	}
+
+	static class Ensure {
+		def data
+
+		void setProperty(String key, valueClass) {
+			if (!data?."$key") { data[key] = valueClass.newInstance() }
+		}
+	}
+
 	/**
 	 * Over-ride this method if your environment can't use the thread name to retrieve data during a single conversation exchange.
 	 * @return String unique to the current exchange/thread.
 	 */
-	static getKey() {
-		return Thread.currentThread().name
-	}
+	static getKey() { return Thread.currentThread().name }
 	/**
 	 * Retrieve the host that made the request that created this environment.
 	 * @return Host (authority) string - as in http://usdlc.net
 	 */
-	static String getHost() {
-		return "http://${data().header.host[0]}"
-	}
+	static String getHost() { return "http://${data().header.host[0]}" }
 	/**
 	 * Hold the environment data keys to the thread/current exchange.
 	 */
