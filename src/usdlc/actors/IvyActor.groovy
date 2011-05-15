@@ -16,9 +16,9 @@
 package usdlc.actors
 
 import groovy.xml.NamespaceBuilder
-import usdlc.Ant
-import usdlc.BrowserBuilder
-import usdlc.Environment
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.DefaultHttpClient
+import usdlc.*
 
 /**
  * User: Paul Marrington
@@ -28,17 +28,17 @@ import usdlc.Environment
 class IvyActor extends GroovyActor {
 	def bind() {
 		binding.doc = BrowserBuilder.newInstance('text/text')
-		delegate = new Ivy(binding.doc)
+		delegate = new Ivy(Log.file('ivy'))
 		return bind([ivy: delegate])
 	}
 }
 
 class Ivy {
-	def env = Environment.data()
+	def env = Environment.session()
 
-	Ivy(doc) {
-		this.doc = doc
-		ant = Ant.builder(doc)
+	Ivy(log) {
+		this.log = log
+		ant = Ant.builder(log)
 		ivy = NamespaceBuilder.newInstance(ant, 'antlib:org.apache.ivy.ant')
 		ant.reset()
 	}
@@ -108,5 +108,17 @@ class Ivy {
 
 	def source(String moduleName) { module(moduleName).source().fetch() }
 
-	def ant, ivy, doc, group, args = [:]
+	def download(String url, String to = "") {
+		def entity = new DefaultHttpClient().execute(new HttpGet(url)).entity
+		if (entity) {
+			log "Download $url, $entity.contentLength bytes\n"
+			def uri = Store.split(to ?: url)
+			ant.mkdir(dir: "lib/$group")
+			def out = new FileOutputStream("lib/$group/${uri.name}${uri.ext}")
+			entity.writeTo(out)
+			out.close()
+		}
+	}
+
+	def ant, ivy, log, group, args = [:]
 }

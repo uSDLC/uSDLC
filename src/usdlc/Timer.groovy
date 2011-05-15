@@ -20,8 +20,30 @@ package usdlc
  * Date: 8/05/11
  * Time: 3:25 PM
  */
-// todo: add Timer to tools page
+
+/**
+ * The Timer class is used to calculate, record and display elapsed time.
+ */
 class Timer {
+	/**
+	 * Constructor takes a title for this timer that will be recorded to the log
+	 * @param title Anything that can be coerced to a string
+	 */
+	Timer(title = '') { this.title = title }
+	/**
+	 * Log the elapsed time since this timer was instantiated in csv for, being title and time in ms.
+	 * @param path Path to log file to which the data is appended.
+	 * @return Elapsed time in ms.
+	 */
+	def log(path) {
+		def elapsed = System.currentTimeMillis() - start
+		Store.root(path).append("$title,$elapsed")
+		return elapsed
+	}
+	/**
+	 * Return the elapsed time in a human readable form.
+	 * @return "1 h 23 m 44 s" or "347 ms"
+	 */
 	String toString() {
 		long elapsed = System.currentTimeMillis() - start
 		if (elapsed < 1000) { return "$elapsed ms" }
@@ -37,5 +59,5 @@ class Timer {
 		return string
 	}
 
-	private start = System.currentTimeMillis()
+	private start = System.currentTimeMillis(), title
 }

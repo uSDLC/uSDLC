@@ -30,7 +30,7 @@ import usdlc.db.Gsql
 class GsqlActor extends GroovyActor {
 	def bind() {
 		binding.doc = BrowserBuilder.newInstance('text/text')
-		binding.ensure.gsql = Gsql
+		binding.ensure.gsql = { new Gsql() }
 		delegate = binding.gsql
 		return this
 	}

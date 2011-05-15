@@ -6601,7 +6601,7 @@
 				}
 			}
 
-			// Set the Accepts header for the server, depending on the dataType
+			// Set the Accepts header for the usdlc.server.servletengine.server, depending on the dataType
 			requestHeaders.accept = s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[0] ] ?
 				s.accepts[ s.dataTypes[0] ] + ( s.dataTypes[ 0 ] !== "*" ? ", */*; q=0.01" : "" ) :
 				s.accepts[ "*" ];
@@ -6709,7 +6709,7 @@
 					// numeric index to resolve deserialization ambiguity issues.
 					// Note that rack (as of 1.0.0) can't currently deserialize
 					// nested arrays properly, and attempting to do so may cause
-					// a server error. Possible fixes are to modify rack's
+					// a usdlc.server.servletengine.server error. Possible fixes are to modify rack's
 					// deserialization algorithm or to provide an option or flag
 					// to force array serialization to be shallow.
 					buildParams(prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, traditional, add);

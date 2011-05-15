@@ -8,6 +8,3 @@ organisation('org.seleniumhq.selenium') {
 	source('selenium-remote-driver')
 }
 organisation('commons-httpclient').module('commons-httpclient').optional()
-organisation('net.sourceforge.htmlunit').module('htmlunit').optional()
-organisation('be.roam.hue').module('hue').optional()
-organisation('org.codehaus.geb').module('geb-core').optional()

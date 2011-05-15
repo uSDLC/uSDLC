@@ -1,0 +1,8 @@
+// for uSDLC
+class MyModuleMainClass {
+	static version = Database.version("classpath:usdlc/db/Core")
+}
+// for GSQL scripts supporting external databases
+database(db)
+tableGroup = "classpath:usdlc/db/Core"
+assert db.version(tableGroup, Config.tableVersions[tableGroup]) > MyModuleMainClass.version

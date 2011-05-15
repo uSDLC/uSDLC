@@ -25,9 +25,9 @@ import usdlc.Exchange
 import usdlc.Store
 
 /**
- * This is a Groovy script that starts up a web server to serve uSDLC content. Content is retrieved from the
+ * This is a Groovy script that starts up a web usdlc.server.servletengine.server to serve uSDLC content. Content is retrieved from the
  * current directory when this script is run plus a web base in the config file. You can also set the port
- * to be used in the config file. "urlBase" is usually empty for the stand-aloner server. It is used by hosted
+ * to be used in the config file. "urlBase" is usually empty for the stand-aloner usdlc.server.servletengine.server. It is used by hosted
  * environments where uSDLC is on a sub-path - as in http://askowl.com.au/usdlc.
  */
 def host = InetAddress.localHost.hostName
@@ -46,10 +46,10 @@ try {
 }
 server.createContext '/', { HttpExchange httpExchange ->
 	// Set environment to have streams for data input (body of request) and output (body of response).
-	def my = Environment.data()
+	def env = Environment.session()
 	try {
-		my.in = httpExchange.requestBody
-		my.out = new PrintStream(httpExchange.responseBody, true)
+		env.in = httpExchange.requestBody
+		env.out = new PrintStream(httpExchange.responseBody, true)
 		/*
 		 * Fetch the header from the client and load in additional needed information.
 		 */
@@ -58,6 +58,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 		header.query = httpExchange.requestURI.query
 		header.uri = httpExchange.requestURI.path
 		header.fragment = httpExchange.requestURI.fragment
+		header.Cookie = header.Cookie[0]
 		/*
 		 Call uSDLC common code to create a HTTP exchange object. It prepares ready to send the response header. This means that all connections close between exchanges. This is the best approach for local programs as it keeps things clean. For Internet applications, static files give their length in the response header so that the connection with the browser can stay open for multiple exchanges. Most HTTP servers pre-process the request and response headers and don't allow is to write anything to the client until the response header is done. Since we want longer running responses to display progress information in the browser we need a connection that is available immediately and is closed when done.
 		 */
@@ -68,7 +69,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 		exchange.talk()
 	} catch (Throwable exception) {
 		/*
-		 Nice simple error process - dump the stack to the server console (stderr) and  return what is probably a blank page. This is great when running from an IDE as you can click on links to see where the problem lies. If the server is run from a command line you can
+		 Nice simple error process - dump the stack to the usdlc.server.servletengine.server console (stderr) and  return what is probably a blank page. This is great when running from an IDE as you can click on links to see where the problem lies. If the usdlc.server.servletengine.server is run from a command line you can
 		 */
 		exception.printStackTrace()
 	}

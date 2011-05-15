@@ -3,4 +3,4 @@ CREATE TABLE versions(
 	tableGroup varchar(255) primary key,
 	version int
 );
-insert into versions values("Core",1);
+insert into versions values('classpath:usdlc/db/Core',1);

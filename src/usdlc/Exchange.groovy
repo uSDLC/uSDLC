@@ -16,11 +16,10 @@
 package usdlc
 
 import java.util.regex.Pattern
-import usdlc.db.Database
 
 /**
- * Core Processor for uSDLC - no matter which web server is in vogue. It is uses as follows for each http request
- * the server receives for it.
+ * Core Processor for uSDLC - no matter which web usdlc.server.servletengine.server is in vogue. It is uses as follows for each http request
+ * the usdlc.server.servletengine.server receives for it.
  *
  <code>
  Map requestHeader = getHttpRequestHeaderAsMap()
@@ -39,18 +38,17 @@ class Exchange {
 	/*
 	{cookie=[jstree_open=%23%20uSDLC%2C%23%20uSDLC%20Actors; jstree_select=%23%20uSDLC%20Actors%20HtmlUnitActor; currentPage=%2FuSDLC%2FActors%2FHtmlUnitActor%2Findex.html; session=1515897166], host=[127.0.0.1:9000], contenttype=[application/x-www-form-urlencoded], query=action=save, acceptencoding=[gzip,deflate,sdch], acceptcharset=[ISO-8859-1,utf-8;q=0.7,*;q=0.3], contentlength=[35], origin=[http://127.0.0.1:9000], uri=/uSDLC/Actors/HtmlunitActor/ClickOnSection.htmlunit, connection=[keep-alive], acceptlanguage=[en-US,en;q=0.8], referer=[http://127.0.0.1:9000/], method=POST, xrequestedwith=[XMLHttpRequest], useragent=[Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.13 (KHTML, like Gecko) Chrome/9.0.597.98 Safari/534.13], fragment=null, accept=[]}
 	 */
-	def requestHeader = [:]
-	def responseHeader = [:]
+	public requestHeader = [:]
+	public responseHeader = [:]
 	String path
 	private Filer file
-
 	/**
 	 * Initialiser is passed the request header as a map. At a minimum it will require a REQUEST_URI entry.
 	 *
 	 * Environment:
 	 * <ul>
-	 * <li>in:  request body (set by server)
-	 * <li>out: response body (set by server)
+	 * <li>in:  request body (set by usdlc.server.servletengine.server)
+	 * <li>out: response body (set by usdlc.server.servletengine.server)
 	 * <li>header: supplemented request header
 	 * <li>script: path to and name of script or page
 	 * <li>clientType: Client extension (as in html or jpg)
@@ -60,42 +58,42 @@ class Exchange {
 	 * </ul>
 	 */
 	Exchange(Map header) {
-		def my = Environment.data()
+		def env = Environment.session()
 		// Normalise HTTP request header map - by making lower case and removing bad characters
-		my.header = [:]
+		env.finaliser.exchange = []
+		env.header = [:]
 		header.each { key, value ->
-			my.header[key.toLowerCase().replaceAll(badHeaderChars, '')] = value
+			env.header[key.toLowerCase().replaceAll(badHeaderChars, '')] = value
 		}
-		// Massage the path so that it will point to the correct place for this server
-		path = my.header.uri
+		// Massage the path so that it will point to the correct place for this usdlc.server.servletengine.server
+		path = env.header.uri
 		if (path.startsWith(Config.urlBase)) {
 			// For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
 			path = path.substring(Config.urlBase.size())
 		}
-		//Filer is full of magic - including deciding whether a file is client or server.
+		//Filer is full of magic - including deciding whether a file is client or usdlc.server.servletengine.server.
 		file = new Filer(path)
 		if (!file.fullExt) {
 			// The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
 			file = new Filer(path = Config.rootFile)
 		}
 		// Now that we have a definitive script name, save it for use in executing the Actor.
-		my.script = path    // full script/file name
-		my.here = "$Config.webBase/${Store.split(file.filePath).path}"    // path we are running in
-		my.clientType = file.clientExt  // extension to file
+		env.script = path    // full script/file name
+		env.here = "$Config.webBase/${Store.split(file.filePath).path}"    // path we are running in
+		env.clientType = file.clientExt  // extension to file
 		// Convert internal maps to a more usable form
-		my.query = Dictionary.query(my.header.query)
-		my.cookies = Dictionary.cookies(my.header.cookie[0])
+		env.query = Dictionary.query(env.header.query)
+		env.cookies = Dictionary.cookies(env.header.cookie)
 		// We might store more permanent information under the user or session ID.
-		my.userId = my.cookies.userId ?: 'anon'
-		if (!my.cookies.session) {
-			my.cookies.session = session as String
-			responseHeader['Set-cookie'] = "session=$my.cookies.session"
+		env.userId = env.cookies.userId ?: 'anon'
+		if (!env.cookies.session) {
+			env.cookies.session = session as String
+			responseHeader['Set-cookie'] = "session=$env.cookies.session"
 			session++
 		}
-		my.doc = BrowserBuilder.newInstance(my.query.mimeType ?: file.mimeType())
-		Database.connection()
+		env.doc = BrowserBuilder.newInstance(env.query.mimeType ?: file.mimeType())
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
-		responseHeader['Content-Type'] = my.mimeType
+		responseHeader['Content-Type'] = env.mimeType
 		responseHeader['Connection'] = 'close'
 	}
 
@@ -107,7 +105,7 @@ class Exchange {
 	 * @return
 	 */
 	def talk() {
-		def env = Environment.data()
+		def env = Environment.session()
 		try {
 			switch (env.query.action) {
 				case 'save':    // saves html and actors
@@ -136,7 +134,7 @@ class Exchange {
 			problem.printStackTrace()
 		} finally {
 			// No matter what we want to close the connection. Otherwise the browser spins forever (since we are not providing a content length in the response header.
-			try { env.doc.close() } catch (wasNotOpen) {}
+			try { env.finaliser.exchange.each { it() } } catch (wasNotOpen) {}
 		}
 	}
 	/**

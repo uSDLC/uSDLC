@@ -24,12 +24,12 @@ import groovy.xml.MarkupBuilder
  */
 abstract class BrowserBuilder extends MarkupBuilder {
 	static newInstance(mimeType) {
-		def my = Environment.data()
-		my.mimeType = mimeType
+		def env = Environment.session()
+		env.mimeType = mimeType
 		def builder
-		switch (my.mimeType) {
+		switch (env.mimeType) {
 			case "text/html":
-				builder = new HtmlBuilder(new PrintWriter(my.out as PrintStream))
+				builder = new HtmlBuilder(new PrintWriter(env.out as PrintStream))
 				break
 			case "application/javascript":
 				builder = new JsBuilder()
@@ -38,7 +38,8 @@ abstract class BrowserBuilder extends MarkupBuilder {
 				builder = new TextBuilder()
 				break
 		}
-		builder.my = my
+		builder.env = env
+		env.finaliser.exchange << { builder.close() }
 		return builder
 	}
 
@@ -79,10 +80,10 @@ abstract class BrowserBuilder extends MarkupBuilder {
 	void close() {
 		//noinspection GroovyWhileLoopSpinsOnField
 		while (nodeStack) { end() }
-		my.out.close()
+		env.out.close()
 	}
 
-	def nodeStack = [], my, pw
+	def nodeStack = [], pw, env
 }
 
 class HtmlBuilder extends BrowserBuilder {

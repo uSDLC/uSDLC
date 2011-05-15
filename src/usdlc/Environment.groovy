@@ -25,13 +25,30 @@ package usdlc
  * The age-old problem if holding on to data that is to be kept for a conversation or similar temporal event.
  */
 class Environment {
-	def data = data()
+	def variables = [:]
 	/**
 	 * Get a named property
 	 * @param name
 	 * @return
 	 */
-	def propertyMissing(name) { return data.containsKey(name) ? data[name] : null }
+	def propertyMissing(name) {
+		if (!variables.containsKey(name)) {
+			if (Config.environmentRegister.containsKey(name)) {
+				def instance = Class.forName(Config.environmentRegister[key]).newInstance()
+				variables[name] = instance.reference(name)
+			} else {
+				variables[name] = null
+			}
+		}
+		return variables[name]
+	}
+
+	void setProperty(String name, value) { variables[name] = value }
+	/**
+	 * Anything can trigger an operation when this session is closed with:
+	 *
+	 * Environment.finaliser.session << { whateverIsNeededToClose() }*/
+	def close() { variables.finaliser.session.each { it() } }
 	/**
 	 * This base solution assumes that immediate data can be retrieved from the thread name. Typically instantiated in any method that needs access to environmental data:
 	 *
@@ -39,20 +56,25 @@ class Environment {
 	 * env.ensure (use as env.ensure(ref) = RefClass to create if not in existence.
 	 * env.header = requestHeader
 	 */
-	static Map data() {
+	static Environment session() {
 		def key = getKey()
 		if (!dataMap.containsKey(key)) {
-			dataMap[key] = [:]
-			dataMap[key].ensure = new Ensure(data: dataMap[key])
+			def env = new Environment()
+			dataMap[key] = env
+			env.ensure = new Ensure(data: env)
+			env.finaliser = [:]
+			env.finaliser.session = []
 		}
-		return dataMap[key] as Map
+		return dataMap[key] as Environment
 	}
+
+	private Environment() {}
 
 	static class Ensure {
 		def data
 
-		void setProperty(String key, valueClass) {
-			if (!data?."$key") { data[key] = valueClass.newInstance() }
+		void setProperty(String key, creationClosure) {
+			if (!data?."$key") { data[key] = creationClosure() }
 		}
 	}
 
@@ -65,7 +87,7 @@ class Environment {
 	 * Retrieve the host that made the request that created this environment.
 	 * @return Host (authority) string - as in http://usdlc.net
 	 */
-	static String getHost() { return "http://${data().header.host[0]}" }
+	static String getHost() { return "http://${session().header.host[0]}" }
 	/**
 	 * Hold the environment data keys to the thread/current exchange.
 	 */
@@ -74,6 +96,6 @@ class Environment {
 	 * So we can say Environment.blah and get an environment variable called blah directly.
 	 */
 	static {
-		Environment.metaClass.static.propertyMissing = { name -> return data()."$name" }
+		Environment.metaClass.static.propertyMissing = { name -> return session()."$name" }
 	}
 }

@@ -69,7 +69,7 @@ $(function() {
 			})
 		},
 		/**
-		 * Save a file to the server and expect a response in javaScript.
+		 * Save a file to the usdlc.server.servletengine.server and expect a response in javaScript.
 		 * @param where Address to post to
 		 * @param what Data for the body of the post
 		 */
@@ -123,7 +123,7 @@ $(function() {
 		},
 		savePageContents : function() {
 			/*
-			 Give back to the server - after moving page title back into the body temporarily.
+			 Give back to the usdlc.server.servletengine.server - after moving page title back into the body temporarily.
 			 */
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()

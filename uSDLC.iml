@@ -11,7 +11,6 @@
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />
-          <root url="file://$MODULE_DIR$/web" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -24,8 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="uSDLC" level="project" />
-    <orderEntry type="library" name="groovy" level="application" />
+    <orderEntry type="library" exported="" name="uSDLC" level="project" />
   </component>
 </module>
 

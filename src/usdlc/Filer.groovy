@@ -15,10 +15,10 @@
  */
 package usdlc
 /**
- This module does more than just decipher the mime type - it uses the information to act on it. It uses the file extension(s) to decide what action is to be taken. All files can have one or two extensions. The first, or only, is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string - as in text/html or application/javascript.There is more.. a second extension specifies the server side script that will produce this code. The actor entry tells us whether there is a server component and what to run if there is.
+ This module does more than just decipher the mime type - it uses the information to act on it. It uses the file extension(s) to decide what action is to be taken. All files can have one or two extensions. The first, or only, is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string - as in text/html or application/javascript.There is more.. a second extension specifies the usdlc.server.servletengine.server side script that will produce this code. The actor entry tells us whether there is a usdlc.server.servletengine.server component and what to run if there is.
 
  <ul>
- <li>index.txt will send a static text/plain file to the server.
+ <li>index.txt will send a static text/plain file to the usdlc.server.servletengine.server.
  <li>index.js.groovy will run a groovy script that will produce javascript for the client.
  </ul>
 
@@ -45,13 +45,13 @@ class Filer {
 		if (filePath[0] == '/') {
 			filePath = filePath.substring(1)
 		}
-		// Mpst of this work is around how to process a file. If it has one extension treat it as server if it has an actor or client otherwise. With two extensions, the first is client and the second is server (most of the time). An example is index.html.groovy
+		// Mpst of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server (most of the time). An example is index.html.groovy
 		def match = (path =~ extRE)
 		if (match) {
 			actor = getActor('actors', serverExt = match[-1][1])
 			if (match.size() == 1) {
 				fullExt = serverExt
-				if (actor) { // If we have an actor then it is a server extension
+				if (actor) { // If we have an actor then it is a usdlc.server.servletengine.server extension
 					clientExt = ''
 				} else { // is client - check for a filter or send as content bytes if none
 					actor = getActor('filters', clientExt = serverExt)
@@ -133,7 +133,7 @@ class Filer {
 	}
 
 	@Lazy history = new History(path: store.path, type: 'updates')
-	@Lazy env = Environment.data()
+	@Lazy env = Environment.session()
 
 	/**
 	 * Return the client-side mime-type to put in a response header.
@@ -155,7 +155,7 @@ class Filer {
 	}
 
 	/**
-	 * Call this if the file does not exist and we want to return/display a substitute. It checks full, server and client extensions in order.
+	 * Call this if the file does not exist and we want to return/display a substitute. It checks full, usdlc.server.servletengine.server and client extensions in order.
 	 * @return
 	 */
 	byte[] getTemplate() {

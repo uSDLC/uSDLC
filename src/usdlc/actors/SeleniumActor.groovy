@@ -22,14 +22,14 @@ import usdlc.Environment
 
 class SeleniumActor extends GroovyActor {
 	def bind() {
-		binding.ensure.selenium = SeleniumProcessor
+		binding.ensure.selenium = { new SeleniumProcessor() }
 		delegate = binding.selenium
 		return this
 	}
 }
 
 class SeleniumProcessor {
-	def env = Environment.data()
+	def env = Environment.session()
 	static class Browser {
 		HttpCommandProcessor commandProcessor
 		String authority, browser

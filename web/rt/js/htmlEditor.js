@@ -63,7 +63,7 @@ $(function() {
 	$.ajax({url : "/rt/reports/support/list.js.groovy", dataType : 'script'})
 	/*
 	 Triggered by the user when they choose to edit a paragraph. creates a CKEDITOR,
-	 stashes initial contents and prepares for a save on exit. The save sends a diff string to the server so that
+	 stashes initial contents and prepares for a save on exit. The save sends a diff string to the usdlc.server.servletengine.server so that
 	 full history is recorded.
 	 */
 	function editSection(section) {

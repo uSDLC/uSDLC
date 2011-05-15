@@ -6,3 +6,4 @@ out/
 lib/jars/optional/
 lib/javadoc/
 lib/source/
+.log/

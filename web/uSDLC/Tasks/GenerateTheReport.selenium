@@ -1,0 +1,4 @@
+open "/uSDLC/Tasks"
+click "link=report link"
+assertElementNotPresent "modalMask"
+assert "check base report contents" == false

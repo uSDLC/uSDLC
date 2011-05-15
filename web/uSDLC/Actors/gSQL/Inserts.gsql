@@ -1,0 +1,17 @@
+def characters() {
+	firstRow("select count(*) as size from Actors where comment = 'Cartoon'").size
+}
+
+fn = 'Bugs'
+sn = 'Bunny'
+cm = 'Cartoon'
+execute "insert into Actors values ($fn,$sn,$cm)"
+execute "insert into Actors values (?,?,?)", ['Daffy', 'Duck', 'Cartoons']
+assert characters() == 1
+
+duck = "Duck"
+executeUpdate "update Actors set comment = 'Cartoon' where surname = $duck"
+assert characters() == 2
+
+execute "delete from Actors where firstName = 'Daffy'"
+assert characters() == 1

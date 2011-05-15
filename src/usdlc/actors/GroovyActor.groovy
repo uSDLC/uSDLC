@@ -29,7 +29,7 @@ import usdlc.Store
  */
 class GroovyActor {
 	public run(script) {
-		binding = Environment.data()
+		binding = Environment.session().variables
 		if (!binding.variables.containsKey('gse')) {
 			bind(
 					log: { System.err.println it },

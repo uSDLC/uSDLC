@@ -35,7 +35,7 @@ class Store {
 	 * @param from Add to web root to create a new base to read/write from/to
 	 * @return A reference to a Store object used for further operations
 	 */
-	static Store root(path) {
+	static Store root(path = '') {
 		return base(path, "$webBase/")
 	}
 	/**
@@ -44,7 +44,7 @@ class Store {
 	 * @param path Name of file in the usdlc directory.
 	 * @return A reference to a Store object used for further operations
 	 */
-	static runtime(path) {
+	static runtime(path = '') {
 		return base(path, "$webBase/rt/")
 	}
 	/**
@@ -53,10 +53,10 @@ class Store {
 	 * @param from Add to base to create a new base such as root and template
 	 * @return A reference to a Store object used for further operations
 	 */
-	static base(path, from = '') {
+	static base(path = '', from = '') {
 		def store = new Store()
 		String ending = path
-		if (ending[0] == '/') {
+		if (ending.size() && ending[0] == '/') {
 			ending = ending.substring(1)
 		}
 		store.file = new File("$from$ending")
@@ -269,6 +269,15 @@ class Store {
 	def rmdir() {
 		capture { ant.delete(dir: file.path, includeemptydirs: true) }
 	}
+	/**
+	 * Delete the named file that lives under the defined Store
+	 * @param name File to delete
+	 */
+	def delete(name) { ant.delete { fileset(dir: file.path, includes: name)} }
+	/**
+	 * Delete the file pointed to by the store.
+	 */
+	def delete() { ant.delete(file: file.name) }
 
 	@Lazy ant = new AntBuilder()
 

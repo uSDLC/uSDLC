@@ -1,0 +1,1 @@
+assert db.firstRow("select * from priorities where priority = 'low'") != null

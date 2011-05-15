@@ -24,7 +24,7 @@ import usdlc.db.Database
  * Time: 9:48 AM
  */
 class Tasks {
-	static { Database.version("classpath:/usdlc/reports/Tasks") }
+	static version = Database.version("classpath:/usdlc/reports/Tasks")
 
 	public processPage(contents) {
 		def page = new Page(contents)

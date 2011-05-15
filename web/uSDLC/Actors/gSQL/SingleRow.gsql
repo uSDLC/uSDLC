@@ -1,0 +1,2 @@
+row = firstRow "select firstName, surname from actors where comment = 'Westerns'"
+assert row.surname == "Wayne"

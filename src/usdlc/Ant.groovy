@@ -15,7 +15,6 @@
  */
 package usdlc
 
-import groovy.xml.MarkupBuilder
 import org.apache.tools.ant.BuildEvent
 import org.apache.tools.ant.BuildListener
 
@@ -25,9 +24,9 @@ import org.apache.tools.ant.BuildListener
  * Time: 4:25 PM
  */
 class Ant extends AntBuilder {
-	static builder(doc, level = 2) {
+	static builder(log, level = 2) {
 		def ant = new Ant()
-		ant.doc = doc
+		ant.log = log
 		ant.level = level
 		ant.reset()
 		return ant
@@ -41,10 +40,10 @@ class Ant extends AntBuilder {
 			project.removeBuildListener(it)
 		}
 		// and adding our own
-		project.addBuildListener(new UsdlcBuildListener(doc: doc, level: level ?: this.level))
+		project.addBuildListener(new UsdlcBuildListener(log: log, level: level ?: this.level))
 	}
 
-	def doc = new MarkupBuilder()
+	def log = {}
 	def ant = new AntBuilder()
 	def level
 }
@@ -66,11 +65,11 @@ class UsdlcBuildListener implements BuildListener {
 		if (buildEvent.priority <= level) {
 			def message = "${buildEvent.message.replaceAll(/\.{2,}/, '')}\n"
 			if (!(message ==~ /[\s\.]*/)) {
-				doc.text message
+				log message
 				if (level > 2) { println(message) }
 			}
 		}
 	}
 
-	def doc, level
+	def log, level
 }

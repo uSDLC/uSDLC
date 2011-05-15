@@ -22,7 +22,7 @@ import usdlc.Environment
 
 class GebActor extends GroovyActor {
 	def bind() {
-		def env = Environment.data()
+		def env = Environment.session()
 		delegate = env?.geb ?: (env.geb = new Geb())
 		return this
 	}

@@ -1,0 +1,4 @@
+size = { usdlc.Store.base('.log/ivy.log').size() }
+before = size()
+organisation('org.apache.ivy').module('ivy').required()
+assert before < size()

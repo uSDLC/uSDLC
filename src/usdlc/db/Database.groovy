@@ -16,6 +16,7 @@
 package usdlc.db
 
 import groovy.sql.Sql
+import org.h2.tools.RunScript
 import usdlc.Config
 import usdlc.Environment
 
@@ -24,25 +25,16 @@ import usdlc.Environment
  * Date: 7/05/11
  * Time: 5:16 PM
  */
-// todo: database pages doco
 class Database {
 	/**
-	 * Save a connection to the uSDLC database in the environment (if there is not one ready already. It can
-	 * be used as Environment.db. When using the gsql actor, it can be made the default with database(db).
+	 * Reference is called by the environment to get a new reference to a variable.
 	 */
-	static connection() {
-		def env = Environment.data()
-		env.ensure.db = Gsql
-		env.db.database(Config.usdlcDatabase)
-		// todo: not versioning core yet
+	public reference() {
+		def db = new Gsql(lifetime: "session")
+		db.database(Config.usdlcDatabase)
 		if (!version) { version = version("classpath:usdlc/db/Core") }
+		return db
 	}
-
-	static version = 0
-	/**
-	 * Close the open uSDLC database
-	 */
-	static close() { Environment.db.close() }
 	/**
 	 * The first time in a static run that we access a group of related tables we check the code generated version against that in the current database. If they differ, ask caller to migrate the data.
 	 *
@@ -56,12 +48,14 @@ class Database {
 	static version(tableGroup) {
 		return Environment.db.version(tableGroup, Config.tableVersions[tableGroup])
 	}
+
+	static version = 0
 }
 
 class Gsql {
 	@Delegate Sql sql
 
-	def env = Environment.data()
+	def env = Environment.session(), properties, lifetime = 'exchange'
 	/**
 	 * Open a database using a typical jdbc string - if it is not already open
 	 *      database("jdbc:h2:~/testSqlActor;CIPHER=AES", user : "me", password : "adfs")
@@ -69,10 +63,13 @@ class Gsql {
 	 * @param properties - java DriverManager properties - user, password, driverClassName
 	 * @return instance of the database connection - to maintain allow swapping
 	 */
-	public database(Map properties, String url) {
-		def key = "$url::$Environment.cookies.session"
+	public database(Map properties) {
+		this.properties = properties
+		sql?.close()
+		def key = "${properties.url}::${Environment.cookies.session}"
 		if (!connections?."$key"?.connection || connections[key].connection.isClosed()) {
-			connections[key] = Sql.newInstance(url, properties as Properties)
+			connections[key] = Sql.newInstance(properties as Properties)
+			env.finaliser[lifetime] << { connections[key].close() } // exchange or session
 		}
 		return sql = connections[key]
 	}
@@ -81,7 +78,7 @@ class Gsql {
 	 * @param url jdbc url address - as in "jdbc:h2:/data/test;AUTO_SERVER=TRUE"
 	 * @return instance of the database connection - to maintain allow swapping
 	 */
-	public database(String url = 'jdbc:h2:mem:test:db1') { database([:], url) }
+	public database(String url = 'jdbc:h2:mem:test:db1') { database([url: url]) }
 	/**
 	 * Switch database connections to another known one...
 	 * @param to database connection
@@ -94,11 +91,6 @@ class Gsql {
 	 * @return instance of the database connection - to maintain allow swapping
 	 */
 	public database(Gsql to) { sql = to.sql }
-	/**
-	 * Set the trace level written to the log
-	 * @param level - 0=off, 1=error, 2=info, 3=debug
-	 */
-	public trace(level = 3) { sql.execute("set TRACE_LEVEL " + level) }
 	/**
 	 * The first time in a static run that we access a group of related tables we check the code generated version against that in the current database. If they differ, ask caller to migrate the data.
 	 *
@@ -113,14 +105,17 @@ class Gsql {
 	public version(tableGroup, targetVersion, migrate = migrateByScript) {
 		def dbVersion = 0
 		Environment.db.with {
-			try { firstRow("select version from versions where tableGroup = $tableGroup").version } catch (e) {
-				execute "runScript from 'classpath:usdlc/db/Core.001.sql'"
+			try {
+				dbVersion = firstRow("select version from versions where tableGroup = $tableGroup").version
+			} catch (e) {
+				runScript 'classpath:usdlc/db/Core.001.sql'
 			}
 			if (!dbVersion) {
 				try { executeUpdate "insert into versions values($tableGroup,0)" } catch (e) {}
 				dbVersion = 0
 			}
-			while (dbVersion != targetVersion) {
+			def toVersion = targetVersion ?: 1
+			while (dbVersion != toVersion) {
 				dbVersion += 1
 				if (!migrate(tableGroup, dbVersion)) { return /* failure */ }
 				executeUpdate "update versions set version = $dbVersion where tableGroup = $tableGroup"
@@ -133,12 +128,16 @@ class Gsql {
 	 */
 	public migrateByScript = { tableGroup, toVersion ->
 		try {
-			def script = "$tableGroup${String.format('%03d', toVersion)}.sql"
+			def script = "${tableGroup}.${String.format('%03d', toVersion)}.sql"
 			System.err.print "Migrating $script ..."
 			def timer = new Timer()
-			sql.execute "runscript from $script" as String
-			System.err.println " done in ${timer}"
+			runScript "$script"
+			System.err.println " done in $timer"
 		} catch (IOException ioe) {/*probably doesn't exist*/}
+	}
+
+	public runScript(script) {
+		RunScript.execute(properties.url, null, null, script, null, false)
 	}
 
 	static connections = [:]

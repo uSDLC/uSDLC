@@ -31,7 +31,7 @@ import org.apache.commons.logging.impl.SimpleLog
 class Log extends SimpleLog {
 	Log(String name) { super(name) }
 
-	def my = Environment.data()
+	def my = Environment.session()
 	/**
 	 * By default, SimpleLog sends to stderr. Let's redirect it to somewhere more useful.
 	 * @param buffer buffer the logger has prepared for the record
@@ -42,6 +42,16 @@ class Log extends SimpleLog {
 		} else {
 			println buffer
 		}
+	}
+	/**
+	 * Given a file path to save the log to, return a closure that will write whatever it is given
+	 * @param name Name/path of file to append log information to.
+	 * @return closure to call to write to the log.
+	 */
+	static file(name) {
+		def store = Store.base(".log/${name}.log")
+		store.append("\n${new Date().format('yyyy-MM-dd')}: ")
+		return { store.append it }
 	}
 	/**
 	 * The most likely (and in fact only) use for this class is the interception Apache Commons logging -
