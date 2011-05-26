@@ -29,79 +29,33 @@ import static groovy.io.FileType.FILES
  */
 class Store {
 	/**
-	 * All Store interfaces are created by static builders. Root is used for files relative to the web root.
-	 *
-	 * @param path Path and name of file to read or write
-	 * @param from Add to web root to create a new base to read/write from/to
-	 * @return A reference to a Store object used for further operations
+	 * Build a store object for a path relative to the web root
 	 */
-	static Store root(path = '') {
-		return base(path, "$webBase/")
-	}
+	static base(path = '') { return absolute(Config.baseDirectory + path) }
 	/**
-	 * Convenience method to access files from the usdlc directory.
-	 *
-	 * @param path Name of file in the usdlc directory.
-	 * @return A reference to a Store object used for further operations
+	 * Build a store object from an absolute file path.
 	 */
-	static runtime(path = '') {
-		return base(path, "$webBase/rt/")
-	}
-	/**
-	 * Classpath variables are from the current directory when the program starts - not the web root.
-	 * @param path Name of a file relative to the default starting directory
-	 * @param from Add to base to create a new base such as root and template
-	 * @return A reference to a Store object used for further operations
-	 */
-	static base(path = '', from = '') {
-		def store = new Store()
-		String ending = path
-		if (ending.size() && ending[0] == '/') {
-			ending = ending.substring(1)
-		}
-		store.file = new File("$from$ending")
-		return store
-	}
-
 	static absolute(String path) {
 		def store = new Store()
 		store.file = new File(path)
 		return store
 	}
-
-	static final webBase = {
-		def wb = Config.webBase
-		if (!wb) { return '.' }
-		if (wb.startsWith('/')) { wb = wb[1..-1] }
-		if (wb.endsWith('/')) { wb = wb[0..-2] }
-		return wb
-	}()
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	private def mkdirs() {
-		if (parent) {
-			new File(parent).mkdirs()
-		}
-	}
+	private def mkdirs() { if (parent) { new File(parent).mkdirs() } }
 
-	@Lazy def parent = file.parent
-	@Lazy def path = file.path
-	/**
-	 * Convenience method to access files from the lib directory.
-	 *
-	 * @param path Name of file in the lib directory.
-	 * @return A reference to a Store object used for further operations
-	 */
-	public static lib(path) {
-		return root(path, 'lib/')
-	}
+	@Lazy String parent = file.parent
+	@Lazy String path = file.path
+	@Lazy def url = file.toURI().toURL()
 	/**
 	 * Public method used to read the file.
 	 * @return File contents as a byte array.
 	 */
 	public byte[] read() {
-		return file.exists() ? file.bytes : [] as byte[]
+		if (file.exists()) { return file.bytes }
+		Log.err("New file $file.path")
+		return new byte[0]
 	}
 	/**
 	 * Public method used to read the file into a string.
@@ -176,9 +130,7 @@ class Store {
 	 */
 	public dirs(mask, closure) {
 		//noinspection GroovyEmptyCatchBlock
-		try {
-			file.traverse(type: FILES, nameFilter: mask) closure(it.path)
-		} catch (e) {}
+		file.traverse(type: FILES, nameFilter: mask) { closure(it.path) }
 	}
 	/**
 	 * Fetch a list of contents of a directory tree (as in dir /s)
@@ -192,8 +144,10 @@ class Store {
 	}
 
 	def lastModified() { return file.lastModified() }
-
-	def toURL() { return file.toURL() }
+	/**
+	 * Store.toString(), implicit or explicit will return the full path to the file or directory
+	 */
+	String toString() { return path }
 
 	private File file
 
@@ -219,6 +173,7 @@ class Store {
 	 * @return object with date and title elements
 	 */
 	static parseUnique(uniqueName) {
+		//noinspection GroovyUnusedAssignment
 		def (all, dateString, uniquifier, title) = uniqueRE.matcher(uniqueName)[0]
 		return [
 				date: Date.parse(dateStampFormat, dateString),
@@ -233,13 +188,10 @@ class Store {
 	static dateStampFormat = "yyyy-MM-dd_HH-mm-ss"
 	/**
 	 * Turn a camel-case name back into a sentence
-	 * @param camelCase
-	 * @return camel Case
 	 */
 	static decamel(camelCase) { return camelCase.replaceAll(decamelRE, ' $1') }
 	/**
 	 * Split a fully qualified storage name into path, name ane extension
-	 * @param path to split
 	 * @return [path : path, name : name, ext : ext]
 	 */
 	static split(path) {
@@ -250,28 +202,21 @@ class Store {
 	static splitRE = ~/^(?:(.*)[\/\\])?([^\.]*)?(.*)?$/
 	/**
 	 * Copy a file or directory to a target directory.
-	 * @param to Directory to copy to.
 	 */
 	def copy(to) {
-		capture {
-			def includes = (file.directory) ? "$file.name/*" : file.name
-			ant.copy(toDir: to) { fileset(dir: file.parent, includes: includes) }
-		}
+		def includes = (file.directory) ? "$file.name/*" : file.name
+		ant.copy(toDir: to) { fileset(dir: file.parent, includes: includes) }
 	}
 	/**
 	 * move a file or directory to a target directory.
-	 * @param to Directory to move to.
 	 */
-	def move(to) { capture { ant.move(toDir: to) { fileset(dir: file.parent, includes: "$file.name/*") } } }
+	def move(to) { ant.move(toDir: to) { fileset(dir: file.parent, includes: "$file.name/*") } }
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */
-	def rmdir() {
-		capture { ant.delete(dir: file.path, includeemptydirs: true) }
-	}
+	def rmdir() { ant.delete(dir: file.path, includeemptydirs: true) }
 	/**
 	 * Delete the named file that lives under the defined Store
-	 * @param name File to delete
 	 */
 	def delete(name) { ant.delete { fileset(dir: file.path, includes: name)} }
 	/**
@@ -279,18 +224,5 @@ class Store {
 	 */
 	def delete() { ant.delete(file: file.name) }
 
-	@Lazy ant = new AntBuilder()
-
-	private capture(Closure actions) {
-		catcher {
-			def out = System.out
-			def buffer = new ByteArrayOutputStream()
-			System.out = new PrintStream(buffer)
-			actions()
-			System.out = out
-			return buffer.toString()
-		}
-	}
-
-	private catcher(Closure actions) { try { actions() } catch (err) { System.err.println err.message } }
+	@Lazy ant = Ant.builder(Log.file('store'))
 }

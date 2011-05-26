@@ -35,22 +35,46 @@ class Dictionary {
 		return fromString(text, '=', ';')
 	}
 	/**
+	 * Sometimes the map has been pre-processed.
+	 * @param map Map ready to use
+	 * @return same map
+	 */
+	static query(Map map) {
+		return map
+	}
+	/**
 	 * Use this to create a cookie dictionary
 	 *
 	 * def query = Dictionary.query(request.queryString)
 	 * def action = query.action
+	 *
 	 * @param text String containing "name=value&" pairs
 	 * @return dictionary ready to use
 	 */
-	static query(text) {
-		return fromString(text, '=', '&')
+	static query(text) { return fromString(text, '=', '&') }
+	/**
+	 * Use this to create a dictionary from command line arguments
+	 *
+	 * def arguments = Dictionary.commandLine(args)
+	 * binding.variables += Dictionary.commandLine(args)
+	 *
+	 * @param args from command line in the form of a=b "c=d e" f=g
+	 * @return dictionary ready to use
+	 */
+	static commandLine(args) {
+		def map = [:]
+		args.each {
+			def nvp = it.split(/\s*=\s*/)
+			map[nvp[0]] = (nvp.size() < 2) ? "" : nvp[1]
+		}
+		return map
 	}
 	/**
-	 * A map can be added to from a string in the define format (separators and assigment operators)
+	 * A map can be added to from a string in the define format (separators and assignment operators)
 	 * @param text Text to parse for map
 	 * @return map
 	 */
-	static fromString(text, assign, separate) {
+	static Map fromString(text, assign, separate) {
 		def map = [:]
 		if (text) {
 			text.split(/\s*$separate\s*/).each {
@@ -65,7 +89,7 @@ class Dictionary {
 	 * @return String representation of dictionary.
 	 */
 	static toString(map, assign, separate) {
-		StringBuilder builder;
+		StringBuilder builder = new StringBuilder();
 		map.each { key, value ->
 			builder.append(key).append(assign).append(value).append(separate)
 		}

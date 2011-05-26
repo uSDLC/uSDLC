@@ -24,7 +24,7 @@ import groovy.xml.StreamingMarkupBuilder
  * Time: 9:30 PM
  */
 class Run {
-	static slurper = new XmlSlurper(new org.cyberneko.html.parsers.SAXParser())
+	static slurper = null//new XmlSlurper(new org.cyberneko.html.parsers.SAXParser())
 	def out = new StreamingMarkupBuilder()
 	def html
 	def printer
@@ -36,7 +36,7 @@ class Run {
 	 */
 	static file(File file, printer) {
 		def pageRunner = new Run(printer: printer)
-		pageRunner.html = slurper.parseText(new String(Store.root(file.filePath).read()))
+		pageRunner.html = slurper.parseText(new String(Store.base(file.filePath).read()))
 		pageRunner.namespace = pageRunner.html[0].namespaceURI()
 		return pageRunner;
 	}
@@ -71,24 +71,24 @@ class Run {
 	 * @param html HTML fragment - usually for a named section
 	 */
 	private process(html) {
-		if (!html) { return }
-//		printer out.bind {
-//			mkp.declareNamespace('': namespace)
-//			mkp.yield html
-//		}
-//		html.breadthFirst().findAll { it.name() == 'a' }.each {
-//			Filer file = new Filer(it.@href)
-//			if (file.clientExt == 'html' && !file.serverExt) {
-//				/*
-//				 This is a link to another uSDLC page. Follow it.
-//				 */
-//				usdlc.Run.file(file.filePath).all()
-//			} else {
-//				/*
-//				 Process active link here and now.
-//				 */
-//				printer "Running $file.filePath<br>"
-//			}
-//		}
+//		if (!html) { return }
+		//		printer out.bind {
+		//			mkp.declareNamespace('': namespace)
+		//			mkp.yield html
+		//		}
+		//		html.breadthFirst().findAll { it.name() == 'a' }.each {
+		//			Filer file = new Filer(it.@href)
+		//			if (file.clientExt == 'html' && !file.serverExt) {
+		//				/*
+		//				 This is a link to another uSDLC page. Follow it.
+		//				 */
+		//				usdlc.Run.file(file.filePath).all()
+		//			} else {
+		//				/*
+		//				 Process active link here and now.
+		//				 */
+		//				printer "Running $file.filePath<br>"
+		//			}
+		//		}
 	}
 }

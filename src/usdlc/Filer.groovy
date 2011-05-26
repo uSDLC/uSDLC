@@ -30,8 +30,8 @@ class Filer {
 	String serverExt = ''
 	String clientExt = ''
 	String fullExt = ''
-	String filePath
-	@Lazy String basePath = filePath[0..-(fullExt.size() + 2)]
+	String relativePath
+	@Lazy String basePath = relativePath[0..-(fullExt.size() + 2)]
 
 	Class actor
 
@@ -41,9 +41,10 @@ class Filer {
 	 * @return
 	 */
 	Filer(path) {
-		filePath = path
-		if (filePath[0] == '/') {
-			filePath = filePath.substring(1)
+		// todo: fails if result of dir() which is absolute path
+		relativePath = path.startsWith(Config.baseDirectory) ? path.substring(Config.baseDirectory.size()) : path
+		if (relativePath[0] == '/') {
+			relativePath = relativePath.substring(1)
 		}
 		// Mpst of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server (most of the time). An example is index.html.groovy
 		def match = (path =~ extRE)
@@ -101,14 +102,14 @@ class Filer {
 	 * Run the actor with the correct parameters.
 	 */
 	void actorRunner() {
-		actor?.newInstance()?.run(filePath)
+		actor?.newInstance()?.run(relativePath)
 	}
 	/**
 	 * Run a set of files in the same directory matching a pattern. Used for setup and teardown.
 	 * @param matching Pattern to match
 	 */
 	def runFiles(matching) {
-		Store.root(pathTo).dir(matching).each {
+		Store.base(pathTo).dir(matching).each {
 			new Filer(it).actorRunner()
 		}
 	}
@@ -117,8 +118,8 @@ class Filer {
 	 * @return
 	 */
 	@Lazy pathTo = {
-		int slash = filePath.lastIndexOf('/')
-		return (slash == -1) ? '/' : filePath.substring(0, slash)
+		int slash = relativePath.lastIndexOf('/')
+		return (slash == -1) ? '/' : relativePath.substring(0, slash)
 	}()
 
 	static HashSet noActors = new HashSet()
@@ -132,7 +133,7 @@ class Filer {
 		history.save(env.userId, before, newContents)
 	}
 
-	@Lazy history = new History(path: store.path, type: 'updates')
+	@Lazy history = new History(path: relativePath, type: 'updates')
 	@Lazy env = Environment.session()
 
 	/**
@@ -151,7 +152,7 @@ class Filer {
 	byte[] template(ext) {
 		if (!ext) return [] as byte[]
 		if (!Config.template[ext]) return [] as byte[]
-		return Store.runtime("${Config.template[ext]}.$fullExt").read()
+		return Store.base("rt/${Config.template[ext]}.$fullExt").read()
 	}
 
 	/**
@@ -183,7 +184,7 @@ class Filer {
 		store.write(contents)
 	}
 
-	@Lazy Store store = Store.root(filePath)
+	@Lazy Store store = Store.base(relativePath)
 	@Lazy String path = store.path
 
 	/**

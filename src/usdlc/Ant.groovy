@@ -32,7 +32,10 @@ class Ant extends AntBuilder {
 		return ant
 	}
 
-	private Ant() {}
+	private Ant() {
+		ant = new AntBuilder()
+		ant.project.basedir = Config.baseDirectory
+	}
 
 	def reset(level = 0) {
 		// removing all registered build listeners, including default (that writes to console)
@@ -43,9 +46,7 @@ class Ant extends AntBuilder {
 		project.addBuildListener(new UsdlcBuildListener(log: log, level: level ?: this.level))
 	}
 
-	def log = {}
-	def ant = new AntBuilder()
-	def level
+	def log = {}, ant, level
 }
 
 class UsdlcBuildListener implements BuildListener {

@@ -34,7 +34,7 @@ class GroovyActor {
 			bind(
 					log: { System.err.println it },
 					print: { binding.doc.text it },
-					gse: new GroovyScriptEngine(Config.classPath as String[]),
+					gse: new GroovyScriptEngine(Config.classPath),
 			)
 		}
 		def root = Store.base(script).parent.replaceAll('\\\\', '/')
@@ -73,14 +73,10 @@ class GroovyActor {
 
 	protected setDelegate(delegate) { binding.$delegate = delegate }
 	/**
+	 * Enter Groovy land to build up and execute groovy code as a script.
 	 * Could be recursive if a script calls include()
-	 * @param scriptName Path and name of script relative to uSDLC root.
 	 */
-	def runScript(scriptName) {
-		def script = scriptName
-		// Drop the leading slash - always part of the URL, but we don't want to go from the root of the drive.
-		if (script[0] == '/') { script = script[1..-1] }
-		// Enter Groovy land to build up and execute groovy code as a script.
+	def runScript(script) {
 		binding.gse.run script, binding
 	}
 

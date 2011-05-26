@@ -31,14 +31,14 @@ import org.apache.commons.logging.impl.SimpleLog
 class Log extends SimpleLog {
 	Log(String name) { super(name) }
 
-	def my = Environment.session()
+	def env = Environment.session()
 	/**
 	 * By default, SimpleLog sends to stderr. Let's redirect it to somewhere more useful.
 	 * @param buffer buffer the logger has prepared for the record
 	 */
 	protected void write(StringBuffer buffer) {
 		if (level > 4) {
-			my.out.println "$buffer<br>"
+			env.out.println "$buffer<br>"
 		} else {
 			println buffer
 		}
@@ -49,10 +49,15 @@ class Log extends SimpleLog {
 	 * @return closure to call to write to the log.
 	 */
 	static file(name) {
-		def store = Store.base(".log/${name}.log")
+		def store = Store.base("store/log/${name}.log")
 		store.append("\n${new Date().format('yyyy-MM-dd')}: ")
 		return { store.append it }
 	}
+	/**
+	 * Shortcut convenience method to write to stderr (server output stream).
+	 * @param message Message to write
+	 */
+	static err(message) { System.err.println message }
 	/**
 	 * The most likely (and in fact only) use for this class is the interception Apache Commons logging -
 	 * so we had better tell the factory.

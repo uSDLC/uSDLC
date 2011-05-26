@@ -16,6 +16,7 @@
 package usdlc.actors
 
 import groovy.xml.NamespaceBuilder
+import java.util.Dictionary
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
 import usdlc.*
@@ -43,11 +44,11 @@ class Ivy {
 		ant.reset()
 	}
 
-	def methodMissing(String name, value) {
+	def methodMissing(String name, Object[] value) {
 		if (value.size() > 1) {
 			def before = args[name]
 			args[name] = value[0]
-			value[1]()
+			((Closure) value[1])()
 			args[name] = before
 
 		} else {
@@ -69,12 +70,12 @@ class Ivy {
 		return this
 	}
 
-	def resolve(resolveArgumentString) {
+	def resolve(String resolveArgumentString) {
 		args += Dictionary.fromString(resolveArgumentString, ':', ' ')
 	}
 
-	def remove(remove) {
-		remove?.split()?.each {
+	def remove(String toRemove) {
+		toRemove?.split()?.each {
 			ant.delete(file: "lib/$group/$it", verbose: true)
 		}
 		return this
@@ -82,7 +83,7 @@ class Ivy {
 
 	def fetch(Map more) {
 		ivy.resolve(args + [inline: true, showprogress: false, keep: true])
-		ivy.retrieve(pattern: "lib/$group/[artifact].[ext]")
+		ivy.retrieve(pattern: "web/lib/$group/[artifact].[ext]")
 		return this
 	}
 
@@ -113,12 +114,14 @@ class Ivy {
 		if (entity) {
 			log "Download $url, $entity.contentLength bytes\n"
 			def uri = Store.split(to ?: url)
-			ant.mkdir(dir: "lib/$group")
-			def out = new FileOutputStream("lib/$group/${uri.name}${uri.ext}")
+			ant.mkdir(dir: "web/lib/$group")
+			def out = new FileOutputStream("web/lib/$group/${uri.name}${uri.ext}")
 			entity.writeTo(out)
 			out.close()
 		}
 	}
 
-	def ant, ivy, log, group, args = [:]
+	def ivy, log, group
+	Ant ant
+	Map args = [:]
 }

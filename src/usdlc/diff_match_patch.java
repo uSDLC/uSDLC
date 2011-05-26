@@ -1079,13 +1079,13 @@ public class diff_match_patch {
 					post_ins = true;
 				}
 				/*
-						 * Five types to be split:
-						 * <ins>A</ins><del>B</del>XY<ins>C</ins><del>D</del>
-						 * <ins>A</ins>X<ins>C</ins><del>D</del>
-						 * <ins>A</ins><del>B</del>X<ins>C</ins>
-						 * <ins>A</del>X<ins>C</ins><del>D</del>
-						 * <ins>A</ins><del>B</del>X<del>C</del>
-						 */
+											 * Five types to be split:
+											 * <ins>A</ins><del>B</del>XY<ins>C</ins><del>D</del>
+											 * <ins>A</ins>X<ins>C</ins><del>D</del>
+											 * <ins>A</ins><del>B</del>X<ins>C</ins>
+											 * <ins>A</del>X<ins>C</ins><del>D</del>
+											 * <ins>A</ins><del>B</del>X<del>C</del>
+											 */
 				if (lastequality != null
 						&& ((pre_ins && pre_del && post_ins && post_del)
 						|| ((lastequality.length() < Diff_EditCost / 2)
@@ -1242,10 +1242,10 @@ public class diff_match_patch {
 		}
 
 		/*
-			 * Second pass: look for single edits surrounded on both sides by equalities
-			 * which can be shifted sideways to eliminate an equality.
-			 * e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
-			 */
+					   * Second pass: look for single edits surrounded on both sides by equalities
+					   * which can be shifted sideways to eliminate an equality.
+					   * e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
+					   */
 		boolean changes = false;
 		// Create a new iterator at the start.
 		// (As opposed to walking the current one back.)

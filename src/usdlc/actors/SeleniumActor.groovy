@@ -61,7 +61,7 @@ class SeleniumProcessor {
 	 * @return Whatever Selenium returns - OK or error message usually
 	 */
 	def methodMissing(String command, args) {
-		if (!env?.browser) { project.Selenium.browse() }
+		if (!env?.browser) { binding.selenium.browse() }
 		env.browser.with {
 			if (!commandProcessor) { commandProcessor() }
 			def params = [args].flatten() as String[]

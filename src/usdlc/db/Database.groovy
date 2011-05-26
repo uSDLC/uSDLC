@@ -31,7 +31,7 @@ class Database {
 	 */
 	public reference() {
 		def db = new Gsql(lifetime: "session")
-		db.database(Config.usdlcDatabase)
+		db.database Config.usdlcDatabase as String
 		if (!version) { version = version("classpath:usdlc/db/Core") }
 		return db
 	}

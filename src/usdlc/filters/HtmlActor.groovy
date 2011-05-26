@@ -46,7 +46,7 @@ class HtmlActor {
 			case 'cut':
 			case 'copy':
 				def base = file.store.parent
-				def targetPath = Store.base('.clipboard').uniquePath(env.query.title).replace('\\', '/')
+				def targetPath = Store.base('store/clipboard').uniquePath(env.query.title).replace('\\', '/')
 				env.query.dependents.tokenize(',').each {
 					//noinspection GroovyNestedSwitch
 					switch (env.query.action) {
@@ -82,16 +82,16 @@ class HtmlActor {
 		def file = new Filer(script) // interim settings
 		if (!file.clientExt) {
 			/*
-			 No client extension means a HTTP url without a stop - so we can't guess either client format or usdlc.server.servletengine.server function. If the command ends in /, use template.html - otherwise assume it is int he default script language set in WEB-INF/web.groovy.
-			 */
+							No client extension means a HTTP url without a stop - so we can't guess either client format or usdlc.server.servletengine.server function. If the command ends in /, use template.html - otherwise assume it is int he default script language set in WEB-INF/web.groovy.
+							*/
 			if (script[-1] == '/') {
 				script += 'template.html'
 			}
 			script += '.' + Config.defaultScriptLanguage
 		}
 		/*
-		 Filer does the real work if executing the CGI - since it knows all the details.
-		 */
+				   Filer does the real work if executing the CGI - since it knows all the details.
+				   */
 		new Filer(env.script = "$dir/$script").actorRunner()
 	}
 }

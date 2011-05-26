@@ -78,8 +78,7 @@ abstract class BrowserBuilder extends MarkupBuilder {
 	 * Close off any open tags and markup-builder
 	 */
 	void close() {
-		//noinspection GroovyWhileLoopSpinsOnField
-		while (nodeStack) { end() }
+		while (nodeStack.size() > 0) { end() }
 		env.out.close()
 	}
 
@@ -108,8 +107,8 @@ class HtmlBuilder extends BrowserBuilder {
 		}
 		script {
 			text('usdlc.failed();')
-			if (my.query.linkId) {
-				text("usdlc.runningLinkClass('a#$my.query.linkId', 'error')")
+			if (env.query.linkId) {
+				text("usdlc.runningLinkClass('a#$env.query.linkId', 'error')")
 			}
 		}
 		return this
@@ -136,7 +135,7 @@ class TextBuilder extends BrowserBuilder {
 	 * @return The builder so you can string them together.
 	 */
 	TextBuilder text(content) {
-		my.out.println content
+		env.out.println content
 		return this
 	}
 
@@ -158,17 +157,17 @@ class TextBuilder extends BrowserBuilder {
 	 * @param name of tag
 	 * @return Browser instance for chaining
 	 */
-	def _tag(name) { my.out.println("<$name>") }
+	def _tag(name) { env.out.println("<$name>") }
 	/**
 	 * Close the innermost tag()
 	 * @return Browser instance for chaining
 	 */
-	def _end(name) { my.out.println("</$name>") }
+	def _end(name) { env.out.println("</$name>") }
 }
 
 class JsBuilder extends BrowserBuilder {
 	@Override
-	BrowserBuilder text(Object content) { my.out.println(content); return this }
+	BrowserBuilder text(Object content) { env.out.println(content); return this }
 
 	BrowserBuilder js(Object code) { return text(code) }
 
@@ -178,14 +177,14 @@ class JsBuilder extends BrowserBuilder {
 		usdlc.dialog('<pre>$message</pre>')
 		usdlc.failed()
 		""")
-		if (my.query.linkId) {
-			text("usdlc.runningLinkClass('a#$my.query.linkId', 'error')")
+		if (env.query.linkId) {
+			text("usdlc.runningLinkClass('a#$env.query.linkId', 'error')")
 		}
 		return this
 	}
 
 	@Override
-	BrowserBuilder escape(Object content) { my.out.println(content); return this }
+	BrowserBuilder escape(Object content) { env.out.println(content); return this }
 
 	@Override
 	_tag(Object name) { text("document.write('<$name>')") }
