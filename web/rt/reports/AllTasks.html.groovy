@@ -25,7 +25,7 @@ doc.div(id: "pageTitle", 'class': "editable") {
 	h1("")
 	h2("")
 	def sections = []
-	Store.root('').dirs(~/.*\.html$/) {
+	Store.base().dirs(~/.*\.html$/) {
 		def page = new Page(it)
 		page.each { html ->
 			def section = [page: page.name]

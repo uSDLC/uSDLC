@@ -37,16 +37,16 @@ doc.html {
 		// Tables still provide a good layout structure. Here the top section has a title and logo. The centre is a notification bar on the left, content in the centre and scroll region on the right.
 		table(id: 'pageTitleTable') {
 			tr {
-				td(id: 'pageTitleTd', contextMenu: 'title')
+				td(id: 'pageTitleTd', contextMenu: 'title', "")
 				td(rowspan: '2') {
 					a(href: "/root") {
 						img(id: 'pageTitle', src: '/rt/base.logo.png',
 								alt: 'Unified Software Development Life-Cycle')
 					}
 				}
-				tr {
-					td { span(id: 'toolbar', class: 'toolbar') }
-				}
+			}
+			tr {
+				td { span(id: 'toolbar', class: 'toolbar', "") }
 			}
 		}
 		table(id: 'pageContentsTable') {
@@ -59,10 +59,10 @@ doc.html {
 					}
 				}
 				td(id: 'pageContentsTd') {
-					div(id: 'pageContents')
+					div(id: 'pageContents', "")
 				}
 				td(id: 'pageContentSliderTd') {
-					div(id: 'pageContentSlider')
+					div(id: 'pageContentSlider', "")
 				}
 			}
 		}
@@ -72,7 +72,7 @@ doc.html {
 		div('', class: 'contextMenu', id: 'menuTitle')
 		div('', id: 'pasteList') {
 			def now = new Date().time
-			Store.base('.clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
+			Store.base('store/clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
 				if (clip) {
 					def item = Store.parseUnique(clip)
 					long age = now - item.date.time

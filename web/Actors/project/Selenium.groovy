@@ -1,4 +1,3 @@
-package project
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *

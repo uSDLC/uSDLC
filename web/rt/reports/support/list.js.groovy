@@ -21,7 +21,7 @@
 doc.js("usdlc.reportItems([['',''],")
 usdlc.Store.with {
 	reports = []
-	runtime("reports/").dir(~/.*\..*/) {
+	base("rt/reports/").dir(~/.*\..*/) {
 		def path = split(it)
 		reports << "['${decamel(path.name)}','/rt/reports/${path.name}${path.ext}']"
 	}

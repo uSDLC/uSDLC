@@ -75,7 +75,7 @@
 </div>
 <div id="s8" class="editable section synopsis" contextmenu="section"><p>
 	It's important to realise that «definition» code is <a href="EvaluatedAgainstThePageInstance.geb" id="s8a0"
-	                                                         class="usdlc" action="runnable">evaluated against the page
+	                                                       class="usdlc" action="runnable">evaluated against the page
 	instance</a>. This allows code like the following…</p>
 </div>
 <div id="s9" class="editable section synopsis running" contextmenu="section"><h2>
@@ -133,20 +133,20 @@
 		to the page(List&lt;Class&gt;) method which is explained in the section on changing pages.</p>
 </div>
 <div id="s13" class="editable section running synopsis" contextmenu="section"><h1>
-	“At�? Verification</h1>
+	“At�? Verification</h1>
 
 	<p>
 		Each page can define a way to check whether the underling browser is at the page that the page class actually
 		represents. This is done via a static at closure. This closure can either return a false value or throw an
 		AssertionError (e.g. via the assert method).&nbsp;The verifyAt() method is used by the browser at() method.&nbsp;If
-		using Groovy 1.7, the use of assert in “at�? checkers is recommended because you get the benefit of Groovy's
+		using Groovy 1.7, the use of assert in “at�? checkers is recommended because you get the benefit of Groovy's
 		expressive assert output.</p>
 
 	<p>
-		As mentioned previously, when a content template defines a “to�? option of more than one page the page's
+		As mentioned previously, when a content template defines a “to�? option of more than one page the page's
 		verifyAt() method is used to determine which one of the pages to use. In this situation, any AssertionErrors
 		thrown by at checkers are suppressed.&nbsp;<a class="usdlc" href="TheAtChecker.geb" id="s13a0"
-		                                              action="runnable">The “at�? checker</a> is evaluated against
+		                                              action="runnable">The “at�? checker</a> is evaluated against
 		the page instance, and can access defined content or any other variables or methods…</p>
 </div>
 <div id="s14" class="editable section synopsis" contextmenu="section"><h1>
@@ -157,10 +157,10 @@
 
 	<p>
 		When URLs are resolved against base URLs, it is done in the same manner as web browsers resolve URLs. Given a
-		base of “http://myapp.com/path�? and a another URL to resolve against it of “/examples�?, the resultant
-		URL will be “http://myapp.com/example�?. The leading “/�? on the non base URL causes it to be treated as
+		base of “http://myapp.com/path�? and a another URL to resolve against it of “/examples�?, the resultant
+		URL will be “http://myapp.com/example�?. The leading “/�? on the non base URL causes it to be treated as
 		an absolute path from the server base. This means that in almost all cases your page URLs should not start with
-		a leading “/�?.</p>
+		a leading “/�?.</p>
 
 	<p>
 		See the section for <a href="PageURLs.geb" id="s14a0" class="usdlc" action="runnable">Page URLs</a> on Advanced

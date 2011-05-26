@@ -1,1 +1,2 @@
-organisation('org.jasypt').module('jasypt').required()
+group('jars/required').download('http://groovypptest.googlecode.com/files/groovypp-0.4.243_1.8.0.jar', 'groovypp.jar')
+group('source').download('http://groovypptest.googlecode.com/files/groovypp-0.4.246_1.8.0-sources.jar', 'groovypp-sources.jar')

@@ -1,4 +1,6 @@
 organisation('org.codehaus.groovy').module('groovy').required('default,optional')
+group('jars/required').download('http://code.google.com/p/groovypptest/downloads/detail?name=groovypp-0.4.243_1.8.0.jar&can=2&q=', 'groovypp.jar')
+group('source').download('http://code.google.com/p/groovypptest/downloads/detail?name=groovypp-0.4.243_1.8.0-sources.jar&can=2&q=', 'groovypp.jar')
 organisation('org.apache.ivy').module('ivy').required()
 organisation('commons-logging').module('commons-logging').required()
 organisation('com.h2database').module('h2').required()
