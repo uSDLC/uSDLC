@@ -18,49 +18,49 @@ $(function() {
 	usdlc.pageContents = $('div#pageContents')
 
 	$.extend(true, window.usdlc, {
-		clearSynopses : function(sections) {
-			sourceLoads = 0
-			$("div.inclusion", sections || usdlc.pageContents).remove()
-		},
-		synopses : function() {
-			usdlc.clearSynopses()
-			$("div.synopsis a[action=page]").each(function() {
-				loadSynopsis($(this), function(data) {
-					var html = $("<div/>").html(data)
-					return html.children("div.section").first().children()
-				})
-			})
-			$("div.synopsis a[action=runnable]").each(function() {
-				sourceLoads++
-				loadSynopsis($(this), function(data) {
-					if (! --sourceLoads) {
-						done = function() {
-							done = function() {
+				clearSynopses : function(sections) {
+					sourceLoads = 0
+					$("div.inclusion", sections || usdlc.pageContents).remove()
+				},
+				synopses : function() {
+					usdlc.clearSynopses()
+					$("div.synopsis a[action=page]").each(function() {
+						loadSynopsis($(this), function(data) {
+							var html = $("<div/>").html(data)
+							return html.children("div.section").first().children()
+						})
+					})
+					$("div.synopsis a[action=runnable]").each(function() {
+						sourceLoads++
+						loadSynopsis($(this), function(data) {
+							if (! --sourceLoads) {
+								done = function() {
+									done = function() {
+									}
+									prettyPrint()
+								}
 							}
-							prettyPrint()
-						}
+							return $("<pre/>").addClass('prettyprint linenums').html(data)
+						})
+					})
+				},
+				showSynopsis : function(section) {
+					//section.children().hide()
+					$('div.inclusion', section).show()
+				},
+				hideSynopsis : function(section) {
+					//section.children().show()
+					$('div.inclusion', section).hide()
+				},
+				checkForSynopsis : function(section) {
+					if (isSynopsis($("a[action=page]", section), true) ||
+							isSynopsis($("a[action=runnable]", section), false)) {
+						section.addClass('synopsis')
+					} else {
+						section.removeClass('synopsis')
 					}
-					return $("<pre/>").addClass('prettyprint linenums').html(data)
-				})
+				}
 			})
-		},
-		showSynopsis : function(section) {
-			//section.children().hide()
-			$('div.inclusion', section).show()
-		},
-		hideSynopsis : function(section) {
-			//section.children().show()
-			$('div.inclusion', section).hide()
-		},
-		checkForSynopsis : function(section) {
-			if (isSynopsis($("a[action=page]", section), true) ||
-				isSynopsis($("a[action=runnable]", section), false)) {
-				section.addClass('synopsis')
-			} else {
-				section.removeClass('synopsis')
-			}
-		}
-	})
 
 	var sourceLoads = 0
 	var done = function() {

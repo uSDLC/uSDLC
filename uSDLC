@@ -6,11 +6,11 @@ fi
 
 cp uSDLC.jar running.jar
 cp=.${sep}running.jar
-for i in `echo lib/jars/required/*.jar`
+for i in `echo web/lib/jars/required/*.jar`
 do
 	cp=${cp}${sep}${i}
 done
-for i in `echo lib/jars/optional/*.jar`
+for i in `echo web/lib/jars/optional/*.jar`
 do
 	cp=${cp}${sep}${i}
 done
@@ -18,4 +18,4 @@ done
 CLASSPATH=$cp$sep$CLASSPATH
 export CLASSPATH
 
-java "-Dtools.jar=${JAVA_HOME}\..\lib\tools.jar" "-Dgroovy.home=lib\jars\required" org.codehaus.groovy.tools.GroovyStarter --main usdlc.server.standalone.server
+java "-Dtools.jar=${JAVA_HOME}\..\lib\tools.jar" "-Dgroovy.home=lib\jars\required" org.codehaus.groovy.tools.GroovyStarter --main usdlc.server.standalone.server $@

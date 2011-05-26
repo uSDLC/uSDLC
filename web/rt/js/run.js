@@ -16,107 +16,107 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-		passed: function() {
-			usdlc.highlight('green')
-		},
-		failed: function() {
-			usdlc.highlight('red')
-		},
-		/**
-		 * Command to run the whole page - as in from drop-down in header or a link/button
-		 */
-		runPage: function() {
-			runSections($('div.section'))
-		},
-		linkAction: function(link) {
-			var results = link.data('results')
-			if (results) {
-				results.dialog("open")
-			} else {
-				runLink(link)
-			}
-		},
-		runLink: runLink,
-		/**
-		 * Command to run the page section.
-		 */
-		runSectionInFocus: function() {
-			var section = $('.inFocus')
-			runSections(section)
-		},
-		/**
-		 * Command to run a section of the page or from the page section to the end of the page.
-		 */
-		runFromSectionInFocus: function() {
-			var section = $('.inFocus')
-			runSections(section.nextAll('.section').andSelf())
-		},
-		/**
-		 * When in run mode, hovering over a link will display the results rather than edit or go to the page/runnable.
-		 * @param link Link clicked on.
-		 */
-		displayResults: function(link) {
-			var results = link.data('results')
-			if (results) {
-				results.dialog('show')
-			}
-		},
+				passed: function() {
+					usdlc.highlight('green')
+				},
+				failed: function() {
+					usdlc.highlight('red')
+				},
+				/**
+				 * Command to run the whole page - as in from drop-down in header or a link/button
+				 */
+				runPage: function() {
+					runSections($('div.section'))
+				},
+				linkAction: function(link) {
+					var results = link.data('results')
+					if (results) {
+						results.dialog("open")
+					} else {
+						runLink(link)
+					}
+				},
+				runLink: runLink,
+				/**
+				 * Command to run the page section.
+				 */
+				runSectionInFocus: function() {
+					var section = $('.inFocus')
+					runSections(section)
+				},
+				/**
+				 * Command to run a section of the page or from the page section to the end of the page.
+				 */
+				runFromSectionInFocus: function() {
+					var section = $('.inFocus')
+					runSections(section.nextAll('.section').andSelf())
+				},
+				/**
+				 * When in run mode, hovering over a link will display the results rather than edit or go to the page/runnable.
+				 * @param link Link clicked on.
+				 */
+				displayResults: function(link) {
+					var results = link.data('results')
+					if (results) {
+						results.dialog('show')
+					}
+				},
 
-		runningLinkClass: function(links, name) {
-			$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
-		},
-		clearRunningLinkClass: function(inside) {
-			$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
-		}
-	})
+				runningLinkClass: function(links, name) {
+					$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
+				},
+				clearRunningLinkClass: function(inside) {
+					$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
+				}
+			})
 
 	function enqueue(link, options, action) {
 		var a = link.get(0)
 		var search = (a.search || '?') + '&action=run&linkId=' + link.attr('id')
 		usdlc.queue(action || $.ajax, $.extend({}, {
-			cache : false,
-			parallel : true,
-			processData : false,
-			type : 'GET',
-			url : a.pathname + search,
-			success : function(data) {
-				usdlc.runningLinkClass(link, 'hasResults')
-				var tagStart = data.indexOf('<')
-				if (tagStart == -1 || tagStart > 4) {
-					data = '<pre>' + data.replace(/[\r\n]{2,}/g, "\n") + '</pre>'
-				}
-				var rdb = results(link).html(data)
-				if (rdb.text().length > 5) {
-					rdb.dialog((options && options.dialogCommand) || 'open')
-				} else {
-					usdlc.runningLinkClass(link, 'ok')
-				}
-			},
-			error : function(xmlHttpRequest, textStatus) {
-				console.log(textStatus)
-				usdlc.alert("noServer.htm")
-			}
-		}, options || {}))
+					cache : false,
+					parallel : true,
+					processData : false,
+					type : 'GET',
+					url : a.pathname + search,
+					success : function(data) {
+						usdlc.runningLinkClass(link, 'hasResults')
+						var tagStart = data.indexOf('<')
+						if (tagStart == -1 || tagStart > 4) {
+							data = '<pre>' + data.replace(/[\r\n]{2,}/g, "\n") + '</pre>'
+						}
+						var rdb = results(link).html(data)
+						if (rdb.text().length > 5) {
+							rdb.dialog((options && options.dialogCommand) || 'open')
+						} else {
+							usdlc.runningLinkClass(link, 'ok')
+						}
+					},
+					error : function(xmlHttpRequest, textStatus) {
+						console.log(textStatus)
+						usdlc.alert("noServer.htm")
+					}
+				}, options || {}))
 	}
 
 	function results(link, container, options) {
 		var dialog = link.data('results')
 		if (! dialog) {
 			dialog = usdlc.dialog(container || '<div/>', $.extend({}, {
-				title: link.text(),
-				autoOpen: false,
-				width: '50%',
-				open: function() {
-					var widget = dialog.dialog("widget")
-					widget.position({
-						of: link, my: 'bottom', at: 'top', collision: 'flip',
-						using: function(position) {
-							var from = widget.offset()
-							widget.animate({top:position.top + from.top, left:position.left + from.left})
+						title: link.text(),
+						autoOpen: false,
+						width: '50%',
+						open: function() {
+							var widget = dialog.dialog("widget")
+							widget.position({
+										of: link, my: 'bottom', at: 'top', collision: 'flip',
+										using: function(position) {
+											var from = widget.offset()
+											widget.animate({top:position.top + from.top, left:position.left + from.left})
+										}
+									})
 						}
-					})
-				}
-			}, options || {}))
+					}, options || {}))
 			link.data('results', dialog)
 		}
 		return dialog

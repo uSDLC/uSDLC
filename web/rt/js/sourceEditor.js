@@ -45,18 +45,18 @@ $(function() {
 					})
 				}
 				editAreaLoader.init({
-					id : "editArea"            // textarea id
-					,replace_tab_by_spaces: 4
-					,browsers: "all"
-					,syntax: usdlc.mimeType(pathName).syntax
-					,start_highlight: true    // to display with highlight mode on start-up
-					,allow_toggle: false    // Don't allow display of textarea under editor
-					, min_width: 700
-					, min_height: 400
-					,toolbar: "save, search, go_to_line, |, undo, redo, |, select_font,|, highlight, " +
-						"reset_highlight, word_wrap, |, help"
-					,save_callback: "usdlc.sourceSaveCallback"
-				})
+							id : "editArea"            // textarea id
+							,replace_tab_by_spaces: 4
+							,browsers: "all"
+							,syntax: usdlc.mimeType(pathName).syntax
+							,start_highlight: true    // to display with highlight mode on start-up
+							,allow_toggle: false    // Don't allow display of textarea under editor
+							, min_width: 700
+							, min_height: 400
+							,toolbar: "save, search, go_to_line, |, undo, redo, |, select_font,|, highlight, " +
+									"reset_highlight, word_wrap, |, help"
+							,save_callback: "usdlc.sourceSaveCallback"
+						})
 				usdlc.scrollTo(link)
 				usdlc.modalOn(editAreaContainer)
 			})

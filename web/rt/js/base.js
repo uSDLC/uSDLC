@@ -29,9 +29,9 @@ $(function() {
 				options.height = $(window).height() * percent / 10.0
 			}
 			contents.dialog($.extend({
-				show: "blind",
-				hide: "explode"
-			}, options))
+						show: "blind",
+						hide: "explode"
+					}, options))
 			// dialog sets iframe width to auto - which does not fill the parent
 			contents.css('width', '98%')
 			return contents
@@ -119,16 +119,16 @@ $(function() {
 		 What to do when the slider moves up and down - scrolling.
 		 */
 		usdlc.pageContentSlider = $("div#pageContentSlider").slider({
-			orientation: "vertical",
-			animate: true,
-			value: 100,
-			change: function(e, ui) {
-				pcd.animate({scrollTop: scrollTop(ui) }, 400)
-			},
-			slide: function(e, ui) {
-				pcd.attr({scrollTop: scrollTop(ui) })
-			}
-		})
+					orientation: "vertical",
+					animate: true,
+					value: 100,
+					change: function(e, ui) {
+						pcd.animate({scrollTop: scrollTop(ui) }, 400)
+					},
+					slide: function(e, ui) {
+						pcd.attr({scrollTop: scrollTop(ui) })
+					}
+				})
 		usdlc.scrollTo = function(element) {
 			pcd.scrollTo(element)
 		}

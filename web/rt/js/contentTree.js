@@ -16,39 +16,39 @@
 
 $(function() {
 	usdlc.contentTree = $('#contentTree').jstree({
-		html_data : { ajax : {
-			url : function(li) {
-				var path
-				if (li == -1) {
-					path = '/index.html'
-				} else {
-					path = $('a', li).get(0).pathname
-				}
-				this.contentRoot = jQuery.url.setUrl(path).attr("directory")
-				return path
-			},
-			success : function(data) {
-				var tree = ''
-				var root = this.contentRoot
-				$('<ins/>').html(data).find('a.usdlc[action=page]').each(function() {
-					var a = $(this)
-					var href = a.attr('href')
-					if (href[0] != '/') {
-						href = root + href
+				html_data : { ajax : {
+					url : function(li) {
+						var path
+						if (li == -1) {
+							path = '/index.html'
+						} else {
+							path = $('a', li).get(0).pathname
+						}
+						this.contentRoot = jQuery.url.setUrl(path).attr("directory")
+						return path
+					},
+					success : function(data) {
+						var tree = ''
+						var root = this.contentRoot
+						$('<ins/>').html(data).find('a.usdlc[action=page]').each(function() {
+							var a = $(this)
+							var href = a.attr('href')
+							if (href[0] != '/') {
+								href = root + href
+							}
+							var id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
+							tree += "<li id='" + id + "' class='jstree-closed'><a href='" + href + "' class='contentLink'>" + a.text() + "</a></li>"
+						})
+						return tree || null
 					}
-					var id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
-					tree += "<li id='" + id + "' class='jstree-closed'><a href='" + href + "' class='contentLink'>" + a.text() + "</a></li>"
-				})
-				return tree || null
-			}
-		}},
-		hotkeys : {
-			del : function() {
-			},
-			f2 : function() {
-			}
-		},
-		cookies : { cookie_options : {expires : 1000} },
-		plugins : ['html_data', 'ui', 'cookies', 'themeroller', 'hotkeys']
-	})
+				}},
+				hotkeys : {
+					del : function() {
+					},
+					f2 : function() {
+					}
+				},
+				cookies : { cookie_options : {expires : 1000} },
+				plugins : ['html_data', 'ui', 'cookies', 'themeroller', 'hotkeys']
+			})
 })

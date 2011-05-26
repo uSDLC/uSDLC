@@ -60,11 +60,11 @@ $(function() {
 				pasteList.append($('div#pasteList').children().clone().bind('click', clickEvent).append(hotkey).wrap('<li/>'))
 
 				div.contextMenu = new Menu(div, {
-					content: menuData,
-					maxHeight: 400,
-					flyOut: false,
-					backLink: false
-				});
+							content: menuData,
+							maxHeight: 400,
+							flyOut: false,
+							backLink: false
+						});
 				div.contextMenu.menuExists = false
 				div.contextMenu.currentTarget = target
 				div.contextMenu.showMenu()

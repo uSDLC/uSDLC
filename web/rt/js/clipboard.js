@@ -16,75 +16,75 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-		copySectionInFocus : function(cutOrCopy) {
-			var toCut = usdlc.inFocus
-			if (toCut) {
-				var toMove = {}, toMoveList = [
-				]
-				toCut.find('a.usdlc').each(function() {
-					var link = $(this)
-					if (link.parents('div.inclusion').length === 0) {
-						var href = link.attr('href')
-						var relative = (href[0] != '/')
-						if (relative) {
-							var dir = href.substring(0, href.indexOf('/')) || href
-							var hrefMatchedLinkSections = $('a[href^=' + dir).parents('div.section')
-							if (hrefMatchedLinkSections.not(toCut.get(0)).size() === 0) {
-								if (! (dir in toMove)) {
-									toMove[dir] = dir
-									toMoveList.push(dir)
+				copySectionInFocus : function(cutOrCopy) {
+					var toCut = usdlc.inFocus
+					if (toCut) {
+						var toMove = {}, toMoveList = [
+						]
+						toCut.find('a.usdlc').each(function() {
+							var link = $(this)
+							if (link.parents('div.inclusion').length === 0) {
+								var href = link.attr('href')
+								var relative = (href[0] != '/')
+								if (relative) {
+									var dir = href.substring(0, href.indexOf('/')) || href
+									var hrefMatchedLinkSections = $('a[href^=' + dir).parents('div.section')
+									if (hrefMatchedLinkSections.not(toCut.get(0)).size() === 0) {
+										if (! (dir in toMove)) {
+											toMove[dir] = dir
+											toMoveList.push(dir)
+										}
+									}
 								}
 							}
-						}
+						})
+						usdlc.modalOn()
+						usdlc.cleanSections(toCut)
+						var focus = toCut.next()
+						var html = $('<div/>').html(toCut.clone()).html()
+						$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).name + "&mimeType=application/javascript"), html, $.globalEval)
+						usdlc.sectionBeingCut = toCut
+						usdlc.modalOff()
+						usdlc.setFocus(focus)
+						return true
 					}
-				})
-				usdlc.modalOn()
-				usdlc.cleanSections(toCut)
-				var focus = toCut.next()
-				var html = $('<div/>').html(toCut.clone()).html()
-				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).name + "&mimeType=application/javascript"), html, $.globalEval)
-				usdlc.sectionBeingCut = toCut
-				usdlc.modalOff()
-				usdlc.setFocus(focus)
-				return true
-			}
-			return false
-		},
-		copySectionSuccessful : function(title, href) {
-			var toCut = usdlc.sectionBeingCut
-			if (toCut) {
-				usdlc.sectionBeingCut = null
-				// update paste list and keys
-				$('div#pasteList').prepend($('<a/>', { html : title, href : href }))
-				usdlc.setFocus()
-			}
-			return toCut
-		},
-		cutSectionSuccessful : function(title, href) {
-			var toCut = usdlc.copySectionSuccessful(title, href)
-			if (toCut) {
-				toCut.remove()
-				usdlc.savePage()
-			}
-		},
-		paste : function(idx) {
-			var clip = $('div#pasteList a').eq(idx).remove()
-			if (clip.length == 1) {
-				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, 'paste&from=' + clip[0].pathname), function(data) {
-					var id = usdlc.nextSectionId()
-					var section = $(data).attr('id', id)
-					id += 'a'
-					var idx = 0
-					$('a.usdlc', section).attr('id', function() {
-						return id + (idx++)
-					})
-					section.insertAfter(usdlc.inFocus || $('div.section:last'))
-					usdlc.savePage()
-					usdlc.setFocus(section.prev())
-				})
-			}
-		}
-	})
+					return false
+				},
+				copySectionSuccessful : function(title, href) {
+					var toCut = usdlc.sectionBeingCut
+					if (toCut) {
+						usdlc.sectionBeingCut = null
+						// update paste list and keys
+						$('div#pasteList').prepend($('<a/>', { html : title, href : href }))
+						usdlc.setFocus()
+					}
+					return toCut
+				},
+				cutSectionSuccessful : function(title, href) {
+					var toCut = usdlc.copySectionSuccessful(title, href)
+					if (toCut) {
+						toCut.remove()
+						usdlc.savePage()
+					}
+				},
+				paste : function(idx) {
+					var clip = $('div#pasteList a').eq(idx).remove()
+					if (clip.length == 1) {
+						$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, 'paste&from=' + clip[0].pathname), function(data) {
+							var id = usdlc.nextSectionId()
+							var section = $(data).attr('id', id)
+							id += 'a'
+							var idx = 0
+							$('a.usdlc', section).attr('id', function() {
+								return id + (idx++)
+							})
+							section.insertAfter(usdlc.inFocus || $('div.section:last'))
+							usdlc.savePage()
+							usdlc.setFocus(section.prev())
+						})
+					}
+				}
+			})
 
 	// bind paste keys
 	var doc = $(document)

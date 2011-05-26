@@ -5,8 +5,8 @@
 	<property file="build.properties"/>
 	<!-- Uncomment the following property if no tests compilation is needed -->
 	<!--
-	  <property name="skip.tests" value="true"/>
-	   -->
+		   <property name="skip.tests" value="true"/>
+			-->
 
 	<!-- Compiler options -->
 
@@ -84,10 +84,10 @@
 	<!-- Project Libraries -->
 
 	<path id="library.usdlc.classpath">
-		<fileset dir="${basedir}/lib/jars/optional">
+		<fileset dir="/lib/jars/optional">
 			<patternset refid="library.patterns"/>
 		</fileset>
-		<fileset dir="${basedir}/lib/jars/required">
+		<fileset dir="/lib/jars/required">
 			<patternset refid="library.patterns"/>
 		</fileset>
 	</path>
@@ -111,8 +111,8 @@
 
 	<property name="compiler.args.usdlc" value="${compiler.args}"/>
 
-	<property name="usdlc.output.dir" value="${module.usdlc.basedir}/out/production/uSDLC"/>
-	<property name="usdlc.testoutput.dir" value="${module.usdlc.basedir}/out/test/uSDLC"/>
+	<property name="usdlc.output.dir" value="/tmp/usdlc/standalone/production/uSDLC"/>
+	<property name="usdlc.testoutput.dir" value="/tmp/usdlc/standalone/test/uSDLC"/>
 
 	<path id="usdlc.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->
@@ -202,7 +202,7 @@
 
 	<target name="make.jar" depends="" description="Make uSDLC.jar">
 		<jar destfile="uSDLC.jar" compress="true" index="true">
-			<fileset dir="out/production/uSDLC" includes="usdlc/**/*.class"/>
+			<fileset dir="/tmp/usdlc/standalone/production/uSDLC" includes="usdlc/**/*.class"/>
 			<manifest>
 				<attribute name="Main-Class" value="usdlc.usdlc.server.servletengine.server.standalone.Loader"/>
 			</manifest>

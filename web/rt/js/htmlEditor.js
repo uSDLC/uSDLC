@@ -16,49 +16,49 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-		/**
-		 * Used from a menu to edit the page section.
-		 */
-		editSectionInFocus : function() {
-			$('.inFocus').each(function() {
-				editSection(this)
-			})
-		},
-		savePage : function() {
-			// clean up html of crap that builds up
-			usdlc.savePageContents()
-		},
-		camelCase : function(text) {
-			return text.replace(/(^|[\s'"\-]+)(\w)/g,
-				function(a, s, c) {
-					return c.toUpperCase()
-				}).replace(/\s*/, '');
-		},
-		actorDefault : usdlc.cookie("actorDefault") || 'groovy',
-		reportsTabData : {
-			id : 'reportsTab',
-			label : 'Reports',
-			accessKey : 'R',
-			elements : [
-				{
-					name : "Report Name",
-					type : 'select',
-					label : 'Report Name',
-					id : 'reportName',
-					items : [],
-					onChange : function() {
-						var value = this.getValue()
-						if (value) {
-							usdlc.htmlEditorLinkUrlField.setValue(value)
+				/**
+				 * Used from a menu to edit the page section.
+				 */
+				editSectionInFocus : function() {
+					$('.inFocus').each(function() {
+						editSection(this)
+					})
+				},
+				savePage : function() {
+					// clean up html of crap that builds up
+					usdlc.savePageContents()
+				},
+				camelCase : function(text) {
+					return text.replace(/(^|[\s'"\-]+)(\w)/g,
+							function(a, s, c) {
+								return c.toUpperCase()
+							}).replace(/\s*/, '');
+				},
+				actorDefault : usdlc.cookie("actorDefault") || 'groovy',
+				reportsTabData : {
+					id : 'reportsTab',
+					label : 'Reports',
+					accessKey : 'R',
+					elements : [
+						{
+							name : "Report Name",
+							type : 'select',
+							label : 'Report Name',
+							id : 'reportName',
+							items : [],
+							onChange : function() {
+								var value = this.getValue()
+								if (value) {
+									usdlc.htmlEditorLinkUrlField.setValue(value)
+								}
+							}
 						}
-					}
+					]
+				},
+				reportItems : function(items) {
+					usdlc.reportsTabData.elements[0].items = items
 				}
-			]
-		},
-		reportItems : function(items) {
-			usdlc.reportsTabData.elements[0].items = items
-		}
-	})
+			})
 	// fetch data for report form
 	$.ajax({url : "/rt/reports/support/list.js.groovy", dataType : 'script'})
 	/*
@@ -75,61 +75,61 @@ $(function() {
 		$section.ckeditor(function() {
 			usdlc.modalOn()
 		}, {
-			bodyClass: "wayOnTop",
-			saveFunction : function(editor) {
-				var updateContents = editor.checkDirty()
-				usdlc.modalOff()
-				// Get rid of the editor so that it does not show up in the saved content.
-				editor.destroy()
-				if (!updateContents) {
-					usdlc.scrollBack()
-					usdlc.synopses()
-					return
-				}
-				// Special case for the title - move it back where it belongs.
-				var baseId = $section.attr('id');
-				baseId += 'a'
-				// Process links to see what they should do
-				$('a', $section).removeAttr('action').each(function(idx) {
-					var self = $(this)
-					var targetId = baseId + idx
-					if (! self.attr('id')) {
-						self.attr('id', targetId)
-					}
-					var href = self.attr('href')
-					self.removeClass()  // removes all classes so we can re-add them by page standards.
-					if (href && href.indexOf(':') == -1) {
-						self.addClass('usdlc')
-						href = usdlc.camelCase(href)
-						if (self.text() == '*') {
-							self.addClass('star')
+					bodyClass: "wayOnTop",
+					saveFunction : function(editor) {
+						var updateContents = editor.checkDirty()
+						usdlc.modalOff()
+						// Get rid of the editor so that it does not show up in the saved content.
+						editor.destroy()
+						if (!updateContents) {
+							usdlc.scrollBack()
+							usdlc.synopses()
+							return
 						}
-						if (href.charAt(href.length - 1) == '/') {
-							href += "index.html"
-						} else if (href.indexOf('.') == -1) {
-							href += "/index.html";
+						// Special case for the title - move it back where it belongs.
+						var baseId = $section.attr('id');
+						baseId += 'a'
+						// Process links to see what they should do
+						$('a', $section).removeAttr('action').each(function(idx) {
+							var self = $(this)
+							var targetId = baseId + idx
+							if (! self.attr('id')) {
+								self.attr('id', targetId)
+							}
+							var href = self.attr('href')
+							self.removeClass()  // removes all classes so we can re-add them by page standards.
+							if (href && href.indexOf(':') == -1) {
+								self.addClass('usdlc')
+								href = usdlc.camelCase(href)
+								if (self.text() == '*') {
+									self.addClass('star')
+								}
+								if (href.charAt(href.length - 1) == '/') {
+									href += "index.html"
+								} else if (href.indexOf('.') == -1) {
+									href += "/index.html";
+								}
+								self.attr('href', href)
+								if (usdlc.mimeType(href).clientExt == 'html') {
+									self.attr('action', 'page')
+								} else {
+									self.attr('action', 'runnable')
+								}
+							}
+						})
+						usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
+						usdlc.savePage()
+						usdlc.scrollBack()
+					},
+					on : {
+						instanceReady : function(ev) {
+							// Once the editor is ready for action keep a copy of the unchanged contents and sent the focus.
+							ev.editor.focus()
 						}
-						self.attr('href', href)
-						if (usdlc.mimeType(href).clientExt == 'html') {
-							self.attr('action', 'page')
-						} else {
-							self.attr('action', 'runnable')
-						}
-					}
+					},
+					extraPlugins : 'autogrow'
+					//autoGrow_maxHeight : 800
 				})
-				usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
-				usdlc.savePage()
-				usdlc.scrollBack()
-			},
-			on : {
-				instanceReady : function(ev) {
-					// Once the editor is ready for action keep a copy of the unchanged contents and sent the focus.
-					ev.editor.focus()
-				}
-			},
-			extraPlugins : 'autogrow'
-			//autoGrow_maxHeight : 800
-		})
 	}
 
 	CKEDITOR.config.toolbar_Full = [
@@ -155,9 +155,9 @@ $(function() {
 	CKEDITOR.plugins.registered['save'] = {
 		init : function(editor) {
 			editor.addCommand('save', {
-				modes : { wysiwyg:1, source:1 },
-				exec : editor.config.saveFunction
-			});
+						modes : { wysiwyg:1, source:1 },
+						exec : editor.config.saveFunction
+					});
 			editor.ui.addButton('Save', {label : 'Save',command : 'save'});
 		}
 	}
@@ -237,46 +237,46 @@ $(function() {
 			}
 			// Add all the new link stuff related to actors and wiki type links.
 			var urlOptions = infoTab.get('urlOptions').children.push({
-				type : 'hbox',
-				children : [
-					{
-						type : 'radio',
-						id : 'linkRadio',
-						label : 'Link Type',
-						items : [
-							['Child Page',''],
-							['Sibling Page','html'],
-							['Actor']
-						],
-						onClick : function() {
-							setLinkType()
-						}
-					},
-					{
-						type : 'select',
-						id : 'linkSelect',
-						label : 'Actor Type',
-						items : actorItems,
-						onChange : function() {
-							if (! initialising) {
-								linkRadio.setValue('Actor')
-								setLinkType()
+						type : 'hbox',
+						children : [
+							{
+								type : 'radio',
+								id : 'linkRadio',
+								label : 'Link Type',
+								items : [
+									['Child Page',''],
+									['Sibling Page','html'],
+									['Actor']
+								],
+								onClick : function() {
+									setLinkType()
+								}
+							},
+							{
+								type : 'select',
+								id : 'linkSelect',
+								label : 'Actor Type',
+								items : actorItems,
+								onChange : function() {
+									if (! initialising) {
+										linkRadio.setValue('Actor')
+										setLinkType()
+									}
+								},
+								validate : function() {
+									// get the extension and update the cookie for actor types & default
+									var ext = usdlc.splitUrl(urlField.getValue()).ext
+									if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
+										actorTypes.push(ext)
+										actorTypes.sort()
+										this.add(ext)
+										usdlc.setCookie('actorTypes', actorTypes.toString())
+									}
+									return true
+								}
 							}
-						},
-						validate : function() {
-							// get the extension and update the cookie for actor types & default
-							var ext = usdlc.splitUrl(urlField.getValue()).ext
-							if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
-								actorTypes.push(ext)
-								actorTypes.sort()
-								this.add(ext)
-								usdlc.setCookie('actorTypes', actorTypes.toString())
-							}
-							return true
-						}
-					}
-				]
-			})
+						]
+					})
 			//////// Create new reports tab
 			dialogDefinition.addContents(usdlc.reportsTabData);
 		}
