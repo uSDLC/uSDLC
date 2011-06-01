@@ -18,7 +18,7 @@ $(function() {
 	/*
 	 Links that don't end in .html can be edited with the source editor
 	 */
-	$('a.usdlc:not([href*=.html.])').addClass('sourceLink').live('click', function(ev) {
+	$('a.usdlc').not('[href*=.html.])').addClass('sourceLink').live('click', function(ev) {
 		var link = $(ev.currentTarget)
 		var href = ev.currentTarget.pathname
 		var section = link.parents(".section")

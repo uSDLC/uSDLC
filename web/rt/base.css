@@ -17,7 +17,7 @@
 /*
   External style sheets: TFGI (Thank God for Includes)
  */
-@import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.6.custom.css";
+@import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
 @import "/lib/jquery/css/fg.menu.css";
 
 /*
@@ -44,13 +44,14 @@ blockquote {
 /*
  Page Title Area
  */
-table#pageTitle {
+table#pageTitleTable {
 	width: 100%;
 	height: 140px;
 }
 
-img#pageTitle {
+img#pageTitleImage {
 	float: right;
+	border: none;
 }
 
 td#pageTitleTd {
@@ -93,7 +94,7 @@ div.section h5 {
 }
 
 .toolbar {
-	padding: 3px 4px 5px;
+	padding: 3px 4px 6px;
 }
 
 .toolbar .ui-button-text {
@@ -109,6 +110,7 @@ table#pageContentsTable {
 
 td#pageContentsTd {
 	width: 90%;
+	vertical-align: top;
 }
 
 div#pageContents {
@@ -120,7 +122,8 @@ div#pageContents {
 
 td#pageContentSliderTd {
 	width: 20px;
-	padding: 0;
+	padding: 15px 0 0 0;
+	vertical-align: top;
 }
 
 div#pageContentSlider {
@@ -150,6 +153,10 @@ div.contextMenu {
 	height: 0;
 	margin: 0;
 	padding: 0;
+}
+
+div#vakata-contextmenu {
+	display: none;
 }
 
 ul.fg-menu {
@@ -285,5 +292,5 @@ a span.ui-icon {
 
 li.jstree-leaf > ins.jstree-icon {
 	opacity: 0.2;
-	filter: alpha(opacity = 20)
+<!-- [ if IE ] > filter : alpha ( opacity = 20 ) < ! [ endif ] -->
 }

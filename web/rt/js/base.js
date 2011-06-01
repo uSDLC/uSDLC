@@ -10,7 +10,7 @@
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
@@ -92,9 +92,8 @@ $(function() {
 	function setPageLayout() {
 		var w = $(window)
 		var ptt = $('table#pageTitleTable')
-		var pc = $('table#pageContentsTable')
 		var pcd = $('div#pageContents')
-		var pad = pc.outerHeight() - pcd.height()
+		var pad = 20 // damn ie pc.outerHeight() - pcd.height()
 		var h = w.height() - ptt.outerHeight() - pad
 		pcd.outerHeight(h)
 		var pcdl = $('div#pageContentSlider')

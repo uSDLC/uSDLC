@@ -19,11 +19,11 @@ $(function() {
 				splitUrl : function(url) {
 					var result = {}
 					var slash = url.lastIndexOf('/')
-					if (slash != -1) {
+					if (slash == -1) {
+						result.path = ''
+					} else {
 						result.path = url.substring(0, slash)
 						url = url.substring(slash + 1)
-					} else {
-						result.path = ''
 					}
 					var dot = url.indexOf('.')
 					if (dot != -1) {
@@ -35,12 +35,15 @@ $(function() {
 					}
 					return result
 				},
+				removeDomain : function(url) {
+					return url.replace(/\w+:\/\/[^\/]+\//, "")
+				},
 				mimeType : function(href) {
-					var extentions = href.match(/\.\w+/g)
+					var extensions = href.match(/\.\w+/g)
 					var rc = {}
-					if (extentions && extentions[0]) {
-						rc.clientExt = extentions[0].substring(1)
-						rc.serverExt = (extentions.length > 1 && extentions[1]) ? extentions[1].substring(1) : rc.clientExt
+					if (extensions && extensions[0]) {
+						rc.clientExt = extensions[0].substring(1)
+						rc.serverExt = (extensions.length > 1 && extensions[1]) ? extensions[1].substring(1) : rc.clientExt
 					} else {
 						rc = {clientExt : 'txt', serverExt : 'txt' }
 					}

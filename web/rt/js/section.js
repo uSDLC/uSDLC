@@ -20,28 +20,21 @@ $(function() {
 	$.extend(true, window.usdlc, {
 				/**
 				 * Called by the usdlc.server.servletengine.server to highlight the page selection.
-				 * @param colour Colour to highlight the section with.
 				 */
 				highlight : function (colour, section) {
 					if (! section) {
 						section = usdlc.inFocus
 					}
-
-					function moveBackground(to, onComplete) {
-						if (section) {
-							section.animate(
-									{ backgroundPosition: to + "px 0"}, {
-										duration: 1000,
-										complete: onComplete
-									})
-						}
+					if (! section) {
+						return
 					}
 
-					moveBackground(-20, function() {
-						var url = colour ? 'url(/rt/gradients/' + colour + '-right.png)' : "none"
-						section.css('background-image', url)
-						moveBackground(-10, null)
-					})
+					if (colour) {
+						var url = 'url(/rt/gradients/' + colour + '-right.png)'
+						section.css({backgroundImage : url, backgroundPosition : -10})
+					} else {
+						section.css({backgroundImage : 'none'})
+					}
 				},
 				/*
 				 Each paragraph is a focus element. Highlight it if clicked on or otherwise referenced to.
@@ -60,7 +53,7 @@ $(function() {
 					if (! usdlc.inFocus) {
 						return
 					}
-					var lostFocus = $('.inFocus').removeClass('inFocus ui-state-highlight')
+					$('.inFocus').removeClass('inFocus ui-state-highlight')
 					usdlc.lastFocus = usdlc.inFocus
 					usdlc.inFocus = null
 					usdlc.contentTree.jstree('enable_hotkeys')

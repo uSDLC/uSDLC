@@ -26,92 +26,92 @@ import usdlc.Store
  */
 doc.html {
 	head {
+		meta('http-equiv': "X-UA-Compatible", content: "IE=edge")
 		// Title is filled by script from the pageTitle id section in page contents.
 		title('')
 		// Core CSS file loads other required CSS files.
 		link(type: "text/css", rel: "stylesheet", href: "/rt/base.css")
 		link(type: "text/css", rel: "stylesheet", href: "/lib/google-code-prettify/prettify.css")
 		base(href: "/")
-	}
-	body(style: 'display:none') {
-		// Tables still provide a good layout structure. Here the top section has a title and logo. The centre is a notification bar on the left, content in the centre and scroll region on the right.
-		table(id: 'pageTitleTable') {
-			tr {
-				td(id: 'pageTitleTd', contextMenu: 'title', "")
-				td(rowspan: '2') {
-					a(href: "/root") {
-						img(id: 'pageTitle', src: '/rt/base.logo.png',
-								alt: 'Unified Software Development Life-Cycle')
-					}
-				}
-			}
-			tr {
-				td { span(id: 'toolbar', class: 'toolbar', "") }
-			}
-		}
-		table(id: 'pageContentsTable') {
-			tr {
-				td(id: 'contentTree') {
-					ul {
-						li('class': 'jstree-closed') {
-							a(href: '/', 'class': 'contentLink', ' ')
+		body(style: 'display:none') {
+			// Tables still provide a good layout structure. Here the top section has a title and logo. The centre is a notification bar on the left, content in the centre and scroll region on the right.
+			table(id: 'pageTitleTable') {
+				tr {
+					td(id: 'pageTitleTd', contextMenu: 'title', "")
+					td(rowspan: '2') {
+						a(href: "/root") {
+							img(id: 'pageTitleImage', src: '/rt/base.logo.png',
+									alt: 'Unified Software Development Life-Cycle')
 						}
 					}
 				}
-				td(id: 'pageContentsTd') {
-					div(id: 'pageContents', "")
-				}
-				td(id: 'pageContentSliderTd') {
-					div(id: 'pageContentSlider', "")
+				tr {
+					td { /* span(id: 'toolbar', class: 'toolbar', "")*/ }
 				}
 			}
-		}
-		// Most interaction is through a pop-up menu that is included here from a separate file. It is loaded as a secondary request.
-		div('', class: 'toolbar', id: 'toolbar')
-		div('', class: 'contextMenu', id: 'menuSection')
-		div('', class: 'contextMenu', id: 'menuTitle')
-		div('', id: 'pasteList') {
-			def now = new Date().time
-			Store.base('store/clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
-				if (clip) {
-					def item = Store.parseUnique(clip)
-					long age = now - item.date.time
-					int shade = 0x0000FF - (age / 60000)   // blue to black over 4 hours
-					def colour = Integer.toHexString((shade < 0) ? 0 : shade)
-
-					a(item.title, href: "/$item.path", style: "color:$colour;")
+			table(id: 'pageContentsTable') {
+				tr {
+					td(id: 'contentTree') {
+						ul {
+							li('class': 'jstree-closed') {
+								a(href: '/', 'class': 'contentLink', '')
+							}
+						}
+					}
+					td(id: 'pageContentsTd') {
+						div(id: 'pageContents', "")
+					}
+					td(id: 'pageContentSliderTd') {
+						div(id: 'pageContentSlider', "")
+					}
 				}
 			}
-		}
-		// No such luck for javascript. Eventually we should consider using a compressed single file for release. We need to put an empty tag content so that the builder creates an empty element rather than reducing to a single self-closing element.
-		jsType = 'text/javascript'
-		span(id: 'scripts', class: 'hidden') {
-			script('', type: jsType, src: '/lib/jquery/js/jquery-1.5.js')
-			script('', type: jsType, src: '/lib/jquery/js/jquery-ui-1.8.6.custom.js')
-			script('', type: jsType, src: '/lib/jquery/js/jquery.cookie.js')
-			script('', type: jsType, src: '/lib/jquery/js/jquery.hotkeys.js')
-			script('', type: jsType, src: '/lib/jquery/js/jquery.jstree.js')
-			script('', type: jsType, src: '/rt/js/base.js')
-			script('', type: jsType, src: '/rt/js/contentTree.js')
-			script('', type: jsType, src: '/rt/js/section.js')
-			script('', type: jsType, src: '/rt/js/synopses.js')
-			script('', type: jsType, src: '/rt/js/template.js')
+			// Most interaction is through a pop-up menu that is included here from a separate file. It is loaded as a secondary request.
+			div('', class: 'contextMenu', id: 'menuSection')
+			div('', class: 'contextMenu', id: 'menuTitle')
+			div('', id: 'pasteList') {
+				def now = new Date().time
+				Store.base('store/clipboard').dir().sort().reverse().eachWithIndex { clip, idx ->
+					if (clip) {
+						def item = Store.parseUnique(clip)
+						long age = now - item.date.time
+						int shade = 0x0000FF - (age / 60000)   // blue to black over 4 hours
+						def colour = Integer.toHexString((shade < 0) ? 0 : shade)
 
-			script('', type: jsType, src: '/lib/jquery/js/jquery.url.js')
-			script('', type: jsType, src: '/lib/jquery/js/fg.menu.js')
-			script('', type: jsType, src: '/lib/ckeditor/ckeditor.js')
-			script('', type: jsType, src: '/lib/ckeditor/adapters/jquery.js')
-			script('', type: jsType, src: '/lib/edit_area/edit_area_full.js')
-			script('', type: jsType, src: '/rt/js/menu.js')
-			script('', type: jsType, src: '/lib/jquery/js/jquery.scrollTo.js')
-			script('', type: jsType, src: '/rt/js/htmlEditor.js')
-			script('', type: jsType, src: '/lib/google-code-prettify/prettify.js')
-			script('', type: jsType, src: '/rt/js/sourceEditor.js')
+						a(item.title, href: "/$item.path", style: "color:$colour;")
+					}
+				}
+			}
+			// No such luck for javascript. Eventually we should consider using a compressed single file for release. We need to put an empty tag content so that the builder creates an empty element rather than reducing to a single self-closing element.
+			jsType = 'text/javascript'
+			span(id: 'scripts', class: 'hidden') {
+				script('', type: jsType, src: '/lib/jquery/js/jquery-1.6.1.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery-ui-1.8.13.custom.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.cookie.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.hotkeys.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.jstree.js')
+				script('', type: jsType, src: '/rt/js/base.js')
+				script('', type: jsType, src: '/rt/js/contentTree.js')
+				script('', type: jsType, src: '/rt/js/section.js')
+				script('', type: jsType, src: '/rt/js/synopses.js')
+				script('', type: jsType, src: '/rt/js/template.js')
 
-			script('', type: jsType, src: '/rt/js/clipboard.js')
-			script('', type: jsType, src: '/rt/js/moveSection.js')
-			script('', type: jsType, src: '/rt/js/server.js')
-			script('', type: jsType, src: '/rt/js/run.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.url.js')
+				script('', type: jsType, src: '/lib/jquery/js/fg.menu.js')
+				script('', type: jsType, src: '/lib/ckeditor/ckeditor.js')
+				script('', type: jsType, src: '/lib/ckeditor/adapters/jquery.js')
+				script('', type: jsType, src: '/lib/edit_area/edit_area_full.js')
+				script('', type: jsType, src: '/rt/js/menu.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.scrollTo.js')
+				script('', type: jsType, src: '/rt/js/htmlEditor.js')
+				script('', type: jsType, src: '/lib/google-code-prettify/prettify.js')
+				script('', type: jsType, src: '/rt/js/sourceEditor.js')
+
+				script('', type: jsType, src: '/rt/js/clipboard.js')
+				script('', type: jsType, src: '/rt/js/moveSection.js')
+				script('', type: jsType, src: '/rt/js/server.js')
+				script('', type: jsType, src: '/rt/js/run.js')
+			}
 		}
 	}
 }

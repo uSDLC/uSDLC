@@ -1,9 +1,6 @@
 out/
 .idea/
-.clipboard/
-.history/
-.db/
-lib/jars/optional/
-lib/javadoc/
-lib/source/
-.log/
+web/lib/jars/optional/
+web/lib/javadoc/
+web/lib/source/
+web/store/

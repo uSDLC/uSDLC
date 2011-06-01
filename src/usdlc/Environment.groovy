@@ -58,14 +58,15 @@ class Environment {
 	 */
 	static Environment session() {
 		def key = getKey()
-		if (!dataMap.containsKey(key)) {
-			def env = new Environment()
+		def env = dataMap[key]
+		if (!env) {
+			env = new Environment()
 			dataMap[key] = env
 			env.ensure = new Ensure(data: env)
 			env.finaliser = [:]
 			env.finaliser.session = []
 		}
-		return dataMap[key] as Environment
+		return env as Environment
 	}
 
 	private Environment() {}

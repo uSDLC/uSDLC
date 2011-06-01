@@ -23,6 +23,9 @@ $(function() {
 							path = '/index.html'
 						} else {
 							path = $('a', li).get(0).pathname
+							if (path[0] != '/') {
+								path = '/' + path
+							}
 						}
 						this.contentRoot = jQuery.url.setUrl(path).attr("directory")
 						return path
@@ -32,14 +35,14 @@ $(function() {
 						var root = this.contentRoot
 						$('<ins/>').html(data).find('a.usdlc[action=page]').each(function() {
 							var a = $(this)
-							var href = a.attr('href')
-							if (href[0] != '/') {
+							var href = usdlc.removeDomain(a.attr('href'))
+							if (href.charAt(0) != '/') {
 								href = root + href
 							}
 							var id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
 							tree += "<li id='" + id + "' class='jstree-closed'><a href='" + href + "' class='contentLink'>" + a.text() + "</a></li>"
 						})
-						return tree || null
+						return tree || ' '
 					}
 				}},
 				hotkeys : {
@@ -49,6 +52,7 @@ $(function() {
 					}
 				},
 				cookies : { cookie_options : {expires : 1000} },
-				plugins : ['html_data', 'ui', 'cookies', 'themeroller', 'hotkeys']
+				themes : { theme : 'classic' },   // apple classic default
+				plugins : ['html_data', 'ui', 'cookies', 'themes', 'hotkeys']
 			})
 })

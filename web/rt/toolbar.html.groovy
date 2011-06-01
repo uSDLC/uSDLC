@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 doc.span(class: 'ui-widget-header ui-corner-all toolbar') {
-	if (userId == 'anon') {
-		button('Log In', icon: 'unlocked')
-	} else {
-		button("Log out $userId", icon: 'locked')
-	}
-	button('Run Page', icon: 'play', onClick: 'usdlc.runPage()')
 	span(class: 'buttonset') {
 		input(id: 'EditButton', name: 'edit-run', type: 'radio', checked: "checked", onClick: 'usdlc.setEditMode(true)')
 		label('Edit', 'for': 'EditButton')
 		input(id: 'RunButton', name: 'edit-run', type: 'radio', onClick: 'usdlc.setEditMode(false)')
 		label('Run', 'for': 'RunButton')
 	}
-	button('Options', icon: 'wrench', onclick: 'window.location="/rt/maintenance/index.html"')
-	button('Help', icon: 'help', onClick: 'usdlc.help();return false')
+	span(class: 'buttonset') {
+		input(id: 'RunPageButton', type: 'radio', onClick: 'usdlc.runPage()')
+		label('Page', 'for': 'RunPageButton')
+	}
 }
