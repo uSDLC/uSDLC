@@ -50,8 +50,8 @@ class HtmlActor {
 				env.query.dependents.tokenize(',').each {
 					//noinspection GroovyNestedSwitch
 					switch (env.query.action) {
-						case 'copy': Store.base("$base/$it").copy(targetPath); break
-						case 'cut': Store.base("$base/$it").move(targetPath); break
+						case 'copy': Store.absolute("$base/$it").copy(targetPath); break
+						case 'cut': Store.absolute("$base/$it").move(targetPath); break
 					}
 				}
 				def contents = env.in.text.bytes
