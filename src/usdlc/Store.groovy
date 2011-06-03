@@ -53,9 +53,13 @@ class Store {
 	 * @return File contents as a byte array.
 	 */
 	public byte[] read() {
-		if (file.exists()) { return file.bytes }
-		Log.err("New file $file.path")
-		return new byte[0]
+		byte[] bytes
+		if (file.exists()) {
+			bytes = file.bytes
+		} else {
+			bytes = new byte[0]
+		}
+		return bytes
 	}
 	/**
 	 * Public method used to read the file into a string.

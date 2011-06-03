@@ -114,6 +114,7 @@ $(function() {
 									self.attr('action', 'page')
 								} else {
 									self.attr('action', 'runnable')
+									self.addClass('sourceLink')
 								}
 							}
 						})

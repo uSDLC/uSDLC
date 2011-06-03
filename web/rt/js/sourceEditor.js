@@ -18,16 +18,15 @@ $(function() {
 	/*
 	 Links that don't end in .html can be edited with the source editor
 	 */
-	$('a.usdlc').not('[href*=.html.])').addClass('sourceLink').live('click', function(ev) {
+	$('a.sourceLink').live('click', function(ev) {
 		var link = $(ev.currentTarget)
 		var href = ev.currentTarget.pathname
 		var section = link.parents(".section")
 		usdlc.setFocus(section)
 		usdlc.highlight(false) // remove highlighting so save will stand out
-		var pathName = link.attr('pathname')
 		if (usdlc.editMode) {
 			// We are going to edit - so get the contents to load into a textarea.
-			$.get(pathName + '?action=raw', function(data) {
+			$.get(href + '?action=raw', function(data) {
 				var editArea = $('<textarea/>').attr('id', 'editArea')
 				var editAreaContainer = $('<div/>').attr('id', 'editAreaContainer').append(editArea)//.hide()
 				link.after(editAreaContainer)
@@ -48,7 +47,7 @@ $(function() {
 							id : "editArea"            // textarea id
 							,replace_tab_by_spaces: 4
 							,browsers: "all"
-							,syntax: usdlc.mimeType(pathName).syntax
+							,syntax: usdlc.mimeType(href).syntax
 							,start_highlight: true    // to display with highlight mode on start-up
 							,allow_toggle: false    // Don't allow display of textarea under editor
 							, min_width: 700

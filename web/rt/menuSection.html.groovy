@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package rt
-
 /*
  The main context menu of uSDLC will display actions required - based on user authentication.
+ Apart from printable characters, there are specials and modifiers. The modifiers can be linked together as in ant+shift+A.
+            backspace, tab, return, shift, ctrl, alt, pause, capslock, esc, space, pageup, pagedown, end, home, left, up, right, down, insert, del, f1-f12, numlock, scroll, meta (apple command)
  */
 doc.ul {
 	li {

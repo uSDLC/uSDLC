@@ -107,8 +107,8 @@ $(function() {
 						key = 'ctrl+' + key.substring(1)
 					}
 					var a = kbd.parents('a')
-					doc.bind('keydown', key, function(event) {
-						a.attr('onclick')(event)
+					doc.bind('keydown', key, function() {
+						a.click()
 						return false
 					})
 				})
