@@ -45,29 +45,35 @@ class JavaActor {
 		@Lazy static JavaClassLoader instance = new JavaClassLoader()
 
 		public Class loadClass(Filer filer) {
-			javaFile = filer
-			return findClass(filer.basePath.replaceAll('/', '.'))
+			return _loadClass(filer, basePath(filer).replaceAll('/', '.'))
 		}
 
 		private Filer javaFile
 
 		public Class loadClass(String name) {
-			javaFile = new Filer(name.replaceAll('.', '/') + '.java')
-			return findClass(name)
+			return _loadClass(new Filer(name.replaceAll('.', '/') + '.java'), name)
+		}
+
+		private Class _loadClass(Filer filer, String className) {
+			javaFile = filer
+			return findClass(className)
 		}
 
 		public Class findClass(String name) {
 			// For efficiency we can assume a loaded class won't change - but will it?
-			if (!Config.allwaysCheckForRecompile && name in classes) {
-				return (Class) classes[name]
+			Class classReference
+			if (Config.allwaysCheckForRecompile && name in classes) {
+				classReference = readClass(name)
+			} else {
+				classReference = (Class) classes[name]
 			}
-			return readClass(name)
+			return classReference
 		}
 
 		private classes = [:]
 
 		private readClass(name) {
-			def classFile = new Filer(javaFile.basePath + ".class")
+			def classFile = new Filer(basePath(javaFile) + ".class")
 			def found = classes[name]
 			// If there is source and the source is newer than the class (or there is no class)...
 			if (!javaFile.store.exists()) {
@@ -82,6 +88,10 @@ class JavaActor {
 				found = ClassReloader.instance(this, classFile.contents)
 			}
 			return classes[name] = found
+		}
+
+		private String basePath(Filer filer) {
+			return filer.store.path[0..-(filer.fullExt.size() + 2)]
 		}
 		/**
 		 * A special class-loader we can throw away every time we want to recompile and use a java class.
@@ -100,10 +110,14 @@ class JavaActor {
 		 * @return True if we need to recompile
 		 */
 		private needsCompile(javaFile, classFile) {
-			if (!classFile.store.exists()) { return true }    // no class - must compile
-			// Lastly, check to see if source is more recent than class - if so, must compile
-			return javaFile.store.lastModified() > classFile.store.lastModified()
-
+			boolean needsCompile
+			if (classFile.store.exists()) {
+				// Check to see if source is more recent than class - if so, must compile
+				needsCompile = javaFile.store.lastModified() > classFile.store.lastModified()
+			} else {
+				needsCompile = true    // no class - must compile
+			}
+			return needsCompile
 		}
 		/**
 		 * Use the compile API to recompile the file to disk as a class file. Strangely enough we do this with a groovy script - so we can steal the classpath.

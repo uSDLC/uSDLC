@@ -1,7 +1,16 @@
 organisation('org.codehaus.groovy').module('groovy').required('default,optional')
-group('jars/required').download('http://code.google.com/p/groovypptest/downloads/detail?name=groovypp-0.4.243_1.8.0.jar&can=2&q=', 'groovypp.jar')
-group('source').download('http://code.google.com/p/groovypptest/downloads/detail?name=groovypp-0.4.243_1.8.0-sources.jar&can=2&q=', 'groovypp.jar')
+
 organisation('org.apache.ivy').module('ivy').required()
 organisation('commons-logging').module('commons-logging').required()
 organisation('com.h2database').module('h2').required()
 organisation('org.jasypt').module('jasypt').required()
+
+organisation('org.scala-lang').
+    module('scala-actors').required().
+    module('scala-compiler').required().
+    module('scala-db').required().
+    module('scala-dbc').required().
+    module('scala-decoder').required().
+    module('scala-library').required().
+    module('scala-parent').required().
+    module('scalap').required()

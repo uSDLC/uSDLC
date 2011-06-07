@@ -46,16 +46,19 @@ class Timer {
 	 */
 	String toString() {
 		long elapsed = System.currentTimeMillis() - start
-		if (elapsed < 1000) { return "$elapsed ms" }
 		def string = new StringBuffer()
-		elapsed /= 1000
-		def seconds = elapsed % 60
-		string.append("$seconds s")
-		elapsed /= 60
-		def minutes = elapsed % 60
-		def hours = elapsed / 60
-		if (hours || minutes) { string.insert(0, "$minutes m ") }
-		if (hours) { string.insert(0, "$hours h ") }
+		if (elapsed < 1000) {
+			string.append("$elapsed ms")
+		} else {
+			elapsed /= 1000
+			def seconds = elapsed % 60
+			string.append("$seconds s")
+			elapsed /= 60
+			def minutes = elapsed % 60
+			def hours = elapsed / 60
+			if (hours || minutes) { string.insert(0, "$minutes m ") }
+			if (hours) { string.insert(0, "$hours h ") }
+		}
 		return string
 	}
 

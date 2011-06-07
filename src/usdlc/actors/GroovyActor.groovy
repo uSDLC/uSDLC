@@ -37,7 +37,7 @@ class GroovyActor {
 					gse: new GroovyScriptEngine(Config.classPath),
 			)
 		}
-		def root = Store.base(script).parent.replaceAll('\\\\', '/')
+		def root = Store.base(script).parent
 		def shell = new GroovyShell(binding)
 		bind(
 				include: {
@@ -77,7 +77,7 @@ class GroovyActor {
 	 * Could be recursive if a script calls include()
 	 */
 	def runScript(script) {
-		binding.gse.run script, binding
+		binding.gse.run Store.base(script).absolutePath, binding
 	}
 
 	static {

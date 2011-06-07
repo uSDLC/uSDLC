@@ -71,26 +71,27 @@ class Exchange {
 			// For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
 			path = path.substring(Config.urlBase.size())
 		}
-		//Filer is full of magic - including deciding whether a file is client or usdlc.server.servletengine.server.
+		//Filer is full of magic - including deciding whether a file is client or server.
 		file = new Filer(path)
 		if (!file.fullExt) {
 			// The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
 			file = new Filer(path = Config.rootFile)
 		}
+		env.clientType = file.clientExt
 		// Now that we have a definitive script name, save it for use in executing the Actor.
-		env.script = path    // full script/file name
-		env.here = "$Config.baseDirectory/${Store.split(file.relativePath).path}"    // path we are running in
-		env.clientType = file.clientExt  // extension to file
+		env.script = file.store.path    // full script/file name
 		// Convert internal maps to a more usable form
 		env.query = Dictionary.query(env.header.query)
 		env.cookies = Dictionary.cookies(env.header.cookie)
 		// We might store more permanent information under the user or session ID.
 		env.userId = env.cookies.userId ?: 'anon'
+		// We keen a session reference as a cookie.
 		if (!env.cookies.session) {
 			env.cookies.session = session as String
 			responseHeader['Set-cookie'] = "session=$env.cookies.session"
 			session++
 		}
+		// Output is mostly by env.doc - be it HTML, XML, Javascript or text (based on mime-type)
 		env.doc = BrowserBuilder.newInstance(env.query.mimeType ?: file.mimeType())
 		// Update the response header - given the client mime type and tell browser we intend to close the connection when we are done.
 		responseHeader['Content-Type'] = env.mimeType
@@ -134,6 +135,7 @@ class Exchange {
 			problem.printStackTrace()
 		} finally {
 			// No matter what we want to close the connection. Otherwise the browser spins forever (since we are not providing a content length in the response header.
+			//noinspection GroovyEmptyCatchBlock
 			try { env.finaliser.exchange.each { it() } } catch (wasNotOpen) {}
 		}
 

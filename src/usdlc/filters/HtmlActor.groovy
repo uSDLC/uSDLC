@@ -29,11 +29,12 @@ import usdlc.Store
  */
 class HtmlActor {
 	def env = Environment.session()
+	Filer scriptFile
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
 	public run(script) {
-		def file = new Filer(script)
+		scriptFile = new Filer(script)
 
 		switch (env.query.action) {
 			case "run":
@@ -41,34 +42,37 @@ class HtmlActor {
 				break
 			case 'history':
 				def end = (env.query._index_ ?: '-1').toInteger()
-				env.out.println file.history.restore(end)
+				env.out.println scriptFile.history.restore(end)
 				break
 			case 'cut':
+				_copyOrPaste('move')
+				break
 			case 'copy':
-				def base = file.store.parent
-				def targetPath = Store.base('store/clipboard').uniquePath(env.query.title).replace('\\', '/')
-				env.query.dependents.tokenize(',').each {
-					//noinspection GroovyNestedSwitch
-					switch (env.query.action) {
-						case 'copy': Store.absolute("$base/$it").copy(targetPath); break
-						case 'cut': Store.absolute("$base/$it").move(targetPath); break
-					}
-				}
-				def contents = env.in.text.bytes
-				Store.base("$targetPath/Section.html").write(contents)
-				env.doc.js("usdlc." + env.query.action + "SectionSuccessful('$env.query.title','/$targetPath')")
+				_copyOrPaste('copy')
 				break
 			case 'paste':
-				def target = file.store.parent
-				def from = Store.base(env.query.from)
-				from.dir(~/[^.]*/) { Store.base(it).move(target) }
+				def target = scriptFile.store.parent
+				def from = Store.base("store/clipboard/$env.query.from")
+				from.dir(~/[^.]*/) { from.rebase(it).move(target) }
 				env.out.println new String(Store.base("$env.query.from/Section.html").read())
 				from.rmdir()
 				break
 			default:    // Suck the HTML file contents - converting from byte[] to String.
-				env.out.println new String(file.contents)
+				env.out.println new String(scriptFile.contents)
 				break
 		}
+	}
+
+	private _copyOrPaste(String copyOrMove) {
+		String base = scriptFile.store.parent
+		Store clipboard = Store.base('store/clipboard')
+		String targetName = clipboard.uniquePath(env.query.title)
+		env.query.dependents.tokenize(',').each {
+			Store.base("$base/$it")[copyOrMove]("store/clipboard/$targetName");
+		}
+		def contents = env.in.text.bytes
+		clipboard.base("$targetName/Section.html").write(contents)
+		env.doc.js("usdlc." + env.query.action + "SectionSuccessful('$env.query.title','/$targetName')")
 	}
 	/**
 	 * Helper method used by language specific sub-classes. HTML, for example, uses this method to fire off the template script after passing in the HTML as BODY in the environment.

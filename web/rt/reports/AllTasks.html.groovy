@@ -25,12 +25,12 @@ doc.div(id: "pageTitle", 'class': "editable") {
 	h1("")
 	h2("")
 	def sections = []
-	Store.base().dirs(~/.*\.html$/) {
-		def page = new Page(it)
+	Store.base().dirs(~/.*\.html$/) { String path ->
+		def page = new Page(Store.base(path).text())
 		page.each { html ->
 			def section = [page: page.name]
-			['id', 'state', 'pred', 'depend', 'owner', 'assignee', 'date', 'notes'].each {
-				section[it] = html["@$it"]
+			['id', 'state', 'pred', 'depend', 'owner', 'assignee', 'date', 'notes'].each { String sectionId ->
+				section[it] = html["@$sectionId"]
 			}
 			sections << section
 		}

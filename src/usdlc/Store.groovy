@@ -31,23 +31,54 @@ class Store {
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
-	static base(path = '') { return absolute(Config.baseDirectory + path) }
-	/**
-	 * Build a store object from an absolute file path.
-	 */
-	static absolute(String path) {
+	static Store base(String path = '') {
 		def store = new Store()
-		store.file = new File(path)
+		store.file = new File(Config.baseDirectory, path)
 		return store
+	}
+	/**
+	 * Sometimes we get a now store based on an old location
+	 */
+	Store rebase(String more = '') {
+		def store = new Store()
+		store.file = new File(path + more)
+		return store
+	}
+	/**
+	 * If we need to read a source as a stream...
+	 * <code>
+	 * def dir = Store.base("rt")
+	 * def lines
+	 * dir.withInputStream('template.html.groovy') { stream -> stream.readLines() }* </code>
+	 */
+	InputStream withInputStream(String fileName, Closure closure) {
+		return new File(file, fileName).withInputStream(closure)
 	}
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	private def mkdirs() { if (parent) { new File(parent).mkdirs() } }
+	private def mkdirs() {
+		new File(Config.baseDirectory + parent).mkdirs()
+	}
 
-	@Lazy String parent = file.parent
-	@Lazy String path = file.path
-	@Lazy def url = file.toURI().toURL()
+	static URI baseDirectoryURI = new File(Config.baseDirectory).toURI()
+	@Lazy String parent = pathFromBase(file.parent)
+	@Lazy String path = pathFromBase(file.path)
+	@Lazy String absolutePath = file.path
+	@Lazy def uri = file.toURI()
+	@Lazy def url = uri.toURL()
+	/**
+	 * Return a string being the file path relative to the base directory.
+	 */
+	private static String pathFromBase(File file) {
+		return baseDirectoryURI.relativize(file.toURI()).path
+	}
+	/**
+	 * Return a string being the file path relative to the base directory.
+	 */
+	private static String pathFromBase(String path) {
+		return pathFromBase(new File(path))
+	}
 	/**
 	 * Public method used to read the file.
 	 * @return File contents as a byte array.
@@ -99,25 +130,25 @@ class Store {
 		return file.exists()
 	}
 	/**
-	 * Fetch a list of matching contents of a directory
+	 * Fetch a list of matching contents of a directory - names only, no path
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
 	 * @param closure - code to execute for each file in the directory
 	 */
-	public dir(mask, Closure closure) {
+	void dir(mask, Closure closure) {
 		//noinspection GroovyEmptyCatchBlock
-		try { file.eachFileMatch mask, { closure(it.path) } } catch (e) {}
+		try { file.eachFileMatch mask, { closure(pathFromBase(it)) } } catch (e) {}
 	}
 	/**
 	 * Fetch a list of all contents of a directory
 	 * @param closure - code to execute for each file in the directory
 	 */
-	public dir(Closure closure) { dir(~/.*/, closure) }
+	void dir(Closure closure) { dir(~/.*/, closure) }
 	/**
 	 * Fetch a list of matching contents of a directory
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
 	 * @return list of matching file paths
 	 */
-	public dir(mask) {
+	List dir(mask) {
 		def list = []
 		dir(mask, { list << it })
 		return list
@@ -132,16 +163,17 @@ class Store {
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
 	 * @param closure - for every file that matches
 	 */
-	public dirs(mask, closure) {
-		//noinspection GroovyEmptyCatchBlock
-		file.traverse(type: FILES, nameFilter: mask) { closure(it.path) }
+	void dirs(mask, closure) {
+		file.traverse(type: FILES, nameFilter: mask) { File file ->
+			closure(pathFromBase(file))
+		}
 	}
 	/**
 	 * Fetch a list of contents of a directory tree (as in dir /s)
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
 	 * @return Array of results (empty if none)
 	 */
-	public dirs(mask) {
+	List dirs(mask) {
 		def list = []
 		dirs(mask, { list << it.replaceAll(sloshRE, '/') })
 		return list
@@ -159,7 +191,7 @@ class Store {
 	 * Find a directory that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5). This path will sort correctly for creation date.
 	 * @return A string representation of the path - being the same base as the current store.
 	 */
-	def uniquePath(end) {
+	String uniquePath(end) {
 		def timestamp = new Date().format(dateStampFormat)
 		def uniquifier = 0
 		def uniquePath = "${timestamp}_${uniquifier}_${end.replaceAll(cleanFileNameRE, '')}"
@@ -167,7 +199,7 @@ class Store {
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquifier++;
 		}
-		return unique.path
+		return pathFromBase(unique)
 	}
 
 	static cleanFileNameRE = ~/\W/
@@ -178,15 +210,22 @@ class Store {
 	 */
 	static parseUnique(uniqueName) {
 		//noinspection GroovyUnusedAssignment
-		def (all, dateString, uniquifier, title) = uniqueRE.matcher(uniqueName)[0]
-		return [
-				date: Date.parse(dateStampFormat, dateString),
-				title: decamel(title),
-				path: uniqueName.replaceAll(sloshRE, '/')
-		]
+		def unique
+		def matcher = uniqueRE.matcher(uniqueName)
+		if (matcher && matcher.size() > 0 && matcher[0].size() >= 4) {
+			def (all, dateString, uniquifier, title) = matcher[0]
+			unique = [
+					date: Date.parse(dateStampFormat, dateString),
+					title: decamel(title),
+					path: uniqueName.replaceAll(sloshRE, '/')
+			]
+		} else {
+			unique = null
+		}
+		return unique
 	}
 
-	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(.*)/
+	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(\w*)/
 	static decamelRE = ~/\B([A-Z])/
 	static sloshRE = ~"\\\\"
 	static dateStampFormat = "yyyy-MM-dd_HH-mm-ss"
@@ -228,5 +267,5 @@ class Store {
 	 */
 	def delete() { ant.delete(file: file.name) }
 
-	@Lazy ant = Ant.builder(Log.file('store'))
+	@Lazy ant = Ant.builder(Log.file('store'), 2)
 }

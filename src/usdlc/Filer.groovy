@@ -30,24 +30,22 @@ class Filer {
 	String serverExt = ''
 	String clientExt = ''
 	String fullExt = ''
-	String relativePath
-	@Lazy String basePath = relativePath[0..-(fullExt.size() + 2)]
-
+	Store store
 	Class actor
 
 	/**
-	 * The constructor requires the path and name of the command to be evaluation.
-	 * @param path
-	 * @return
+	 * Create a Filer object based of an another filer object
 	 */
-	Filer(path) {
-		// todo: fails if result of dir() which is absolute path
-		relativePath = path.startsWith(Config.baseDirectory) ? path.substring(Config.baseDirectory.size()) : path
-		if (relativePath[0] == '/') {
-			relativePath = relativePath.substring(1)
-		}
+	Filer(Filer base, String path) { _init_(base.store.rebase(path)) }
+	/**
+	 * Create a Filer object based of an absolute path or one relative to the base directory
+	 */
+	Filer(String path) { _init_(Store.base(path)) }
+
+	private _init_(Store store) {
+		this.store = store
 		// Mpst of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server (most of the time). An example is index.html.groovy
-		def match = (path =~ extRE)
+		def match = (store.path =~ extRE)
 		if (match) {
 			actor = getActor('actors', serverExt = match[-1][1])
 			if (match.size() == 1) {
@@ -78,17 +76,19 @@ class Filer {
 	 * @return
 	 */
 	def getActor(type, language) {
-		// no language to check, so no actor possible
-		if (!language) { return null }
-		def className = "usdlc.${type}.${language[0].toUpperCase()}${language[1..-1]}Actor"
-		// We have found out before that this type does not have an actor
-		if (noActors.contains(className)) { return null }
-		try {
-			return Class.forName(className)
-		} catch (exception) {
-			noActors << className
-			return null
+		Class actorClass = null
+		if (language) {
+			def className = "usdlc.${type}.${language[0].toUpperCase()}${language[1..-1]}Actor"
+			// We have found out before that this type does not have an actor
+			if (!noActors.contains(className)) {
+				try {
+					actorClass = Class.forName(className)
+				} catch (exception) {
+					noActors << className
+				}
+			}
 		}
+		return actorClass
 	}
 	/**
 	 * Called to run an actor or set of actors on a page.
@@ -99,28 +99,20 @@ class Filer {
 		runFiles(~/^Teardown\..*/)
 	}
 	/**
-	 * Run the actor with the correct parameters.
+	 * Run the actor.
 	 */
 	void actorRunner() {
-		actor?.newInstance()?.run(relativePath)
+		actor?.newInstance()?.run(store.path)
 	}
 	/**
 	 * Run a set of files in the same directory matching a pattern. Used for setup and teardown.
-	 * @param matching Pattern to match
 	 */
 	def runFiles(matching) {
-		Store.base(pathTo).dir(matching).each {
-			new Filer(it).actorRunner()
+		def base = Store.base(store.parent)
+		base.dir(matching).each {
+			new Filer(base, it).actorRunner()
 		}
 	}
-	/**
-	 * Retrieve the path to the file pointed to by filer.
-	 * @return
-	 */
-	@Lazy pathTo = {
-		int slash = relativePath.lastIndexOf('/')
-		return (slash == -1) ? '/' : relativePath.substring(0, slash)
-	}()
 
 	static HashSet noActors = new HashSet()
 
@@ -133,7 +125,7 @@ class Filer {
 		history.save(env.userId, before, newContents)
 	}
 
-	@Lazy history = new History(path: relativePath, type: 'updates')
+	@Lazy history = new History(path: store.path, type: 'updates')
 	@Lazy env = Environment.session()
 
 	/**
@@ -150,9 +142,13 @@ class Filer {
 	 * @return The contents of the template.
 	 */
 	byte[] template(ext) {
-		if (!ext) return [] as byte[]
-		if (!Config.template[ext]) return [] as byte[]
-		return Store.base("rt/${Config.template[ext]}.$fullExt").read()
+		byte[] bytes
+		if (ext && Config.template[ext]) {
+			bytes = Store.base("rt/${Config.template[ext]}.$fullExt").read()
+		} else {
+			bytes = []
+		}
+		return bytes
 	}
 
 	/**
@@ -183,9 +179,6 @@ class Filer {
 	void setContents(byte[] contents) {
 		store.write(contents)
 	}
-
-	@Lazy Store store = Store.base(relativePath)
-	@Lazy String path = store.path
 
 	/**
 	 * Mime-types to look for.
