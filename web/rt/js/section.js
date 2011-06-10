@@ -15,94 +15,93 @@
  */
 
 $(function() {
-	usdlc.pageContents = $('div#pageContents')
-
 	$.extend(true, window.usdlc, {
-				/**
-				 * Called by the usdlc.server.servletengine.server to highlight the page selection.
-				 */
-				highlight : function (colour, section) {
-					if (! section) {
-						section = usdlc.inFocus
-					}
-					if (! section) {
-						return
-					}
+		/**
+		 * Called by the usdlc.server.servletengine.server to highlight the page selection.
+		 */
+		highlight : function (colour, section) {
+			if (! section) {
+				section = usdlc.inFocus
+			}
+			if (! section) {
+				return
+			}
 
-					if (colour) {
-						var url = 'url(/rt/gradients/' + colour + '-right.png)'
-						section.css({backgroundImage : url, backgroundPosition : -10})
-					} else {
-						section.css({backgroundImage : 'none'})
-					}
-				},
-				/*
-				 Each paragraph is a focus element. Highlight it if clicked on or otherwise referenced to.
-				 */
-				setFocus : function(element) {
-					var section = $(element || usdlc.inFocus)
-					if (!section.hasClass("inFocus")) {
-						usdlc.clearFocus()
-						usdlc.inFocus = section.addClass('inFocus ui-state-highlight')
-						usdlc.contentTree.jstree('disable_hotkeys')
-						return true //yup - we changed focus
-					}
-					return false    // was already in focus
-				},
-				clearFocus : function() {
-					if (! usdlc.inFocus) {
-						return
-					}
-					$('.inFocus').removeClass('inFocus ui-state-highlight')
-					usdlc.lastFocus = usdlc.inFocus
-					usdlc.inFocus = null
-					usdlc.contentTree.jstree('enable_hotkeys')
-				},
-				toggleFocus : function() {
-					if (usdlc.inFocus) {
-						usdlc.clearFocus()
-					} else {
-						usdlc.setFocus(usdlc.lastFocus || $('div.section:first'))
-					}
-				},
-				inFocus : null,
-				lastFocus : null,
-				hasFocus : function() {
-					if (usdlc.contextMenu && usdlc.contextMenu.is(":visible")) {
-						return false    // doesn't have focus of context menu up
-					}
-					return usdlc.inFocus
-				},
-				nextSectionId : function() {
-					var id = $('.section').length + 1
-					while ($('div#s' + id).length > 0) {
-						id++;
-					}
-					return 's' + id
-				},
-				upFocus : function() {
-					if (usdlc.hasFocus()) {
-						var focus = usdlc.inFocus.prev()
-						if (! focus.length) {
-							focus = $('div.section:last')
-						}
-						usdlc.setFocus(focus)
-						return false
-					}
-					return true
-				},
-				downFocus : function() {
-					if (usdlc.hasFocus()) {
-						var focus = usdlc.inFocus.next()
-						if (! focus.length) {
-							focus = $('div.section:first')
-						}
-						usdlc.setFocus(focus)
-						return false
-					}
-					return true
+			if (colour) {
+				var url = 'url(/rt/gradients/' + colour + '-right.png)'
+				section.css({backgroundImage : url, backgroundPosition : -10})
+			} else {
+				section.css({backgroundImage : 'none'})
+			}
+		},
+		/*
+		 Each paragraph is a focus element. Highlight it if clicked on or otherwise referenced to.
+		 */
+		setFocus : function(element) {
+			var section = $(element || usdlc.inFocus)
+			if (!section.hasClass("inFocus")) {
+				usdlc.clearFocus()
+				usdlc.inFocus = section.addClass('inFocus ui-state-highlight')
+				usdlc.contentTree.jstree('disable_hotkeys')
+				usdlc.pageContentsSausages.sausage("setFocus", section)
+				return true //yup - we changed focus
+			}
+			return false    // was already in focus
+		},
+		clearFocus : function() {
+			if (! usdlc.inFocus) {
+				return
+			}
+			$('.inFocus').removeClass('inFocus ui-state-highlight')
+			usdlc.lastFocus = usdlc.inFocus
+			usdlc.inFocus = null
+			usdlc.contentTree.jstree('enable_hotkeys')
+		},
+		toggleFocus : function() {
+			if (usdlc.inFocus) {
+				usdlc.clearFocus()
+			} else {
+				usdlc.setFocus(usdlc.lastFocus || $('div.section:first'))
+			}
+		},
+		inFocus : null,
+		lastFocus : null,
+		hasFocus : function() {
+			if (usdlc.contextMenu && usdlc.contextMenu.is(":visible")) {
+				return false    // doesn't have focus of context menu up
+			}
+			return usdlc.inFocus
+		},
+		nextSectionId : function() {
+			var id = $('.section').length + 1
+			while ($('div#s' + id).length > 0) {
+				id++;
+			}
+			return 's' + id
+		},
+		upFocus : function() {
+			if (usdlc.hasFocus()) {
+				var focus = usdlc.inFocus.prev()
+				if (! focus.length) {
+					focus = $('div.section:last')
 				}
-			})
+				usdlc.setFocus(focus)
+				return false
+			}
+			return true
+		},
+		downFocus : function() {
+			if (usdlc.hasFocus()) {
+				var focus = usdlc.inFocus.next()
+				if (! focus.length) {
+					focus = $('div.section:first')
+				}
+				usdlc.setFocus(focus)
+				return false
+			}
+			return true
+		}
+	})
 
 	//Anything that has focus can be edited.
 	$('.editable').

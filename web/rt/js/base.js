@@ -29,9 +29,9 @@ $(function() {
 				options.height = $(window).height() * percent / 10.0
 			}
 			contents.dialog($.extend({
-						show: "blind",
-						hide: "explode"
-					}, options))
+				show: "blind",
+				hide: "explode"
+			}, options))
 			// dialog sets iframe width to auto - which does not fill the parent
 			contents.css('width', '98%')
 			return contents
@@ -92,47 +92,50 @@ $(function() {
 	function setPageLayout() {
 		var w = $(window)
 		var ptt = $('table#pageTitleTable')
-		var pcd = $('div#pageContents')
-		var pad = 20 // damn ie pc.outerHeight() - pcd.height()
-		var h = w.height() - ptt.outerHeight() - pad
-		pcd.outerHeight(h)
-		var pcdl = $('div#pageContentSlider')
-		pcdl.outerHeight(h - 20)
-		var lastScrollTop = 0
-
+		usdlc.pageContents = $('div#pageContents')
+		var pad = 25 // damn ie pc.outerHeight() - usdlc.pageContents.height()
+		var viewPortHeight = w.height() - ptt.outerHeight() - pad
+		var aboveScroll = (viewPortHeight > 500) ? 100 : 50
+		var belowScroll = viewPortHeight - aboveScroll
+		usdlc.pageContents.outerHeight(viewPortHeight)
+		usdlc.pageContentsSausages = $('td#pageContentsSausages')
+		usdlc.pageContentsSausages.sausage({
+			container : usdlc.pageContents,
+			page : function() {
+				return usdlc.pageContents.find('div.section')
+			},
+			scrollTo : usdlc.scrollTo,
+			content: function (i, $page) {
+				var title = usdlc.parseSection($page).title
+				return '<span class="sausage-span">' + title + '</span>';
+			}
+		})
 		usdlc.scrollFiller = function(on) {
 			if (on) {
 				if ($('div.scrollFiller').size() === 0) {
-					pcd.append($("<div/>").height(pcd.height() * 0.6).addClass('scrollFiller'))
+					usdlc.pageContents.append($("<div/>").height(usdlc.pageContents.height() * 0.6).addClass('scrollFiller'))
 				}
 			} else {
 				$('div.scrollFiller').remove()
 			}
 		}
 		usdlc.scrollFiller(true)
-		function scrollTop(ui) {
-			return lastScrollTop = (100 - ui.value) * ((pcd.attr("scrollHeight") - pcd.height()) / 100)
-		}
 
-		/*
-		 What to do when the slider moves up and down - scrolling.
-		 */
-		usdlc.pageContentSlider = $("div#pageContentSlider").slider({
-					orientation: "vertical",
-					animate: true,
-					value: 100,
-					change: function(e, ui) {
-						pcd.animate({scrollTop: scrollTop(ui) }, 400)
-					},
-					slide: function(e, ui) {
-						pcd.attr({scrollTop: scrollTop(ui) })
-					}
-				})
 		usdlc.scrollTo = function(element) {
-			pcd.scrollTo(element)
+			lastScrollTop = usdlc.pageContents.parent().scrollTop()
+			var elementHeight = element.outerHeight()
+			var elementTop = 0
+			element.prevAll('.section').each(function() {
+				elementTop += $(this).outerHeight()
+			})
+			var newTop = (elementHeight > belowScroll) ? elementTop : (elementTop - aboveScroll)
+			usdlc.pageContents.scrollTop(newTop)
+			usdlc.setFocus(element)
 		}
+		var lastScrollTop = 0
+
 		usdlc.scrollBack = function() {
-			pcd.animate({scrollTop: lastScrollTop}, 400)
+			usdlc.pageContents.animate({scrollTop: lastScrollTop}, 400)
 		}
 	}
 })

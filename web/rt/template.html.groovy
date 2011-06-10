@@ -61,9 +61,7 @@ doc.html {
 					td(id: 'pageContentsTd') {
 						div(id: 'pageContents', "")
 					}
-					td(id: 'pageContentSliderTd') {
-						div(id: 'pageContentSlider', "")
-					}
+					td(id: 'pageContentsSausages', "")
 				}
 			}
 			// Most interaction is through a pop-up menu that is included here from a separate file. It is loaded as a secondary request.
@@ -88,8 +86,10 @@ doc.html {
 				script('', type: jsType, src: '/lib/jquery/js/jquery-1.6.1.js')
 				script('', type: jsType, src: '/lib/jquery/js/jquery-ui-1.8.13.custom.js')
 				script('', type: jsType, src: '/lib/jquery/js/jquery.cookie.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.sausage.js')
 				script('', type: jsType, src: '/lib/jquery/js/jquery.hotkeys.js')
 				script('', type: jsType, src: '/lib/jquery/js/jquery.jstree.js')
+				script('', type: jsType, src: '/lib/jquery/js/jquery.sausage.js')
 				script('', type: jsType, src: '/rt/js/base.js')
 				script('', type: jsType, src: '/rt/js/contentTree.js')
 				script('', type: jsType, src: '/rt/js/section.js')

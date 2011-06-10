@@ -111,10 +111,15 @@ class Store {
 	 * Public method to write file contents - appending to existing contents.
 	 * @param contents Byte array of contents to write.
 	 */
-	public append(contents) {
+	public Store append(byte[] contents) {
 		mkdirs()
 		file << contents
+		return this
 	}
+
+	public Store append(String contents) { append contents.bytes }
+
+	public Store append(long contents) { append contents.toString() }
 	/**
 	 * Check the size of the file.
 	 * @return bytes in file.
