@@ -46,7 +46,7 @@ doc.html {
 					}
 				}
 				tr {
-					td { /* span(id: 'toolbar', class: 'toolbar', "")*/ }
+					td { span(id: 'toolbar', class: 'toolbar', "") }
 				}
 			}
 			table(id: 'pageContentsTable') {

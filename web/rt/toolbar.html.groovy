@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc.span(class: 'ui-widget-header ui-corner-all toolbar') {
-	span(class: 'buttonset') {
-		input(id: 'EditButton', name: 'edit-run', type: 'radio', checked: "checked", onClick: 'usdlc.setEditMode(true)')
-		label('Edit', 'for': 'EditButton')
-		input(id: 'RunButton', name: 'edit-run', type: 'radio', onClick: 'usdlc.setEditMode(false)')
-		label('Run', 'for': 'RunButton')
-	}
-	span(class: 'buttonset') {
-		input(id: 'RunPageButton', type: 'radio', onClick: 'usdlc.runPage()')
-		label('Page', 'for': 'RunPageButton')
-	}
+doc.span(class: 'redBox') {
+	a(href: 'javascript:usdlc.logIn();usdlc.toggleShow("#LogOut","#LogIn")', id: "LogIn", "Log In")
+	a(href: 'javascript:usdlc.logIn();usdlc.toggleShow("#LogIn","#LogOut")', id: "LogOut", "Log Out", style: 'display:none;')
+	a(href: 'javascript:usdlc.setEditMode(false);usdlc.toggleShow("#RunButton","#EditButton")', id: "EditButton", "Edit Mode", title: "switch to run mode")
+	a(href: 'javascript:usdlc.setEditMode(true);usdlc.toggleShow("#EditButton","#RunButton")', id: "RunButton", "Run Mode", style: 'display:none;', title: "switch to edit mode")
+	a(href: 'javascript:usdlc.runPage()', id: "RunPage", "Run Page")
 }

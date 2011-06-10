@@ -286,6 +286,37 @@ li.jstree-leaf > ins.jstree-icon {
 <!-- [ if IE ] > filter : alpha ( opacity = 20 ) < ! [ endif ] -->
 }
 
+.redBox, .sausage-span {
+	padding: 2px 3px;
+	color: #000;
+	background-color: #fff;
+	border: solid 2px #990066;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: bold;
+	text-align: center;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.redBox a {
+	text-decoration: none;
+	margin: 0 5px 0 5px;
+	padding: 0 5px;
+	border: 1px solid #FFF;
+	color: black;
+}
+
+.redBox a:hover {
+	background: #e8eff7;
+	border: 1px solid #aecff7;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
 .sausage-set {
 	width: 15px;
 	border-left: solid 2px #fff;
@@ -319,18 +350,6 @@ li.jstree-leaf > ins.jstree-icon {
 	z-index: 2;
 	display: none;
 	width: 100px;
-	padding: 2px 3px;
-	color: #000;
-	background-color: #fff;
-	border: solid 2px #990066;
-	font-size: 10px;
-	line-height: 12px;
-	font-weight: bold;
-	text-align: center;
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
-	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .sausage-hover .sausage-span {

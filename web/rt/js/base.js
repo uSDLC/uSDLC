@@ -62,6 +62,12 @@ $(function() {
 		},
 		setCookie: function(key, value) {
 			return $.cookie(key, value, {expires : 1000})
+		},
+		toggleShow: function() {
+			$.each(arguments, function(index, value) {
+				$(value).css('display', 'none')
+			})
+			$(arguments[0]).css('display', 'inherit')
 		}
 	}
 	$('div[href]').each(function() {

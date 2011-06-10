@@ -60,11 +60,11 @@ $(function() {
 				pasteList.append($('div#pasteList').children().clone().bind('click', clickEvent).append(hotkey).wrap('<li/>'))
 
 				div.contextMenu = new Menu(div, {
-							content: menuData,
-							maxHeight: 400,
-							flyOut: false,
-							backLink: false
-						});
+					content: menuData,
+					maxHeight: 400,
+					flyOut: false,
+					backLink: false
+				});
 				div.contextMenu.menuExists = false
 				div.contextMenu.currentTarget = target
 				div.contextMenu.showMenu()
@@ -121,20 +121,6 @@ $(function() {
 			var toolbar = $(this)
 			$.get('/rt/' + toolbar.attr('id') + '.html.groovy', function(data) {
 				toolbar.html(data)
-				$('span.buttonset', toolbar).buttonset()
-				$('button', toolbar).each(function() {
-					var button = $(this)
-					var icons = button.attr('icon').split(',')
-					var init = {text : !!$.trim(button.innerHTML)}
-					if (icons) {
-						init.icons = {}
-						init.icons.primary = 'ui-icon-' + icons[0]
-						if (icons.length > 1) {
-							init.icons.secondary = 'ui-icon-' + icons[1]
-						}
-					}
-					button.button(init)
-				})
 			})
 		})
 	}
