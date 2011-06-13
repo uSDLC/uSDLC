@@ -76,10 +76,45 @@
 	Script Activation</h2>
 
 	<p>
-		<a class="usdlc" href="ClickingOnAScriptLink.htmlunit" id="s13a0" action="runnable">Clicking on a actor link</a>
-		will cause the script to run. To edit the script instead, hold the <a class="usdlc" href="AltKeyToEdit.htmlunit"
-		                                                                      id="s13a1" action="runnable">Alt key</a>
-		down before selecting the link. Hovering over a link will provide reminder text for this functionality.</p>
+		<a class="usdlc" href="ClickingOnAScriptLinkHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a0"
+		   action="page">Clicking on a actor link</a> will cause the script to run. To edit the script instead, hold the
+		<a class="usdlc" href="AltKeyToEditHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a1"
+		   action="page">Alt key</a> down before selecting the link. Hovering over a link will provide reminder text for
+		this functionality. The context menu (and the R key) will run all actors in the current highlighted section. You
+		can run all actors on a page and child pages from the <strong><em>Run Page</em></strong> button on the tool-bar.
+	</p>
+
+	<p>
+		Any actor that raises an error may stop the page run and display a message on the screen in a location near the
+		link within the bounds of the screen. The link will scroll into view if necessary. After a run the link
+		highlights will indicate success or failure of the actor.</p>
+
+	<p>
+		An actor will automatically raise an error if any data is written to any log that was not anticipated. An actor
+		can register acceptable output using patterns and regular expressions.</p>
+</div>
+<div id="s18" class="editable section" contextmenu="section"><h3>
+	Setup and Teardown</h3>
+
+	<p>
+		In all cases an actor named <strong><em>Setup</em></strong> will be run before the actors selected while one
+		called <strong><em>Teardown</em></strong> will run afterwards. It is possible to stop execution of the remaining
+		code by calling <em><strong>stopExecution(reason)</strong></em>&nbsp;where reason is recorded in the log.</p>
+</div>
+<div id="s20" class="editable section" contextmenu="section"><h3>
+	Reset</h3>
+
+	<p>
+		Once a page/section/link has been run it won't be run again until either the reset button is pressed or the page
+		is reloaded. Clicking on a link for an actor that has been run will re-display any messages it returned.</p>
+</div>
+<div id="s19" class="editable section" contextmenu="section"><h3>
+	Timings</h3>
+
+	<p>
+		uSDLC records the time it takes for all scripts. The results are available in the timings log and by report.
+		Reports provide summaries in addition to the raw data. Tasks are raised if the time to run an actor change
+		dramatically.</p>
 </div>
 <div id="s14" class="editable section" contextmenu="section"><h2>
 	Actor Parameters</h2>
@@ -157,3 +192,10 @@
 		actor that will display a simple message. Note that the link changes colour during and after the script has been
 		run.</p>
 </div>
+
+
+
+
+
+
+

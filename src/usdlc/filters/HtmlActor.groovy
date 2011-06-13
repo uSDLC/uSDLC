@@ -68,13 +68,14 @@ class HtmlActor {
 		Store clipboard = Store.base('store/clipboard')
 		String targetName = clipboard.uniquePath(env.query.title)
 		env.query.dependents.tokenize(',').each {
-			Store.base("$base/$it")[copyOrMove]("store/clipboard/$targetName");
+			Store.base("$base/$it")."$copyOrMove"("store/clipboard/$targetName");
 		}
 		def contents = env.in.text.bytes
 		clipboard.base("$targetName/Section.html").write(contents)
-		env.doc.js("usdlc." + env.query.action + "SectionSuccessful('$env.query.title','/$targetName')")
+		String title = env.query.title.replaceAll(/'/, /\\'/)
+		env.doc.js("usdlc.${env.query.action}SectionSuccessful('$title','/$targetName')")
 	}
-	/**
+	/** usdlc.cutSectionSuccessful
 	 * Helper method used by language specific sub-classes. HTML, for example, uses this method to fire off the template script after passing in the HTML as BODY in the environment.
 	 *
 	 * @param dir - Relative directory to the script - usually inferred from url path.

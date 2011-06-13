@@ -41,7 +41,18 @@ $(function() {
 				usdlc.cleanSections(toCut)
 				var focus = toCut.next()
 				var html = $('<div/>').html(toCut.clone()).html()
-				$.post(usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).title + "&mimeType=application/javascript"), html, $.globalEval)
+				var url = usdlc.serverActionUrl(usdlc.pageContentsURL, cutOrCopy + '&dependents=' + toMoveList.join(',') + "&title=" + usdlc.parseSection(toCut).title + "&mimeType=application/javascript")
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: html,
+					success: $.globalEval,
+					error: function(jqXHR, textStatus, errorThrown) {
+						usdlc.log(textStatus + ": " + errorThrown + " for\n" + jqXHR.responseText)
+						usdlc.alert('postError.htm')
+					},
+					dataType: 'script'
+				})
 				usdlc.sectionBeingCut = toCut
 				usdlc.modalOff()
 				usdlc.setFocus(focus)

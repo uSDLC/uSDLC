@@ -16,59 +16,59 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-				passed: function() {
-					usdlc.highlight('green')
-				},
-				failed: function() {
-					usdlc.highlight('red')
-				},
-				/**
-				 * Command to run the whole page - as in from drop-down in header or a link/button
-				 */
-				runPage: function() {
-					runSections($('div.section'))
-				},
-				linkAction: function(link) {
-					var results = link.data('results')
-					if (results) {
-						results.dialog("open")
-					} else {
-						runLink(link)
-					}
-				},
-				runLink: runLink,
-				/**
-				 * Command to run the page section.
-				 */
-				runSectionInFocus: function() {
-					var section = $('.inFocus')
-					runSections(section)
-				},
-				/**
-				 * Command to run a section of the page or from the page section to the end of the page.
-				 */
-				runFromSectionInFocus: function() {
-					var section = $('.inFocus')
-					runSections(section.nextAll('.section').andSelf())
-				},
-				/**
-				 * When in run mode, hovering over a link will display the results rather than edit or go to the page/runnable.
-				 * @param link Link clicked on.
-				 */
-				displayResults: function(link) {
-					var results = link.data('results')
-					if (results) {
-						results.dialog('show')
-					}
-				},
+		passed: function() {
+			usdlc.highlight('green')
+		},
+		failed: function() {
+			usdlc.highlight('red')
+		},
+		/**
+		 * Command to run the whole page - as in from drop-down in header or a link/button
+		 */
+		runPage: function() {
+			runSections($('div.section'))
+		},
+		linkAction: function(link) {
+			var results = link.data('results')
+			if (results) {
+				results.dialog("open")
+			} else {
+				runLink(link)
+			}
+		},
+		runLink: runLink,
+		/**
+		 * Command to run the page section.
+		 */
+		runSectionInFocus: function() {
+			var section = $('.inFocus')
+			runSections(section)
+		},
+		/**
+		 * Command to run a section of the page or from the page section to the end of the page.
+		 */
+		runFromSectionInFocus: function() {
+			var section = $('.inFocus')
+			runSections(section.nextAll('.section').andSelf())
+		},
+		/**
+		 * When in run mode, hovering over a link will display the results rather than edit or go to the page/runnable.
+		 * @param link Link clicked on.
+		 */
+		displayResults: function(link) {
+			var results = link.data('results')
+			if (results) {
+				results.dialog('show')
+			}
+		},
 
-				runningLinkClass: function(links, name) {
-					$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
-				},
-				clearRunningLinkClass: function(inside) {
-					$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
-				}
-			})
+		runningLinkClass: function(links, name) {
+			$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
+		},
+		clearRunningLinkClass: function(inside) {
+			$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
+		}
+	})
 
 	function enqueue(link, options, action) {
 		var a = link.get(0)
@@ -93,7 +93,7 @@ $(function() {
 						}
 					},
 					error : function(xmlHttpRequest, textStatus) {
-						console.log(textStatus)
+						usdlc.log(textStatus)
 						usdlc.alert("noServer.htm")
 					}
 				}, options || {}))
@@ -109,12 +109,12 @@ $(function() {
 						open: function() {
 							var widget = dialog.dialog("widget")
 							widget.position({
-										of: link, my: 'bottom', at: 'top', collision: 'flip',
-										using: function(position) {
-											var from = widget.offset()
-											widget.animate({top:position.top + from.top, left:position.left + from.left})
-										}
-									})
+								of: link, my: 'bottom', at: 'top', collision: 'flip',
+								using: function(position) {
+									var from = widget.offset()
+									widget.animate({top:position.top + from.top, left:position.left + from.left})
+								}
+							})
 						}
 					}, options || {}))
 			link.data('results', dialog)

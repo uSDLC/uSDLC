@@ -51,10 +51,12 @@ doc.html {
 			}
 			table(id: 'pageContentsTable') {
 				tr {
-					td(id: 'contentTree') {
-						ul {
-							li('class': 'jstree-closed') {
-								a(href: '/', 'class': 'contentLink', '')
+					td(id: 'contentTreeTd') {
+						div(id: 'contentTree') {
+							ul {
+								li('class': 'jstree-closed') {
+									a(href: '/', 'class': 'contentLink', '')
+								}
 							}
 						}
 					}

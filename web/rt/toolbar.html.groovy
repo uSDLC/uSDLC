@@ -19,4 +19,5 @@ doc.span(class: 'redBox') {
 	a(href: 'javascript:usdlc.setEditMode(false);usdlc.toggleShow("#RunButton","#EditButton")', id: "EditButton", "Edit Mode", title: "switch to run mode")
 	a(href: 'javascript:usdlc.setEditMode(true);usdlc.toggleShow("#EditButton","#RunButton")', id: "RunButton", "Run Mode", style: 'display:none;', title: "switch to edit mode")
 	a(href: 'javascript:usdlc.runPage()', id: "RunPage", "Run Page")
+	a(href: 'javascript:usdlc.resetPage()', id: "ResetPage", "Reset")
 }

@@ -20,11 +20,7 @@ package usdlc
  * Create a timer for measuring how long an action takes and record it to a log. It can be created with a string
  * title/comment.
  */
-class Timer1(title: String, comment: String) {
-	def this(title: String) = this (title, "")
-
-	def this() = this ("")
-
+class Timer1(title: String = "", comment: String = "") {
 	val start = System.currentTimeMillis()
 	/**
 	 * Log the elapsed time since this timer was instantiated in csv for, being title and time in ms.

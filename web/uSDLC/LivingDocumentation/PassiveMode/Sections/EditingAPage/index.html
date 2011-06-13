@@ -25,6 +25,16 @@
 		empty section</a> will come for free. Clicking on this or any section will give it focus and highlight
 		colouring.</p>
 </div>
+<div id="s17" class="editable section" contextmenu="section"><h2>
+	The Title Section</h2>
+
+	<p>
+		The title section can be edited in the same fashion as content sections. It does have a more limited context
+		menu.</p>
+</div>
+<div id="s16" class="editable section running" contextmenu="section"><p>
+	-- blue stripes when editing a title</p>
+</div>
 <div id="s8" class="editable section synopsis" contextmenu="section"><h1>
 	<a action="page" class="usdlc" href="EditingASection/index.html" id="s8a0"> Editing a Section</a></h1>
 
@@ -46,11 +56,11 @@
 <div id="s13" class="editable section synopsis" contextmenu="section"><p>
 	<a href="Creating Links/index.html" id="s13a0" class="usdlc" action="page">Creating Links</a></p>
 </div>
-<div id="s9" class="editable section running" contextmenu="section"><h3>
+<div id="s19" class="editable section running" contextmenu="section"><h3>
 	Moving Sections</h3>
 
 	<p>
-		Sections can be moved around the page by either <a class="usdlc" href="Dragging.htmlunit" id="s9a0"
+		Sections can be moved around the page by either <a class="usdlc" href="Dragging.htmlunit" id="s19a0"
 		                                                   action="runnable">dragging</a> them with the mouse or by
 		holding the &lt;<a class="usdlc" href="CtrlKey.htmlunit" id="s9a1" action="runnable">Ctrl</a>&gt; key down and
 		using the up or down arrow keys to push the highlight section up or down the stack. In all cases the <a
@@ -90,10 +100,40 @@
 			class="usdlc" href="BulletList.htmlunit" id="s12a0" action="runnable">bullet list</a>, each item is given
 		it's own section. The final page structure will reflect a <a class="usdlc" href="MultiLevelList.htmlunit"
 		                                                             id="s12a1" action="runnable">multi-level list</a>.
-		Otherwise each <a class="usdlc" href="ParagraphBecomesASection.htmlunit" id="s12a1" action="runnable">paragraph
+		Otherwise each <a class="usdlc" href="ParagraphBecomesASection.htmlunit" id="s12a2" action="runnable">paragraph
 		becomes a section</a>. This is a useful technique for entering information from emails or other external
 		sources.</p>
 </div>
+<div id="s15" class="editable section" contextmenu="section"><h1>
+	Page Locking</h1>
+
+	<p>
+		When a user chooses to edit a section it is locked. Others may edit other sections. They will be given a message
+		if they attempt to edit a locked section. If a page has changed in the time between a user has loaded it and
+		they choose to edit, insert, move or delete a section then it will be reloaded prior to the operation. If the
+		section being manipulated has been deleted, an error message is displayed.</p>
+
+	<p>
+		A section lock is held until the user saves the section being edited or loads another resource. If a lock is
+		over 1 hour in age, anyone who gets a waiting for lock dialog can also choose to over-ride the lock and edit
+		anyway. The authorisation system has an optimistic group. Anyone in this group is allowed to over-ride a lock at
+		any time.</p>
+
+	<p>
+		Internally page changes are queued and applied in order of submission.</p>
+
+	<p>
+		Attempting to save a section on a page where the lock has been over-ridden will display an error dialog. The
+		section that could not be updated is placed in the clipboard for re-use.</p>
+</div>
+<div id="s18" class="editable section" contextmenu="section"><p>
+	-- change page to queue changes rather than send back complete page. Remove diff and save changes as instructions or
+	complete text of a changed section.</p>
+</div>
+
+
+
+
 
 
 

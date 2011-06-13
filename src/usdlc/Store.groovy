@@ -199,15 +199,19 @@ class Store {
 	String uniquePath(end) {
 		def timestamp = new Date().format(dateStampFormat)
 		def uniquifier = 0
-		def uniquePath = "${timestamp}_${uniquifier}_${end.replaceAll(cleanFileNameRE, '')}"
+		def uniquePath = "${timestamp}_${uniquifier}_${camelCase(end)}"
 		def unique
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquifier++;
 		}
 		return pathFromBase(unique)
 	}
-
-	static cleanFileNameRE = ~/\W/
+	/**
+	 * Convert any sentence into a single camel-case word. It remove all punctuation and makes the start of each work a capital letter. So "My friend Charlie (Watson-Smith-jones)" becomes MyFriendCharlieWatsonSmithJones
+	 */
+	static String camelCase(text) {
+		text.replaceAll(~/(^|[\W+])(\w)/, { it[2].toUpperCase() })
+	}
 	/**
 	 * Later we will want to gather information from the unique name created
 	 * @param uniqueName unique name created by uniquePath()
@@ -239,7 +243,7 @@ class Store {
 	 */
 	static decamel(camelCase) { return camelCase.replaceAll(decamelRE, ' $1') }
 	/**
-	 * Split a fully qualified storage name into path, name ane extension
+	 * Split a fully qualified storage name into path, name and extension
 	 * @return [path : path, name : name, ext : ext]
 	 */
 	static split(path) {

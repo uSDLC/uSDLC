@@ -15,7 +15,7 @@
  */
 
 /*
-  External style sheets: TFGI (Thank God for Includes)
+  External style sheets: TGFI (Thank God for Includes)
  */
 @import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
 @import "/lib/jquery/css/fg.menu.css";
@@ -30,6 +30,12 @@ body {
 
 blockquote {
 	font-style: italic;
+}
+
+.logMessage {
+	width: 600px;
+	color: #FFFFFF;
+	background-color: #000000;
 }
 
 .hidden, .ui-dialog #pageTitle, div#pasteList {
@@ -120,8 +126,9 @@ div#pageContents {
 	overflow: auto;
 }
 
-td#contentTree {
+div#contentTree {
 	vertical-align: top;
+	overflow: auto;
 }
 
 /*

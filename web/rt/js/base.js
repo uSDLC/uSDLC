@@ -23,6 +23,7 @@ $(function() {
 		 */
 		dialog : function(contents, options) {
 			contents = $(contents)
+			options = options || {}
 			var match = percentRE(options.height)
 			if (match) {
 				var percent = parseInt(match[1])
@@ -104,6 +105,7 @@ $(function() {
 		var aboveScroll = (viewPortHeight > 500) ? 100 : 50
 		var belowScroll = viewPortHeight - aboveScroll
 		usdlc.pageContents.outerHeight(viewPortHeight)
+		$('#contentTree').outerHeight(viewPortHeight)
 		usdlc.pageContentsSausages = $('td#pageContentsSausages')
 		usdlc.pageContentsSausages.sausage({
 			container : usdlc.pageContents,

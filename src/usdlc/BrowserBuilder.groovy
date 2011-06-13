@@ -174,7 +174,7 @@ class JsBuilder extends BrowserBuilder {
 	@Override
 	BrowserBuilder error(Object message) {
 		text("""
-		usdlc.dialog('<pre>$message</pre>')
+		usdlc.alert('serverError.htm')
 		usdlc.failed()
 		""")
 		if (env.query.linkId) {

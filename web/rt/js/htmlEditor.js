@@ -16,49 +16,49 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-				/**
-				 * Used from a menu to edit the page section.
-				 */
-				editSectionInFocus : function() {
-					$('.inFocus').each(function() {
-						editSection(this)
-					})
-				},
-				savePage : function() {
-					// clean up html of crap that builds up
-					usdlc.savePageContents()
-				},
-				camelCase : function(text) {
-					return text.replace(/(^|[\s'"\-]+)(\w)/g,
-							function(a, s, c) {
-								return c.toUpperCase()
-							}).replace(/\s*/, '');
-				},
-				actorDefault : usdlc.cookie("actorDefault") || 'groovy',
-				reportsTabData : {
-					id : 'reportsTab',
-					label : 'Reports',
-					accessKey : 'R',
-					elements : [
-						{
-							name : "Report Name",
-							type : 'select',
-							label : 'Report Name',
-							id : 'reportName',
-							items : [],
-							onChange : function() {
-								var value = this.getValue()
-								if (value) {
-									usdlc.htmlEditorLinkUrlField.setValue(value)
-								}
-							}
-						}
-					]
-				},
-				reportItems : function(items) {
-					usdlc.reportsTabData.elements[0].items = items
-				}
+		/**
+		 * Used from a menu to edit the page section.
+		 */
+		editSectionInFocus : function() {
+			$('.inFocus').each(function() {
+				editSection(this)
 			})
+		},
+		savePage : function() {
+			// clean up html of crap that builds up
+			usdlc.savePageContents()
+		},
+		camelCase : function(text) {
+			return text.replace(/(^|[\W+])(\w)/g,
+					function(a, s, c) {
+						return c.toUpperCase()
+					})
+		},
+		actorDefault : usdlc.cookie("actorDefault") || 'groovy',
+		reportsTabData : {
+			id : 'reportsTab',
+			label : 'Reports',
+			accessKey : 'R',
+			elements : [
+				{
+					name : "Report Name",
+					type : 'select',
+					label : 'Report Name',
+					id : 'reportName',
+					items : [],
+					onChange : function() {
+						var value = this.getValue()
+						if (value) {
+							usdlc.htmlEditorLinkUrlField.setValue(value)
+						}
+					}
+				}
+			]
+		},
+		reportItems : function(items) {
+			usdlc.reportsTabData.elements[0].items = items
+		}
+	})
 	// fetch data for report form
 	$.ajax({url : "/rt/reports/support/list.js.groovy", dataType : 'script'})
 	/*
@@ -73,8 +73,8 @@ $(function() {
 		usdlc.clearSynopses()
 		usdlc.scrollTo($section)
 		$section.ckeditor(function() {
-			usdlc.modalOn()
-		}, {
+					usdlc.modalOn()
+				}, {
 					bodyClass: "wayOnTop",
 					saveFunction : function(editor) {
 						var updateContents = editor.checkDirty()
@@ -156,9 +156,9 @@ $(function() {
 	CKEDITOR.plugins.registered['save'] = {
 		init : function(editor) {
 			editor.addCommand('save', {
-						modes : { wysiwyg:1, source:1 },
-						exec : editor.config.saveFunction
-					});
+				modes : { wysiwyg:1, source:1 },
+				exec : editor.config.saveFunction
+			});
 			editor.ui.addButton('Save', {label : 'Save',command : 'save'});
 		}
 	}
@@ -238,46 +238,46 @@ $(function() {
 			}
 			// Add all the new link stuff related to actors and wiki type links.
 			var urlOptions = infoTab.get('urlOptions').children.push({
-						type : 'hbox',
-						children : [
-							{
-								type : 'radio',
-								id : 'linkRadio',
-								label : 'Link Type',
-								items : [
-									['Child Page',''],
-									['Sibling Page','html'],
-									['Actor']
-								],
-								onClick : function() {
-									setLinkType()
-								}
-							},
-							{
-								type : 'select',
-								id : 'linkSelect',
-								label : 'Actor Type',
-								items : actorItems,
-								onChange : function() {
-									if (! initialising) {
-										linkRadio.setValue('Actor')
-										setLinkType()
-									}
-								},
-								validate : function() {
-									// get the extension and update the cookie for actor types & default
-									var ext = usdlc.splitUrl(urlField.getValue()).ext
-									if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
-										actorTypes.push(ext)
-										actorTypes.sort()
-										this.add(ext)
-										usdlc.setCookie('actorTypes', actorTypes.toString())
-									}
-									return true
-								}
+				type : 'hbox',
+				children : [
+					{
+						type : 'radio',
+						id : 'linkRadio',
+						label : 'Link Type',
+						items : [
+							['Child Page',''],
+							['Sibling Page','html'],
+							['Actor']
+						],
+						onClick : function() {
+							setLinkType()
+						}
+					},
+					{
+						type : 'select',
+						id : 'linkSelect',
+						label : 'Actor Type',
+						items : actorItems,
+						onChange : function() {
+							if (! initialising) {
+								linkRadio.setValue('Actor')
+								setLinkType()
 							}
-						]
-					})
+						},
+						validate : function() {
+							// get the extension and update the cookie for actor types & default
+							var ext = usdlc.splitUrl(urlField.getValue()).ext
+							if (ext && ext != 'html' && actorTypes.toString().indexOf(ext) == -1) {
+								actorTypes.push(ext)
+								actorTypes.sort()
+								this.add(ext)
+								usdlc.setCookie('actorTypes', actorTypes.toString())
+							}
+							return true
+						}
+					}
+				]
+			})
 			//////// Create new reports tab
 			dialogDefinition.addContents(usdlc.reportsTabData);
 		}

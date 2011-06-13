@@ -36,6 +36,15 @@ $(function() {
 				usdlc.highlight(color, $(this))
 			})
 		},
+		log : function(message) {
+			if (window.console) {
+				// Firefox & Google Chrome
+				console.log(message);
+			}
+			else {
+				$("body").append("<div class='logMessage'>" + message + "</div>");
+			}
+		},
 		/**
 		 * Give notice to an error by highlighting the page selection and displaying a message.
 		 * @param messageFile File/script to produce message to display
@@ -43,7 +52,7 @@ $(function() {
 		alert : function (messageFile, parent) {
 			usdlc.highlight('red')
 			var path = messageFile
-			if (path.match(/.*.htm$/)) {
+			if (path.match(/.*\.htm$/)) {
 				path = '/rt/alerts/' + path
 			}
 			if (path.indexOf('.') == -1) {
@@ -53,12 +62,20 @@ $(function() {
 				var alertBox = usdlc.dialog("<div/>", {
 					dialogClass: 'ui-state-error ui-corner-all',
 					modal: true,
-					minHeight: 50,
+					minHeight: 100,
+					height: 'auto',
 					close: function() {
 						alertBox.dialog("destroy").detach()
 					}
 				}).append(data)
-				alertBox.dialog("option", "title", $("h1", alertBox).text())
+				var h1 = $("h1", alertBox)
+				if (h1.length) {
+					var title = h1.text()
+					h1.detach()
+				} else {
+					var title = alertBox.text()
+				}
+				alertBox.dialog("option", "title", title)
 				alertBox.dialog("widget").position({
 					of: parent || usdlc.inFocus,
 					my: 'top',
