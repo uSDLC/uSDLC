@@ -1,4 +1,4 @@
-timer = new usdlc.Timer("Test Timer")
+timer = new usdlc.Timer1("Test Timer1")
 sleep 1200
 assert "elapsed time is $timer" =~ /\d+ s$/
 assert (timer.log(".log/TestTimer.log") / 1000) as int == 1
