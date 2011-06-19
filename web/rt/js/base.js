@@ -106,6 +106,7 @@ $(function() {
 		var belowScroll = viewPortHeight - aboveScroll
 		usdlc.pageContents.outerHeight(viewPortHeight)
 		$('#contentTree').outerHeight(viewPortHeight)
+		$('#pageContentsTable').css('maxWidth', w.width())
 		usdlc.pageContentsSausages = $('td#pageContentsSausages')
 		usdlc.pageContentsSausages.sausage({
 			container : usdlc.pageContents,

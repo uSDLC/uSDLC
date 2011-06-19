@@ -30,7 +30,8 @@ $(function() {
 			})
 			$("div.synopsis a[action=runnable]").each(function() {
 				sourceLoads++
-				loadSynopsis($(this), function(data) {
+				var section = $(this)
+				loadSynopsis(section, function(data) {
 					if (! --sourceLoads) {
 						done = function() {
 							done = function() {
@@ -41,6 +42,7 @@ $(function() {
 					return $("<pre/>").addClass('prettyprint linenums').html(data)
 				})
 			})
+			onResize()
 		},
 		showSynopsis : function(section) {
 			//section.children().hide()
@@ -96,4 +98,13 @@ $(function() {
 			done()
 		})
 	}
+
+	var w = $(window)
+	var onResize = function() {
+		width = w.width() - $('#contentTree').width() - 100
+		$('.prettyprint', usdlc.pageContents).css('max-width', width)
+	}
+	w.resize(onResize)
+	usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)
+
 })

@@ -1,4 +1,4 @@
-package usdlc.actors
+package usdlc.actor
 
 import usdlc.BrowserBuilder
 import usdlc.db.Gsql

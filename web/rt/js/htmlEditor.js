@@ -236,7 +236,7 @@ $(function() {
 				linkSelect.setValue(actorDefault)
 				initialising = false
 			}
-			// Add all the new link stuff related to actors and wiki type links.
+			// Add all the new link stuff related to actor and wiki type links.
 			var urlOptions = infoTab.get('urlOptions').children.push({
 				type : 'hbox',
 				children : [

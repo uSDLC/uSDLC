@@ -28,6 +28,7 @@
       <sourceFolder url="file://$MODULE_DIR$/web/Actors" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/WEB-INF" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

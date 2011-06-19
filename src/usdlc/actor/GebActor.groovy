@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.actors
+package usdlc.actor
 
 import geb.Browser
 import geb.driver.CachingDriverFactory
@@ -38,7 +38,7 @@ class Geb {
 		this.driverList = driverList.toLowerCase()
 	}
 	/**
-	 * Called by lazy load of geb.Browser to create a copy based on the default or pre-specified driver. Note that it is saved in a static so that subsequent actors in will use the same driver until it is reset.
+	 * Called by lazy load of geb.Browser to create a copy based on the default or pre-specified driver. Note that it is saved in a static so that subsequent actor in will use the same driver until it is reset.
 	 * @return geb.Browser instance.
 	 */
 	private driver() {

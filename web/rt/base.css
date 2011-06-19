@@ -126,7 +126,11 @@ div#pageContents {
 	overflow: auto;
 }
 
-div#contentTree {
+pre.prettyprint {
+	overflow-x: scroll;
+}
+
+td#contentTree {
 	vertical-align: top;
 	overflow: auto;
 }

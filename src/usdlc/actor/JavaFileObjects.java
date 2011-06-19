@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package usdlc.actors;
+package usdlc.actor;
 
 import javax.tools.*;
 import java.io.ByteArrayOutputStream;

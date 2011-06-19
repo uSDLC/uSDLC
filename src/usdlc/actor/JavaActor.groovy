@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.actors
+package usdlc.actor
 
 import javax.tools.ToolProvider
 import usdlc.Config
 import usdlc.Filer
-import usdlc.actors.JavaFileObjects.ClassFileManager
+import usdlc.actor.JavaFileObjects.ClassFileManager
 
 /**
  * Java actor super-class. Implement run() in your sub-class to do the real work. You will have access to the environment and browser.

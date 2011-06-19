@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.actors
+package usdlc.actor
 
 import be.roam.hue.doj.Doj
 import com.gargoylesoftware.htmlunit.BrowserVersion

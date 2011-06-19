@@ -47,7 +47,7 @@ class Filer {
 		// Mpst of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server (most of the time). An example is index.html.groovy
 		def match = (store.path =~ extRE)
 		if (match) {
-			actor = getActor('actors', serverExt = match[-1][1])
+			actor = getActor('actor', serverExt = match[-1][1])
 			if (match.size() == 1) {
 				fullExt = serverExt
 				if (actor) { // If we have an actor then it is a usdlc.server.servletengine.server extension
@@ -70,7 +70,7 @@ class Filer {
 	// Used to pull the file extension out of a file name.
 	private static final extRE = /\.(\w+)/
 	/**
-	 * Given a package (actors or filters), see if there is an actor with the matching name.
+	 * Given a package (actor or filters), see if there is an actor with the matching name.
 	 * @param type package name relative to usdlc
 	 * @param language Language we are looking for an actor (as in groovy).
 	 * @return
@@ -91,7 +91,7 @@ class Filer {
 		return actorClass
 	}
 	/**
-	 * Called to run an actor or set of actors on a page.
+	 * Called to run an actor or set of actor on a page.
 	 */
 	def pageRunner(toRun) {
 		runFiles(~/^Setup\..*/)

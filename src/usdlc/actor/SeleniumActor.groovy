@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.actors
+package usdlc.actor
 
 import com.thoughtworks.selenium.HttpCommandProcessor
 import com.thoughtworks.selenium.SeleniumException

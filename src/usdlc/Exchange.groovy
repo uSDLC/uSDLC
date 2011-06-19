@@ -109,7 +109,7 @@ class Exchange {
 		def env = Environment.session()
 		try {
 			switch (env.query.action) {
-				case 'save':    // saves html and actors
+				case 'save':    // saves html and actor
 					// Contents to write are sent from the browser. Get them and save them to the file
 					file.save(env.in.text)
 					env.out.write "usdlc.highlight('sky');"
@@ -117,7 +117,7 @@ class Exchange {
 						env.out.write env.query.after
 					}
 					break
-				case 'raw':    // so actors are send to browser for editing instead of running
+				case 'raw':    // so actor are send to browser for editing instead of running
 					env.out.write file.rawContents
 					break
 				case 'run':
