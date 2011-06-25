@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <conelement value="org.scala-ide.sdt.launching.SCALA_CONTAINER" />
+    <conelement value="GROOVY_SUPPORT" />
+    <src_description expected_position="1">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="1" />
+      <src_folder value="file://$MODULE_DIR$/web/Actors" expected_position="2" />
+      <src_folder value="file://$MODULE_DIR$/web/WEB-INF" expected_position="3" />
+    </src_description>
+  </component>
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
@@ -27,12 +36,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/Actors" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/WEB-INF" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/web" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="uSDLC" level="project" />
+    <orderEntry type="library" name="uSDLC" level="project" />
   </component>
 </module>
 

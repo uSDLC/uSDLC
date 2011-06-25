@@ -28,7 +28,7 @@ import groovy.xml.StreamingMarkupBuilder
 class Page {
 	/**
 	 * Given a uSdlc html content file, provide action to the individual components.
-	 * @param file mime-type container for the file to run - gives path, name, etc
+	 * @param sourceFile mime-type container for the file to run - gives path, name, etc
 	 * @return A run instance ready to use for a specific file.
 	 */
 	Page(contents) {

@@ -16,6 +16,7 @@
 package usdlc
 
 import java.util.regex.Pattern
+import static usdlc.Config.config
 
 /**
  * Core Processor for uSDLC - no matter which web usdlc.server.servletengine.server is in vogue. It is uses as follows for each http request
@@ -67,15 +68,15 @@ class Exchange {
 		}
 		// Massage the path so that it will point to the correct place for this usdlc.server.servletengine.server
 		path = env.header.uri
-		if (path.startsWith(Config.urlBase)) {
+		if (path.startsWith(config.urlBase)) {
 			// For servers that have usdlc on a sub-path - as in http:myserver.com/myapps/usdlc.
-			path = path.substring(Config.urlBase.size())
+			path = path.substring(config.urlBase.size())
 		}
 		//Filer is full of magic - including deciding whether a file is client or server.
 		file = new Filer(path)
 		if (!file.fullExt) {
 			// The path does not have a dot that we can use to infer file type. Assume it is a directory and add a trailing slash if there is not already one preset and load it as a new page.
-			file = new Filer(path = Config.rootFile)
+			file = new Filer(path = config.rootFile)
 		}
 		env.clientType = file.clientExt
 		// Now that we have a definitive script name, save it for use in executing the Actor.

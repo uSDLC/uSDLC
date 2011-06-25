@@ -15,10 +15,10 @@
  */
 package usdlc.filters
 
-import usdlc.Config
 import usdlc.Environment
 import usdlc.Filer
 import usdlc.Store
+import static usdlc.Config.config
 
 /**
  * uSDLC supports actor and filters. This filter provides HTML templating. By default it runs templates/template.html.groovy that provides header, body and scrolling elements.
@@ -92,7 +92,7 @@ class HtmlActor {
 			if (script[-1] == '/') {
 				script += 'template.html'
 			}
-			script += '.' + Config.defaultScriptLanguage
+			script += '.' + config.defaultScriptLanguage
 		}
 		/*
 				   Filer does the real work if executing the CGI - since it knows all the details.

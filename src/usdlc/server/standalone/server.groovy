@@ -19,28 +19,28 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
-import usdlc.Config
 import usdlc.Environment
 import usdlc.Exchange
+import static usdlc.Config.config
 
 /**
  * This is a Groovy script that starts up a web server to serve uSDLC content. Configuration is take from a configuration DSL combined with parameters from the command line. By default the configuration file is ./web/WEB-INF/web.groovy. You can move to a new base directory (and WEB-INF file) by setting baseDirectory on the command line:
  *
  * uSDLC baseDirectory=~/uSDLC
  */
-Config.commandLine(args)
-Config.baseDirectory = new File(Config.properties.baseDirectory as String).absolutePath
+config.commandLine(args)
+config.baseDirectory = new File(config.properties.baseDirectory as String).absolutePath
 
 def host = InetAddress.localHost.hostName
-def baseUrl = "http://$host:$Config.port/$Config.urlBase"
-println "Starting uSDLC on $baseUrl\n    from $Config.baseDirectory"
+def baseUrl = "http://$host:$config.port/$config.urlBase"
+println "Starting uSDLC on $baseUrl\n    from $config.baseDirectory"
 
 HttpServer server
-def socket = new InetSocketAddress(Config.port)
+def socket = new InetSocketAddress(config.port)
 try {
 	server = HttpServer.create(socket, 0)
 } catch (BindException be) {
-	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) {}
+	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) { e.printStackTrace() }
 	server = HttpServer.create(socket, 0)
 }
 server.createContext '/', { HttpExchange httpExchange ->

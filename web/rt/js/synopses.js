@@ -15,6 +15,7 @@
  */
 
 $(function() {
+	var sourceLoads = 0
 	$.extend(true, window.usdlc, {
 		clearSynopses : function(sections) {
 			sourceLoads = 0
@@ -32,7 +33,7 @@ $(function() {
 				sourceLoads++
 				var section = $(this)
 				loadSynopsis(section, function(data) {
-					if (! --sourceLoads) {
+					if (!--sourceLoads) {
 						done = function() {
 							done = function() {
 							}
@@ -45,16 +46,15 @@ $(function() {
 			onResize()
 		},
 		showSynopsis : function(section) {
-			//section.children().hide()
+			// section.children().hide()
 			$('div.inclusion', section).show()
 		},
 		hideSynopsis : function(section) {
-			//section.children().show()
+			// section.children().show()
 			$('div.inclusion', section).hide()
 		},
 		checkForSynopsis : function(section) {
-			if (isSynopsis($("a[action=page]", section), true) ||
-					isSynopsis($("a[action=runnable]", section), false)) {
+			if (isSynopsis($("a[action=page]", section), true) || isSynopsis($("a[action=runnable]", section), false)) {
 				section.addClass('synopsis')
 			} else {
 				section.removeClass('synopsis')
@@ -62,27 +62,32 @@ $(function() {
 		}
 	})
 
-	var sourceLoads = 0
 	var done = function() {
 	}
 
-	function isSynopsis(link, above) {
-		var count = link.size()
-		if (count) {
-			if (count == 1) {
-				while (link && !link.hasClass('section')) {
-					var sections = above ? link.prevAll() : link.nextAll()
-					var moreText = sections.size()
-					if (moreText) {
-						return false
-					}
-					link = link.parent()
-				}
-				return true
-			}
-		}
-		return false
+
+	function isSynopsis(link) {
+		return link.size() == 1
 	}
+
+//	function isSynopsis(link, above) {
+//		return link.size() == 1
+	// var count = link.size()
+	// if (count) {
+	// if (count == 1) {
+	// while (link && !link.hasClass('section')) {
+	// var sections = above ? link.prevAll() : link.nextAll()
+	// var moreText = sections.size()
+	// if (moreText) {
+	// return false
+	// }
+	// link = link.parent()
+	// }
+	// return true
+	// }
+	// }
+	// return false
+//	}
 
 	function loadSynopsis(link, processor) {
 		var path = usdlc.normalizeURL(link.get(0).pathname)

@@ -17,8 +17,8 @@ package usdlc.db
 
 import groovy.sql.Sql
 import org.h2.tools.RunScript
-import usdlc.Config
 import usdlc.Environment
+import static usdlc.Config.config
 
 /**
  * User: Paul Marrington
@@ -31,7 +31,7 @@ class Database {
 	 */
 	public reference() {
 		def db = new Gsql(lifetime: "session")
-		db.database Config.usdlcDatabase as String
+		db.database config.usdlcDatabase as String
 		if (!version) { version = version("classpath:usdlc/db/Core") }
 		return db
 	}
@@ -46,7 +46,7 @@ class Database {
 	 * @return true if no migration needed or migration succeeded
 	 */
 	static version(tableGroup) {
-		return Environment.db.version(tableGroup, Config.tableVersions[tableGroup])
+		return Environment.db.version(tableGroup, config.tableVersions[tableGroup])
 	}
 
 	static version = 0
@@ -111,7 +111,7 @@ class Gsql {
 				runScript 'classpath:usdlc/db/Core.001.sql'
 			}
 			if (!dbVersion) {
-				try { executeUpdate "insert into versions values($tableGroup,0)" } catch (e) {}
+				try { executeUpdate "insert into versions values($tableGroup,0)" } catch (e) { e.printStackTrace() }
 				dbVersion = 0
 			}
 			def toVersion = targetVersion ?: 1
@@ -133,7 +133,7 @@ class Gsql {
 			def timer = new Timer()
 			runScript "$script"
 			System.err.println " done in $timer"
-		} catch (IOException ioe) {/*probably doesn't exist*/}
+		} catch (IOException ioe) { e.printStackTrace() }
 	}
 
 	public runScript(script) {

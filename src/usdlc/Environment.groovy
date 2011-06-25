@@ -21,6 +21,8 @@ package usdlc
  * Time: 1:24 PM
  */
 
+import static usdlc.Config.config
+
 /**
  * The age-old problem if holding on to data that is to be kept for a conversation or similar temporal event.
  */
@@ -33,8 +35,8 @@ class Environment {
 	 */
 	def propertyMissing(name) {
 		if (!variables.containsKey(name)) {
-			if (Config.environmentRegister.containsKey(name)) {
-				def instance = Class.forName(Config.environmentRegister[key]).newInstance()
+			if (config.environmentRegister.containsKey(name)) {
+				def instance = Class.forName(config.environmentRegister[key]).newInstance()
 				variables[name] = instance.reference(name)
 			} else {
 				variables[name] = null

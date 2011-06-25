@@ -16,7 +16,13 @@
 
 package usdlc.actor;
 
-import javax.tools.*;
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
+import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,15 +34,13 @@ import java.util.regex.Pattern;
  * Date: 23/01/11
  * Time: 1:01 PM
  */
-@SuppressWarnings({"StringConcatenation", "ImplicitCallToSuper", "HardcodedFileSeparator"})
+@SuppressWarnings("UtilityClass")
 public class JavaFileObjects {
 	private JavaFileObjects() {
 	}
 
-	@SuppressWarnings({"PublicInnerClass"})
 	public static class FromString extends SimpleJavaFileObject {
 		public FromString(CharSequence path, String contents) {
-			//noinspection HardcodedFileSeparator
 			super(URI.create(normaliseUri(path)), Kind.SOURCE);
 			code = contents;
 		}
@@ -49,16 +53,15 @@ public class JavaFileObjects {
 		private final String code;
 	}
 
-	@SuppressWarnings({"PublicInnerClass", "RawUseOfParameterizedType", "InstanceVariableOfConcreteClass", "InstanceVariableMayNotBeInitialized", "unchecked", "PublicField", "ParameterHidesMemberVariable", "UnnecessarilyQualifiedInnerClassAccess"})
-	public static class ClassFileManager extends ForwardingJavaFileManager {
+	public static class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager> {
 		/**
 		 * Instance of JavaClassObject that will store the compiled byte-code of our class
 		 */
-		public JavaClassObject classObject;
+		private JavaClassObject classObject = null;
 		private final ClassLoader classLoader;
 
 		/**
-		 * Will initialize the manager with the specified standard java file manager
+		 * Will initialise the manager with the specified standard java file manager
 		 *
 		 * @param compiler    for compiler.getStandardFileManager(null, null, null)
 		 * @param classLoader used to load this class
@@ -80,13 +83,12 @@ public class JavaFileObjects {
 		 * Gives the compiler an instance of the JavaClassObject so that the compiler can write the byte code into it.
 		 */
 		@Override
-		public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) throws IOException {
+		public JavaFileObject getJavaFileForOutput(Location location, String className, Kind kind, FileObject sibling) throws IOException {
 			classObject = new JavaClassObject(className, kind);
 			return classObject;
 		}
 	}
 
-	@SuppressWarnings({"PublicInnerClass", "ParameterHidesMemberVariable", "PublicMethodNotExposedInInterface", "ProtectedField"})
 	public static class JavaClassObject extends SimpleJavaFileObject {
 		/**
 		 * Registers the compiled class object under URI
@@ -119,7 +121,7 @@ public class JavaFileObjects {
 			return buffer;
 		}
 
-		protected final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 	}
 
 	static String normaliseUri(CharSequence uri) {

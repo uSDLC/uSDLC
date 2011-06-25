@@ -18,11 +18,11 @@ $(function() {
 	var pageTitle = $('td#pageTitleTd')
 	$.extend(true, window.usdlc, {
 		/*
-		 When the page loads, set the edit mode to the default.
+		 * When the page loads, set the edit mode to the default.
 		 */
-		editMode: true,
+		editMode : true,
 
-		setEditMode: function(to) {
+		setEditMode : function(to) {
 			var color
 			if (usdlc.editMode = to) {
 				color = false
@@ -40,16 +40,19 @@ $(function() {
 			if (window.console) {
 				// Firefox & Google Chrome
 				console.log(message);
-			}
-			else {
-				$("body").append("<div class='logMessage'>" + message + "</div>");
+			} else {
+				$("body").append(
+						"<div class='logMessage'>" + message + "</div>");
 			}
 		},
 		/**
-		 * Give notice to an error by highlighting the page selection and displaying a message.
-		 * @param messageFile File/script to produce message to display
+		 * Give notice to an error by highlighting the page selection and
+		 * displaying a message.
+		 *
+		 * @param messageFile
+		 *            File/script to produce message to display
 		 */
-		alert : function (messageFile, parent) {
+		alert : function(messageFile, parent) {
 			usdlc.highlight('red')
 			var path = messageFile
 			if (path.match(/.*\.htm$/)) {
@@ -59,47 +62,54 @@ $(function() {
 				path += ".html"
 			}
 			$.get(path, function(data) {
-				var alertBox = usdlc.dialog("<div/>", {
-					dialogClass: 'ui-state-error ui-corner-all',
-					modal: true,
-					minHeight: 100,
-					height: 'auto',
-					close: function() {
+				var alertBox = null
+				alertBox = usdlc.dialog("<div/>", {
+					dialogClass : 'ui-state-error ui-corner-all',
+					modal : true,
+					minHeight : 100,
+					height : 'auto',
+					close : function() {
 						alertBox.dialog("destroy").detach()
 					}
 				}).append(data)
 				var h1 = $("h1", alertBox)
+				var title
 				if (h1.length) {
-					var title = h1.text()
+					title = h1.text()
 					h1.detach()
 				} else {
-					var title = alertBox.text()
+					title = alertBox.text()
 				}
 				alertBox.dialog("option", "title", title)
 				alertBox.dialog("widget").position({
-					of: parent || usdlc.inFocus,
-					my: 'top',
-					at: 'bottom',
-					collision: 'flip'
+					of : parent || usdlc.inFocus,
+					my : 'top',
+					at : 'bottom',
+					collision : 'flip'
 				})
 				$('.editable', alertBox).removeClass('editable')
 			})
 		},
 		/**
-		 * Save a file to the usdlc.server.servletengine.server and expect a response in javaScript.
-		 * @param where Address to post to
-		 * @param what Data for the body of the post
+		 * Save a file to the usdlc.server.servletengine.server and expect a
+		 * response in javaScript.
+		 *
+		 * @param where
+		 *            Address to post to
+		 * @param what
+		 *            Data for the body of the post
 		 */
-		save: function(where, what, more) {
-			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what, function(code) {
-				$.globalEval(code)
-			})
+		save : function(where, what, more) {
+			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what,
+					function(code) {
+						$.globalEval(code)
+					})
 		},
 
-		maskEverything: function(dim) {
+		maskEverything : function(dim) {
 			$('#modalMask').css({
-				width: $(window).width()
-				,height: $(document).height()
+				width : $(window).width(),
+				height : $(document).height()
 			}).fadeTo("slow", dim)
 		},
 		getPageTitle : function() {
@@ -112,7 +122,8 @@ $(function() {
 		},
 		absolutePageContents : function(path) {
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
-			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
+			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr(
+					"directory")
 			$('base').attr('href', base)
 			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 			$.get(usdlc.pageContentsURL, function(data) {
@@ -141,22 +152,27 @@ $(function() {
 		},
 		savePageContents : function() {
 			/*
-			 Give back to the usdlc.server.servletengine.server - after moving page title back into the body temporarily.
+			 * Give back to the usdlc.server.servletengine.server - after moving
+			 * page title back into the body temporarily.
 			 */
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)
-			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')
+			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(),
+					'&after=usdlc.synopses()')
 			usdlc.setPageTitle()
 			usdlc.scrollFiller(true)
 			usdlc.pageContentsSausages.sausage()
 		},
 		createPageTitle : function(heading, subtitle) {
-			return $('<div/>').attr('id', 'pageTitle').addClass('editable').append($('<h1/>').append(heading)).append($('<h2/>').append(subtitle))
+			return $('<div/>').attr('id', 'pageTitle').addClass('editable')
+					.append($('<h1/>').append(heading)).append(
+					$('<h2/>').append(subtitle))
 		}
 	})
 	/**
-	 * When you open uSDLC without asking for a page, the last page displayed will return. /root is a special case so you can go to the uSDLC D3 root.
+	 * When you open uSDLC without asking for a page, the last page displayed
+	 * will return. /root is a special case so you can go to the uSDLC D3 root.
 	 */
 	var path = window.location.pathname
 	if (path == '/') {
@@ -176,13 +192,14 @@ $(function() {
 		return false
 	})
 
-	// The last thing we do is make the page visible. Hopefully and the visual work will be done by now.
+	// The last thing we do is make the page visible. Hopefully and the visual
+	// work will be done by now.
 	$('body').removeAttr('style')
-//			.bind('click',
-//			function(event) {
-//				// we need to avound clearing focus if we are returning from the editor
-//				if (!$(event.target).hasClass('cke_icon')) {
-//					usdlc.clearFocus()
-//				}
-//			})
+	// .bind('click',
+	// function(event) {
+	// // we need to avound clearing focus if we are returning from the editor
+	// if (!$(event.target).hasClass('cke_icon')) {
+	// usdlc.clearFocus()
+	// }
+	// })
 })

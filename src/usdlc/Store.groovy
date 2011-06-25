@@ -13,16 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
-
 package usdlc
 
 import static groovy.io.FileType.FILES
+import static usdlc.Config.config
 
 /**
  Not all platforms that will use uSDLC will have access to a traditional file system. Google Appengine, for example, only allows data to be stored in BigTable - the database. For this reason, all uSDLC uses Store for persistence. The long-term plan is to more the base persistence calls the platform specific code.
-
  * User: Paul Marrington
  * Date: 23/11/10
  * Time: 5:31 PM
@@ -33,7 +30,7 @@ class Store {
 	 */
 	static Store base(String path = '') {
 		def store = new Store()
-		store.file = new File(Config.baseDirectory, path)
+		store.file = new File(config.baseDirectory, path)
 		return store
 	}
 	/**
@@ -58,15 +55,17 @@ class Store {
 	 * build up directories underneath if they don't yet exist
 	 */
 	private def mkdirs() {
-		new File(Config.baseDirectory + parent).mkdirs()
+		new File(config.baseDirectory + parent).mkdirs()
 	}
 
-	static URI baseDirectoryURI = new File(Config.baseDirectory).toURI()
+	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	@Lazy String parent = pathFromBase(file.parent)
 	@Lazy String path = pathFromBase(file.path)
 	@Lazy String absolutePath = file.path
 	@Lazy def uri = file.toURI()
 	@Lazy def url = uri.toURL()
+	// For Java
+	String getPath() { return path }
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */
@@ -131,7 +130,7 @@ class Store {
 	 * See if the file exists
 	 * @return True if the file is available
 	 */
-	public exists() {
+	public boolean exists() {
 		return file.exists()
 	}
 	/**
@@ -184,7 +183,7 @@ class Store {
 		return list
 	}
 
-	def lastModified() { return file.lastModified() }
+	def long lastModified() { return file.lastModified() }
 	/**
 	 * Store.toString(), implicit or explicit will return the full path to the file or directory
 	 */

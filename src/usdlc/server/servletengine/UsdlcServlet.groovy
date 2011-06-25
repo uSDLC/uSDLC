@@ -18,7 +18,6 @@ package usdlc.server.servletengine;
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import usdlc.Config
 import usdlc.Environment
 import usdlc.Exchange
 
@@ -68,7 +67,7 @@ public class UsdlcServlet extends HttpServlet {
 	private setBaseDirectoryToWebRoot() {
 		if (!initialised) {
 			// Find the current directory as the base of the web directory
-			Config.baseDirectory = servletConfig.servletContext.getRealPath('/')
+			usdlc.Config.config.baseDirectory = servletConfig.servletContext.getRealPath('/')
 			initialised = true
 		}
 	}

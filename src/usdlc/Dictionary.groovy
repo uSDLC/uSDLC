@@ -61,7 +61,7 @@ class Dictionary {
 	 * @param args from command line in the form of a=b "c=d e" f=g
 	 * @return dictionary ready to use
 	 */
-	static commandLine(args) {
+	static commandLine(String[] args) {
 		def map = [:]
 		args.each {
 			def nvp = it.split(/\s*=\s*/)

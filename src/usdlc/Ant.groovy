@@ -17,6 +17,7 @@ package usdlc
 
 import org.apache.tools.ant.BuildEvent
 import org.apache.tools.ant.BuildListener
+import static usdlc.Config.config
 
 /**
  * User: Paul Marrington
@@ -34,7 +35,7 @@ class Ant extends AntBuilder {
 
 	private Ant() {
 		ant = new AntBuilder()
-		ant.project.basedir = Config.baseDirectory
+		ant.project.basedir = config.baseDirectory
 	}
 
 	def reset(level = 0) {

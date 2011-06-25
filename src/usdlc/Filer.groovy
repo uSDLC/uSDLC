@@ -14,19 +14,25 @@
  *  limitations under the License.
  */
 package usdlc
-/**
- This module does more than just decipher the mime type - it uses the information to act on it. It uses the file extension(s) to decide what action is to be taken. All files can have one or two extensions. The first, or only, is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string - as in text/html or application/javascript.There is more.. a second extension specifies the usdlc.server.servletengine.server side script that will produce this code. The actor entry tells us whether there is a usdlc.server.servletengine.server component and what to run if there is.
 
+import static usdlc.Config.config
+
+/**
+ This module does more than just decipher the mime type - it uses the information to act on it. It uses the file
+ extension(s) to decide what action is to be taken. All files can have one or two extensions. The first, or only,
+ is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string - 
+ as in text/html or application/javascript.There is more.. a second extension specifies the
+ usdlc.server.servletengine.server side script that will produce this code. The actor entry tells us whether there
+ is a usdlc.server.servletengine.server component and what to run if there is.
  <ul>
  <li>index.txt will send a static text/plain file to the usdlc.server.servletengine.server.
  <li>index.js.groovy will run a groovy script that will produce javascript for the client.
  </ul>
-
  * User: Paul
  * Date: 23/11/10
  * Time: 12:44 PM
  */
-class Filer {
+public class Filer {
 	String serverExt = ''
 	String clientExt = ''
 	String fullExt = ''
@@ -36,15 +42,22 @@ class Filer {
 	/**
 	 * Create a Filer object based of an another filer object
 	 */
-	Filer(Filer base, String path) { _init_(base.store.rebase(path)) }
+	public Filer(Filer base, String path) {
+		_init_(base.store.rebase(path))
+	}
 	/**
 	 * Create a Filer object based of an absolute path or one relative to the base directory
 	 */
-	Filer(String path) { _init_(Store.base(path)) }
+	public Filer(String path) {
+		_init_(Store.base(path))
+	}
 
 	private _init_(Store store) {
 		this.store = store
-		// Mpst of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server (most of the time). An example is index.html.groovy
+		/* Most of this work is around how to process a file. If it has one extension treat it as usdlc.server.servletengine.server
+		 * if it has an actor or client otherwise. With two extensions, the first is client and the second is usdlc.server.servletengine.server
+		 * (most of the time). An example is index.html.groovy
+		 */
 		def match = (store.path =~ extRE)
 		if (match) {
 			actor = getActor('actor', serverExt = match[-1][1])
@@ -124,6 +137,10 @@ class Filer {
 		// Create a history file so we can rebuild any version if and when we want to.
 		history.save(env.userId, before, newContents)
 	}
+	// For Java
+	public Store getStore() { return store }
+
+	public String getFullExt() { return fullExt }
 
 	@Lazy history = new History(path: store.path, type: 'updates')
 	@Lazy env = Environment.session()
@@ -143,8 +160,8 @@ class Filer {
 	 */
 	byte[] template(ext) {
 		byte[] bytes
-		if (ext && Config.template[ext]) {
-			bytes = Store.base("rt/${Config.template[ext]}.$fullExt").read()
+		if (ext && config.template[ext]) {
+			bytes = Store.base("rt/${config.template[ext]}.$fullExt").read()
 		} else {
 			bytes = []
 		}

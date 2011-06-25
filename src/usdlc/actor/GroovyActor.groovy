@@ -16,9 +16,9 @@
 package usdlc.actor
 
 import org.codehaus.groovy.runtime.metaclass.MissingMethodExceptionNoStack
-import usdlc.Config
 import usdlc.Environment
 import usdlc.Store
+import static usdlc.Config.config
 
 /**
  * The Groovy actor calls the named groovy script
@@ -34,7 +34,7 @@ class GroovyActor {
 			bind(
 					log: { System.err.println it },
 					print: { binding.doc.text it },
-					gse: new GroovyScriptEngine(Config.classPath),
+					gse: new GroovyScriptEngine(config.classPath),
 			)
 		}
 		def root = Store.base(script).parent

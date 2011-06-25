@@ -22,7 +22,14 @@ package usdlc;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1342,7 +1349,7 @@ public class diff_match_patch {
 	 */
 	public String diff_prettyHtml(LinkedList<Diff> diffs) {
 		StringBuilder html = new StringBuilder();
-		int i = 0;
+//		int i = 0;
 		for (Diff aDiff : diffs) {
 			String text = aDiff.text.replace("&", "&amp;").replace("<", "&lt;")
 					.replace(">", "&gt;").replace("\n", "&para;<br>");
@@ -1359,9 +1366,9 @@ public class diff_match_patch {
 					html.append("<span>").append(text).append("</span>");
 					break;
 			}
-			if (aDiff.operation != Operation.DELETE) {
-				i += aDiff.text.length();
-			}
+//			if (aDiff.operation != Operation.DELETE) {
+//				i += aDiff.text.length();
+//			}
 		}
 		return html.toString();
 	}
