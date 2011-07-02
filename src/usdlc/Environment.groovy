@@ -21,7 +21,7 @@ package usdlc
  * Time: 1:24 PM
  */
 
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  * The age-old problem if holding on to data that is to be kept for a conversation or similar temporal event.

@@ -31,7 +31,7 @@ class Dictionary {
 	 * @param text String containing "name=value;" pairs
 	 * @return dictionary ready to use
 	 */
-	static cookies(text) {
+	static Map cookies(String text) {
 		return fromString(text, '=', ';')
 	}
 	/**
@@ -39,9 +39,7 @@ class Dictionary {
 	 * @param map Map ready to use
 	 * @return same map
 	 */
-	static query(Map map) {
-		return map
-	}
+	static Map query(Map map) { return map }
 	/**
 	 * Use this to create a cookie dictionary
 	 *
@@ -51,7 +49,7 @@ class Dictionary {
 	 * @param text String containing "name=value&" pairs
 	 * @return dictionary ready to use
 	 */
-	static query(text) { return fromString(text, '=', '&') }
+	static Map query(String text) { return fromString(text, '=', '&') }
 	/**
 	 * Use this to create a dictionary from command line arguments
 	 *
@@ -61,7 +59,7 @@ class Dictionary {
 	 * @param args from command line in the form of a=b "c=d e" f=g
 	 * @return dictionary ready to use
 	 */
-	static commandLine(String[] args) {
+	static Map commandLine(String[] args) {
 		def map = [:]
 		args.each {
 			def nvp = it.split(/\s*=\s*/)
@@ -74,7 +72,7 @@ class Dictionary {
 	 * @param text Text to parse for map
 	 * @return map
 	 */
-	static Map fromString(text, assign, separate) {
+	static Map fromString(String text, String assign, String separate) {
 		def map = [:]
 		if (text) {
 			text.split(/\s*$separate\s*/).each {
@@ -88,7 +86,7 @@ class Dictionary {
 	 * Since we may have changed entries to have binary values, behave accordingly.
 	 * @return String representation of dictionary.
 	 */
-	static toString(map, assign, separate) {
+	static String toString(String map, String assign, String separate) {
 		StringBuilder builder = new StringBuilder();
 		map.each { key, value ->
 			builder.append(key).append(assign).append(value).append(separate)

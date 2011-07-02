@@ -19,17 +19,19 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
-import usdlc.Environment
-import usdlc.Exchange
-import static usdlc.Config.config
+import usdlc.server.Header
+import usdlc.server.Request
+import usdlc.server.Response
+import static init.Config.config
+import static usdlc.Exchange.exchange
 
 /**
  * This is a Groovy script that starts up a web server to serve uSDLC content. Configuration is take from a configuration DSL combined with parameters from the command line. By default the configuration file is ./web/WEB-INF/web.groovy. You can move to a new base directory (and WEB-INF file) by setting baseDirectory on the command line:
  *
  * uSDLC baseDirectory=~/uSDLC
  */
-config.commandLine(args)
-config.baseDirectory = new File(config.properties.baseDirectory as String).absolutePath
+init.Config.load('web', args)
+config.baseDirectory = new File(config.baseDirectory as String).absolutePath
 
 def host = InetAddress.localHost.hostName
 def baseUrl = "http://$host:$config.port/$config.urlBase"
@@ -44,35 +46,24 @@ try {
 	server = HttpServer.create(socket, 0)
 }
 server.createContext '/', { HttpExchange httpExchange ->
-	// Set environment to have streams for data input (body of request) and output (body of response).
-	def env = Environment.session()
 	try {
-		env.in = httpExchange.requestBody
-		env.out = new PrintStream(httpExchange.responseBody, true)
-		/*
-				   * Fetch the header from the client and load in additional needed information.
-				   */
-		Map header = new HashMap(httpExchange.requestHeaders)
-		header.Host = header.Host[0]
-		header.method = httpExchange.requestMethod
-		header.query = httpExchange.requestURI.query
-		header.uri = httpExchange.requestURI.path
-		header.fragment = httpExchange.requestURI.fragment
-		header.Cookie = header.containsKey('Cookie') ? header.Cookie[0] : ''
-		/*
-				   Call uSDLC common code to create a HTTP exchange object. It prepares ready to send the response header. This means that all connections close between exchanges. This is the best approach for local programs as it keeps things clean. For Internet applications, static files give their length in the response header so that the connection with the browser can stay open for multiple exchanges. Most HTTP servers pre-process the request and response headers and don't allow is to write anything to the client until the response header is done. Since we want longer running responses to display progress information in the browser we need a connection that is available immediately and is closed when done.
-				   */
-		def exchange = new Exchange(header)
-		exchange.responseHeader.each { key, value -> httpExchange.responseHeaders.add(key, value) }
-		httpExchange.sendResponseHeaders 200, 0
-		// Call the common uSDLC code for a HTTP exchange (request/response pair). This same method will be used by hosted environments also. At this point we have already processed the header. It will always close the connection after the process is complete.
-		exchange.talk()
+		httpExchange.with {
+			Request request = new Request(requestBody, new Header(
+					requestHeaders.Host[0], requestMethod, requestURI.query, requestURI.path,
+					requestURI.fragment, requestHeaders['Cookie'] ?: ''
+			))
+			Response response = new Response(responseBody)
+			exchange(request, response) {
+				// Call uSDLC common code to create a HTTP exchange object. It prepares ready to send the response header. This means that all connections close between exchanges. This is the best approach for local programs as it keeps things clean. For Internet applications, static files give their length in the response header so that the connection with the browser can stay open for multiple exchanges. Most HTTP servers pre-process the request and response headers and don't allow is to write anything to the client until the response header is done. Since we want longer running responses to display progress information in the browser we need a connection that is available immediately and is closed when done.
+				response.header().each { key, value -> httpExchange.responseHeaders.add(key, value) }
+				sendResponseHeaders 200, 0
+			}
+		}
 	} catch (Throwable exception) {
-		/*
-				   Nice simple error process - dump the stack to the usdlc.server.servletengine.server console (stderr) and  return what is probably a blank page. This is great when running from an IDE as you can click on links to see where the problem lies. If the usdlc.server.servletengine.server is run from a command line you can
-				   */
+		// Nice simple error process - dump the stack to the usdlc.server.servletengine.server console (stderr) and  return what is probably a blank page. This is great when running from an IDE as you can click on links to see where the problem lies. If the usdlc.server.servletengine.server is run from a command line you can
 		exception.printStackTrace()
 	}
 } as HttpHandler
+
 server.executor = Executors.newCachedThreadPool()
 server.start();

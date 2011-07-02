@@ -35,7 +35,7 @@ public class UsdlcServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-		setBaseDirectoryToWebRoot()
+		initialiseUsdlc()
 		def env = Environment.session()
 		env.in = request.inputStream
 		env.out = new PrintStream(response.outputStream, true)
@@ -64,13 +64,10 @@ public class UsdlcServlet extends HttpServlet {
 		return header
 	}
 
-	private setBaseDirectoryToWebRoot() {
-		if (!initialised) {
+	private initialiseUsdlc() {
+		if (!init.Config.config) {
 			// Find the current directory as the base of the web directory
-			usdlc.Config.config.baseDirectory = servletConfig.servletContext.getRealPath('/')
-			initialised = true
+			init.Config.load(servletConfig.servletContext.getRealPath('/'), [])
 		}
 	}
-
-	static boolean initialised = false
 }

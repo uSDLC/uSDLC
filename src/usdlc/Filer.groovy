@@ -15,7 +15,7 @@
  */
 package usdlc
 
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  This module does more than just decipher the mime type - it uses the information to act on it. It uses the file

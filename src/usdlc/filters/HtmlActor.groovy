@@ -18,7 +18,7 @@ package usdlc.filters
 import usdlc.Environment
 import usdlc.Filer
 import usdlc.Store
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  * uSDLC supports actor and filters. This filter provides HTML templating. By default it runs templates/template.html.groovy that provides header, body and scrolling elements.

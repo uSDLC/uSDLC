@@ -37,9 +37,9 @@
       <sourceFolder url="file://$MODULE_DIR$/web/Actors" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/WEB-INF" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="uSDLC" level="project" />
+    <orderEntry type="inheritedJdk" />
   </component>
 </module>
 

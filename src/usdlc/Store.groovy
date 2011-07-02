@@ -16,7 +16,7 @@
 package usdlc
 
 import static groovy.io.FileType.FILES
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  Not all platforms that will use uSDLC will have access to a traditional file system. Google Appengine, for example, only allows data to be stored in BigTable - the database. For this reason, all uSDLC uses Store for persistence. The long-term plan is to more the base persistence calls the platform specific code.
@@ -64,8 +64,6 @@ class Store {
 	@Lazy String absolutePath = file.path
 	@Lazy def uri = file.toURI()
 	@Lazy def url = uri.toURL()
-	// For Java
-	String getPath() { return path }
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */

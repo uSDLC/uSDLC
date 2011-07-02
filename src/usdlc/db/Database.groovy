@@ -18,7 +18,7 @@ package usdlc.db
 import groovy.sql.Sql
 import org.h2.tools.RunScript
 import usdlc.Environment
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  * User: Paul Marrington

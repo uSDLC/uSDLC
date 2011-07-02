@@ -18,7 +18,7 @@ package usdlc.actor
 import org.codehaus.groovy.runtime.metaclass.MissingMethodExceptionNoStack
 import usdlc.Environment
 import usdlc.Store
-import static usdlc.Config.config
+import static init.Config.config
 
 /**
  * The Groovy actor calls the named groovy script
