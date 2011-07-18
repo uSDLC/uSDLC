@@ -46,10 +46,10 @@ import java.util.regex.Pattern;
  * Class containing the diff, match and patch methods.
  * Also contains the behaviour settings.
  */
-public class diff_match_patch {
+public class DiffMatchPatch {
 
 	// Defaults.
-	// Set these on your diff_match_patch instance to override the defaults.
+	// Set these on your DiffMatchPatch instance to override the defaults.
 
 	/**
 	 * Number of seconds to map a diff before giving up (0 for infinity).
@@ -96,7 +96,7 @@ public class diff_match_patch {
 		protected List<String> lineArray;
 
 		protected LinesToCharsResult(String chars1, String chars2,
-		                             List<String> lineArray) {
+				List<String> lineArray) {
 			this.chars1 = chars1;
 			this.chars2 = chars2;
 			this.lineArray = lineArray;
@@ -143,7 +143,7 @@ public class diff_match_patch {
 	 * @return Linked List of Diff objects.
 	 */
 	public LinkedList<Diff> diff_main(String text1, String text2,
-	                                  boolean checklines) {
+			boolean checklines) {
 		// Set a deadline by which time the diff must be complete.
 		long deadline;
 		if (Diff_Timeout <= 0) {
@@ -168,7 +168,7 @@ public class diff_match_patch {
 	 * @return Linked List of Diff objects.
 	 */
 	private LinkedList<Diff> diff_main(String text1, String text2,
-	                                   boolean checklines, long deadline) {
+			boolean checklines, long deadline) {
 		// Check for null inputs.
 		if (text1 == null || text2 == null) {
 			throw new IllegalArgumentException("Null inputs. (diff_main)");
@@ -225,7 +225,7 @@ public class diff_match_patch {
 	 * @return Linked List of Diff objects.
 	 */
 	private LinkedList<Diff> diff_compute(String text1, String text2,
-	                                      boolean checklines, long deadline) {
+			boolean checklines, long deadline) {
 		LinkedList<Diff> diffs = new LinkedList<Diff>();
 
 		if (text1.length() == 0) {
@@ -301,7 +301,7 @@ public class diff_match_patch {
 	 * @return Linked List of Diff objects.
 	 */
 	private LinkedList<Diff> diff_lineMode(String text1, String text2,
-	                                       long deadline) {
+			long deadline) {
 		// Scan the text on a line-by-line basis first.
 		LinesToCharsResult b = diff_linesToChars(text1, text2);
 		text1 = b.chars1;
@@ -373,7 +373,7 @@ public class diff_match_patch {
 	 * @return LinkedList of Diff objects.
 	 */
 	protected LinkedList<Diff> diff_bisect(String text1, String text2,
-	                                       long deadline) {
+			long deadline) {
 		// Cache the text lengths to prevent multiple calls.
 		int text1_length = text1.length();
 		int text2_length = text2.length();
@@ -498,7 +498,7 @@ public class diff_match_patch {
 	 * @return LinkedList of Diff objects.
 	 */
 	private LinkedList<Diff> diff_bisectSplit(String text1, String text2,
-	                                          int x, int y, long deadline) {
+			int x, int y, long deadline) {
 		String text1a = text1.substring(0, x);
 		String text2a = text2.substring(0, y);
 		String text1b = text1.substring(x);
@@ -549,7 +549,7 @@ public class diff_match_patch {
 	 * @return Encoded string.
 	 */
 	private String diff_linesToCharsMunge(String text, List<String> lineArray,
-	                                      Map<String, Integer> lineHash) {
+			Map<String, Integer> lineHash) {
 		int lineStart = 0;
 		int lineEnd = -1;
 		String line;
@@ -585,7 +585,7 @@ public class diff_match_patch {
 	 * @param lineArray List of unique strings.
 	 */
 	protected void diff_charsToLines(LinkedList<Diff> diffs,
-	                                 List<String> lineArray) {
+			List<String> lineArray) {
 		StringBuilder text;
 		for (Diff diff : diffs) {
 			text = new StringBuilder();
@@ -1842,7 +1842,7 @@ public class diff_match_patch {
 	 * @deprecated Prefer patch_make(String text1, LinkedList<Diff> diffs).
 	 */
 	public LinkedList<Patch> patch_make(String text1, String text2,
-	                                    LinkedList<Diff> diffs) {
+			LinkedList<Diff> diffs) {
 		return patch_make(text1, diffs);
 	}
 
@@ -2429,7 +2429,7 @@ public class diff_match_patch {
 
 		/**
 		 * Emmulate GNU diff's format.
-		 * Header: @@ -382,8 +481,9 @@
+		 * Header1: @@ -382,8 +481,9 @@
 		 * Indicies are printed as 1-based, not 0-based.
 		 *
 		 * @return The GNU diff string.
