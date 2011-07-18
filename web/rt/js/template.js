@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ Copyright 2011 the Authors for http://usdlc.net
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
  */
 
 $(function() {
@@ -26,7 +26,7 @@ $(function() {
 			var color
 			if (usdlc.editMode = to) {
 				color = false
-				usdlc.clearRunningLinkClass('')
+				usdlc.clearRunningLinkClass && usdlc.clearRunningLinkClass('')
 				$('.usdlc').removeData('results')
 			} else {
 				color = 'yellow'
@@ -120,7 +120,7 @@ $(function() {
 			pageTitle.append($('div#pageTitle'))
 			document.title = $('h1', pageTitle).text()
 		},
-		absolutePageContents : function(path) {
+		absolutePageContents : function(path, afterwards) {
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
 			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr(
 					"directory")
@@ -133,6 +133,7 @@ $(function() {
 				usdlc.synopses()
 				usdlc.setEditMode(usdlc.editMode)
 				usdlc.pageContentsSausages.sausage()
+				afterwards && afterwards()
 			})
 		},
 		relativePageContents : function(path) {
@@ -170,17 +171,6 @@ $(function() {
 					$('<h2/>').append(subtitle))
 		}
 	})
-	/**
-	 * When you open uSDLC without asking for a page, the last page displayed
-	 * will return. /root is a special case so you can go to the uSDLC D3 root.
-	 */
-	var path = window.location.pathname
-	if (path == '/') {
-		path = usdlc.cookie('currentPage') || '/'
-	} else if (path == '/root') {
-		path = '/'
-	}
-	usdlc.absolutePageContents(path)
 
 	$('a.usdlc[action=page]').live('click', function(ev) {
 		usdlc.relativePageContents(ev.currentTarget.pathname)
@@ -202,4 +192,5 @@ $(function() {
 	// usdlc.clearFocus()
 	// }
 	// })
+
 })

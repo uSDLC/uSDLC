@@ -1,10 +1,5 @@
-package usdlc.actor
-
-import usdlc.BrowserBuilder
-import usdlc.db.Gsql
-
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +13,9 @@ import usdlc.db.Gsql
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package usdlc.actor
+
+import usdlc.db.Database
 
 /**
  * User: Paul Marrington
@@ -28,10 +26,18 @@ import usdlc.db.Gsql
  * jdbc:h2:mem:test:db1;DB_CLOSE_DELAY=-1
  */
 class GsqlActor extends GroovyActor {
-	def bind() {
-		binding.doc = BrowserBuilder.newInstance('text/text')
-		binding.ensure.gsql = { new Gsql() }
-		delegate = binding.gsql
-		return this
+	Map dsl = [
+			firstRow: { GString sql -> database.sql.firstRow(sql) },
+			execute: { GString sql -> database.sql.execute(sql) },
+			executeUpdate: { GString sql -> database.sql.executeUpdate(sql) },
+	]
+
+	Database database
+
+	void run() {
+		Database.connection { db ->
+			database = db
+			super.run()
+		}
 	}
 }

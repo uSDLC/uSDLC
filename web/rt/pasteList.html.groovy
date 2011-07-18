@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import usdlc.Store
 
+def now = new Date().time
+Store.base('store/clipboard').dir().sort().reverse().each { clip ->
+	def item = Store.parseUnique(clip)
+	if (item) {
+		long age = now - item.date.time
+		int shade = 0x0000FF - (age / 60000)   // blue to black over 4 hours
+		def colour = Integer.toHexString((shade < 0) ? 0 : shade).padLeft(6, '0')
 
-
-
-
-package rt
-/*
- The main context menu of uSDLC will display actions required - based on user authentication.
- */
-doc.ul {
-	li { a('<u>R</u>un Page', onclick: 'usdlc.runPage()') }
-	li { a('<u>E</u>dit', onclick: 'usdlc.editSectionInFocus()') }
+		out.println "<a href='$item.path' style='color:#$colour'>$item.title</a>"
+	}
 }

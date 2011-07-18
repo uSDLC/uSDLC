@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 package usdlc
 
@@ -28,14 +28,28 @@ import java.util.regex.Pattern
  * Date: 12/01/11
  */
 class History {
-	def path = 'default'
-	def type = "updates"
-	static diff = new diff_match_patch()
+	final path = 'default'
+	final type = 'updates'
+
+	History(String path, String type) {
+		this.path = path
+		this.type = type
+		store = Store.base("store/history/$type/${path}.history")
+
+		patches = []
+		// Use regex to retrieve the text representation of each patch and convert it to a list of patches to apply for a history version. The array is from oldest to newest.
+		new String(store.read()).eachMatch(historyRE) { List<String> results ->
+			List patch = diff.patch_fromText(results[3])
+			Patch item = new Patch(results[1], results[2], patch)
+			patches.push(item)
+		}
+	}
 	/**
 	 * History file is stored in a special directory and named file.
 	 * @return
 	 */
-	@Lazy Store store = Store.base("store/history/$type/${path}.history")
+	final Store store
+	static final DiffMatchPatch diff = new DiffMatchPatch()
 	/**
 	 * Whenever we save a file we can also save the changes from last time.
 	 *
@@ -43,7 +57,7 @@ class History {
 	 * @param before Copy of file in storage
 	 * @param after Copy of file to be placed in storage
 	 */
-	def save(userId, before, after) {
+	def save(String userId, String before, String after) {
 		def diffs = diff.diff_main(before, after)
 		diff.diff_cleanupEfficiency diffs
 		def patch = diff.patch_toText(diff.patch_make(diffs))
@@ -58,14 +72,17 @@ class History {
 	 * @param to Index into history changes - use -1 for last change.
 	 * @return Contents of the file at this point of time.
 	 */
-	def restore(int to) {
-		def contents = ''
-		patches[0..to].each({
-			def successes   // pass/fail array for each patch
-			//noinspection GroovyUnusedAssignment
-			(contents, successes) = diff.patch_apply(it.patch, contents)
-		})
-		return contents
+	String restore(int to) {
+		patches[0..to].inject('') { String contents, Patch item ->
+			diff.patch_apply(item.patches as LinkedList<usdlc.DiffMatchPatch.Patch>, contents)
+		}
+	}
+
+	static class Patch {
+		final String userId, date;
+		final List patches
+
+		Patch(String u, String d, List p) { userId = u; date = d; patches = p }
 	}
 	/**
 	 * Retrieve a list of patches for each prior save. Each element is a dictionary with the user Id of the user who made the change, the date of the change and the patches to apply.
@@ -77,14 +94,6 @@ class History {
 	 *
 	 * @return patches array of dictionaries.
 	 */
-	@Lazy def patches = {
-		def pl = []
-		// Use regex to retrieve the text representation of each patch and convert it to a list of patches to apply for a history version. The array is from oldest to newest.
-		new String(store.read() as byte[]).eachMatch(historyRE, { full, userId, date, textPatch ->
-			def patch = diff.patch_fromText(textPatch)
-			pl.push([userId: userId, date: date, patch: patch])
-		})
-		return pl
-	}()
-	static historyRE = Pattern.compile(/-- (\w+?) -- (.*?) ----\n(.*?)\n--/, Pattern.DOTALL)
+	final List<Patch> patches
+	static final Pattern historyRE = Pattern.compile(/-- (\w+?) -- (.*?) ----\n(.*?)\n--/, Pattern.DOTALL)
 }

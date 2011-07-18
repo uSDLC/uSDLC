@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 package usdlc
 
@@ -32,13 +32,10 @@ import java.lang.reflect.Method
 class Config {
 	/**
 	 * Called by user visible config class.
-	 * @param baseDirectory
-	 * @param args
-	 * @return
 	 */
-	protected void init(String baseDirectory, String[] args) {
+	void load(baseDirectory, argList) {
 		this.baseDirectory = baseDirectory
-		Dictionary.commandLine(args).each { key, value -> this[key] = value }
+		Dictionary.commandLine(argList).each { String key, String value -> setProperty(key, value) }
 		classPath = buildClassPath()
 		classPathString = classPath.join(';')
 		tableVersions = loadTableVersions()
@@ -59,11 +56,11 @@ class Config {
 
 	private String[] buildClassPath() {
 		// Run through them all and add to the uSDLC classpath - so that compilers behave
-		Method method = URLClassLoader.class.getDeclaredMethod("addURL", [URL.class] as Class[])
+		Method method = URLClassLoader.class.getDeclaredMethod('addURL', [URL.class] as Class[])
 		method.accessible = true
 
-		def cp = []
-		srcPath.each { cp << Store.base(it).path }
+		List cp = []
+		srcPath.each { String sourcePath -> cp << Store.base(sourcePath).path }
 
 		libPath.each { path ->
 			Store.base(path).dirs(~/.*\.jar$/).each { String fileName ->
@@ -71,7 +68,7 @@ class Config {
 				method.invoke(ClassLoader.systemClassLoader, params)
 			}
 		}
-		return cp as String[]
+		cp
 	}
 	/**
 	 * Retrieve classpath string as expected by Java
@@ -87,8 +84,8 @@ class Config {
 		def properties = new Properties()
 		def webInf = Store.base('WEB-INF')
 		webInf.dirs(~/.*TableVersions.properties/) { String fileName ->
-			webInf.withInputStream(fileName) { stream -> properties.load(stream) }
+			webInf.withInputStream(fileName) { InputStream stream -> properties.load(stream) }
 		}
-		return properties
+		properties
 	}
 }

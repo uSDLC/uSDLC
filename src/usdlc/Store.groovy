@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,30 +31,30 @@ class Store {
 	static Store base(String path = '') {
 		def store = new Store()
 		store.file = new File(config.baseDirectory, path)
-		return store
+		store
 	}
 	/**
 	 * Sometimes we get a now store based on an old location
 	 */
 	Store rebase(String more = '') {
 		def store = new Store()
-		store.file = new File(path + more)
-		return store
+		store.file = new File(config.baseDirectory, path + more)
+		store
 	}
 	/**
 	 * If we need to read a source as a stream...
 	 * <code>
 	 * def dir = Store.base("rt")
 	 * def lines
-	 * dir.withInputStream('template.html.groovy') { stream -> stream.readLines() }* </code>
+	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream.readLines() }* </code>
 	 */
 	InputStream withInputStream(String fileName, Closure closure) {
-		return new File(file, fileName).withInputStream(closure)
+		new File(file, fileName).withInputStream(closure)
 	}
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	private def mkdirs() {
+	private mkdirs() {
 		new File(config.baseDirectory + parent).mkdirs()
 	}
 
@@ -68,39 +68,39 @@ class Store {
 	 * Return a string being the file path relative to the base directory.
 	 */
 	private static String pathFromBase(File file) {
-		return baseDirectoryURI.relativize(file.toURI()).path
+		baseDirectoryURI.relativize(file.toURI()).path
 	}
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */
 	private static String pathFromBase(String path) {
-		return pathFromBase(new File(path))
+		pathFromBase(new File(path))
 	}
 	/**
 	 * Public method used to read the file.
 	 * @return File contents as a byte array.
 	 */
-	public byte[] read() {
+	byte[] read() {
 		byte[] bytes
 		if (file.exists()) {
 			bytes = file.bytes
 		} else {
 			bytes = new byte[0]
 		}
-		return bytes
+		bytes
 	}
 	/**
 	 * Public method used to read the file into a string.
 	 * @return File contents as a string.
 	 */
-	public String text() {
-		return new String(read())
+	String text() {
+		new String(read())
 	}
 	/**
 	 * Public method to write file contents.
 	 * @param contents Byte array of contents to write.
 	 */
-	public write(contents) {
+	void write(contents) {
 		mkdirs()
 		file.bytes = contents
 	}
@@ -108,29 +108,24 @@ class Store {
 	 * Public method to write file contents - appending to existing contents.
 	 * @param contents Byte array of contents to write.
 	 */
-	public Store append(byte[] contents) {
+	Store append(byte[] contents) {
 		mkdirs()
 		file << contents
-		return this
+		this
 	}
 
-	public Store append(String contents) { append contents.bytes }
+	Store append(String contents) { append contents.bytes }
 
-	public Store append(long contents) { append contents.toString() }
+	Store append(long contents) { append contents.toString() }
 	/**
 	 * Check the size of the file.
 	 * @return bytes in file.
 	 */
-	public size() {
-		return file.size()
-	}
+	int size() { file.size() }
 	/**
 	 * See if the file exists
-	 * @return True if the file is available
 	 */
-	public boolean exists() {
-		return file.exists()
-	}
+	boolean exists() { file.exists() }
 	/**
 	 * Fetch a list of matching contents of a directory - names only, no path
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -152,14 +147,14 @@ class Store {
 	 */
 	List dir(mask) {
 		def list = []
-		dir(mask, { list << it })
-		return list
+		dir(mask) { list << it }
+		list
 	}
 	/**
 	 * Fetch a list of all matching contents of a directory
 	 * @return list of all files in the directory
 	 */
-	public dir() { dir(~/.*/) }
+	List dir() { dir(~/.*/) }
 	/**
 	 * Call a closure for the contents of a directory tree (as in dir /s)
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -177,15 +172,15 @@ class Store {
 	 */
 	List dirs(mask) {
 		def list = []
-		dirs(mask, { list << it.replaceAll(sloshRE, '/') })
-		return list
+		dirs(mask) { list << it.replaceAll(sloshRE, '/') }
+		list
 	}
 
-	def long lastModified() { return file.lastModified() }
+	long lastModified() { file.lastModified() }
 	/**
 	 * Store.toString(), implicit or explicit will return the full path to the file or directory
 	 */
-	String toString() { return path }
+	String toString() { path }
 
 	private File file
 
@@ -201,13 +196,13 @@ class Store {
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquifier++;
 		}
-		return pathFromBase(unique)
+		pathFromBase(unique)
 	}
 	/**
 	 * Convert any sentence into a single camel-case word. It remove all punctuation and makes the start of each work a capital letter. So "My friend Charlie (Watson-Smith-jones)" becomes MyFriendCharlieWatsonSmithJones
 	 */
 	static String camelCase(text) {
-		text.replaceAll(~/(^|[\W+])(\w)/, { it[2].toUpperCase() })
+		text.replaceAll(~/(^|[\W+])(\w)/) { it[2].toUpperCase() }
 	}
 	/**
 	 * Later we will want to gather information from the unique name created
@@ -219,7 +214,8 @@ class Store {
 		def unique
 		def matcher = uniqueRE.matcher(uniqueName)
 		if (matcher && matcher.size() > 0 && matcher[0].size() >= 4) {
-			def (all, dateString, uniquifier, title) = matcher[0]
+			String dateString = matcher[0][1]
+			String title = matcher[0][3]
 			unique = [
 					date: Date.parse(dateStampFormat, dateString),
 					title: decamel(title),
@@ -228,24 +224,24 @@ class Store {
 		} else {
 			unique = null
 		}
-		return unique
+		unique
 	}
 
 	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(\w*)/
 	static decamelRE = ~/\B([A-Z])/
-	static sloshRE = ~"\\\\"
-	static dateStampFormat = "yyyy-MM-dd_HH-mm-ss"
+	static sloshRE = ~'\\\\'
+	static dateStampFormat = 'yyyy-MM-dd_HH-mm-ss'
 	/**
 	 * Turn a camel-case name back into a sentence
 	 */
-	static decamel(camelCase) { return camelCase.replaceAll(decamelRE, ' $1') }
+	static decamel(camelCase) { camelCase.replaceAll(decamelRE, ' $1') }
 	/**
 	 * Split a fully qualified storage name into path, name and extension
 	 * @return [path : path, name : name, ext : ext]
 	 */
-	static split(path) {
+	static Map split(path) {
 		def matcher = splitRE.matcher(path)[0]
-		return [path: matcher[1], name: matcher[2], ext: matcher[3]]
+		[path: matcher[1], name: matcher[2], ext: matcher[3]]
 	}
 
 	static splitRE = ~/^(?:(.*)[\/\\])?([^\.]*)?(.*)?$/

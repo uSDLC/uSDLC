@@ -1,4 +1,3 @@
-package init
 /*
  * Copyright 2011 the Authors for http://usdlc.net
  *
@@ -14,40 +13,39 @@ package init
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package init
 /**
  * User: paul
  * Date: 29/06/11
  * Time: 6:36 PM
  */
 class Config extends usdlc.Config {
-	public static Config config
+	public static final Config config = new Config()
 
-	/**
-	 * This is how we load the configuration
-	 */
-	static load(baseDirectory, args) { config = new Config(); config.init(baseDirectory, args) }
-
-	String urlBase = ""
-	String rootFile = "/rt/template.html.groovy"
-	String usdlcDatabase = "jdbc:h2:.db/usdlc"
+	String urlBase = ''
+	String rootFile = '/index.html'
 	/*
 	 Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.
 	 */
-	String[] srcPath = ["", "Actors"]
-	String[] libPath = ["lib/jars"]
+	String[] srcPath = ['', 'Actors']
+	String[] libPath = ['lib/jars']
 	/*
 	 If the file does not exist, use a template file for that usdlc.server.servletengine.server and client side extension.
 	 */
 	Map<String, String> template = [
-			html: "template",
-			'html.groovy': "template",
-			groovy: "template",
-			gradle: "template"
+			html: 'template',
+			'html.groovy': 'template',
+			groovy: 'template',
+			gradle: 'template'
 	]
+	Map<String, String> databases = [
+			usdlc: 'jdbc:h2:.db/usdlc'
+	]
+	String browserDriverList = 'firefox:chrome:ie:htmlunit'
 	/*
 	 Define the script language to use for a address line url that specifies the path only.
 	 */
-	String defaultScriptLanguage = "groovy"
+	String defaultScriptLanguage = 'groovy'
 	boolean alwaysCheckForRecompile = true
 	/*
 	 * What local port is used for the local usdlc.server.standalone?
@@ -57,6 +55,6 @@ class Config extends usdlc.Config {
 	 * Environment registrations
 	 */
 	Map<String, String> environmentRegister = [
-			db: "usdlc.db.Database"
+			db: 'usdlc.db.Database'
 	]
 }

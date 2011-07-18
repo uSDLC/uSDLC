@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package usdlc.actor
 import be.roam.hue.doj.Doj
 import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.CollectingAlertHandler
+import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 
 /**
@@ -26,45 +27,43 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage
  * Time: 4:22 PM
  */
 class HtmlunitActor extends GroovyActor {
-	def bind() { return bind([client: new HtmlUnit()]) }
+	Map dsl = [client: new HtmlUnit()]
 
-	static class HtmlUnit {
+	static class HtmlUnit implements Closeable {
 		@Delegate Doj doj
 		HtmlPage page
+		WebClient webClient
 
-		/**
-		 * Constructor - creates an instance and loads a page
-		 * @param url Page to load
-		 */
-		public load(String url) {
-			webClient = new com.gargoylesoftware.htmlunit.WebClient(BrowserVersion.FIREFOX_3_6)
-			def collectedAlerts = [];
+		/** Creates an instance and loads a page       */
+		void load(String url) {
+			webClient = new WebClient(BrowserVersion.FIREFOX_3_6)
+			List collectedAlerts = []
 			webClient.alertHandler = new CollectingAlertHandler(collectedAlerts);
 			try {
 				doj = Doj.on(page = webClient.getPage(url))
 				webClient.waitForBackgroundJavaScript(10000)
 			} finally {
-				collectedAlerts.each { System.err.println(it); }
+				alerts(collectedAlerts)
 			}
+		}
+
+		private void alerts(List alerts) {
+			alerts.each { String alert -> usdlc.Log.err(alert) }
 		}
 		/**
 		 * Run JavaScript as if from the page
 		 * @param script valid Javascript to execute in page context
 		 */
-		public executeJavaScript(script) {
+		void executeJavaScript(String script) {
 			page.executeJavaScript(script)
 			webClient.waitForBackgroundJavaScript(2000)
 		}
 		/**
 		 * Get a page element based on a selector
-		 * @param selector
-		 * @return this for chaining
 		 *
 		 * webClient.table.a.span
 		 */
-		def propertyMissing(String selector) {
-			return getAt(selector)
-		}
+		def propertyMissing(String selector) { this[selector] }
 		/**
 		 * Get a page element based on a selector
 		 * @param selector
@@ -72,34 +71,24 @@ class HtmlunitActor extends GroovyActor {
 		 *
 		 * webClient['img#logo']
 		 */
-		def getAt(String selector) {
-			return new HtmlUnit(doj.get(selector))
-		}
+		HtmlUnit getAt(String selector) { new HtmlUnit(doj.get(selector)) }
 
-		def getAt(Integer selector) {
-			return new HtmlUnit(doj.get(selector))
-		}
+		HtmlUnit getAt(Integer selector) { new HtmlUnit(doj.get(selector)) }
 		/**
 		 * Dump element as XML to standard error for review
 		 * @return this for chaining
 		 */
-		def dump() {
+		HtmlUnit dump() {
 			doj.allElements().each {
 				System.err.println(it.asXml())
 			}
-			return this
+			this
 		}
-		/**
-		 * Emulate closing the browser window
-		 */
-		def close() {
-			webClient.closeAllWindows()
-		}
+		/** Emulate closing the browser window       */
+		void close() { webClient.closeAllWindows() }
 
-		public HtmlUnit() {}
+		HtmlUnit() {}
 
 		private HtmlUnit(Doj doj) { this.doj = doj }
-
-		def webClient
 	}
 }

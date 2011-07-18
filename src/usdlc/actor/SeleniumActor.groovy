@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,40 +18,42 @@ package usdlc.actor
 import com.thoughtworks.selenium.HttpCommandProcessor
 import com.thoughtworks.selenium.SeleniumException
 import org.openqa.selenium.server.SeleniumServer
-import usdlc.Environment
 
 class SeleniumActor extends GroovyActor {
-	def bind() {
-		binding.ensure.selenium = { new SeleniumProcessor() }
-		delegate = binding.selenium
-		return this
-	}
-}
-
-class SeleniumProcessor {
-	def env = Environment.session()
-	static class Browser {
-		HttpCommandProcessor commandProcessor
-		String authority, browser
-		long timeStarted = System.currentTimeMillis()
-	}
+	def dsl = [
+			reset: { reset() },
+			open: { selenium('open', it) },
+			waitForPageToLoad: { selenium('waitForPageToLoad', it) },
+			click: { selenium('click', it) },
+			assertElementPresent: { selenium('assertElementPresent', it) },
+	]
 	/**
 	 * Prepare to open a browser instance given the authority (base URL) and browser (firefox, chrome, etc)
 	 * @param authority Full base url (as in http://localhost:9000)
 	 * @param browser optional browser identifier (*firefox, *chrome, *ie or *htmlunit among others)
 	 */
-	def browse(String authority, browser = '*firefox') {
-		if (!env?.browser) {
-			long yesterday = System.currentTimeMillis() - 86400000
-			def kill = []
-			browsers.each { key, instance -> if (instance.timeStarted < yesterday) { kill << key } }
-			kill.each { browsers.remove(it) }
+	static class Browser {
+		HttpCommandProcessor commandProcessor
+		String authority, browser
+		long timeStarted
+	}
 
-			String key = "$authority::$browser::$env.cookies.session"
+	Browser getBrowser() { context['browser'] }
+
+	void setBrowser(Browser to) { context['browser'] = to }
+
+	def browse(String authority, browserName = '*firefox') {
+		if (!browser) {
+			long tooOld = System.currentTimeMillis() - 3600000 /* 1 hour */
+			browsers.findAll { String key, Browser instance -> instance.timeStarted < tooOld }.
+					each { String key, Browser instance -> browsers.remove(key) }
+
+			String key = "$authority::$browserName::${exchange.request.cookies['session']}"
 			if (!browsers.containsKey(key)) {
 				browsers[key] = new Browser(authority: authority, browser: browser, commandProcessor: null)
 			}
-			env.browser = browsers[key]
+			browser = browsers[key]
+			browser.timeStarted = System.currentTimeMillis()
 		}
 	}
 	/**
@@ -60,10 +62,9 @@ class SeleniumProcessor {
 	 * @param args One argument or an array of arguments
 	 * @return Whatever Selenium returns - OK or error message usually
 	 */
-	def methodMissing(String command, args) {
-		if (!env?.browser) { binding.selenium.browse() }
-		env.browser.with {
-			if (!commandProcessor) { commandProcessor() }
+	def selenium(String command, List args) {
+		if (!browser) { throw new Error("No browser instance for Selenuium command $command") }
+		browser.with {
 			def params = [args].flatten() as String[]
 			try {
 				return commandProcessor.doCommand(command, params)
@@ -73,23 +74,18 @@ class SeleniumProcessor {
 						return reset(command, params)
 					case ~/ERROR/:  // some sort of assert
 						throw new Error("$command $params // $se.message", se)
-						break
 					default:    // it is a function that returns a value
 						return se.message
 				}
 			} catch (e) {
-				return reset(command, params)
+				reset()
+				commandProcessor.doCommand(command, params)
 			}
 		}
 	}
 
-	private reset(command, params) {
-		reset()
-		return commandProcessor().doCommand(command, params)
-	}
-
-	private commandProcessor() {
-		env.browser.with {
+	private HttpCommandProcessor getCommandProcessor() {
+		browser.with {
 			if (!commandProcessor) {
 				if (!server) {
 					server = new SeleniumServer()
@@ -99,6 +95,7 @@ class SeleniumProcessor {
 				commandProcessor = new HttpCommandProcessor('localhost', server.port, browser, authority);
 				commandProcessor.start()
 			}
+			commandProcessor
 		}
 	}
 	/**
@@ -107,18 +104,18 @@ class SeleniumProcessor {
 	 * @return Whatever selenium provides
 	 */
 	def propertyMissing(String command) {
-		return methodMissing(command, [])
+		methodMissing(command, [])
 	}
 	/**
 	 * Reset the connection to the browser - closing the window.
 	 */
 	def reset() {
-		if (env?.browser) {
-			env.browser?.commandProcessor?.stop()
-			env.browser.commandProcessor = null
+		if (browser) {
+			browser.commandProcessor?.stop()
+			browser.commandProcessor = null
 		}
 	}
 
 	private static SeleniumServer server
-	private static browsers = [:]
+	private static Map browsers = [:]
 }

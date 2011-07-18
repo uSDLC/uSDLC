@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 class Selenium {
 	static browse() {
-		def env = usdlc.Environment.session()
-		env.selenium.browse(usdlc.Environment.host, env.browser ?: "*firefox")
+//		def env = usdlc.Environment.session()
+		//		env.selenium.browse(usdlc.Environment.host, env.browser ?: "*firefox")
 	}
 }

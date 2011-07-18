@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 package usdlc
 /**
@@ -32,14 +32,8 @@ class Dictionary {
 	 * @return dictionary ready to use
 	 */
 	static Map cookies(String text) {
-		return fromString(text, '=', ';')
+		fromString(text, '=', ';')
 	}
-	/**
-	 * Sometimes the map has been pre-processed.
-	 * @param map Map ready to use
-	 * @return same map
-	 */
-	static Map query(Map map) { return map }
 	/**
 	 * Use this to create a cookie dictionary
 	 *
@@ -49,38 +43,38 @@ class Dictionary {
 	 * @param text String containing "name=value&" pairs
 	 * @return dictionary ready to use
 	 */
-	static Map query(String text) { return fromString(text, '=', '&') }
+	static query(String text) { fromString(text, '=', '&') }
 	/**
 	 * Use this to create a dictionary from command line arguments
 	 *
 	 * def arguments = Dictionary.commandLine(args)
-	 * binding.variables += Dictionary.commandLine(args)
+	 * context.variables += Dictionary.commandLine(args)
 	 *
 	 * @param args from command line in the form of a=b "c=d e" f=g
 	 * @return dictionary ready to use
 	 */
-	static Map commandLine(String[] args) {
+	static commandLine(String[] args) {
 		def map = [:]
 		args.each {
 			def nvp = it.split(/\s*=\s*/)
-			map[nvp[0]] = (nvp.size() < 2) ? "" : nvp[1]
+			map[nvp[0]] = (nvp.size() < 2) ? '' : nvp[1]
 		}
-		return map
+		map
 	}
 	/**
 	 * A map can be added to from a string in the define format (separators and assignment operators)
 	 * @param text Text to parse for map
 	 * @return map
 	 */
-	static Map fromString(String text, String assign, String separate) {
+	static fromString(String text, String assign, String separate) {
 		def map = [:]
 		if (text) {
 			text.split(/\s*$separate\s*/).each {
 				def nvp = it.split(/\s*$assign\s*/)
-				map[nvp[0]] = (nvp.size() < 2) ? "" : nvp[1]
+				map[nvp[0]] = (nvp.size() < 2) ? '' : nvp[1]
 			}
 		}
-		return map
+		map
 	}
 	/**
 	 * Since we may have changed entries to have binary values, behave accordingly.
@@ -92,6 +86,6 @@ class Dictionary {
 			builder.append(key).append(assign).append(value).append(separate)
 		}
 		builder.length = builder.size() - separate.size()
-		return builder.toString()
+		builder.toString()
 	}
 }

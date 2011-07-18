@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ Copyright 2011 the Authors for http://usdlc.net
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
  */
 
 /**
@@ -88,6 +88,24 @@ $(function() {
 		}
 
 		$('.editable').live('contextmenu', onContextMenu).live('dblclick', onDblclick)
+
+		usdlc.loadContextMenu = function(element, data) {
+			element.contextMenuData = $(data)
+			var doc = $(document)
+			$('a kbd', element.contextMenuData).each(function() {
+				var kbd = $(this)
+				var key = kbd.text()
+				key = key.substring(1, key.length - 1)
+				if (key[0] == '^') {
+					key = 'ctrl+' + key.substring(1)
+				}
+				var a = kbd.parents('a')
+				doc.bind('keydown', key, function() {
+					a.click()
+					return false
+				})
+			})
+		}
 		/*
 		 Look for elements with a class of contextMenu and create menus to be called on demand.
 		 */
@@ -95,31 +113,13 @@ $(function() {
 			var div = $(this)
 			var contextMenuName = div.attr('id')
 			contextMenus[contextMenuName.toLowerCase()] = div
-
-			$.get('/rt/' + contextMenuName + '.html.groovy', function(data) {
-				div.contextMenuData = $(data)
-				var doc = $(document)
-				$('a kbd', div.contextMenuData).each(function() {
-					var kbd = $(this)
-					var key = kbd.text()
-					key = key.substring(1, key.length - 1)
-					if (key[0] == '^') {
-						key = 'ctrl+' + key.substring(1)
-					}
-					var a = kbd.parents('a')
-					doc.bind('keydown', key, function() {
-						a.click()
-						return false
-					})
-				})
-			})
 		})
 	}
 
 	function setButtonBars() {
 		$('span.toolbar').each(function() {
 			var toolbar = $(this)
-			$.get('/rt/' + toolbar.attr('id') + '.html.groovy', function(data) {
+			$.get('/rt/' + toolbar.attr('id'), function(data) {
 				toolbar.html(data)
 			})
 		})

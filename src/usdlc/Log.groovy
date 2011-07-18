@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,19 +30,11 @@ import org.apache.commons.logging.impl.SimpleLog
  */
 class Log extends SimpleLog {
 	Log(String name) { super(name) }
-
-	def env = Environment.session()
 	/**
 	 * By default, SimpleLog sends to stderr. Let's redirect it to somewhere more useful.
 	 * @param buffer buffer the logger has prepared for the record
 	 */
-	protected void write(StringBuffer buffer) {
-		if (level > 4) {
-			env.out.println "$buffer<br>"
-		} else {
-			println buffer
-		}
-	}
+	protected void write(StringBuffer buffer) { System.out.println buffer }
 	/**
 	 * Given a file path to save the log to, return a closure that will write whatever it is given
 	 * @param name Name/path of file to append log information to.
@@ -63,9 +55,9 @@ class Log extends SimpleLog {
 	 * so we had better tell the factory.
 	 * @return
 	 */
-	static apacheCommons() {
-		LogFactory.factory.setAttribute("org.apache.commons.logging.Log", "usdlc.Log");
+	static void apacheCommons() {
+		LogFactory.factory.setAttribute('org.apache.commons.logging.Log', 'usdlc.Log');
 		// "trace", "debug", "info", "warn", "error", or "fatal"
-		System.properties["org.apache.commons.logging.simplelog.defaultlog"] = "error";
+		System.properties['org.apache.commons.logging.simplelog.defaultlog'] = 'error';
 	}
 }

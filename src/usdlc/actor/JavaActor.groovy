@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
+ * Copyright 2011 the Authors for http://usdlc.net
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package usdlc.actor
 
 import javax.tools.ToolProvider
 import usdlc.CompilingClassLoader
-import usdlc.Filer
+import usdlc.Store
 import usdlc.actor.JavaFileObjects.ClassFileManager
 import static init.Config.config
 
@@ -27,15 +27,15 @@ import static init.Config.config
  * Date: 14/01/11
  * Time: 3:54 PM
  */
-class JavaActor {
+class JavaActor extends Actor {
 	/**
 	 * Called by uSDLC to start a java actor. It will compile the source if it is out of date, load the class,
 	 * instantiate it and call the run() method. Class needs to have a constructor
 	 * that receives one Map parameter for the environment.
 	 */
-	public run(String script) { javaClassLoader.newInstance(script) }
+	void run() { javaClassLoader.newInstance(exchange.store.absolutePath) }
 
-	static javaClassLoader = new CompilingClassLoader('java', new JavaCompiler())
+	static CompilingClassLoader javaClassLoader = new CompilingClassLoader('java', new JavaCompiler())
 
 	private static class JavaCompiler implements CompilingClassLoader.Compiler {
 		/**
@@ -43,19 +43,19 @@ class JavaActor {
 		 * @return true if compile behaved.
 		 private compile(name) {
 		 Filer script = Store.template('java/compile.groovy')
-		 Binding binding = [actor : this]
-		 gse.run script.path, binding
-		 return binding.classBuffer
+		 Binding context = [actor : this]
+		 gse.run script.path, context
+		 return context.classBuffer
 		 }
 		 */
 		@Override
-		void compile(Filer sourceFile) {
-			def classFileManager = new ClassFileManager(javaCompiler, javaClassLoader)
-			def options = ["-classpath", config.classPathString]
-			def unitsToCompile = [new JavaFileObjects.FromString(sourceFile.store.absolutePath, new String(sourceFile.contents))]
-			def ok = javaCompiler.getTask(null, classFileManager, null, options, null, unitsToCompile).call()
+		void compile(Store source) {
+			ClassFileManager classFileManager = new ClassFileManager(javaCompiler, javaClassLoader)
+			def options = ['-classpath', config.classPathString]
+			def unitsToCompile = [new JavaFileObjects.FromString(source.absolutePath, source.text())]
+			javaCompiler.getTask(null, classFileManager, null, options, null, unitsToCompile).call()
 		}
 
-		@Lazy def javaCompiler = ToolProvider.systemJavaCompiler
+		javax.tools.JavaCompiler javaCompiler = ToolProvider.systemJavaCompiler
 	}
 }

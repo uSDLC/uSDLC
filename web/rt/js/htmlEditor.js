@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ Copyright 2011 the Authors for http://usdlc.net
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
  */
 
 $(function() {
@@ -27,11 +27,6 @@ $(function() {
 		savePage : function() {
 			// clean up html of crap that builds up
 			usdlc.savePageContents()
-		},
-		camelCase : function(text) {
-			return text.replace(/(^|[^\w\.])(\w)/g, function(a, s, c) {
-				return c.toUpperCase()
-			})
 		},
 		actorDefault : usdlc.cookie("actorDefault") || 'groovy',
 		reportsTabData : {
@@ -76,69 +71,69 @@ $(function() {
 		usdlc.clearSynopses()
 		usdlc.scrollTo($section)
 		$section.ckeditor(function() {
-					usdlc.modalOn()
-				}, {
-					bodyClass : "wayOnTop",
-					saveFunction : function(editor) {
-						var updateContents = editor.checkDirty()
-						usdlc.modalOff()
-						// Get rid of the editor so that it does not show up in the
-						// saved content.
-						editor.destroy()
-						if (!updateContents) {
-							usdlc.scrollBack()
-							usdlc.synopses()
-							return
+			usdlc.modalOn()
+		}, {
+			bodyClass : "wayOnTop",
+			saveFunction : function(editor) {
+				var updateContents = editor.checkDirty()
+				usdlc.modalOff()
+				// Get rid of the editor so that it does not show up in the
+				// saved content.
+				editor.destroy()
+				if (!updateContents) {
+					usdlc.scrollBack()
+					usdlc.synopses()
+					return
 
+				}
+				// Special case for the title - move it back where it belongs.
+				var baseId = $section.attr('id');
+				baseId += 'a'
+				// Process links to see what they should do
+				$('a', $section).removeAttr('action').each(function(idx) {
+					var self = $(this)
+					var targetId = baseId + idx
+					if (!self.attr('id')) {
+						self.attr('id', targetId)
+					}
+					var href = self.attr('href')
+					self.removeClass() // removes all classes so we can re-add
+					// them by page standards.
+					if (href && href.indexOf(':') == -1) {
+						self.addClass('usdlc')
+						href = usdlc.camelCase(href)
+						if (self.text() == '*') {
+							self.addClass('star')
 						}
-						// Special case for the title - move it back where it belongs.
-						var baseId = $section.attr('id');
-						baseId += 'a'
-						// Process links to see what they should do
-						$('a', $section).removeAttr('action').each(function(idx) {
-							var self = $(this)
-							var targetId = baseId + idx
-							if (!self.attr('id')) {
-								self.attr('id', targetId)
-							}
-							var href = self.attr('href')
-							self.removeClass() // removes all classes so we can re-add
-							// them by page standards.
-							if (href && href.indexOf(':') == -1) {
-								self.addClass('usdlc')
-								href = usdlc.camelCase(href)
-								if (self.text() == '*') {
-									self.addClass('star')
-								}
-								if (href.charAt(href.length - 1) == '/') {
-									href += "index.html"
-								} else if (href.indexOf('.') == -1) {
-									href += "/index.html";
-								}
-								self.attr('href', href)
-								if (usdlc.mimeType(href).clientExt == 'html') {
-									self.attr('action', 'page')
-								} else {
-									self.attr('action', 'runnable')
-									self.addClass('sourceLink')
-								}
-							}
-						})
-						usdlc.checkForSynopsis($section)// See if we load synopsis from
-						// inner page link
-						usdlc.savePage()
-						usdlc.scrollBack()
-					},
-					on : {
-						instanceReady : function(ev) {
-							// Once the editor is ready for action keep a copy of the
-							// unchanged contents and sent the focus.
-							ev.editor.focus()
+						if (href.charAt(href.length - 1) == '/') {
+							href += "index.html"
+						} else if (href.indexOf('.') == -1) {
+							href += "/index.html";
 						}
-					},
-					extraPlugins : 'autogrow'
-					// autoGrow_maxHeight : 800
+						self.attr('href', href)
+						if (usdlc.mimeType(href).clientExt == 'html') {
+							self.attr('action', 'page')
+						} else {
+							self.attr('action', 'runnable')
+							self.addClass('sourceLink')
+						}
+					}
 				})
+				usdlc.checkForSynopsis($section)// See if we load synopsis from
+				// inner page link
+				usdlc.savePage()
+				usdlc.scrollBack()
+			},
+			on : {
+				instanceReady : function(ev) {
+					// Once the editor is ready for action keep a copy of the
+					// unchanged contents and sent the focus.
+					ev.editor.focus()
+				}
+			},
+			extraPlugins : 'autogrow'
+			// autoGrow_maxHeight : 800
+		})
 	}
 
 	CKEDITOR.config.toolbar_Full = [

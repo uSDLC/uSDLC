@@ -1,0 +1,55 @@
+<ul>
+	<li>
+		<a onclick='return false'>Clipboard'</a>
+		<ul>
+			<li><a onclick='usdlc.copySectionInFocus("cut")'>Cut<kbd>(^X)</kbd></a></li>
+			<li><a onclick='usdlc.copySectionInFocus("copy")'>Copy<kbd>(^C)</kbd></a></li>
+			<li><a onclick='return false'>Paste</a>
+				<ul id='pasteList'></ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a onclick='return false'>Edit</a>
+		<ul>
+			<li><a onclick='usdlc.editSectionInFocus()'>Edit Section<kbd>(^E)</kbd></a></li>
+			<li><a onclick='usdlc.insertSectionAboveFocus()'>Insert Above<kbd>(^I)</kbd></a></li>
+			<li><a onclick='usdlc.insertSectionBelowFocus()'>Append Below<kbd>(^A)</kbd></a></li>
+			<li>
+				<hr/>
+			</li>
+			<li><a onclick='usdlc.moveSectionUp()'>Move Section Up<kbd>(^up)</kbd></a></li>
+			<li><a onclick='usdlc.moveSectionDown()'>Move Section Down<kbd>(^down)</kbd></a></li>
+			<li>
+				<hr/>
+			</li>
+			<li><a onclick='usdlc.joinSectionAbove()'>Join with Above<kbd>(alt+up)</kbd></a></li>
+			<li><a onclick='usdlc.joinSectionBelow()'>Join with Below<kbd>(alt+down)</kbd></a></li>
+			<li>
+				<hr/>
+			</li>
+			<li><a onclick='usdlc.splitIntoSections()'>Split up Sections<kbd>(alt+S)</kbd></a></li>
+			<li><a onclick='usdlc.extractSectionInFocus()'>Extract to New Page<kbd>(alt+E)</kbd></a></li>
+		</ul>
+	</li>
+	<li>
+		<a onclick='return false'>Navigation</a>
+		<ul>
+			<li><a onclick='usdlc.toggleFocus()'>Section / Tree Focus<kbd>(tab)</kbd></a></li>
+			<li>
+				<hr/>
+			</li>
+			<li><a onclick='usdlc.upFocus()'>Previous Section<kbd>(up)</kbd></a></li>
+			<li><a onclick='usdlc.downFocus()'>Next Section<kbd>(down)</kbd></a></li>
+		</ul>
+	</li>
+	<li>
+		<a onclick='return false'>Run</a>
+		<ul>
+			<li><a onclick='usdlc.runPage({continuation:false})'>Run Page<kbd>(^P)</kbd></a></li>
+			<li><a onclick='usdlc.unPage({continuation:true})'>Run Page from Last Stop<kbd>(^L)</kbd></a></li>
+			<li><a onclick='usdlc.runSectionInFocus({continuation:false})'>Run Section<kbd>(^R)</kbd></a></li>
+			<li><a onclick='usdlc.runSectionInFocus({continuation:true})'>Continue from Section<kbd>(^O)</kbd></a></li>
+		</ul>
+	</li>
+</ul>

@@ -1,17 +1,17 @@
 /*
- * Copyright 2011 Paul Marrington for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ Copyright 2011 the Authors for http://usdlc.net
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
  */
 
 $(function() {
@@ -23,7 +23,7 @@ $(function() {
 								url : function(li) {
 									var path
 									if (li == -1) {
-										path = '/index.html'
+										path = '/frontPage.html'
 									} else {
 										path = $('a', li).get(0).pathname
 										if (path[0] != '/') {
@@ -69,5 +69,5 @@ $(function() {
 							theme : 'classic'
 						}, // apple classic default
 						plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
-					})
+					}).removeAttr('style')
 })
