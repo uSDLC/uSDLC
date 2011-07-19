@@ -33,7 +33,7 @@ class Config {
 	/**
 	 * Called by user visible config class.
 	 */
-	void load(baseDirectory, argList) {
+	void load(baseDirectory, String[] argList) {
 		this.baseDirectory = baseDirectory
 		Dictionary.commandLine(argList).each { String key, String value -> setProperty(key, value) }
 		classPath = buildClassPath()

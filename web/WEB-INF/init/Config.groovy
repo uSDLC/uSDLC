@@ -27,7 +27,7 @@ class Config extends usdlc.Config {
 	/*
 	 Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.
 	 */
-	String[] srcPath = ['', 'Actors']
+	String[] srcPath = ['', 'actors']
 	String[] libPath = ['lib/jars']
 	/*
 	 If the file does not exist, use a template file for that usdlc.server.servletengine.server and client side extension.
