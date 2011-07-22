@@ -1,3 +1,2 @@
 browse ScratchPage
-assert getDriver().getClass().getName() =~
-		/ChromeDriver|FirefoxDriver|InternetExplorerDriver|htmlUnitDriver/
+assert driver.class.name =~ /ChromeDriver|FirefoxDriver|InternetExplorerDriver|htmlUnitDriver/

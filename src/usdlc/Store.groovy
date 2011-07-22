@@ -55,13 +55,14 @@ class Store {
 	 * build up directories underneath if they don't yet exist
 	 */
 	private mkdirs() {
-		new File(config.baseDirectory + parent).mkdirs()
+		new File(config.baseDirectory, parent).mkdirs()
 	}
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	@Lazy String parent = pathFromBase(file.parent)
 	@Lazy String path = pathFromBase(file.path)
 	@Lazy String absolutePath = file.path
+	@Lazy String relativePath = "$config.baseDirectory/$path"
 	@Lazy def uri = file.toURI()
 	@Lazy def url = uri.toURL()
 	/**

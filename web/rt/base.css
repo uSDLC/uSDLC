@@ -24,6 +24,7 @@
 body {
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
 }
 
 blockquote {
@@ -109,7 +110,7 @@ div.section h5 {
  Page contents region and control
  */
 table#pageContentsTable {
-	width: 100%;
+	width: 99%;
 }
 
 td#pageContentsTd {
@@ -132,8 +133,9 @@ td#contentTreeTd {
 	vertical-align: top;
 }
 
-td#contentTree {
+div#contentTree {
 	overflow: auto;
+	padding-right: 22px;
 }
 
 /*

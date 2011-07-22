@@ -35,7 +35,7 @@ class Page {
 		html = slurper.parseText(contents)
 		namespace = html[0].namespaceURI()
 
-		title = html.find {it.@id == "pageTitle"}
+		title = html.find {it.@id == 'pageTitle'}
 		if (!title?.@uuid) {
 			title.@uuid = UUID.randomUUID()
 			updated = true

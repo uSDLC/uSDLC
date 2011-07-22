@@ -18,14 +18,11 @@
  * Date: 30/04/11
  * Time: 9:00 PM
  */
-doc.js("usdlc.reportItems([['',''],")
+reports = []
 usdlc.Store.with {
-	reports = []
-	base("rt/reports/").dir(~/.*\..*/) {
-		def path = split(it)
+	base('rt/reports/').dir(~/.*\..*/) { reportScript ->
+		def path = usdlc.Store.split(reportScript)
 		reports << "['${decamel(path.name)}','/rt/reports/${path.name}${path.ext}']"
 	}
-	doc.js(reports.join(','))
 }
-doc.js("]);")
-
+out "usdlc.reportItems([['',''],${reports.join(',')}]);"

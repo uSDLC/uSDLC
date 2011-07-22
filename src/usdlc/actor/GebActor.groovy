@@ -46,7 +46,7 @@ class GebActor extends GroovyActor {
 	 * Geb needs to know the base url (domain) to work with - and your test needs to know which page to start
 	 * @param pc - geb.Page class - with a url and an optional authority
 	 */
-	Browser browse(GroovyObject pc) {
+	Browser browse(pc) {
 		try {
 			if (!browser)
 				context['geb.driver'] = driver()

@@ -13,16 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import usdlc.Store
 
 def now = new Date().time
-Store.base('store/clipboard').dir().sort().reverse().each { clip ->
-	def item = Store.parseUnique(clip)
+usdlc.Store.base('store/clipboard').dir().sort().reverse().each { clip ->
+	def item = usdlc.Store.parseUnique(clip)
 	if (item) {
 		long age = now - item.date.time
 		int shade = 0x0000FF - (age / 60000)   // blue to black over 4 hours
 		def colour = Integer.toHexString((shade < 0) ? 0 : shade).padLeft(6, '0')
 
-		out.println "<a href='$item.path' style='color:#$colour'>$item.title</a>"
+		out "<a href='$item.path' style='color:#$colour'>$item.title</a>"
 	}
 }

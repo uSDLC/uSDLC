@@ -26,15 +26,13 @@ import usdlc.Store
  * Time: 10:43 AM
  */
 abstract class Actor implements Runnable {
-	/** variables to pass between scripts as globals       */
-	Map context
-	/** Http Exchange data - including request and response       */
+	/** variables to pass between scripts as globals   */
+	def context
+	/** Http Exchange data - including request and response  */
 	Exchange exchange
-	/** Convenience to write to the response/browser       */
+	/** Convenience to write to the response/browser  */
 	PrintStream out
-	/**
-	 * Implement by concrete classes to be run as part of the browser/server exchange
-	 */
+	/** Implement by concrete classes to be run as part of the browser/server exchange  */
 	abstract void run()
 
 	void run(Map binding) {

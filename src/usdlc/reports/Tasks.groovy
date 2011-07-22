@@ -24,12 +24,12 @@ import usdlc.db.Database
  * Time: 9:48 AM
  */
 class Tasks {
-	static version = Database.version("classpath:/usdlc/reports/Tasks")
+	static version = Database.version('classpath:/usdlc/reports/Tasks')
 
-	public processPage(contents) {
+	def processPage(contents) {
 		def page = new Page(contents)
 		page.sections { section ->
 		}
-		return page.updated ? page.toString() : contents
+		page.updated ? page.toString() : contents
 	}
 }

@@ -39,10 +39,12 @@ class GroovyActor extends Actor {
 			context << [
 					log: { System.err.println it },
 					gse: gse,
-					include: { String include -> gse.run(Store.base("$root/$include").absolutePath, usdlcBinding) }
+					include: { String include -> gse.run(Store.base("$root/$include").path, usdlcBinding) },
+					finalisers: [],
+					out: { out.println it }
 			]
 		}
-		gse.run exchange.store.absolutePath, usdlcBinding
+		gse.run exchange.store.path, usdlcBinding
 	}
 
 	def dsl = [:]
@@ -54,12 +56,13 @@ class GroovyActor extends Actor {
 	class UsdlcBinding extends Binding {
 		UsdlcBinding(Map binding) { super(binding) }
 
-		Object getVariable(String name) {
-			switch (name) {
-				case variables: return variables[name]
-				case dsl: return dsl[name]
-				default: return delegate(name)
-			}
+		def getVariable(String name) {
+			if (variables.containsKey(name))
+				variables[name]
+			else if (dsl.containsKey(name))
+				dsl[name]
+			else
+				delegate(name)
 		}
 	}
 }

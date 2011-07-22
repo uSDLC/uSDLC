@@ -35,15 +35,9 @@ class History {
 		this.path = path
 		this.type = type
 		store = Store.base("store/history/$type/${path}.history")
-
-		patches = []
-		// Use regex to retrieve the text representation of each patch and convert it to a list of patches to apply for a history version. The array is from oldest to newest.
-		new String(store.read()).eachMatch(historyRE) { List<String> results ->
-			List patch = diff.patch_fromText(results[3])
-			Patch item = new Patch(results[1], results[2], patch)
-			patches.push(item)
-		}
 	}
+
+	static final Pattern historyRE = Pattern.compile(/-- (\w+?) -- (.*?) ----\n(.*?)\n--/, Pattern.DOTALL)
 	/**
 	 * History file is stored in a special directory and named file.
 	 * @return
@@ -61,9 +55,10 @@ class History {
 		def diffs = diff.diff_main(before, after)
 		diff.diff_cleanupEfficiency diffs
 		def patch = diff.patch_toText(diff.patch_make(diffs))
-
-		String entry = "---- $userId -- ${new Date()} ----\n$patch"
-		store.append(entry.bytes)
+		if (patch) {
+			String entry = "---- $userId -- ${new Date()} ----\n$patch"
+			store.append(entry.bytes)
+		}
 	}
 	/**
 	 * We can restore the file contents given an index into the list of history changes.
@@ -94,6 +89,18 @@ class History {
 	 *
 	 * @return patches array of dictionaries.
 	 */
-	final List<Patch> patches
-	static final Pattern historyRE = Pattern.compile(/-- (\w+?) -- (.*?) ----\n(.*?)\n--/, Pattern.DOTALL)
+	def getPatches() {
+		if (!_patches) {
+			_patches = []
+			// Use regex to retrieve the text representation of each patch and convert it to a list of patches to apply for a history version. The array is from oldest to newest.
+			new String(store.read()).eachMatch(historyRE) { List<String> results ->
+				List patch = diff.patch_fromText(results[3])
+				Patch item = new Patch(results[1], results[2], patch)
+				_patches.push(item)
+			}
+		}
+		_patches
+	}
+
+	List<Patch> _patches
 }

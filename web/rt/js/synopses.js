@@ -94,9 +94,8 @@ $(function() {
 		$.get(usdlc.serverActionUrl(path, 'raw'), function(data) {
 			if (data.length < 3) {
 				data = link.html()
-			} else {
-				data = processor(data)
 			}
+			data = processor(data)
 			var section = link.parents('div.synopsis')
 			section.append($('<div/>').addClass('inclusion').append(data))
 			usdlc.showSynopsis(section)

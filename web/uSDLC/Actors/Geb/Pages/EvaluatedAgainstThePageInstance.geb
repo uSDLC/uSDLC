@@ -5,7 +5,7 @@ class ExamplePage3 extends UsdlcPage {
 		theDivText { theDiv.text() }
 		// and this is not restricted to other content...
 		theDiv2 { $('div', id: divId) }
-		theDiv3 { $('div', id: getDivId2()) }
+		theDiv3 { $ 'div', id: divId2 }
 	}
 	def divId = 'contentA'
 	def getDivId2 = { "contentA" }

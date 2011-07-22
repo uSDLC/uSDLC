@@ -22,39 +22,34 @@ package init
 class Config extends usdlc.Config {
 	public static final Config config = new Config()
 
-	String urlBase = ''
-	String rootFile = '/index.html'
-	/*
-	 Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.
-	 */
-	String[] srcPath = ['', 'actors']
-	String[] libPath = ['lib/jars']
-	/*
-	 If the file does not exist, use a template file for that usdlc.server.servletengine.server and client side extension.
-	 */
-	Map<String, String> template = [
-			html: 'template',
-			'html.groovy': 'template',
-			groovy: 'template',
-			gradle: 'template'
-	]
-	Map<String, String> databases = [
-			usdlc: 'jdbc:h2:.db/usdlc'
-	]
-	String browserDriverList = 'firefox:chrome:ie:htmlunit'
-	/*
-	 Define the script language to use for a address line url that specifies the path only.
-	 */
-	String defaultScriptLanguage = 'groovy'
-	boolean alwaysCheckForRecompile = true
-	/*
-	 * What local port is used for the local usdlc.server.standalone?
-	 */
-	int port = 9000;
-	/*
-	 * Environment registrations
-	 */
-	Map<String, String> environmentRegister = [
-			db: 'usdlc.db.Database'
-	]
+	Config() {
+		urlBase = ''
+		srcPath = ['web', 'web/dsl', 'jar:file:usdlc.jar!/usdlc/dsl']
+		libPath = ['lib/jars']
+		template = [
+				html: 'template',
+				'html.groovy': 'template',
+				groovy: 'template',
+				gradle: 'template'
+		]
+		databases = [
+				usdlc: 'jdbc:h2:.db/usdlc'
+		]
+		browserDriverList = 'firefox:chrome:ie:htmlunit'
+		/*
+			 Define the script language to use for a address line url that specifies the path only.
+			 */
+		defaultScriptLanguage = 'groovy'
+		alwaysCheckForRecompile = true
+		/*
+			 * What local port is used for the local usdlc.server.standalone?
+			 */
+		port = 9000
+		/*
+			 * Environment registrations
+			 */
+		environmentRegister = [
+				db: 'usdlc.db.Database'
+		]
+	}
 }
