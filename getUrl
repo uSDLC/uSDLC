@@ -1,0 +1,2 @@
+#!/bin/bash
+curl http://localhost:9000/uSDLC/Actors/Geb/TheBrowser/BrowserInstance.geb?action=run
