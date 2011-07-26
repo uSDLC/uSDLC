@@ -27,7 +27,8 @@ import usdlc.Store
  */
 abstract class Actor implements Runnable {
 	/** variables to pass between scripts as globals   */
-	def context
+	def context = [:]
+	def dslContext = [:]
 	/** Http Exchange data - including request and response  */
 	Exchange exchange
 	/** Convenience to write to the response/browser  */
@@ -46,16 +47,31 @@ abstract class Actor implements Runnable {
 	 */
 	static Actor load(Store store) {
 		Matcher match = (store.path =~ ~/\.(\w+)$/)
+		def actor = null
 		if (match) {
-			String language = (match[-1] as List)[1]
-			def className = "usdlc.actor.${language.capitalize()}Actor"
+			String language = match[-1][1]
 			try {
-				def instance = Class.forName(className).newInstance()
-				return instance
-			} catch (exception) { null }
+				switch (language) {
+					case noActor: return null
+					case dsls: actor = dsls[language].newInstance(); break
+					default:
+						def className = "usdlc.actor.${language.capitalize()}Actor"
+						actor = Class.forName(className).newInstance()
+						break
+				}
+			} catch (ClassNotFoundException cnfe) {
+				try {
+					actor = dsls[language] = new DslActor(language)
+				} catch (ResourceException re) {
+					noActor << language
+					return null
+				}
+			}
+			actor.script = store
 		}
-		null
+		actor
 	}
+	Store script
 	/**
 	 * Called when running an actor in-context by using Setup and Teardown.
 	 */
@@ -65,14 +81,12 @@ abstract class Actor implements Runnable {
 			runFiles(~/^Setup\..*/, base, context)
 			actors.each { Store actor -> load(actor)?.run(context) }
 			runFiles(~/^Teardown\..*/, base, context)
-		} finally { closeBinding(context) }
+		} finally { context.each { key, value -> value.&close ?: value.close() } }
 	}
 
-	private static closeBinding(Map context) {
-		context.each { key, value -> value?.close() }
+	static void runFiles(Pattern pattern, Store base, Map context) {
+		base.dir(pattern) { String path -> load(Store.base(path))?.run(context) }
 	}
-
-	static void runFiles(Pattern pattern, Store base, Map binding) {
-		base.dir(pattern) { String path -> load(Store.base(path))?.run(binding) }
-	}
+	/** List of DSLs already discovered */
+	static dsls = [:], noActor = [] as Set
 }

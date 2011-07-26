@@ -24,30 +24,22 @@ class Config extends usdlc.Config {
 
 	Config() {
 		urlBase = ''
-		srcPath = ['web', 'web/dsl', 'jar:file:usdlc.jar!/usdlc/dsl']
-		libPath = ['lib/jars']
+		srcPath = ['./', 'support/']
+		dslPath = ['dsl/', '../src/usdlc/dsl/']//'jar:file:usdlc.jar!/usdlc/dsl/']
+		libPath = ['lib/jars/']
+		databases = [
+				usdlc: 'jdbc:h2:.db/usdlc'
+		]
+		browserDriverList = 'firefox:chrome:ie:htmlunit'
 		template = [
 				html: 'template',
 				'html.groovy': 'template',
 				groovy: 'template',
 				gradle: 'template'
 		]
-		databases = [
-				usdlc: 'jdbc:h2:.db/usdlc'
-		]
-		browserDriverList = 'firefox:chrome:ie:htmlunit'
-		/*
-			 Define the script language to use for a address line url that specifies the path only.
-			 */
 		defaultScriptLanguage = 'groovy'
 		alwaysCheckForRecompile = true
-		/*
-			 * What local port is used for the local usdlc.server.standalone?
-			 */
 		port = 9000
-		/*
-			 * Environment registrations
-			 */
 		environmentRegister = [
 				db: 'usdlc.db.Database'
 		]

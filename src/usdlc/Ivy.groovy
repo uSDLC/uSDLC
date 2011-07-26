@@ -13,63 +13,27 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.actor
+package usdlc
 
 import groovy.xml.NamespaceBuilder
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
-import usdlc.Ant
-import usdlc.Dictionary
-import usdlc.Log
-import usdlc.Store
 
 /**
  * User: Paul Marrington
  * Date: 27/03/11
  * Time: 4:22 PM
  */
-//class IvyActor extends GroovyActor {
-//	def bind() {
-//		context.doc = BrowserBuilder.newInstance('text/text')
-//		delegate = new Ivy(Log.file('ivy'))
-//		return bind([ivy: delegate])
-//	}
-//}
-
-class IvyActor extends GroovyActor {
-	def dsl = [
-			organisation: { args.organisation = it },
-			module: { args.module = it },
-			group: { group = it },
-			required: { conf(it ?: 'default').group('jars/required').fetch().source() },
-			optional: { conf(it ?: 'default').group('jars/optional').fetch().source() },
-	]
-
-	IvyActor() {
+class Ivy {
+	Ivy() {
 		log = Log.file('ivy')
 		ant = Ant.builder(log)
 		ivy = NamespaceBuilder.newInstance(ant, 'antlib:org.apache.ivy.ant')
 		ant.reset()
 	}
 
-//	IvyActor methodMissing(String name, Object[] value) {
-	//		if (value.size() > 1) {
-	//			def before = args[name]
-	//			args[name] = value[0]
-	//			((Closure) value[1])()
-	//			args[name] = before
-	//
-	//		} else {
-	//			args[name] = value[0]
-	//		}
-	//		this
-	//	}
-
-	IvyActor group(String group, Closure closure) {
-		def before = this.group
+	Ivy group(String group) {
 		this.group = group
-		closure()
-		this.group = before
 		this
 	}
 
@@ -77,39 +41,29 @@ class IvyActor extends GroovyActor {
 		args += Dictionary.fromString(resolveArgumentString, ':', ' ')
 	}
 
-	IvyActor remove(String toRemove) {
+	Ivy remove(String toRemove) {
 		toRemove?.split()?.each {
 			ant.delete(file: "lib/$group/$it", verbose: true)
 		}
 		this
 	}
 
-	IvyActor fetch() {
+	Ivy fetch() {
 		ivy.resolve(args + [inline: true, showprogress: false, keep: true])
 		ivy.retrieve(pattern: "web/lib/$group/[artifact].[ext]")
 		this
 	}
 
-	IvyActor conf(String configuration) { args['conf'] = configuration }
+	Ivy conf(String configuration) { args['conf'] = configuration; this }
 
-	IvyActor source(boolean fetchSource) {
-		context['fetchSource'] = fetchSource
-		this
-	}
-
-	IvyActor source() {
-		if (context['fetchSource']) {
+	Ivy source() {
+		if (fetchSource) {
 			conf('sources').group('source').fetch().conf('javadoc').group('javadoc').fetch()
 		}
 		this
 	}
 
-	IvyActor source(String moduleName) {
-		args['module'] = moduleName
-		source().fetch()
-	}
-
-	void download(String url, String to = '') {
+	def download(String url, String to = '') {
 		def entity = new DefaultHttpClient().execute(new HttpGet(url)).entity
 		if (entity) {
 			log "Download $url, $entity.contentLength bytes\n"
@@ -119,6 +73,7 @@ class IvyActor extends GroovyActor {
 			entity.writeTo(out)
 			out.close()
 		}
+		this
 	}
 
 	private mkdir() { ant.mkdir(dir: "web/lib/$group") }
@@ -128,4 +83,5 @@ class IvyActor extends GroovyActor {
 	String group
 	Ant ant
 	Map args = [:]
+	boolean fetchSource
 }

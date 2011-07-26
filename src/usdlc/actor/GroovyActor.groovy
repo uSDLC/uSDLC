@@ -27,42 +27,43 @@ import static init.Config.config
  * Time: 7:26 PM
  */
 class GroovyActor extends Actor {
+	def init() {
+		if (!context.gse) {
+			GroovyScriptEngine gse = new GroovyScriptEngine(config.srcPath as URL[])
+			context << [
+					usdlcBinding: new UsdlcBinding(context, dslContext),
+					log: { Log.err it },
+					gse: gse,
+					include: { String include -> gse.run(Store.base("$script.parent/$include").path, context.usdlcBinding) },
+					finalisers: [],
+					out: { out.println it },
+			]
+		}
+	}
 	/**
 	 * Run a groovy script or DSL. Provides methods for additional delegation, logging and script includes
 	 */
 	void run() {
-		GroovyScriptEngine gse = context['gse']
-		UsdlcBinding usdlcBinding = new UsdlcBinding(context)
-		def root = exchange.store.parent
-		if (!gse) {
-			gse = new GroovyScriptEngine(config.classPath)
-			context << [
-					log: { System.err.println it },
-					gse: gse,
-					include: { String include -> gse.run(Store.base("$root/$include").path, usdlcBinding) },
-					finalisers: [],
-					out: { out.println it }
-			]
-		}
-		gse.run exchange.store.path, usdlcBinding
+		init()
+		context.gse.run script.path, context.usdlcBinding
 	}
 
-	def dsl = [:]
-	/**
-	 * Some DSLs need to do special work to retrieve a method or data. They will over-ride this method.
-	 */
-	def delegate(name) { Log.err("No context '$name'") }
+	static class UsdlcBinding extends Binding {
+		def dslContext
 
-	class UsdlcBinding extends Binding {
-		UsdlcBinding(Map binding) { super(binding) }
+		UsdlcBinding(binding, dslBinding) {
+			super(binding as Map)
+			dslContext = dslBinding
+		}
 
 		def getVariable(String name) {
 			if (variables.containsKey(name))
 				variables[name]
-			else if (dsl.containsKey(name))
-				dsl[name]
-			else
-				delegate(name)
+			else if (dslContext.containsKey(name)) {
+				dslContext[name]
+			} else {
+				Log.err("No context '$name'")
+			}
 		}
 	}
 }

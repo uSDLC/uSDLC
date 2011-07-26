@@ -1,10 +1,9 @@
-organisation('org.seleniumhq.selenium') {
-	module('selenium-remote-control').optional()
-	module('selenium-server').optional()
-	source('selenium-htmlunit-driver')
-	source('selenium-firefox-driver')
-	source('selenium-support')
-	source('selenium-api')
-	source('selenium-remote-driver')
-}
+organisation('org.seleniumhq.selenium').
+    module('selenium-remote-control').optional().
+    module('selenium-server').optional().
+    source('selenium-htmlunit-driver').
+    source('selenium-firefox-driver').
+    source('selenium-support').
+    source('selenium-api').
+    source('selenium-remote-driver')
 organisation('commons-httpclient').module('commons-httpclient').optional()

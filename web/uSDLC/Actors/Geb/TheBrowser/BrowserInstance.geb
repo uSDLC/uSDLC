@@ -1,2 +1,2 @@
-driver 'Chrome:Firefox:IE:HtmlUnit'
+driver 'Firefox:Chrome:IE:HtmlUnit'
 browse ScratchPage

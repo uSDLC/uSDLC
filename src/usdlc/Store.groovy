@@ -133,8 +133,7 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(mask, Closure closure) {
-		//noinspection GroovyEmptyCatchBlock
-		try { file.eachFileMatch mask, { closure(pathFromBase(it)) } } catch (e) {}
+		file.eachFileMatch mask, { closure(pathFromBase(it)) }
 	}
 	/**
 	 * Fetch a list of all contents of a directory

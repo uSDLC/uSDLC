@@ -36,13 +36,12 @@ class Config {
 	void load(baseDirectory, argList) {
 		this.baseDirectory = baseDirectory
 		Dictionary.commandLine(argList).each { String key, String value -> setProperty(key, value) }
-		classPath = buildClassPath()
-		classPathString = classPath.join(';')
+		buildClassPath()
+		classPathString = srcPath.join(';')
 		tableVersions = loadTableVersions()
 	}
 
 	def urlBase = ''
-	def template = [:]
 	/**
 	 * http://basedirectory/uSDLCpath
 	 */
@@ -50,18 +49,17 @@ class Config {
 	/*
 	 Path to use for defining Java and Groovy files. Point to the source for static (unchanging) code files and the web directory for files that will change as part of the installation.
 	 */
-	def srcPath = ''
-	def libPath = ''
+	def srcPath = [], dslPath = [], libPath = []
 	/**
 	 * Build up the expected classpath from configuration details.
 	 */
-	String[] classPath = []
 	def databases = [:]
 	def browserDriverList = 'htmlunit'
 	def defaultScriptLanguage = 'groovy'
 	def alwaysCheckForRecompile = true
 	def port = 9000
 	def environmentRegister = [:]
+	def template = [:]
 
 	private buildClassPath() {
 		// Run through them all and add to the uSDLC classpath - so that compilers behave
@@ -74,7 +72,11 @@ class Config {
 				method.invoke(ClassLoader.systemClassLoader, params)
 			}
 		}
-		srcPath.collect { Store.base(it).path }
+		srcPath = srcPath.collect { toURL(it) }
+		dslPath = dslPath.collect { toURL(it) }
+	}
+	static toURL(path) {
+		(path.indexOf(':') > 1) ? new URL(path) : Store.base(path).url
 	}
 	/**
 	 * Retrieve classpath string as expected by Java

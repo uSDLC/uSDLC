@@ -122,8 +122,7 @@ $(function() {
 		},
 		absolutePageContents : function(path, afterwards) {
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
-			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr(
-					"directory")
+			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
 			$('base').attr('href', base)
 			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 			$.get(usdlc.pageContentsURL, function(data) {

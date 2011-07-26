@@ -106,6 +106,7 @@ class Exchange {
 					} else {
 						response.write store.read()
 					}
+					break
 			}
 		} catch (problem) {
 			problem.printStackTrace()
