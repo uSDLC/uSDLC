@@ -47,21 +47,25 @@ class Exchange {
 	Request request
 
 	Exchange request(InputStream inputStream, Header header) {
-		request = new Request()
-		request.inputStream = inputStream
-		request.header = header
-		request.with {
-			query = Dictionary.query(header.query)
-			cookies = Dictionary.cookies(header.cookie)
-			userId = cookies['userId'] ?: 'anon'
-			session = cookies['session'] ?: {
-				long before = lastSessionKey
-				lastSessionKey = System.currentTimeMillis()
-				if (lastSessionKey == before) lastSessionKey++
-				lastSessionKey
-			}()
+		try {
+			request = new Request()
+			request.inputStream = inputStream
+			request.header = header
+			request.with {
+				query = Dictionary.query(header.query)
+				cookies = Dictionary.cookies(header.cookie)
+				userId = cookies['userId'] ?: 'anon'
+				session = cookies['session'] ?: {
+					long before = lastSessionKey
+					lastSessionKey = System.currentTimeMillis()
+					if (lastSessionKey == before) lastSessionKey++
+					lastSessionKey
+				}()
+			}
+			setStore(header.uri)
+		} catch (problem) {
+			problem.printStackTrace()
 		}
-		setStore(header.uri)
 		this
 	}
 

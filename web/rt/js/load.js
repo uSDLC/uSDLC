@@ -80,6 +80,7 @@ window.onload = function() {
 														'/lib/edit_area/edit_area_full.js',
 														'/lib/jquery/js/jquery.scrollTo.js',
 														'/lib/jquery/js/jquery.jstree.js',
+														'/rt/js/server.js',
 														'/lib/google-code-prettify/prettify.js'],
 															loader([
 																'/rt/js/contentTree.js'],
@@ -89,7 +90,6 @@ window.onload = function() {
 																		'/rt/js/menu.js',
 																		'/rt/js/moveSection.js',
 																		'/rt/js/clipboard.js',
-																		'/rt/js/server.js',
 																		'/rt/js/run.js',
 																		'/rt/js/htmlEditor.js',
 																		'/rt/js/sourceEditor.js'

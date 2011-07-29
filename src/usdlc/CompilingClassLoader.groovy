@@ -37,8 +37,10 @@ class CompilingClassLoader extends ClassLoader {
 	private final String dotSourceExt;
 	private final Compiler compiler;
 
+	@SuppressWarnings("unchecked")
 	public Class loadClass(String name) { return findClass(name); }
 
+	@SuppressWarnings("unchecked")
 	public Class findClass(String name) {
 		Store sourceFile = Store.base(name.replace('.', '/') + dotSourceExt);
 		Class<?> classReference;

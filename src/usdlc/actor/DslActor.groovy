@@ -32,7 +32,7 @@ class DslActor extends GroovyActor {
 	DslActor(String language) {
 		this.language = language
 		GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
-		languageScriptClass = gse.loadScriptByName("${language}.groovy")
+		languageScriptClass = gse.loadScriptByName("${language}DSL.groovy")
 	}
 	/**
 	 * Cloning constructor to making an operational instance.

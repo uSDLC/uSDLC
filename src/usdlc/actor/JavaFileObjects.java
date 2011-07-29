@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
  * Date: 23/01/11
  * Time: 1:01 PM
  */
-@SuppressWarnings("UtilityClass")
 public class JavaFileObjects {
 	private JavaFileObjects() {
 	}

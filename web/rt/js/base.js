@@ -15,6 +15,7 @@
  */
 
 $(function() {
+	var percentRE = /^(\d+)%$/
 	window.usdlc = {
 		/**
 		 Create a dialog box to wrap an existing item.
