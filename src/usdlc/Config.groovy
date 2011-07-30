@@ -31,7 +31,7 @@ import java.lang.reflect.Method
 
 class Config {
 	/**
-	 * Called by user visible config class.
+	 * Must be called early on by the server main program to initialise the configuration.
 	 */
 	void load(baseDirectory, argList) {
 		this.baseDirectory = baseDirectory
