@@ -1,3 +1,7 @@
+organisation('net.sourceforge.htmlunit').module('htmlunit').optional()
+organisation('be.roam.hue').module('hue').optional()
+
+organisation('org.codehaus.geb').module('geb-core').optional()
 organisation('org.seleniumhq.selenium').
     module('selenium-remote-control').optional().
     module('selenium-server').optional().

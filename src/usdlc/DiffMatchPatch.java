@@ -2545,7 +2545,6 @@ public class DiffMatchPatch {
 
 		@Override
 		public int hashCode() {
-			// TODO Auto-generated method stub
 			return (operation.toString() + text).hashCode();
 		}
 	}

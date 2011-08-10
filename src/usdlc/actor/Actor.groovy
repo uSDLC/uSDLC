@@ -35,15 +35,19 @@ abstract class Actor implements Runnable {
 	PrintStream out
 	/** Implement by concrete classes to be run as part of the browser/server exchange  */
 	abstract void run()
-
+	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {
 		context = binding
-		exchange = context['exchange']
+		exchange = context.exchange
 		out = exchange.response.out
+		context.session = exchange.request.session
+		context.getters = [:]
+		context.setters = [:]
 		run()
 	}
 	/**
-	 * Called when an actor is found in the source. It creates an instance of the class.
+	 * Called to see if a URL refers to an actor/dsl. It creates an instance of the class.
+	 * Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
 		Matcher match = (store.path =~ ~/\.(\w+)$/)
@@ -51,42 +55,46 @@ abstract class Actor implements Runnable {
 		if (match) {
 			String language = match[-1][1]
 			try {
-				switch (language) {
-					case noActor: return null
-					case dsls: actor = dsls[language].newInstance(); break
-					default:
-						def className = "usdlc.actor.${language.capitalize()}Actor"
-						actor = Class.forName(className).newInstance()
-						break
+				if (language in DslActor.cache) {
+					actor = DslActor.cache[language].newInstance()
+				} else {
+					def className = "usdlc.actor.${language.capitalize()}Actor"
+					actor = Class.forName(className).newInstance()
 				}
 			} catch (ClassNotFoundException cnfe) {
-				try {
-					actor = dsls[language] = new DslActor(language)
-				} catch (ResourceException re) {
-					noActor << language
-					return null
-				}
+				actor = DslActor.newInstance(language).newInstance()
 			}
-			actor.script = store
+			actor?.script = store
 		}
 		actor
 	}
 	Store script
 	/**
-	 * Called when running an actor in-context by using Setup and Teardown.
+	 * Called when running an actor in-context by using Setup and Cleanup.
 	 */
 	static void wrap(List<Store> actors, Map context) {
 		try {
 			def base = Store.base(actors[0].parent)
 			runFiles(~/^Setup\..*/, base, context)
-			actors.each { Store actor -> load(actor)?.run(context) }
-			runFiles(~/^Teardown\..*/, base, context)
-		} finally { context.each { key, value -> value.&close ?: value.close() } }
+			actors.each { Store actor ->
+				load(actor)?.run(context)
+			}
+			runFiles(~/^Cleanup\..*/, base, context)
+		} catch (AssertionError assertion) {
+			context.exchange.response.write assertion.message
+		} catch (Throwable throwable) {
+			context.exchange.response.write throwable.message
+			throwable.printStackTrace()
+		} finally {
+			context.each { key, value ->
+				value.&close ?: value.close()
+			}
+		}
 	}
 
 	static void runFiles(Pattern pattern, Store base, Map context) {
-		base.dir(pattern) { String path -> load(Store.base(path))?.run(context) }
+		base.dir(pattern) { String path ->
+			load(Store.base(path))?.run(context)
+		}
 	}
-	/** List of DSLs already discovered */
-	static dsls = [:], noActor = [] as Set
 }

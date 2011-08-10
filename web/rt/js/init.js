@@ -91,8 +91,6 @@ usdlc.init = {
 		if (path == '/') {
 			path = window.location.search || usdlc.cookie('currentPage') || '/frontPage.html'
 			if (path[0] == '?') path = path.substring(1)
-		} else if (path == '/root') {
-			path = '/frontPage.html'
 		}
 		usdlc.absolutePageContents(path, callback)
 	},

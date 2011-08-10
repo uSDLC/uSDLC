@@ -1,0 +1,13 @@
+// Returning results directly...
+westerners = rows("select * from Actors where comment = 'Westerns'")
+assert westerners.size() == 1
+assert westerners[0].surname == 'Wayne'
+
+// ... or using a DTO
+class Person { def FIRSTNAME, SURNAME, COMMENT }
+romantics = []
+eachRow("select * from Actors where comment = 'Romance'") {
+    romantics << new Person(it as Map)
+}
+assert romantics.size() == 1
+assert romantics[0].FIRSTNAME == 'Marilyn'

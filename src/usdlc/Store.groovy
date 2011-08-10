@@ -30,15 +30,16 @@ class Store {
 	 */
 	static Store base(String path = '') {
 		def store = new Store()
-		store.file = new File(config.baseDirectory, path)
+		store.file = new File(config.baseDirectory, camelCase(path))
 		store
 	}
 	/**
 	 * Sometimes we get a now store based on an old location
 	 */
 	Store rebase(String more = '') {
+		def dir = file.isDirectory() ? path : parent
 		def store = new Store()
-		store.file = new File(config.baseDirectory, path + more)
+		store.file = new File(config.baseDirectory, dir + camelCase(more))
 		store
 	}
 	/**
@@ -46,11 +47,18 @@ class Store {
 	 * <code>
 	 * def dir = Store.base("rt")
 	 * def lines
-	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream.readLines() }* </code>
+	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream.readLines() }
+	 * </code>
 	 */
-	InputStream withInputStream(String fileName, Closure closure) {
-		new File(file, fileName).withInputStream(closure)
-	}
+	InputStream withInputStream(String fileName, Closure closure) { new File(file, fileName).withInputStream(closure) }
+	/**
+	 * Process a closure with a FileReader as the only parameter
+	 * <code>
+	 * list = []
+	 * store.withReader { list << it }
+	 * </code>
+	 */
+	Reader withReader(Closure closure) { new FileReader(file).withReader(closure) }
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
@@ -59,6 +67,7 @@ class Store {
 	}
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
+	/** Directory in which file/directory resides */
 	@Lazy String parent = pathFromBase(file.parent)
 	@Lazy String path = pathFromBase(file.path)
 	@Lazy String absolutePath = file.path
@@ -202,7 +211,7 @@ class Store {
 	 * Convert any sentence into a single camel-case word. It remove all punctuation and makes the start of each work a capital letter. So "My friend Charlie (Watson-Smith-jones)" becomes MyFriendCharlieWatsonSmithJones
 	 */
 	static String camelCase(text) {
-		text.replaceAll(~/(^|[\W+])(\w)/) { it[2].toUpperCase() }
+		text.replaceAll(~/([\s:\?\*%\|"<>]+)(\w)/) { it[2].toUpperCase() }
 	}
 	/**
 	 * Later we will want to gather information from the unique name created
@@ -210,7 +219,6 @@ class Store {
 	 * @return object with date and title elements
 	 */
 	static parseUnique(uniqueName) {
-		//noinspection GroovyUnusedAssignment
 		def unique
 		def matcher = uniqueRE.matcher(uniqueName)
 		if (matcher && matcher.size() > 0 && matcher[0].size() >= 4) {

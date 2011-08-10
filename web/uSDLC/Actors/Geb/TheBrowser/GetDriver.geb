@@ -1,2 +1,0 @@
-browse ScratchPage
-assert driver.class.name =~ /ChromeDriver|FirefoxDriver|InternetExplorerDriver|htmlUnitDriver/

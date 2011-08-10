@@ -1,0 +1,14 @@
+// browse to the root and check that it has a viable title
+browse UsdlcPage
+assert browser.page instanceof UsdlcPage
+assert title != "Title"
+
+// define a page and prove that the page reference is set
+class SecondPage extends UsdlcPage {
+    static url = "?Scratch/SecondPage"
+}
+browser.page SecondPage
+assert browser.page instanceof SecondPage
+
+// Finally check that the 'real' page has not moved
+assert title != "Title"

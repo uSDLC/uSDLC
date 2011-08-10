@@ -1,0 +1,13 @@
+table "philosophers"
+lastVerse = ''
+load csv("Sample CSV File") { row ->
+    if (! row.verse) row.verse = lastVerse
+    lastVerse = row.verse
+    
+    def existing = verse(row.Philosopher)
+    if (existing) row.verse = "$existing\n$it.verse"
+    row
+}
+
+assert verse('Hume') ~== /^David.*Hegel\.$/
+assert verse('Hegel') == verse('Hume')

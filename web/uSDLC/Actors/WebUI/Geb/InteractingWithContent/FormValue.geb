@@ -1,0 +1,7 @@
+assert $("form").gebInputField == "testing"
+$("form").gebInputField = "goodness"
+assert $("form").gebInputField == "goodness"
+// obtain a navigator based on control name
+assert $("form").gebInputField().tag() == "input"
+// reset
+$("form").gebInputField = "testing"

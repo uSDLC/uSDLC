@@ -30,7 +30,9 @@ class Database {
 	/**
 	 * Connect to the default database
 	 */
-	static Database connection(Closure actions) { connection(usdlcDatabase, actions) }
+	static Database connection(Closure actions) {
+		connection(usdlcDatabase, actions)
+	}
 	/**
 	 * Connect to a database by name. The url for this name is in the config file.
 	 */
@@ -48,6 +50,7 @@ class Database {
 		} finally {
 			synchronized (pool) { pool[database] << connection }
 		}
+		connection
 	}
 	/**
 	 * The first time in a static run that we access a group of related tables we check the code generated version against that in the current database. If they differ, ask caller to migrate the data.
@@ -61,24 +64,26 @@ class Database {
 	 * @return true if no migration needed or migration succeeded
 	 */
 	static String version(String key, Closure migrate = migrateByScript) {
-		String[] group = (config.tableVersions[key] as String).split(',')
-		String url = group[0], tableGroup = group[1]
-		int targetVersion = group[2].toInteger()
-		connection(url) { Database db ->
-			def dbVersion = 0
-			try {
-				dbVersion = (db.sql.firstRow("select version from versions where tableGroup = $tableGroup") as GroovyResultSet)['version']
-			} catch (e) {
-				runSqlScript url, "${tableGroup}.001.sql"
-			}
-			if (!dbVersion) {
-				try { db.sql.executeUpdate "insert into versions values($tableGroup,0)" } catch (e) { e.printStackTrace() }
-			}
-			def toVersion = targetVersion ?: 1
-			while (dbVersion != toVersion) {
-				dbVersion += 1
-				if (!migrate(url, tableGroup, dbVersion)) { return /* failure */ }
-				db.sql.executeUpdate "update versions set version = $dbVersion where tableGroup = $tableGroup"
+		String[] group = (config.tableVersions[key] as String)?.split(',')
+		if (group) {
+			String url = group[0], tableGroup = group[1]
+			int targetVersion = group[2].toInteger()
+			connection(url) { Database db ->
+				def dbVersion = 0
+				try {
+					dbVersion = (db.sql.firstRow("select version from versions where tableGroup = $tableGroup") as GroovyResultSet)['version']
+				} catch (e) {
+					runSqlScript url, "${tableGroup}.001.sql"
+				}
+				if (!dbVersion) {
+					try { db.sql.executeUpdate "insert into versions values($tableGroup,0)" } catch (e) { e.printStackTrace() }
+				}
+				def toVersion = targetVersion ?: 1
+				while (dbVersion != toVersion) {
+					dbVersion += 1
+					if (!migrate(url, tableGroup, dbVersion)) { return /* failure */ }
+					db.sql.executeUpdate "update versions set version = $dbVersion where tableGroup = $tableGroup"
+				}
 			}
 		}
 		key
@@ -109,6 +114,7 @@ class Database {
 	private Database(Map properties) { sql = Sql.newInstance(properties as Properties) }
 	/** See if connection can be used.      */
 	boolean active() { sql.connection && (System.currentTimeMillis() - created) < 3600000 } // 1 hour
+	static void close() { pool.each { it.sql.connection?.close() } }
 
 	long created = System.currentTimeMillis()
 	/** Check the base version and migrate if necessary.      */

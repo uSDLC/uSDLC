@@ -49,7 +49,7 @@ class Log extends SimpleLog {
 	 * Shortcut convenience method to write to stderr (server output stream).
 	 * @param message Message to write
 	 */
-	static err(message) { System.err.println message }
+	static err(message) { System.err.println message; message }
 	/**
 	 * The most likely (and in fact only) use for this class is the interception Apache Commons logging -
 	 * so we had better tell the factory.

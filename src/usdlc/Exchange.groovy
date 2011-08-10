@@ -21,14 +21,9 @@ import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
 
 /**
- * Core Processor for uSDLC - no matter which web usdlc.server.servletengine.server is in vogue. It is uses as follows
+ * Core Processor for uSDLC - no matter which web server is in vogue. It is uses as follows
  * for each http request the usdlc.server.servletengine.server receives for it.
- *
- *
- * User: Paul Marrington
- * Date: 31/10/2010
- * Time: 7:52:40 PM
- */
+ y */
 class Exchange {
 
 	static class Header {
@@ -40,9 +35,12 @@ class Exchange {
 		InputStream inputStream
 		Header header
 		Map<String, String> query, cookies
-		String userId, session
+		String userId, sessionKey
+		def session
 
-		String body() { inputStream.text }
+		String body() {
+			inputStream.text
+		}
 	}
 	Request request
 
@@ -55,12 +53,22 @@ class Exchange {
 				query = Dictionary.query(header.query)
 				cookies = Dictionary.cookies(header.cookie)
 				userId = cookies['userId'] ?: 'anon'
-				session = cookies['session'] ?: {
+				sessionKey = cookies['usdlc-session'] ?: {
 					long before = lastSessionKey
 					lastSessionKey = System.currentTimeMillis()
 					if (lastSessionKey == before) lastSessionKey++
 					lastSessionKey
 				}()
+				if (!sessions.containsKey(sessionKey)) {
+					session = sessions[sessionKey] = [created : System.currentTimeMillis()]
+					session.instance = { Class ofClass ->
+						if (! session.containsKey(ofClass.name)) {
+							session[ofClass.name] = ofClass.newInstance()
+						}
+						session[ofClass.name]
+					}
+				}
+				session = sessions[sessionKey]
 			}
 			setStore(header.uri)
 		} catch (problem) {
@@ -68,21 +76,32 @@ class Exchange {
 		}
 		this
 	}
+	static sessions = [:]
 
 	Response response
 	class Response {
 		PrintStream out
 		Map header = ['Connection': 'close']
 
-		void setSession(String to) { header['Set-Cookie'] = "session=$to" }
+		void setSession(String to) {
+			header['Set-Cookie'] = "usdlc-session=$to; Path=/; Expires=Sun, 17 Jan 2038 19:14:07 GMT"
+		}
 
-		void setContentType(String mimeType) { header['Content-Type'] = mimeType }
+		void setContentType(String mimeType) {
+			header['Content-Type'] = mimeType
+		}
 
-		void write(Object text) { out.print text.toString() }
+		void write(Object text) {
+			out.print text.toString()
+		}
 
-		void write(byte[] bytes) { out.write bytes }
+		void write(byte[] bytes) {
+			out.write bytes
+		}
 
-		void complete() { out.close() }
+		void complete() {
+			out.close()
+		}
 	}
 
 	void response(OutputStream outputStream, Closure prepare) {
@@ -90,11 +109,12 @@ class Exchange {
 			response = new Response()
 			response.out = new PrintStream(outputStream, true)
 			response.contentType = request.query.mimeType ?: mimeType(store.path)
-			response.session = request.session
+			response.session = request.sessionKey
 			prepare()
 			switch (request.query['action']) {
 				case 'save':    // saves html and actor
-					// Contents to write are sent from the browser. Get them and save them to the file
+					// Contents to write are sent from the browser.
+					// Get them and save them to the file
 					save()
 					break
 				case 'raw':    // so actors are send to browser for editing instead of running

@@ -4,13 +4,4 @@ organisation('org.apache.ivy').module('ivy').required()
 organisation('commons-logging').module('commons-logging').required()
 organisation('com.h2database').module('h2').required()
 organisation('org.jasypt').module('jasypt').required()
-
-organisation('org.scala-lang').
-    module('scala-actors').required().
-    module('scala-compiler').required().
-    module('scala-db').required().
-    module('scala-dbc').required().
-    module('scala-decoder').required().
-    module('scala-library').required().
-    module('scala-parent').required().
-    module('scalap').required()
+organisation('net.sf.opencsv').module('opencsv').required()

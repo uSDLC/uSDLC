@@ -1,0 +1,14 @@
+table "philosophers"
+
+def breakIntegrity() {
+    load csv("Sample CSV File") { row ->
+        if (row.Philosopher == "Hume") {
+            executeUpdate "delete from philosophers where Philosopher = 'Kant'"
+        }
+    }
+}
+
+assert fail { breakIntegrity() }
+
+integrity.check.off
+assert pass { breakIntegrity() }

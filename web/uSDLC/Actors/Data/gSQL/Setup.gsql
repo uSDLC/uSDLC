@@ -1,0 +1,4 @@
+database("jdbc:h2:mem:test:test") {
+    execute "drop table if exists actors"
+    execute "CREATE TABLE actors AS SELECT * FROM CSVREAD('$here/Data.csv')"
+}

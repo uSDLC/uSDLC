@@ -1,0 +1,2 @@
+assert $("p.test").max{it.text()}.text() == "p2"
+assert $("p.test")*.text().max() == "p2"

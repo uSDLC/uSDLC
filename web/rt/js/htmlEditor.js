@@ -161,7 +161,7 @@ $(function() {
 	]
 	/*
 	 * By default CKEDIT does not have a ready save button unless it is inside a
-	 * form element. As we are ajaxing it, enable save and make sure it does the
+	 * form element. As we are ajax it, enable save and make sure it does the
 	 * job we want.
 	 */
 	CKEDITOR.plugins.registered['save'] = {

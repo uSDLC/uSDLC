@@ -1,0 +1,3 @@
+browse ScratchPage
+drivers = /ChromeDriver|FirefoxDriver|InternetExplorerDriver|htmlUnitDriver/
+assert browser.driver.class.name =~ drivers

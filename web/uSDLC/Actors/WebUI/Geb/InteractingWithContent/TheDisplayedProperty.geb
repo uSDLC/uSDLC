@@ -1,0 +1,3 @@
+assert $("div#modalMask").displayed == false
+// Not working?
+assert $('a#Home').displayed == true

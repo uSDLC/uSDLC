@@ -16,6 +16,8 @@
 package usdlc.actor
 
 import org.codehaus.groovy.runtime.InvokerHelper
+
+import usdlc.actor.GroovyActor.UsdlcBinding;
 import static init.Config.config
 
 /**
@@ -24,33 +26,52 @@ import static init.Config.config
  * Time: 5:50 PM
  */
 class DslActor extends GroovyActor {
-	Class languageScriptClass
-	String language
 	/**
-	 * Specially created in Actor as a DSL definition script. Used if there is no actor.
+	 * Called by Actor.groovy to create a new instance for this language. Each if these in turn can be used
+	 * to create new running instances for dsl work.
 	 */
-	DslActor(String language) {
-		this.language = language
-		GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
-		languageScriptClass = gse.loadScriptByName("${language}DSL.groovy")
+	static DslActor newInstance(String language) {
+		cache[language] = new DslActor()
+		try {
+			GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
+			cache[language].languageScriptClass = gse.loadScriptByName("${language.toLowerCase()}DSL.groovy")
+		} catch (ResourceException re) {
+			/* don't care as newInstance() will return null as expected */
+		}
+		cache[language]
 	}
 	/**
-	 * Cloning constructor to making an operational instance.
+	 * The Script sub-class created by the groovy compiler from script source - or null if there is no source.
 	 */
-	private DslActor(DslActor clone) { languageScriptClass = clone.languageScriptClass }
+	Class languageScriptClass
 	/**
-	 * Called to create an instance to run - creates a clone.
-	 * @return
+	 * Called to create an instance to run in Actor.load - a clone.
+	 * Will return null if the script asked for does not exist.
 	 */
-	def newInstance() { new DslActor(this) }
+	def newInstance() {
+		def clone = null
+		if (languageScriptClass) {
+			clone = new DslActor()
+			clone.languageScriptClass = languageScriptClass
+		}
+		clone
+	}
 	/**
 	 * Here lies the real work. Instantiate and run the dsl definition script, then the script to run. Note that
 	 * they both used each other contexts.
 	 */
 	void run() {
 		init()
-		Script languageScript = InvokerHelper.createScript(languageScriptClass, new UsdlcBinding(dslContext, context))
+		def dslBinding = new UsdlcBinding(dslContext, context)
+		Script languageScript = InvokerHelper.createScript(languageScriptClass, dslBinding)
 		languageScript.run()
-		context.gse.run script.path, context.usdlcBinding // then we run the script
+		if (script) {
+			context.gse.run script.path, context.usdlcBinding
+		}
 	}
+	/**
+	 * Keep a cache of previous instances - one per language - so we don't have to recompile. The cache includes
+	 * instances that failed to find a script.
+	 */
+	static cache = [:]
 }

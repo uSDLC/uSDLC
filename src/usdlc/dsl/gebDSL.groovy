@@ -15,40 +15,23 @@
  */
 package usdlc.dsl
 
-import geb.Browser
-import geb.driver.CachingDriverFactory
-import geb.driver.PropertyBasedDriverFactory
-import static init.Config.config
-
-driverList = config.browserDriverList
-browser = null
-browseDepth = 0
-
-driver = { list ->
-	driverList = list.toLowerCase()
-	browser = new Browser(new PropertyBasedDriverFactory(['geb.driver': driverList] as Properties).driver)
+geb = session.instance usdlc.Geb
+browse = { pageClass -> 
+	browser = geb.browse(pageClass, authority)
+	this.$ = geb.browser.&$
 }
+driver = { driverList -> geb.driver(driverList) }
+reset = { -> geb.reset() }
 
-reset = {
-	try { CachingDriverFactory.clearCacheAndQuitDriver() } catch (e) {e.printStackTrace()}
-	driver(driverList)
-}
-finalisers << reset
+waitFor = { condition -> browser.waitFor(condition) }
 
-browse = { Class pageClass ->
-	try {
-		if (!browser) browser = driver(driverList)
-		if (browser.page.class == pageClass) {
-			browser.$(0)    // hit the browser and make sure it is still alive
-		} else {
-			browser.baseUrl = authority
-			browser.to(pageClass)
-			browseDepth = 0
-		}
-		return browser
-	} catch (e) {
-		e.printStackTrace()
-		reset()
-		return (browseDepth++) ? null : browse(pageClass)
-	}
-}
+getters.title = { geb.browser.title }
+
+startsWith = { text -> geb.browser.startsWith(text) }
+iStartsWith = { text -> geb.browser.iStartsWith(text) }
+endsWith = { text -> geb.browser.endsWith(text) }
+iEndsWith = { text -> geb.browser.iEndsWith(text) }
+contains = { pattern -> geb.browser.contains(text) }
+iContains = { pattern -> geb.browser.iContains(text) }
+containsWord = { text -> geb.browser.containsWord(text) }
+iContainsWord = { text -> geb.browser.iContainsWord(text) }

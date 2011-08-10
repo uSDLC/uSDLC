@@ -28,6 +28,7 @@ class Dictionary {
 	 *
 	 * def cookies = Dictionary.cookies(request.cookies)
 	 * def userId = cookies.userId
+	 * 
 	 * @param text String containing "name=value;" pairs
 	 * @return dictionary ready to use
 	 */

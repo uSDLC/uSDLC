@@ -15,6 +15,13 @@
  */
 package usdlc.actor
 
+import groovy.lang.Binding;
+
+import java.util.Map;
+
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
+
+import usdlc.CSV;
 import usdlc.Log
 import usdlc.Store
 import static init.Config.config
@@ -30,14 +37,18 @@ class GroovyActor extends Actor {
 	def init() {
 		if (!context.gse) {
 			GroovyScriptEngine gse = new GroovyScriptEngine(config.srcPath as URL[])
+			UsdlcBinding usdlcBinding = new UsdlcBinding(context, dslContext)
 			context << [
-					usdlcBinding: new UsdlcBinding(context, dslContext),
-					log: { Log.err it },
-					gse: gse,
-					include: { String include -> gse.run(Store.base("$script.parent/$include").path, context.usdlcBinding) },
-					finalisers: [],
-					out: { out.println it },
-			]
+						usdlcBinding: usdlcBinding,
+						log: { Log.err it },
+						gse: gse,
+						include: { String include ->
+							def path = Store.base("$script.parent/$include").path
+							gse.run(path, usdlcBinding)
+						},
+						out: { out.println it },
+						dsl: new DslInclusions(binding: usdlcBinding),
+					]
 		}
 	}
 	/**
@@ -46,6 +57,12 @@ class GroovyActor extends Actor {
 	void run() {
 		init()
 		context.gse.run script.path, context.usdlcBinding
+	}
+
+	public static class CaseCategory {
+		public static boolean isCase(Map caseValue, switchValue) {
+			return caseValue.containsKey(switchValue)
+		}
 	}
 
 	static class UsdlcBinding extends Binding {
@@ -57,12 +74,24 @@ class GroovyActor extends Actor {
 		}
 
 		def getVariable(String name) {
-			if (variables.containsKey(name))
-				variables[name]
-			else if (dslContext.containsKey(name)) {
-				dslContext[name]
-			} else {
-				Log.err("No context '$name'")
+			use (CaseCategory) {
+				switch (name) {
+					case variables: variables[name]; break
+					case dslContext: dslContext[name]; break
+					case variables.getters: variables.getters[name](); break
+					case dslContext.getters: dslContext.getters[name](); break
+					default: Log.err("No context '$name'"); null; break
+				}
+			}
+		}
+
+		void setVariable(String name, Object value) {
+			use (CaseCategory) {
+				switch (name) {
+					case variables.setters: variables.setters[name](value); break
+					case dslContext.setters: dslContext.setters[name](value); break
+					default: variables.put(name, value); break
+				}
 			}
 		}
 	}

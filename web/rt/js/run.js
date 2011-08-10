@@ -135,7 +135,6 @@ $(function() {
 		var a = link.get(0)
 		var url = a.pathname + a.search
 
-		//noinspection SwitchStatementWithNoDefaultBranchJS
 		switch (link.attr('action')) {
 			case 'page':
 				if (link.hasClass('page')) {

@@ -1,0 +1,9 @@
+class NotPage extends UsdlcPage {
+    static at = { false }
+}
+class IsPage extends UsdlcPage {
+    static at = { true }
+}
+browse UsdlcPage
+browser.page([NotPage, IsPage])
+assert browser.page instanceof IsPage

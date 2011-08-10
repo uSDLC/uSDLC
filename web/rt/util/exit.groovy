@@ -20,6 +20,6 @@ import usdlc.db.Database
  * Date: 1/05/11
  * Time: 5:29 PM
  */
-assert query.action == 'stop'
+assert exchange.request.query.action == 'stop'
 Database.close()
 System.exit(0)

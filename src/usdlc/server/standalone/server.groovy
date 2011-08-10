@@ -15,7 +15,6 @@
  */
 package usdlc.server.standalone
 
-
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
@@ -32,7 +31,7 @@ import static init.Config.config
 config.load('web', args)
 config.baseDirectory = new File(config.baseDirectory as String).absolutePath
 
-def host = InetAddress.localHost.hostName
+def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
 System.out.println "Starting uSDLC on $baseUrl\n    from $config.baseDirectory"
 
@@ -41,14 +40,14 @@ def socket = new InetSocketAddress(config.port)
 try {
 	server = HttpServer.create(socket, 0)
 } catch (BindException be) {
-	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) { e.printStackTrace() }
+	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) { /* Not needed */ }
 	server = HttpServer.create(socket, 0)
 }
 server.createContext '/', { HttpExchange httpExchange ->
 	httpExchange.with {
 		def header = new Header(
 				host: requestHeaders.Host[0], method: requestMethod, query: requestURI.query, uri: requestURI.path,
-				fragment: requestURI.fragment, cookie: requestHeaders['Cookie'] ?: ''
+				fragment: requestURI.fragment, cookie: (requestHeaders?.Cookie ?: [''])[0]
 		)
 		Exchange exchange = new Exchange()
 		exchange.request(requestBody, header).response(responseBody) {

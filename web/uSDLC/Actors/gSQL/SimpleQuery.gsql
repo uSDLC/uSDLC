@@ -1,6 +1,0 @@
-lines = []
-eachRow("select * from Actors order by surname") {
-	lines << "$it.firstName $it.surname -- $it.comment"
-}
-results = lines.join('\n')
-assert results =~ "Bob Hope -- Comedy"
