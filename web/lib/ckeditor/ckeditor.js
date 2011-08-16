@@ -8895,7 +8895,7 @@
                                     if (Y)aa = Y + '\n' + aa;
                                     return aa;
                                 },getSnapshotData:function() {
-                                    return N.getFrameDocument().getBody().getHtml();
+                                    return N ? N.getFrameDocument().getBody().getHtml() : "";
                                 },loadSnapshotData:function(W) {
                                     N.getFrameDocument().getBody().setHtml(W);
                                 },onDispose:function() {

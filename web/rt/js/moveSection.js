@@ -32,7 +32,6 @@ $(function() {
 			// clean up html of crap that builds up
 			sections.removeAttr('style').removeClass('inFocus ui-state-highlight').
 					filter('.synopsis').children().removeAttr('style')
-			usdlc.clearRunningLinkClass(sections)
 			usdlc.clearSynopses(sections)
 		},
 		moveSectionUp : function() {
@@ -118,22 +117,23 @@ $(function() {
 		}
 	})
 
+	// todo: reinstate with special key down only - stops editor from blurring
 	// Make it so we can move sections with drag and drop.
-	usdlc.pageContents.sortable({
-		axis : 'y',
-		containment: 'parent',
-		items : 'div.section',
-		revert : true,
-		placeholder : "ui-state-highlight",
-		tolerance : 'pointer',
-		opacity : 0.5,
-		start : function(event) {
-			usdlc.setFocus($(event.srcElement).parents('div.section'))
-		},
-		update : function() {
-			usdlc.savePage()
-		}
-	})
+//	usdlc.pageContents.sortable({
+//		axis : 'y',
+//		containment: 'parent',
+//		items : 'div.section',
+//		revert : true,
+//		placeholder : "ui-state-highlight",
+//		tolerance : 'pointer',
+//		opacity : 0.5,
+//		start : function(event) {
+//			usdlc.setFocus($(event.srcElement))
+//		},
+//		update : function() {
+//			usdlc.savePage()
+//		}
+//	})
 	/*
 	 Insert a new paragraph above or below the one in focus.
 	 */

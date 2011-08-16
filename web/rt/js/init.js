@@ -55,7 +55,7 @@ usdlc.init = {
 			var lastScrollTop = 0
 
 			usdlc.scrollBack = function() {
-				usdlc.pageContents.animate({scrollTop: lastScrollTop}, 400)
+				usdlc.pageContents.scrollTop(lastScrollTop)
 			}
 		}
 	},
@@ -95,18 +95,9 @@ usdlc.init = {
 		usdlc.absolutePageContents(path, callback)
 	},
 	finalise :	function() {
-		$('div[href]').each(function() {
-			usdlc.elementLoader($(this))
-		})
-		EAL.prototype.window_loaded()   // because we are loading after page
-		$(usdlc.init.queue).each(function() {
-			this()
-		})
-	}
-}
-
-usdlc.synopses = function() {
-	usdlc.init.queue.push(function() {
+		$('div[href]').each(function() { usdlc.elementLoader($(this)) })
+		// move from do-nothing to do-it-all and then generate for already loaded first page.
+		usdlc.synopses = usdlc.doSynopses
 		usdlc.synopses()
-	})
+	}
 }

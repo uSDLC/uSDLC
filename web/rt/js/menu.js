@@ -15,17 +15,16 @@
  */
 
 /**
- * User: Paul
- * Date: 5/01/11
- * Time: 8:28 AM
+ * User: Paul Date: 5/01/11 Time: 8:28 AM
  */
 $(function() {
 	setContextMenus()
 	setButtonBars()
 
 	/**
-	 Generate context menus. We trap the right-click and if any element clicked on or one of it's parents has
-	 a contextMenu attribute, use it's value to decide which context menu to display at the mouse cursor.
+	 * Generate context menus. We trap the right-click and if any element
+	 * clicked on or one of it's parents has a contextMenu attribute, use it's
+	 * value to decide which context menu to display at the mouse cursor.
 	 */
 	function setContextMenus() {
 		var contextMenus = {}
@@ -33,7 +32,9 @@ $(function() {
 		usdlc.contextMenu = null
 		usdlc.onContextMenu = function(target, top, left) {
 			var contextMenuName = target.attr('contextMenu')
-			if (! contextMenuName) {
+			if (usdlc.inEditor) {
+				contextMenuName = 'sourceeditor'
+			} else if (!contextMenuName) {
 				target = target.parents('[contextMenu]')
 				if (target.length) {
 					contextMenuName = $(target[0]).attr('contextMenu')
@@ -41,12 +42,16 @@ $(function() {
 			}
 			contextMenuName = 'menu' + contextMenuName
 			if (contextMenus[contextMenuName]) {
-				var div = contextMenus[contextMenuName].css({ top : top, left : left })
+				var div = contextMenus[contextMenuName].css({
+					top : top,
+					left : left
+				})
 				var menuData = div.contextMenuData.clone()
 
 				function hotkey(index) {
 					if (index < 10) {
-						$('<kbd>(^' + (index || 'V') + ')</kbd>')
+						var key = index || 'V'
+						$('<kbd>(^' + key + ' meta-' + key + ')</kbd>')
 					}
 				}
 
@@ -57,14 +62,14 @@ $(function() {
 					return false
 				}
 
-				pasteList.append($('div#pasteList').children().clone().
-						bind('click', clickEvent).append(hotkey).wrap('<li/>'))
+				pasteList.append($('div#pasteList').children().clone().bind('click', clickEvent).append(hotkey).wrap(
+						'<li/>'))
 
 				div.contextMenu = new Menu(div, {
-					content: menuData,
-					maxHeight: 400,
-					flyOut: false,
-					backLink: false
+					content : menuData,
+					maxHeight : 400,
+					flyOut : false,
+					backLink : false
 				});
 				div.contextMenu.menuExists = false
 				div.contextMenu.currentTarget = target
@@ -79,21 +84,22 @@ $(function() {
 		}
 
 		function onDblclick(ev) {
-			usdlc.setFocus(ev.currentTarget)
-			if (usdlc.editMode) {
+			if (!usdlc.inEditor) {
+				usdlc.setFocus(ev.currentTarget)
 				usdlc.editSectionInFocus()
+				return false
 			} else {
-				usdlc.runSectionInFocus()
+				return true
 			}
-			return false
 		}
 
 		$('.editable').live('contextmenu', onContextMenu).live('dblclick', onDblclick)
 
 		usdlc.loadContextMenu = function(element, data) {
 			element.contextMenuData = $(data)
-			var contextMenuName = element.attr('id')
-			contextMenus[contextMenuName.toLowerCase()] = element
+			var contextMenuName = element.attr('id').toLowerCase()
+			var forSourceEditor = (contextMenuName == 'menusourceeditor')
+			contextMenus[contextMenuName] = element
 			var doc = $(document)
 			$('a kbd', element.contextMenuData).each(function() {
 				var kbd = $(this)
@@ -103,9 +109,9 @@ $(function() {
 					key = 'ctrl+' + key.substring(1)
 				}
 				var a = kbd.parents('a')
-				doc.bind('keydown', key, function() {
-					a.click()
-					return false
+				doc.bind('keydown', key, function(event) {
+					if (!usdlc.inEditor == !forSourceEditor)
+						a.click()
 				})
 			})
 		}

@@ -31,7 +31,7 @@ class DslInclusions {
 		DslActor actor = DslActor.newInstance(language).newInstance()
 		actor.context = binding.variables
 		actor.dslContext = binding.dslContext
-		actor.run()
+		actor.runScript()
 		this
 	}
 }

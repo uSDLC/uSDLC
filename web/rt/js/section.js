@@ -17,39 +17,51 @@
 $(function() {
 	$.extend(true, window.usdlc, {
 		/**
-		 * Called by the usdlc.server.servletengine.server to highlight the page selection.
+		 * Called by the usdlc.server.servletengine.server to highlight the page
+		 * selection.
 		 */
-		highlight : function (colour, section) {
-			if (! section) {
-				section = usdlc.inFocus
-			}
-			if (! section) {
-				return
-			}
-
-			if (colour) {
-				var url = 'url(/rt/gradients/' + colour + '-right.png)'
-				section.css({backgroundImage : url, backgroundPosition : -10})
-			} else {
-				section.css({backgroundImage : 'none'})
+		highlight : function(colour, element) {
+			var section = usdlc.getSection(element)
+			if (section) {
+				if (colour) {
+					var url = 'url(/rt/gradients/' + colour + '-right.png)'
+					section.css({
+						backgroundImage : url,
+						backgroundPosition : -10
+					})
+				} else {
+					section.css({
+						backgroundImage : 'none'
+					})
+				}
 			}
 		},
-		/*
-		 Each paragraph is a focus element. Highlight it if clicked on or otherwise referenced to.
+		/**
+		 * Given an element (null for current focus), retrieve the section containing it.
+		 */
+		getSection : function(element) {
+			var section = $(element || usdlc.inFocus)
+			if (!section.hasClass('section'))
+				section = section.parents('div.section')
+			return section
+		},
+		/**
+		 * Each paragraph is a focus element. Highlight it if clicked on or
+		 * otherwise referenced to.
 		 */
 		setFocus : function(element) {
-			var section = $(element || usdlc.inFocus)
+			var section = usdlc.getSection(element)
 			if (!section.hasClass("inFocus")) {
 				usdlc.clearFocus()
 				usdlc.inFocus = section.addClass('inFocus ui-state-highlight')
 				usdlc.contentTree.jstree('disable_hotkeys')
 				usdlc.pageContentsSausages.sausage("setFocus", section)
-				return true //yup - we changed focus
+				return true // yup - we changed focus
 			}
-			return false    // was already in focus
+			return false // was already in focus
 		},
 		clearFocus : function() {
-			if (! usdlc.inFocus) {
+			if (!usdlc.inFocus) {
 				return
 			}
 			$('.inFocus').removeClass('inFocus ui-state-highlight')
@@ -68,7 +80,7 @@ $(function() {
 		lastFocus : null,
 		hasFocus : function() {
 			if (usdlc.contextMenu && usdlc.contextMenu.is(":visible")) {
-				return false    // doesn't have focus of context menu up
+				return false // doesn't have focus of context menu up
 			}
 			return usdlc.inFocus
 		},
@@ -82,7 +94,7 @@ $(function() {
 		upFocus : function() {
 			if (usdlc.hasFocus()) {
 				var focus = usdlc.inFocus.prev()
-				if (! focus.length) {
+				if (!focus.length) {
 					focus = $('div.section:last')
 				}
 				usdlc.setFocus(focus)
@@ -93,7 +105,7 @@ $(function() {
 		downFocus : function() {
 			if (usdlc.hasFocus()) {
 				var focus = usdlc.inFocus.next()
-				if (! focus.length) {
+				if (!focus.length) {
 					focus = $('div.section:first')
 				}
 				usdlc.setFocus(focus)
@@ -103,6 +115,7 @@ $(function() {
 		},
 		/**
 		 * Parse section title, subtitle, content, id and name (camel-case)
+		 * 
 		 * @param section
 		 */
 		parseSection : function(section) {
@@ -125,29 +138,23 @@ $(function() {
 		}
 	})
 
-	//Anything that has focus can be edited.
-	$('.editable').
-			css('background-image', "none").
-			live('click',
-			function(ev) {
-				usdlc.setFocus(ev.currentTarget)
-				return false
-			}).
-			live('contextmenu',
-			function(ev) {
-				usdlc.setFocus(ev.currentTarget)
-			})
+	// Anything that has focus can be edited.
+	$('.editable').css('background-image', "none").live('click', function(ev) {
+		usdlc.setFocus(ev.currentTarget)
+		return false
+	}).live('contextmenu', function(ev) {
+		usdlc.setFocus(ev.currentTarget)
+	})
 	// Alt key press and release triggers section menu
-	$(document).bind('keydown',
-			function(event) {
-				usdlc.inAlt = (event.altKey && event.keyCode == 18 && usdlc.inFocus)
-				return true
-			}).bind('keyup', function(event) {
-				if (event.keyCode == 18 && usdlc.inAlt && usdlc.inFocus) {
-					var offset = usdlc.inFocus.offset()
-					usdlc.onContextMenu(usdlc.inFocus, offset.top, offset.left + usdlc.inFocus.width() / 2)
-				}
-				usdlc.inAlt = false
-				return true
-			})
+	$(document).bind('keydown', function(event) {
+		usdlc.inAlt = (event.altKey && event.keyCode == 18 && usdlc.inFocus)
+		return true
+	}).bind('keyup', function(event) {
+		if (event.keyCode == 18 && usdlc.inAlt && usdlc.inFocus) {
+			var offset = usdlc.inFocus.offset()
+			usdlc.onContextMenu(usdlc.inFocus, offset.top, offset.left + usdlc.inFocus.width() / 2)
+		}
+		usdlc.inAlt = false
+		return true
+	})
 })

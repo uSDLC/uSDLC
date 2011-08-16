@@ -16,7 +16,7 @@
 
 $(function() {
 	var percentRE = /^(\d+)%$/
-	window.usdlc = {
+	$.extend(true, window.usdlc, {
 		/**
 		 Create a dialog box to wrap an existing item.
 		 Options are those for jquery dialog, but height can be a percentage as well as a pixel count
@@ -85,5 +85,5 @@ $(function() {
 				usdlc[action](element, data)
 			})
 		}
-	}
+	})
 })

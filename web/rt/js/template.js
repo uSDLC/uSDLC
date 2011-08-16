@@ -17,25 +17,6 @@
 $(function() {
 	var pageTitle = $('td#pageTitleTd')
 	$.extend(true, window.usdlc, {
-		/*
-		 * When the page loads, set the edit mode to the default.
-		 */
-		editMode : true,
-
-		setEditMode : function(to) {
-			var color
-			if (usdlc.editMode = to) {
-				color = false
-				usdlc.clearRunningLinkClass && usdlc.clearRunningLinkClass('')
-				$('.usdlc').removeData('results')
-			} else {
-				color = 'yellow'
-				usdlc.runningLinkClass('a.usdlc', 'runOnClick')
-			}
-			$('.section').each(function() {
-				usdlc.highlight(color, $(this))
-			})
-		},
 		log : function(message) {
 			if (window.console) {
 				// Firefox & Google Chrome
@@ -82,7 +63,7 @@ $(function() {
 				}
 				alertBox.dialog("option", "title", title)
 				alertBox.dialog("widget").position({
-					of : parent || usdlc.inFocus,
+					of : parent || usdlc.inFocus || usdlc.pageContents,
 					my : 'top',
 					at : 'bottom',
 					collision : 'flip'
@@ -93,11 +74,6 @@ $(function() {
 		/**
 		 * Save a file to the usdlc.server.servletengine.server and expect a
 		 * response in javaScript.
-		 *
-		 * @param where
-		 *            Address to post to
-		 * @param what
-		 *            Data for the body of the post
 		 */
 		save : function(where, what, more) {
 			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what,
@@ -130,7 +106,6 @@ $(function() {
 
 				usdlc.setPageTitle()
 				usdlc.synopses()
-				usdlc.setEditMode(usdlc.editMode)
 				usdlc.pageContentsSausages.sausage()
 				afterwards && afterwards()
 			})

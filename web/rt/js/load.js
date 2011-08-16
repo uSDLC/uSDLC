@@ -15,93 +15,81 @@
  */
 
 /**
- * User: paul
- * Date: 7/07/11
- * Time: 5:01 PM
+ * User: paul Date: 7/07/11 Time: 5:01 PM
  */
+window.usdlc = {
+	synopses : function() {
+	}
+}
+
 window.onload = function() {
 	var head = document.getElementsByTagName('head')[0]
 
-	function load(path, callback) {
+	function loadScriptAsync(path, onScriptLoaded) {
 		var script = document.createElement("script")
 		script.type = "text/javascript"
 		script.async = "async"
-		if (script.readyState)  //IE
+		if (script.readyState) { // IE
 			script.onreadystatechange = function() {
-				if (script.readyState == "loaded" ||
-						script.readyState == "complete") {
+				if (script.readyState == "loaded" || script.readyState == "complete") {
 					script.onreadystatechange = null;
-					callback();
+					onScriptLoaded(path);
 				}
 			}
-		else  //Others
+		} else { // Others
 			script.onload = function() {
-				callback()
+				onScriptLoaded(path)
 			}
+		}
 		script.src = path
 		head.appendChild(script)
 	}
 
-	function loader(scripts, callback) {
-		return function() {
-			var lastScript = scripts.length - 1
-			for (var i = 0; i < lastScript; i++) {
-				load(scripts[i], function() {
-				})
-			}
-			load(scripts[lastScript], callback)
+	usdlc.loadScript = loadScriptAsync
+
+	function loadSetInParallel(scripts, onSetAllLoaded) {
+		var countdown = scripts.length
+		while (scripts.length) {
+			loadScriptAsync(scripts.shift(), function(path) {
+				if (!--countdown)
+					onSetAllLoaded()
+			})
 		}
 	}
 
-	loader([
-		'/lib/jquery/js/jquery.js'],
-			loader([
-				'/lib/jquery/js/jquery-ui-1.8.13.custom.js'],
-					loader([
-						'/lib/jquery/js/jquery.cookie.js',
-						'/lib/jquery/js/jquery.sausage.js',
-						'/lib/jquery/js/jquery.hotkeys.js',
-						'/lib/jquery/js/jquery.url.js',
-						'/rt/js/base.js'],
-							loader([
-								'/rt/js/init.js'],
-									loader([
-										'/rt/js/section.js',
-										'/rt/js/template.js'],
-											function() {
-												usdlc.init.pageLayout()
-												usdlc.init.decoratePage()
-												usdlc.init.loadPage(function() {
-													// give it time to render, etc before the less immediate code
-													setTimeout(loader([
-														'/lib/jquery/js/fg.menu.js',
-														'/lib/jquery/js/fg.menu.js',
-														'/lib/ckeditor/ckeditor.js',
-														'/lib/edit_area/edit_area_full.js',
-														'/lib/jquery/js/jquery.scrollTo.js',
-														'/lib/jquery/js/jquery.jstree.js',
-														'/rt/js/server.js',
-														'/lib/google-code-prettify/prettify.js'],
-															loader([
-																'/rt/js/contentTree.js'],
-																	loader([
-																		'/rt/js/synopses.js',
-																		'/lib/ckeditor/adapters/jquery.js',
-																		'/rt/js/menu.js',
-																		'/rt/js/moveSection.js',
-																		'/rt/js/clipboard.js',
-																		'/rt/js/run.js',
-																		'/rt/js/htmlEditor.js',
-																		'/rt/js/sourceEditor.js'
-																	],
-																			usdlc.init.finalise
-																	)
-															)
-													), 500)
-												})
-											})
-							)
-					)
-			)
-	)()
+	function loader(sets, onSetsAllLoaded) {
+		if (sets.length) {
+			loadSetInParallel(sets.shift(), function() {
+				loader(sets, onSetsAllLoaded)
+			})
+		} else {
+			onSetsAllLoaded()
+		}
+	}
+
+	var preload = [
+			[ '/lib/jquery/js/jquery.js' ],
+			[ '/lib/jquery/js/jquery-ui-1.8.13.custom.js' ],
+			[ '/lib/jquery/js/jquery.cookie.js', '/lib/jquery/js/jquery.sausage.js',
+					'/lib/jquery/js/jquery.hotkeys.js', '/lib/jquery/js/jquery.url.js', '/rt/js/base.js' ],
+			[ '/rt/js/init.js' ], [ '/rt/js/section.js', '/rt/js/template.js' ], ]
+	var postload = [
+			[ '/lib/jquery/js/fg.menu.js', '/lib/jquery/js/fg.menu.js', '/lib/ckeditor/ckeditor.js',
+					'/lib/jquery/js/jquery.scrollTo.js', '/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js',
+					'/lib/CodeMirror/lib/codemirror.js' ],
+			[ '/rt/js/contentTree.js' ],
+			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js', '/rt/js/menu.js', '/rt/js/moveSection.js',
+					'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js', '/rt/js/sourceEditor.js' ] ]
+
+	loader(preload, function() {
+		usdlc.init.pageLayout()
+		usdlc.init.decoratePage()
+		usdlc.init.loadPage(function() {
+			setTimeout(function() {
+				loader(postload, function() {
+					loadSetInParallel(usdlc.getSourceEditorModes(), usdlc.init.finalise)
+				})
+			}, 500)
+		})
+	})
 }

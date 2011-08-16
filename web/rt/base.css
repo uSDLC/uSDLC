@@ -19,7 +19,11 @@
  */
 @import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
 @import "/lib/jquery/css/fg.menu.css";
-@import "/lib/google-code-prettify/prettify.css";
+@import "/lib/CodeMirror/lib/codemirror.css";
+@import "/lib/CodeMirror/theme/default.css";
+@import "/lib/CodeMirror/theme/elegant.css";
+@import "/lib/CodeMirror/theme/neat.css";
+@import "/lib/CodeMirror/theme/night.css";
 
 body {
 	margin: 0;
@@ -118,7 +122,7 @@ td#pageContentsTd {
 	vertical-align: top;
 }
 
-div#pageContents {
+div#pageContents, .CodeMirror {
 	margin: 0;
 	padding: 5px 5px 5px 5px;
 	border: #f2f2f2 2px solid;
@@ -262,29 +266,8 @@ a.star:hover {
 	background-color: #daa520;
 }
 
-a.running {
-	background-color: #ffe4b5;
-}
-
-a.hasResults {
-	background-color: #d3d3d3;
-}
-
 .error {
 	color: red;
-}
-
-a.error {
-	color: white;
-	background-color: red;
-}
-
-a.ok {
-	background-color: #adff2f;
-}
-
-a.runOnClick {
-	background-color: #e0ffff;
 }
 
 a kbd {
@@ -368,4 +351,16 @@ li.jstree-leaf > ins.jstree-icon {
 
 .sausage-hover .sausage-span {
 	display: block;
+}
+
+.CodeMirror-scroll {
+  overflow: visible;
+  height: auto;
+  /* This is needed to prevent an IE[67] bug where the scrolled content
+     is visible outside of the scrolling box. */
+  position: relative;
+}
+
+iframe.output {
+	width: 100%;
 }

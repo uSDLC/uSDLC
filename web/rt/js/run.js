@@ -28,126 +28,38 @@ $(function() {
 		runPage: function() {
 			runSections($('div.section'))
 		},
-		linkAction: function(link) {
-			var results = link.data('results')
-			if (results) {
-				results.dialog("open")
-			} else {
-				runLink(link)
-			}
-		},
-		runLink: runLink,
 		/**
 		 * Command to run the page section.
 		 */
 		runSectionInFocus: function() {
-			var section = $('.inFocus')
-			runSections(section)
+			if (usdlc.inFocus)
+				runSections(usdlc.inFocus)
+			else
+				usdlc.alert('selectSectionFirst.htm')
 		},
 		/**
 		 * Command to run a section of the page or from the page section to the end of the page.
 		 */
 		runFromSectionInFocus: function() {
-			var section = $('.inFocus')
-			runSections(section.nextAll('.section').andSelf())
+			if (usdlc.inFocus)
+				runSections(usdlc.inFocus.nextAll('.section').andSelf())
+			else
+				usdlc.alert('selectSectionFirst.htm')
 		},
-		/**
-		 * When in run mode, hovering over a link will display the results rather than edit or go to the page/runnable.
-		 * @param link Link clicked on.
-		 */
-		displayResults: function(link) {
-			var results = link.data('results')
-			if (results) {
-				results.dialog('show')
-			}
-		},
-
-		runningLinkClass: function(links, name) {
-			$(links).removeClass('runOnClick hasResults running error ok').addClass(name)
-		},
-		clearRunningLinkClass: function(inside) {
-			$('a.usdlc', inside || usdlc.pageContents).removeClass('runOnClick hasResults running error ok')
+		deleteOutput: function() {
+			$('iframe.output').remove()
 		}
 	})
 
-	function enqueue(link, options, action) {
-		var a = link.get(0)
-		var search = (a.search || '?') + '&action=run&linkId=' + link.attr('id')
-		usdlc.queue(action || $.ajax, $.extend({}, {
-					cache : false,
-					parallel : true,
-					processData : false,
-					type : 'GET',
-					url : a.pathname + search,
-					success : function(data) {
-						usdlc.runningLinkClass(link, 'hasResults')
-						var tagStart = data.indexOf('<')
-						if (tagStart == -1 || tagStart > 4) {
-							data = '<pre>' + data.replace(/[\r\n]{2,}/g, "\n") + '</pre>'
-						}
-						var rdb = results(link).html(data)
-						if (rdb.text().length > 5) {
-							rdb.dialog((options && options.dialogCommand) || 'open')
-						} else {
-							usdlc.runningLinkClass(link, 'ok')
-						}
-					},
-					error : function(xmlHttpRequest, textStatus) {
-						usdlc.log(textStatus)
-						usdlc.alert("noServer.htm")
-					}
-				}, options || {}))
-	}
-
-	function results(link, container, options) {
-		var dialog = link.data('results')
-		if (! dialog) {
-			dialog = usdlc.dialog(container || '<div/>', $.extend({}, {
-						title: link.text(),
-						autoOpen: false,
-						width: '50%',
-						open: function() {
-							var widget = dialog.dialog("widget")
-							widget.position({
-								of: link, my: 'bottom', at: 'top', collision: 'flip',
-								using: function(position) {
-									var from = widget.offset()
-									widget.animate({top:position.top + from.top, left:position.left + from.left})
-								}
-							})
-						}
-					}, options || {}))
-			link.data('results', dialog)
-		}
-		return dialog
-	}
-
 	function runSections(sections) {
-		usdlc.clearRunningLinkClass()
-		sections.each(function() {
-			var section = $(this)
-			$("a.usdlc", section).each(runLink($(this)))
-		})
-	}
-
-	function runLink(link) {
-		usdlc.runningLinkClass(link, 'running')
-		var a = link.get(0)
-		var url = a.pathname + a.search
-
-		switch (link.attr('action')) {
-			case 'page':
-				if (link.hasClass('page')) {
-					var creationOptions = {
-						url: url, action: 'client-run', title: link.text(),
-						height: "90%", width: "90%", modal: true
-					}
-					results(link, '<iframe/>', creationOptions).attr('src', url)
-				}
-				break
-			case 'runnable':
-				enqueue(link)
-				break
+		if (sections.length) {
+			usdlc.saveSource()
+			usdlc.deleteOutput()
+			var outputSection = sections.first()
+			sections = sections.map(function() {return $(this).attr('id')}).get().join(',')
+			var url = usdlc.pageContentsURL+'html.sectionRunner?page='+usdlc.pageContentsURL+'&sections='+sections
+			outputFrame = $('<iframe/>').addClass('output').attr('src', url)
+			outputSection.append(outputFrame)
 		}
 	}
 })

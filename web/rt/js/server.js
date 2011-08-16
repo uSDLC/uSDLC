@@ -16,28 +16,6 @@
 
 $(function() {
 	var queues = {}
-	var syntaxes = {
-		basic : 'basic',
-		c : 'c',
-		h : 'c',
-		cpp : 'cpp',
-		hpp : 'cpp',
-		css : 'css',
-		groovy : 'groovy',
-		html : 'html',
-		htm : 'html',
-		htmlunit : 'groovy',
-		java : 'java',
-		js : 'js',
-		pas : 'pas',
-		perl : 'perl',
-		php : 'php',
-		py : 'python',
-		ruby : 'ruby',
-		sql : 'sql',
-		vb : 'vb',
-		xml : 'xml'
-	}
 	window.usdlc.splitUrl = function(url) {
 		var result = {}
 		var slash = url.lastIndexOf('/')
@@ -72,7 +50,6 @@ $(function() {
 				serverExt : 'txt'
 			}
 		}
-		rc.syntax = (rc.serverExt in syntaxes) ? syntaxes[rc.serverExt] : 'groovy'
 		return rc
 	}
 	window.usdlc.serverActionUrl = function(where, what) {

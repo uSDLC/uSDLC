@@ -1,2 +1,0 @@
-group('jars/appengine').download('http://jiql.googlecode.com/files/jiql.jar')
-group('source').download('http://jiql.googlecode.com/files/source.zip', 'jiql.zip')
