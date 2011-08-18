@@ -27,11 +27,11 @@ class DslInclusions {
 	/** set by GroovyActor when adding dsl inclusion to the script. Used for DslActor to update */
 	Binding binding
 	/** getting the property is an alias for loading the DSL */
-	def getProperty(String language) {
+	def propertyMissing(String language) {
 		DslActor actor = DslActor.newInstance(language).newInstance()
 		actor.context = binding.variables
 		actor.dslContext = binding.dslContext
-		actor.runScript()
+		actor.run()
 		this
 	}
 }

@@ -16,22 +16,21 @@
 package usdlc.actor
 
 import groovy.lang.Closure;
+import groovy.transform.AutoClone;
 
 import java.io.PrintStream;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import usdlc.Exchange
 import usdlc.Exchange.Response;
-import usdlc.MimeTypes;
 import usdlc.Store
-import static usdlc.MimeTypes.mimeType
 
 /**
  * User: paul
  * Date: 5/07/11
  * Time: 10:43 AM
  */
-abstract class Actor implements Runnable {
+@AutoClone abstract class Actor implements Runnable {
 	/** variables to pass between scripts as globals   */
 	def context = [:]
 	def dslContext = [:]
@@ -51,53 +50,7 @@ abstract class Actor implements Runnable {
 		context.setters = [:]
 		run()
 	}
-	/**
-	 * Special for a script set up as a DSL inclusion.
-	 */
-	void runScript() {
-		wrapOutput('.txt', context) { delegate.run() }
-	}
-	/**
-	 * Special to run the script while wrapping the output for best effort.
-	 */
-	void runScript(Map binding) {
-		wrapOutput(script.path, binding) { delegate.run(binding) }
-	}
-	/**
-	 * Called when running an actor in-context by using Setup and Cleanup.
-	 */
-	static void wrap(List<Store> actors, Map context) {
-		try {
-			def base = Store.base(actors[0].parent)
-			runFiles(~/^Setup\..*/, base, context)
-			actors.each { Store actor ->
-				load(actor)?.runScript(context)
-			}
-			runFiles(~/^Cleanup\..*/, base, context)
-		} catch (AssertionError assertion) {
-			error(assertion, context)
-		} catch (Throwable throwable) {
-			error(throwable, context)
-			throwable.printStackTrace()
-		} finally {
-			context.each { key, value ->
-				value.&close ?: value.close()
-			}
-		}
-	}
-
-	static error(Throwable throwable, Map context) {
-		wrapOutput('.txt', context, { Response response ->
-			response.write throwable.message
-			// TODO: Display one line of stack dump also
-		})
-	}
-
-	static void runFiles(Pattern pattern, Store base, Map context) {
-		base.dir(pattern) { String path ->
-			load(Store.base(path))?.runScript(context)
-		}
-	}
+	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
 	 * Called to see if a URL refers to an actor/dsl. It creates an instance of the class.
 	 * Null is returned if no actor class or dsl script exists.
@@ -122,22 +75,4 @@ abstract class Actor implements Runnable {
 		actor
 	}
 	Store script
-	/**
-	 * Wrap data of defined mime-type as if it were to be included in a HTML file
-	 */
-	static wrapOutput(String fileName, Map context, Closure closure) {
-		Response response = context.exchange.response
-		def type = mimeType(fileName)
-		def wrapper = mimeTypeWrappers.get(mimeType(fileName), ['<!--', '-->'])
-		response.write wrapper[0]
-		try {
-			closure(response)
-		} finally {
-			response.write wrapper[1]
-		}
-	}
-	static mimeTypeWrappers = [
-		'text/html': ['', ''],
-		'application/javascript': ['<script>', '</script>'],
-		'text/plain': ['<pre>', '</pre>']]
 }

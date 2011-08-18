@@ -37,9 +37,8 @@ class Store {
 	 * Sometimes we get a now store based on an old location
 	 */
 	Store rebase(String more = '') {
-		def dir = file.isDirectory() ? path : parent
 		def store = new Store()
-		store.file = new File(config.baseDirectory, dir + camelCase(more))
+		store.file = new File(config.baseDirectory, parent + camelCase(more))
 		store
 	}
 	/**
@@ -68,12 +67,12 @@ class Store {
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	/** Directory in which file/directory resides */
-	@Lazy String parent = pathFromBase(file.parent)
+	@Lazy String parent = file.isDirectory() ? path : pathFromBase(file.parent)
 	@Lazy String path = pathFromBase(file.path)
 	@Lazy String absolutePath = file.path
 	@Lazy String relativePath = "$config.baseDirectory/$path"
-	@Lazy def uri = file.toURI()
-	@Lazy def url = uri.toURL()
+	@Lazy URI uri = file.toURI()
+	@Lazy URL url = uri.toURL()
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */
@@ -85,6 +84,13 @@ class Store {
 	 */
 	private static String pathFromBase(String path) {
 		pathFromBase(new File(path))
+	}
+	/**
+	 * Relative path from some base directory (store may be of file in directory).
+	 */
+	String pathFrom(Store from) {
+		File fromFile = from.file.isDirectory() ? from.file : from.file.parentFile
+		fromFile.toURI().relativize(uri).path
 	}
 	/**
 	 * Public method used to read the file.

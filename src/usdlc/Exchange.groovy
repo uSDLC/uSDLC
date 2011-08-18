@@ -113,15 +113,14 @@ class Exchange {
 			prepare()
 			switch (request.query['action']) {
 				case 'save':    // saves html and actor
-					// Contents to write are sent from the browser.
-					// Get them and save them to the file
-					save()
+				// Contents to write are sent from the browser.
+				// Get them and save them to the file
+					save(request.body())
+					response.write "usdlc.highlight('sky');"
+					response.write request.query['after'] ?: ''
 					break
 				case 'raw':    // so actors are send to browser for editing instead of running
 					response.write store.read()
-					break
-				case 'run':
-					Actor.wrap([store] as List, [exchange: this])
 					break
 				default:        // act for active, return content for static content
 					Actor actor = Actor.load(store)
@@ -150,18 +149,14 @@ class Exchange {
 		if (store.path.indexOf('.') == -1) store = store.rebase('index.html')
 	}
 
-	private void save() {
+	private void save(newContents) {
 		def history = new History(store.path, 'updates')
-		def newContents = request.body()
 		// If we don't have a history file for any reason, then we should save the contents of the full file first.
 		String before = (history.store.size() < 3) ? '' : newContents
 		// Save changed contents to disk
 		store.write newContents.bytes
 		// Create a history file so we can rebuild any version if and when we want to.
 		history.save(request.userId, before, newContents)
-
-		response.write "usdlc.highlight('sky');"
-		response.write request.query['after'] ?: ''
 	}
 
 	// Point Apache Commons logging to a uSDLC proxy.

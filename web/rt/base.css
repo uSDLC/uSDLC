@@ -336,7 +336,7 @@ li.jstree-leaf > ins.jstree-icon {
 
 .sausage-hover,
 .sausage-current {
-	background-color: #f2e4ed;
+	background-color: #ffE45c;
 	-moz-box-shadow: inset 0 1px 2px 4px rgba(51, 63, 70, 0.025);
 }
 
@@ -363,4 +363,31 @@ li.jstree-leaf > ins.jstree-icon {
 
 iframe.output {
 	width: 100%;
+	height: 200px;
 }
+
+a.running, a.failed, a.succeeded {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+h1 a.running, h1 a.failed, h1 a.succeeded,
+h2 a.running, h2 a.failed, h2 a.succeeded,
+h3 a.running, h3 a.failed, h3 a.succeeded {
+	border: solid 2px #990066;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	}
+a.running {
+	border-color: #666666;
+	background-color: #cccccc;
+}
+a.failed {
+	border-color: #990066;
+	background-color: #ffcccc;
+	}
+a.succeeded {
+	border-color: #339933;
+	background-color: ccffcc;
+	}

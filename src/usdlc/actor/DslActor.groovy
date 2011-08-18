@@ -27,16 +27,19 @@ import static init.Config.config
  */
 class DslActor extends GroovyActor {
 	/**
-	 * Called by Actor.groovy to create a new instance for this language. Each if these in turn can be used
-	 * to create new running instances for dsl work.
+	 * Called by Actor.groovy to create a new instance for this language. Each if these in
+	 * turn can be used to create new running instances for dsl work.
 	 */
 	static DslActor newInstance(String language) {
-		cache[language] = new DslActor()
-		try {
-			GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
-			cache[language].languageScriptClass = gse.loadScriptByName("${language.toLowerCase()}DSL.groovy")
-		} catch (ResourceException re) {
-			/* don't care as newInstance() will return null as expected */
+		if (! (language in cache)) {
+			cache[language] = new DslActor()
+			try {
+				GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
+				cache[language].languageScriptClass = gse.loadScriptByName(
+						"${language.toLowerCase()}DSL.groovy")
+			} catch (ResourceException re) {
+				/* don't care as newInstance() will return null as expected */
+			}
 		}
 		cache[language]
 	}
