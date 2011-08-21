@@ -24,7 +24,7 @@ import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 import usdlc.CSV;
 import usdlc.Log
 import usdlc.Store
-import static init.Config.config
+import static usdlc.Config.config
 
 /**
  * The Groovy actor calls the named groovy script

@@ -19,11 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import usdlc.Log;
 import usdlc.Store;
 import groovy.lang.Closure;
 import groovy.transform.AutoClone;
 import groovy.xml.StreamingMarkupBuilder;
 import static usdlc.MimeTypes.mimeType
+import static usdlc.Config.config
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
@@ -41,13 +43,13 @@ import static usdlc.MimeTypes.mimeType
 		currentPage = page
 		def html = htmlSlurper.parseText(page.text())
 		if (html) {
-			write '''
+			write """
 			<html>
 				<head>
-					<link type="text/css" rel="stylesheet" href="/rt/outputFrame.css">
+					<link type='text/css' rel='stylesheet' href='$config.urlBase/rt/outputFrame.css'>
 				</head>
 				<body>
-					<div id="output">'''
+					<div id='output'>"""
 			def namespace = html[0].namespaceURI()
 			def sectionsHtml = html.breadthFirst().findAll{it.@contextmenu == 'section'}
 			if (sections) {
@@ -146,9 +148,13 @@ import static usdlc.MimeTypes.mimeType
 	 */
 	def setActorState(to) {
 		linkStates[currentActor] = to
-		wrapOutput(['<pre class="gray">','</pre>']) { write "\t$currentActor: $to" }
+		String elapsed = timer
+		wrapOutput(['<pre class="gray">','</pre>']) { write "\t$currentActor: $to$elapsed" }
+		Log.csv("${currentPage}.timings")("$currentActor,$to,$timer.elapsed,$elapsed")
+		// TODO: write log
 	}
 	def currentActor
+	usdlc.Timer timer = new usdlc.Timer(title : ' in ', minimum : 100, autoReset : true)
 	/**
 	 * Special to run the script while wrapping the output for best effort.
 	 */

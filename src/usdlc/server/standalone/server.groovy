@@ -21,19 +21,22 @@ import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
 import usdlc.Exchange
 import usdlc.Exchange.Header
-import static init.Config.config
+import usdlc.Config
+import static usdlc.Config.config
 
 /**
- * This is a Groovy script that starts up a web server to serve uSDLC content. Configuration is take from a configuration DSL combined with parameters from the command line. By default the configuration file is ./web/WEB-INF/web.groovy. You can move to a new base directory (and WEB-INF file) by setting baseDirectory on the command line:
+ * This is a Groovy script that starts up a web server to serve uSDLC content.
+ * Configuration is take from a configuration DSL combined with parameters from the command line.
+ * By default the configuration file is ./web/WEB-INF/web.groovy.
+ * You can move to a new base directory (and WEB-INF file) by setting baseDirectory on the command line:
  *
  * uSDLC baseDirectory=~/uSDLC
  */
-config.load('web', args)
-config.baseDirectory = new File(config.baseDirectory as String).absolutePath
+Config.load('standalone', 'web', args)
 
 def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
-System.out.println "Starting uSDLC on $baseUrl\n    from $config.baseDirectory"
+System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
 
 HttpServer server
 def socket = new InetSocketAddress(config.port)
@@ -48,7 +51,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 		def header = new Header(
 				host: requestHeaders.Host[0], method: requestMethod, query: requestURI.query, uri: requestURI.path,
 				fragment: requestURI.fragment, cookie: (requestHeaders?.Cookie ?: [''])[0]
-		)
+				)
 		Exchange exchange = new Exchange()
 		exchange.request(requestBody, header).response(responseBody) {
 			exchange.response.header.each { key, value -> httpExchange.responseHeaders.add(key, value) }

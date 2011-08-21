@@ -14,22 +14,10 @@
  *  limitations under the License.
  */
 package usdlc
-
-/**
- * User: Paul Marrington
- * Date: 8/05/11
- * Time: 3:25 PM
- */
-
 /**
  * The Timer class is used to calculate, record and display elapsed time.
  */
 class Timer {
-	/**
-	 * Constructor takes a title for this timer that will be recorded to the log
-	 * @param title Anything that can be coerced to a string
-	 */
-	Timer(title = '') { this.title = title }
 	/**
 	 * Log the elapsed time since this timer was instantiated in csv for, being title and time in ms.
 	 * @param path Path to log file to which the data is appended.
@@ -45,22 +33,31 @@ class Timer {
 	 * @return "1 h 23 m 44 s" or "347 ms"
 	 */
 	String toString() {
-		long elapsed = System.currentTimeMillis() - start
+		long end = System.currentTimeMillis()
+		elapsed = end - start
 		def string = new StringBuffer()
-		if (elapsed < 1000) {
-			string.append("$elapsed ms")
-		} else {
-			elapsed /= 1000
-			def seconds = elapsed % 60
-			string.append("$seconds s")
-			elapsed /= 60
-			def minutes = elapsed % 60
-			def hours = elapsed / 60
-			if (hours || minutes) { string.insert(0, "$minutes m ") }
-			if (hours) { string.insert(0, "$hours h ") }
+		 if (elapsed > minimum) {
+			 string << title
+			if (elapsed < 1000) {
+				string.append("$elapsed ms")
+			} else {
+				elapsed /= 1000
+				def seconds = elapsed % 60
+				string.append("$seconds s")
+				elapsed /= 60
+				def minutes = elapsed % 60
+				def hours = elapsed / 60
+				if (hours || minutes) {
+					string.insert(0, "$minutes m ")
+				}
+				if (hours) {
+					string.insert(0, "$hours h ")
+				}
+			}
 		}
+		if (autoReset) { start = end }
 		return string
 	}
 
-	private start = System.currentTimeMillis(), title
+	def start = System.currentTimeMillis(), minimum, title = '', autoReset, elapsed
 }

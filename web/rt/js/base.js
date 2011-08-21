@@ -18,8 +18,9 @@ $(function() {
 	var percentRE = /^(\d+)%$/
 	$.extend(true, window.usdlc, {
 		/**
-		 Create a dialog box to wrap an existing item.
-		 Options are those for jquery dialog, but height can be a percentage as well as a pixel count
+		 * Create a dialog box to wrap an existing item. Options are those for
+		 * jquery dialog, but height can be a percentage as well as a pixel
+		 * count
 		 */
 		dialog : function(contents, options) {
 			contents = $(contents)
@@ -30,15 +31,15 @@ $(function() {
 				options.height = $(window).height() * percent / 10.0
 			}
 			contents.dialog($.extend({
-				show: "blind",
-				hide: "explode"
+				show : "blind",
+				hide : "explode"
 			}, options))
 			// dialog sets iframe width to auto - which does not fill the parent
 			contents.css('width', '98%')
 			return contents
 		},
 		/*
-		 Modalise for editors
+		 * Modalise for editors
 		 */
 		modalOn : function(box) {
 			usdlc.maskEverything(0.2)
@@ -46,31 +47,34 @@ $(function() {
 				box.css('z-index', 9999).show('slow')
 			}
 		},
-		modalOff: function(box, afterwards) {
+		modalOff : function(box, afterwards) {
 			$('#modalMask').hide('slow')
 			if (box) {
 				box.css('z-index', 0).hide('slow', afterwards)
 			}
 		},
 		/**
-		 * Call page-sensitive help. Goes from referrer to root looking for a help directory.
+		 * Call page-sensitive help. Goes from referrer to root looking for a
+		 * help directory.
 		 */
-		help: function() {
+		help : function() {
 			usdlc.window("help", "/rt/help/index.html", {})
 		},
-		cookie: function(key) {
+		cookie : function(key) {
 			return $.cookie(key)
 		},
-		setCookie: function(key, value) {
-			return $.cookie(key, value, {expires : 1000})
+		setCookie : function(key, value) {
+			return $.cookie(key, value, {
+				expires : 1000
+			})
 		},
-		toggleShow: function() {
+		toggleShow : function() {
 			$.each(arguments, function(index, value) {
 				$(value).css('display', 'none')
 			})
 			$(arguments[0]).css('display', 'inherit')
 		},
-		setInnerHtml: function(element, data) {
+		setInnerHtml : function(element, data) {
 			element.html(data)
 		},
 		camelCase : function(text) {
@@ -78,10 +82,10 @@ $(function() {
 				return c.toUpperCase()
 			})
 		},
-		elementLoader: function(element) {
+		elementLoader : function(element) {
 			var href = element.attr('href')
 			var action = element.attr('action') || "setInnerHtml"
-			$.get(href, function(data) {
+			$.get(usdlc.urlBase + '/' + href, function(data) {
 				usdlc[action](element, data)
 			})
 		}

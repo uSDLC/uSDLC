@@ -21,7 +21,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import geb.Browser
 import geb.driver.CachingDriverFactory
 import geb.driver.PropertyBasedDriverFactory
-import static init.Config.config
+import static usdlc.Config.config
 
 class Geb {
 	Browser browser

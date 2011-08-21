@@ -17,13 +17,13 @@
 /*
   External style sheets: TGFI (Thank God for Includes)
  */
-@import "/lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
-@import "/lib/jquery/css/fg.menu.css";
-@import "/lib/CodeMirror/lib/codemirror.css";
-@import "/lib/CodeMirror/theme/default.css";
-@import "/lib/CodeMirror/theme/elegant.css";
-@import "/lib/CodeMirror/theme/neat.css";
-@import "/lib/CodeMirror/theme/night.css";
+@import "../lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
+@import "../lib/jquery/css/fg.menu.css";
+@import "../lib/CodeMirror/lib/codemirror.css";
+@import "../lib/CodeMirror/theme/default.css";
+@import "../lib/CodeMirror/theme/elegant.css";
+@import "../lib/CodeMirror/theme/neat.css";
+@import "../lib/CodeMirror/theme/night.css";
 
 body {
 	margin: 0;

@@ -17,8 +17,8 @@ package usdlc.actor
 
 import org.codehaus.groovy.runtime.InvokerHelper
 
-import usdlc.actor.GroovyActor.UsdlcBinding;
-import static init.Config.config
+import usdlc.actor.GroovyActor.UsdlcBinding
+import static usdlc.Config.config
 
 /**
  * User: paul
@@ -31,17 +31,27 @@ class DslActor extends GroovyActor {
 	 * turn can be used to create new running instances for dsl work.
 	 */
 	static DslActor newInstance(String language) {
-		if (! (language in cache)) {
-			cache[language] = new DslActor()
-			try {
-				GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPath as URL[])
-				cache[language].languageScriptClass = gse.loadScriptByName(
-						"${language.toLowerCase()}DSL.groovy")
-			} catch (ResourceException re) {
-				/* don't care as newInstance() will return null as expected */
+		def dsl = "${language.toLowerCase()}DSL"
+		if (! (dsl in cache)) {
+			cache[dsl] = new DslActor()
+			def found = config.dslPath.findResult { path ->
+				try {
+					Class.forName("${path.replaceAll('/', '.')}$dsl")
+				} catch (ClassNotFoundException cnfe) {
+					null
+				}
 			}
+			if (! found) {
+				try {
+					GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
+					found = gse.loadScriptByName("${dsl}.groovy")
+				} catch (ResourceException re) {
+					found = null
+				}
+			}
+			cache[dsl].languageScriptClass = found
 		}
-		cache[language]
+		cache[dsl]
 	}
 	/**
 	 * The Script sub-class created by the groovy compiler from script source - or null if there is no source.

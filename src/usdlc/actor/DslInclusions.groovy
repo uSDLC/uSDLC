@@ -29,6 +29,7 @@ class DslInclusions {
 	/** getting the property is an alias for loading the DSL */
 	def propertyMissing(String language) {
 		DslActor actor = DslActor.newInstance(language).newInstance()
+		assert actor, "Cannot find a DSL for $language"
 		actor.context = binding.variables
 		actor.dslContext = binding.dslContext
 		actor.run()

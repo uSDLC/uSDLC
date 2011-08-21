@@ -1,1 +1,1 @@
-bash.exe uSDLC
+tools\bash.exe uSDLC

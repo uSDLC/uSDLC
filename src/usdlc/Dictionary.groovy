@@ -42,9 +42,10 @@ class Dictionary {
 	 * def action = query.action
 	 *
 	 * @param text String containing "name=value&" pairs
-	 * @return dictionary ready to use
 	 */
-	static query(String text) { fromString(text, '=', '&') }
+	static query(String text) {
+		fromString(text, '=', '&')
+	}
 	/**
 	 * Use this to create a dictionary from command line arguments
 	 *
@@ -54,7 +55,7 @@ class Dictionary {
 	 * @param args from command line in the form of a=b "c=d e" f=g
 	 * @return dictionary ready to use
 	 */
-	static commandLine(String[] args) {
+	static commandLine(args) {
 		def map = [:]
 		args.each {
 			def nvp = it.split(/\s*=\s*/)
@@ -82,7 +83,7 @@ class Dictionary {
 	 * @return String representation of dictionary.
 	 */
 	static String toString(String map, String assign, String separate) {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder()
 		map.each { key, value ->
 			builder.append(key).append(assign).append(value).append(separate)
 		}

@@ -16,7 +16,7 @@
 package usdlc
 
 import usdlc.actor.Actor
-import static init.Config.config
+import static usdlc.Config.config
 import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
 

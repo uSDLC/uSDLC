@@ -13,12 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc.server.servletengine;
+package usdlc.server.servletengine
 
 
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
+import usdlc.Config
 import usdlc.Exchange
 import usdlc.Exchange.Header
 
@@ -31,33 +33,28 @@ class UsdlcServlet extends HttpServlet {
 	/**
 	 * In the uSDLC world Post and Get are the same (for now)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) { doGet(request, response); }
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+		doGet(request, response)
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-		initialiseUsdlc()
+		if (! Config.loaded) {
+			Config.load('servlet', servletConfig.servletContext.getRealPath('/'), [])
+		}
 		Exchange exchange = new Exchange()
 		exchange.request(request.inputStream, loadHeader(request)).response(response.outputStream) {
 			exchange.response.header.each { key, value -> response.addHeader(key, value) }
 			response.setStatus 200, 'OK'
 		}
 	}
-
 	private loadHeader(HttpServletRequest request) {
 		String uri = request.requestURI
 		int hash = uri.indexOf('#')
-		String fragment = (hash == -1) ? '' : header.uri.substring(hash + 1)
-		Map query = request.parameterMap.collectEntries { String key, String[] value -> [key.toLowerCase(), value[0]] }
-
+		String fragment = (hash == -1) ? '' : header.uri[hash + 1, -1]
 		new Header(
-				host: request.getHeader('host'), method: request.method, query: query, uri: uri,
-				fragment: fragment, cookie: requestHeaders['Cookie'] ?: ''
-		)
-	}
-
-	private initialiseUsdlc() {
-		if (!init.Config.config) {
-			// Find the current directory as the base of the web directory
-			init.Config.load(servletConfig.servletContext.getRealPath('/'), [])
-		}
+				host: request.getHeader('Host'), method: request.method,
+				query: request.queryString, uri: uri,
+				fragment: fragment, cookie: request.getHeader('Cookie') ?: ''
+				)
 	}
 }

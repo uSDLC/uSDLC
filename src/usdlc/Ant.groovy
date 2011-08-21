@@ -17,7 +17,7 @@ package usdlc
 
 import org.apache.tools.ant.BuildEvent
 import org.apache.tools.ant.BuildListener
-import static init.Config.config
+import static usdlc.Config.config
 
 /**
  * User: Paul Marrington

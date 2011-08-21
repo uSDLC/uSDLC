@@ -15,7 +15,7 @@
  */
 usdlc.init = {
 	queue : [],
-	pageLayout: function() {
+	pageLayout : function() {
 		setPageLayout()
 		$(window).resize(setPageLayout).load(setPageLayout)
 		setModalMask()
@@ -26,14 +26,15 @@ usdlc.init = {
 		}
 
 		/**
-		 Size the main sections of a page.
+		 * Size the main sections of a page.
 		 */
 		function setPageLayout() {
 			var w = $(window)
 			var ptt = $('table#pageTitleTable')
 			usdlc.pageContents = $('div#pageContents')
 			var pad = usdlc.pageContents.outerHeight() - usdlc.pageContents.height()
-			if (pad < 0 || pad > 50) pad = 25
+			if (pad < 0 || pad > 50)
+				pad = 25
 			var viewPortHeight = w.height() - ptt.outerHeight() - pad
 			var aboveScroll = (viewPortHeight > 500) ? 100 : 50
 			var belowScroll = viewPortHeight - aboveScroll
@@ -41,6 +42,7 @@ usdlc.init = {
 			$('#contentTree').outerHeight(viewPortHeight)
 			$('#pageContentsTable').css('maxWidth', w.width())
 
+			var lastScrollTop = 0
 			usdlc.scrollTo = function(element) {
 				lastScrollTop = usdlc.pageContents.parent().scrollTop()
 				var elementHeight = element.outerHeight()
@@ -52,7 +54,6 @@ usdlc.init = {
 				usdlc.pageContents.scrollTop(newTop)
 				usdlc.setFocus(element)
 			}
-			var lastScrollTop = 0
 
 			usdlc.scrollBack = function() {
 				usdlc.pageContents.scrollTop(lastScrollTop)
@@ -67,7 +68,7 @@ usdlc.init = {
 				return usdlc.pageContents.find('div.section')
 			},
 			scrollTo : usdlc.scrollTo,
-			content: function (i, $page) {
+			content : function(i, $page) {
 				var title = usdlc.parseSection($page).title
 				return '<span class="sausage-span">' + title + '</span>';
 			}
@@ -76,7 +77,8 @@ usdlc.init = {
 		usdlc.scrollFiller = function(on) {
 			if (on) {
 				if ($('div.scrollFiller').size() === 0)
-					usdlc.pageContents.append($("<div/>").height(usdlc.pageContents.height() * 0.6).addClass('scrollFiller'))
+					usdlc.pageContents.append($("<div/>").height(usdlc.pageContents.height() * 0.6).addClass(
+							'scrollFiller'))
 			} else
 				$('div.scrollFiller').remove()
 		}
@@ -84,19 +86,23 @@ usdlc.init = {
 	},
 	loadPage : function(callback) {
 		/**
-		 * When you open uSDLC without asking for a page, the last page displayed
-		 * will return. /root is a special case so you can go to the uSDLC D3 root.
+		 * When you open uSDLC without asking for a page, the last page
+		 * displayed will return. Use /frontPage.html to get to the true root.
 		 */
 		var path = window.location.pathname
-		if (path == '/') {
+		if (path == usdlc.urlBase + '/') {
 			path = window.location.search || usdlc.cookie('currentPage') || '/frontPage.html'
-			if (path[0] == '?') path = path.substring(1)
+			if (path[0] == '?')
+				path = path.substring(1)
 		}
 		usdlc.absolutePageContents(path, callback)
 	},
-	finalise :	function() {
-		$('div[href]').each(function() { usdlc.elementLoader($(this)) })
-		// move from do-nothing to do-it-all and then generate for already loaded first page.
+	finalise : function() {
+		$('div[href]').each(function() {
+			usdlc.elementLoader($(this))
+		})
+		// move from do-nothing to do-it-all and then generate for already
+		// loaded first page.
 		usdlc.synopses = usdlc.doSynopses
 		usdlc.synopses()
 	}

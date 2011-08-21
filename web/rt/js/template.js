@@ -22,14 +22,13 @@ $(function() {
 				// Firefox & Google Chrome
 				console.log(message);
 			} else {
-				$("body").append(
-						"<div class='logMessage'>" + message + "</div>");
+				$("body").append("<div class='logMessage'>" + message + "</div>");
 			}
 		},
 		/**
 		 * Give notice to an error by highlighting the page selection and
 		 * displaying a message.
-		 *
+		 * 
 		 * @param messageFile
 		 *            File/script to produce message to display
 		 */
@@ -76,10 +75,9 @@ $(function() {
 		 * response in javaScript.
 		 */
 		save : function(where, what, more) {
-			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what,
-					function(code) {
-						$.globalEval(code)
-					})
+			$.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what, function(code) {
+				$.globalEval(code)
+			})
 		},
 
 		maskEverything : function(dim) {
@@ -116,6 +114,9 @@ $(function() {
 		pageContentsURL : '/index.html',
 		normalizeURL : function(path) {
 			var p = path
+			if (p.substring(0, usdlc.urlBase.length) != usdlc.urlBase) {
+				p = usdlc.urlBase + '/' + p
+			}
 			var dot = p.lastIndexOf('.')
 			var slash = p.lastIndexOf('/')
 			if (slash == p.length - 1) {
@@ -133,15 +134,13 @@ $(function() {
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)
-			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(),
-					'&after=usdlc.synopses()')
+			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')
 			usdlc.setPageTitle()
 			usdlc.scrollFiller(true)
 			usdlc.pageContentsSausages.sausage()
 		},
 		createPageTitle : function(heading, subtitle) {
-			return $('<div/>').attr('id', 'pageTitle').addClass('editable')
-					.append($('<h1/>').append(heading)).append(
+			return $('<div/>').attr('id', 'pageTitle').addClass('editable').append($('<h1/>').append(heading)).append(
 					$('<h2/>').append(subtitle))
 		}
 	})
@@ -159,12 +158,4 @@ $(function() {
 	// The last thing we do is make the page visible. Hopefully and the visual
 	// work will be done by now.
 	$('body').removeAttr('style')
-	// .bind('click',
-	// function(event) {
-	// // we need to avound clearing focus if we are returning from the editor
-	// if (!$(event.target).hasClass('cke_icon')) {
-	// usdlc.clearFocus()
-	// }
-	// })
-
 })

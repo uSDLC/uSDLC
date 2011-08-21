@@ -17,7 +17,7 @@ package usdlc.actor
 
 import usdlc.History
 import usdlc.Store
-import static init.Config.config
+import static usdlc.Config.config
 
 /**
  * uSDLC supports actor and filters. This filter provides HTML templating. By default it runs templates/pasteList.html.groovy that provides header, body and scrolling elements.
@@ -47,16 +47,8 @@ class HtmlActor extends Actor {
 				paste()
 				break
 			default:    // Suck the HTML file contents - converting from byte[] to String.
-				exchange.response.write exchange.store.read() ?: template()
+				exchange.response.write exchange.store.read() ?: Store.base('rt/template.html').read()
 				break
-		}
-	}
-
-	private byte[] template() {
-		List matcher = (exchange.store.path =~ ~/\.(.+)$/)[0]
-		matcher.findResult([] as byte[]) { String ext ->
-			String template = config.template[ext]
-			template ? Store.base("rt/${template}.$ext").read() : null
 		}
 	}
 

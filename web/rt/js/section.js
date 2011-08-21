@@ -24,7 +24,7 @@ $(function() {
 			var section = usdlc.getSection(element)
 			if (section) {
 				if (colour) {
-					var url = 'url(/rt/gradients/' + colour + '-right.png)'
+					var url = 'url(' + usdlc.urlBase + '/rt/gradients/' + colour + '-right.png)'
 					section.css({
 						backgroundImage : url,
 						backgroundPosition : -10
@@ -37,7 +37,8 @@ $(function() {
 			}
 		},
 		/**
-		 * Given an element (null for current focus), retrieve the section containing it.
+		 * Given an element (null for current focus), retrieve the section
+		 * containing it.
 		 */
 		getSection : function(element) {
 			var section = $(element || usdlc.inFocus)
@@ -115,7 +116,7 @@ $(function() {
 		},
 		/**
 		 * Parse section title, subtitle, content, id and name (camel-case)
-		 * 
+		 *
 		 * @param section
 		 */
 		parseSection : function(section) {

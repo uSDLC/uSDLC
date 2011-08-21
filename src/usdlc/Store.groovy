@@ -16,13 +16,13 @@
 package usdlc
 
 import static groovy.io.FileType.FILES
-import static init.Config.config
+import static usdlc.Config.config
 
 /**
- Not all platforms that will use uSDLC will have access to a traditional file system. Google Appengine, for example, only allows data to be stored in BigTable - the database. For this reason, all uSDLC uses Store for persistence. The long-term plan is to more the base persistence calls the platform specific code.
- * User: Paul Marrington
- * Date: 23/11/10
- * Time: 5:31 PM
+ * Not all platforms that will use uSDLC will have access to a traditional file system.
+ * Google Appengine, for example, only allows data to be stored in BigTable - the database.
+ * For this reason, all uSDLC uses Store for persistence.
+ * The long-term plan is to more the base persistence calls the platform specific code.
  */
 class Store {
 	/**
@@ -49,7 +49,9 @@ class Store {
 	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream.readLines() }
 	 * </code>
 	 */
-	InputStream withInputStream(String fileName, Closure closure) { new File(file, fileName).withInputStream(closure) }
+	InputStream withInputStream(String fileName, Closure closure) {
+		new File(file, fileName).withInputStream(closure)
+	}
 	/**
 	 * Process a closure with a FileReader as the only parameter
 	 * <code>
@@ -57,7 +59,9 @@ class Store {
 	 * store.withReader { list << it }
 	 * </code>
 	 */
-	Reader withReader(Closure closure) { new FileReader(file).withReader(closure) }
+	Reader withReader(Closure closure) {
+		new FileReader(file).withReader(closure)
+	}
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
@@ -130,18 +134,26 @@ class Store {
 		this
 	}
 
-	Store append(String contents) { append contents.bytes }
+	Store append(String contents) {
+		append contents.bytes
+	}
 
-	Store append(long contents) { append contents.toString() }
+	Store append(long contents) {
+		append contents.toString()
+	}
 	/**
 	 * Check the size of the file.
 	 * @return bytes in file.
 	 */
-	int size() { file.size() }
+	int size() {
+		file.size()
+	}
 	/**
 	 * See if the file exists
 	 */
-	boolean exists() { file.exists() }
+	boolean exists() {
+		file.exists()
+	}
 	/**
 	 * Fetch a list of matching contents of a directory - names only, no path
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -154,7 +166,9 @@ class Store {
 	 * Fetch a list of all contents of a directory
 	 * @param closure - code to execute for each file in the directory
 	 */
-	void dir(Closure closure) { dir(~/.*/, closure) }
+	void dir(Closure closure) {
+		dir(~/.*/, closure)
+	}
 	/**
 	 * Fetch a list of matching contents of a directory
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -169,7 +183,9 @@ class Store {
 	 * Fetch a list of all matching contents of a directory
 	 * @return list of all files in the directory
 	 */
-	List dir() { dir(~/.*/) }
+	List dir() {
+		dir(~/.*/)
+	}
 	/**
 	 * Call a closure for the contents of a directory tree (as in dir /s)
 	 * @param mask - anything with isCase - typically a regular expression (~/re/)
@@ -191,11 +207,15 @@ class Store {
 		list
 	}
 
-	long lastModified() { file.lastModified() }
+	long lastModified() {
+		file.lastModified()
+	}
 	/**
 	 * Store.toString(), implicit or explicit will return the full path to the file or directory
 	 */
-	String toString() { path }
+	String toString() {
+		path
+	}
 
 	private File file
 
@@ -209,7 +229,7 @@ class Store {
 		def uniquePath = "${timestamp}_${uniquifier}_${camelCase(end)}"
 		def unique
 		while ((unique = new File(file, uniquePath)).exists()) {
-			uniquifier++;
+			uniquifier++
 		}
 		pathFromBase(unique)
 	}
@@ -231,10 +251,10 @@ class Store {
 			String dateString = matcher[0][1]
 			String title = matcher[0][3]
 			unique = [
-					date: Date.parse(dateStampFormat, dateString),
-					title: decamel(title),
-					path: uniqueName.replaceAll(sloshRE, '/')
-			]
+						date: Date.parse(dateStampFormat, dateString),
+						title: decamel(title),
+						path: uniqueName.replaceAll(sloshRE, '/')
+					]
 		} else {
 			unique = null
 		}
@@ -248,7 +268,9 @@ class Store {
 	/**
 	 * Turn a camel-case name back into a sentence
 	 */
-	static decamel(camelCase) { camelCase.replaceAll(decamelRE, ' $1') }
+	static decamel(camelCase) {
+		camelCase.replaceAll(decamelRE, ' $1')
+	}
 	/**
 	 * Split a fully qualified storage name into path, name and extension
 	 * @return [path : path, name : name, ext : ext]
@@ -269,19 +291,31 @@ class Store {
 	/**
 	 * move a file or directory to a target directory.
 	 */
-	def move(to) { ant.move(toDir: to) { fileset(dir: file.parent, includes: "$file.name/*") } }
+	def move(to) {
+		ant.move(toDir: to) {
+			fileset(dir: file.parent, includes: "$file.name/*")
+		}
+	}
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */
-	def rmdir() { ant.delete(dir: file.path, includeemptydirs: true) }
+	def rmdir() {
+		ant.delete(dir: file.path, includeemptydirs: true)
+	}
 	/**
 	 * Delete the named file that lives under the defined Store
 	 */
-	def delete(name) { ant.delete { fileset(dir: file.path, includes: name)} }
+	def delete(name) {
+		ant.delete {
+			fileset(dir: file.path, includes: name)
+		}
+	}
 	/**
 	 * Delete the file pointed to by the store.
 	 */
-	def delete() { ant.delete(file: file.name) }
+	def delete() {
+		ant.delete(file: file.name)
+	}
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)
 }

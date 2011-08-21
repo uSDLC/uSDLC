@@ -119,9 +119,9 @@ $(function() {
 
 	function setButtonBars() {
 		$('span.toolbar').each(function() {
-			var toolbar = $(this)
-			$.get('/rt/' + toolbar.attr('id'), function(data) {
-				toolbar.html(data)
+			var tb = $(this)
+			$.get(usdlc.urlBase + '/rt/' + tb.attr('id'), function(data) {
+				tb.html(data)
 			})
 		})
 	}

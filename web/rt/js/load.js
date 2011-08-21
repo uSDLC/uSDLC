@@ -13,17 +13,39 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  */
-
-/**
- * User: paul Date: 7/07/11 Time: 5:01 PM
- */
 window.usdlc = {
-	synopses : function() {
+	synopses : function() { /*
+							 * we will provide one with teeth after
+							 * initialisation
+							 */
+	},
+	/**
+	 * Given a path (from a URL), return the parent path - being the complete
+	 * directory structure without file name.
+	 */
+	parentPath : function(path) {
+		var lastSlash = path.lastIndexOf('/')
+		if (lastSlash != -1)
+			path = path.substring(0, lastSlash)
+		return path
+	},
+	removeUrlBase : function(path) {
+		var b = usdlc.urlBase + '/'
+		if (path.substring(0, b.length) == b) {
+			path = path.substring(b.length)
+		}
+		return path
 	}
 }
 
 window.onload = function() {
+	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
+
 	var head = document.getElementsByTagName('head')[0]
+
+	var base = document.createElement('base')
+	base.setAttribute('href', usdlc.urlBase)
+	head.appendChild(base)
 
 	function loadScriptAsync(path, onScriptLoaded) {
 		var script = document.createElement("script")
@@ -41,7 +63,7 @@ window.onload = function() {
 				onScriptLoaded(path)
 			}
 		}
-		script.src = path
+		script.src = usdlc.urlBase + path
 		head.appendChild(script)
 	}
 

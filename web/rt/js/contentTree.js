@@ -15,59 +15,56 @@
  */
 
 $(function() {
-	usdlc.contentTree =
-			$('#contentTree').jstree(
-					{
-						html_data : {
-							ajax : {
-								url : function(li) {
-									var path
-									if (li == -1) {
-										path = '/frontPage.html'
-									} else {
-										path = $('a', li).get(0).pathname
-										if (path[0] != '/') {
-											path = '/' + path
-										}
-									}
-									this.contentRoot = jQuery.url.setUrl(path).attr("directory")
-									return path
-								},
-								success : function(data) {
-									var tree = ''
-									var root = this.contentRoot
-									$('<ins/>').html(data).find('a.usdlc[action=page]').each(
-											function() {
-												var a = $(this)
-												var href = usdlc.removeDomain(a.attr('href'))
-												if (href.charAt(0) != '/') {
-													href = root + href
-												}
-												var id =
-														usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(
-																/\//g, ' '))
-												tree +=
-														"<li id='" + id + "' class='jstree-closed'><a href='" + href
-																+ "' class='contentLink'>" + a.text() + "</a></li>"
-											})
-									return tree ? tree : ' '
+	usdlc.contentTree = $('#contentTree').jstree(
+			{
+				html_data : {
+					ajax : {
+						url : function(li) {
+							var path
+							if (li == -1) {
+								path = usdlc.urlBase + '/frontPage.html'
+							} else {
+								path = $('a', li).get(0).pathname
+								if (path[0] != '/') {
+									path = '/' + path
 								}
 							}
+							this.contentRoot = jQuery.url.setUrl(path).attr("directory")
+							return path
 						},
-						hotkeys : {
-							del : function() {
-							},
-							f2 : function() {
-							}
-						},
-						cookies : {
-							cookie_options : {
-								expires : 1000
-							}
-						},
-						themes : {
-							theme : 'classic'
-						}, // apple classic default
-						plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
-					}).removeClass('hidden')
+						success : function(data) {
+							var tree = ''
+							var root = this.contentRoot
+							$('<ins/>').html(data).find('a.usdlc[action=page]').each(
+									function() {
+										var a = $(this)
+										var href = usdlc.removeDomain(a.attr('href'))
+										if (href.charAt(0) != '/') {
+											href = root + href
+										}
+										var id = usdlc
+												.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
+										tree += "<li id='" + id + "' class='jstree-closed'><a href='" + href
+												+ "' class='contentLink'>" + a.text() + "</a></li>"
+									})
+							return tree ? tree : ' '
+						}
+					}
+				},
+				hotkeys : {
+					del : function() { /* Don't delete a node from here (yet) */
+					},
+					f2 : function() { /* Stop the F2 rename function */
+					}
+				},
+				cookies : {
+					cookie_options : {
+						expires : 1000
+					}
+				},
+				themes : {
+					theme : 'classic'
+				}, // apple classic default
+				plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
+			}).removeClass('hidden')
 })

@@ -55,7 +55,7 @@ $(function() {
 			setTimeout(resizeOutputFrameImmediate, 1000)
 		},
 		actorState : function(href, state) {
-			var link = $('a[href="'+href+'"]').
+			$('a[href="'+href+'"]').
 				removeClass('running failed succeeded').addClass(state)
 		}
 	})
@@ -74,8 +74,9 @@ $(function() {
 			sections = sections.map(function() {
 				return $(this).attr('id')
 			}).get().join(',')
-			var url = usdlc.pageContentsURL + '.sectionRunner?page=' + usdlc.pageContentsURL + '&sections='
-					+ sections
+			var pc = usdlc.pageContentsURL
+			var pcf = usdlc.removeUrlBase(pc)
+			var url = pc + '.sectionRunner?page=' + pcf + '&sections=' + sections
 			outputFrame = $('<iframe/>').addClass('output').attr('src', url)
 			outputSection.append(outputFrame)
 		}

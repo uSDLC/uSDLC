@@ -19,7 +19,7 @@ import javax.tools.ToolProvider
 import usdlc.CompilingClassLoader
 import usdlc.Store
 import usdlc.actor.JavaFileObjects.ClassFileManager
-import static init.Config.config
+import static usdlc.Config.config
 
 /**
  * Java actor super-class. Implement run() in your sub-class to do the real work. You will have access to the environment and browser.

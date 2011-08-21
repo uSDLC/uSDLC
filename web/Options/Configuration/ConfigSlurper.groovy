@@ -13,35 +13,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package init
-/**
- * User: paul
- * Date: 29/06/11
- * Time: 6:36 PM
- */
-class Config extends usdlc.Config {
-	public static final Config config = new Config()
+package Options.Configuration
+urlBase = ''
+srcPath = ['./', 'support/']
+dslPath = ['dsl/', 'usdlc/dsl/']
+//dslPath = ['dsl/', '../src/usdlc/dsl/']
+//dslPath = ['dsl/', 'jar:file:usdlc.jar!/usdlc/dsl/']
+libPath = ['lib/jars/']
+databases = [usdlc: 'jdbc:h2:.db/usdlc']
+browserDriverList = 'firefox:chrome:ie:htmlunit'
+alwaysCheckForRecompile = true
+port = 9000
+environmentRegister = [db: 'usdlc.db.Database']
 
-	Config() {
-		urlBase = ''
-		srcPath = ['./', 'support/']
-		dslPath = ['dsl/', '../src/usdlc/dsl/']//'jar:file:usdlc.jar!/usdlc/dsl/']
-		libPath = ['lib/jars/']
-		databases = [
-				usdlc: 'jdbc:h2:.db/usdlc'
-		]
-		browserDriverList = 'firefox:chrome:ie:htmlunit'
-		template = [
-				html: 'template',
-				'html.groovy': 'template',
-				groovy: 'template',
-				gradle: 'template'
-		]
-		defaultScriptLanguage = 'groovy'
-		alwaysCheckForRecompile = true
-		port = 9000
-		environmentRegister = [
-				db: 'usdlc.db.Database'
-		]
+environments {
+	standalone {
+	}
+	servlet {
+		urlBase = '/uSDLC'
 	}
 }

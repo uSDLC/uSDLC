@@ -42,7 +42,12 @@ class Log extends SimpleLog {
 	 */
 	static file(name) {
 		def store = Store.base("store/log/${name}.log")
-		store.append("\n${new Date().format('yyyy-MM-dd')}: ")
+		store.append("\n${new Date().format('yyyy-MM-dd HH:mm')}: ")
+		return { store.append it }
+	}
+	static csv(name) {
+		def store = Store.base("store/log/${name}.csv")
+		store.append("\n${new Date().format('yyyyMMdd,HHmm,Z')},")
 		return { store.append it }
 	}
 	/**
