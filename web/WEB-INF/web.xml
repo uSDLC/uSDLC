@@ -10,10 +10,10 @@
     </description>
     
 <context-param>
-      <param-name>webmaster</param-name>
-      <param-value>paul@marrington.net</param-value>
-    </context-param>
-        
+	<param-name>webmaster</param-name>
+	<param-value>paul@marrington.net</param-value>
+</context-param>
+
 	<servlet>
 		<servlet-name>UsdlcServlet</servlet-name>
 		<servlet-class>usdlc.server.servletengine.UsdlcServlet</servlet-class>

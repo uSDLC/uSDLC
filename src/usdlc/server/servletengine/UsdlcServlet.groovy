@@ -24,11 +24,6 @@ import usdlc.Config
 import usdlc.Exchange
 import usdlc.Exchange.Header
 
-/**
- * User: Paul Marrington
- * Date: 11/05/11
- * Time: 9:14 PM
- */
 class UsdlcServlet extends HttpServlet {
 	/**
 	 * In the uSDLC world Post and Get are the same (for now)
@@ -51,6 +46,7 @@ class UsdlcServlet extends HttpServlet {
 		String uri = request.requestURI
 		int hash = uri.indexOf('#')
 		String fragment = (hash == -1) ? '' : header.uri[hash + 1, -1]
+		Config.config.urlBase = request.getContextPath()
 		new Header(
 				host: request.getHeader('Host'), method: request.method,
 				query: request.queryString, uri: uri,

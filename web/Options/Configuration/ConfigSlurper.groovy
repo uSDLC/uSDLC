@@ -30,6 +30,5 @@ environments {
 	standalone {
 	}
 	servlet {
-		urlBase = '/uSDLC'
 	}
 }
