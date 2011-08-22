@@ -151,7 +151,6 @@ import static usdlc.Config.config
 		String elapsed = timer
 		wrapOutput(['<pre class="gray">','</pre>']) { write "\t$currentActor: $to$elapsed" }
 		Log.csv("${currentPage}.timings")("$currentActor,$to,$timer.elapsed,$elapsed")
-		// TODO: write log
 	}
 	def currentActor
 	usdlc.Timer timer = new usdlc.Timer(title : ' in ', minimum : 100, autoReset : true)

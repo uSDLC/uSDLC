@@ -35,7 +35,7 @@ $(function() {
 			xml : 'xml',
 			yaml : 'yaml'
 		}
-	
+
 	usdlc.getSourceEditorModes = function() {
 		var set = [], included = {}
 		$.each(syntaxes, function(key, value) {
@@ -96,17 +96,19 @@ $(function() {
 		})
 		codemirror.url = url
 		wrapper.data('codemirror', codemirror)
+		// CodeMirror stuffs up. It paints then resizes without painting again
+		setTimeout(function() {codemirror.refresh()}, 500)
 	}
 	usdlc.addSourceEditorKey = function(key, action) {
 		keyHandlers.push()
 	}
 	keyHandlers = []
-	usdlc.pageContents.bind('scroll', function() {
-		$("div.inclusion").each(function() {
-			var codemirror = $(this).data('codemirror')
-			if (codemirror) codemirror.refresh()
-		})
-	})
+//	usdlc.pageContents.bind('scroll', function() {
+//		$("div.inclusion").each(function() {
+//			var codemirror = $(this).data('codemirror')
+//			if (codemirror) codemirror.refresh()
+//		})
+//	})
 //	$('a.sourceLink').live('click', function(ev) {
 //		var link = $(ev.currentTarget)
 //		var href = ev.currentTarget.pathname

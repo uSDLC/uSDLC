@@ -14,10 +14,7 @@
   limitations under the License.
  */
 window.usdlc = {
-	synopses : function() { /*
-							 * we will provide one with teeth after
-							 * initialisation
-							 */
+	synopses : function() { // we will provide one with teeth after
 	},
 	/**
 	 * Given a path (from a URL), return the parent path - being the complete

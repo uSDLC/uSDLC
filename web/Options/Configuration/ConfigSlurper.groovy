@@ -25,6 +25,7 @@ browserDriverList = 'firefox:chrome:ie:htmlunit'
 alwaysCheckForRecompile = true
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
+compressJs = false
 
 environments {
 	standalone {

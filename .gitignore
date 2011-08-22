@@ -3,3 +3,5 @@ out/
 web/store/
 /bin/
 /*.DS_Store
+/.settings
+/.externalToolBuilders
