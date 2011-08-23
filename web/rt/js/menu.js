@@ -110,8 +110,10 @@ $(function() {
 				}
 				var a = kbd.parents('a')
 				doc.bind('keydown', key, function(event) {
-					if (!usdlc.inEditor == !forSourceEditor)
+					if (!usdlc.inEditor == !forSourceEditor) {
+						event.srcElement.usdlcKeyEvent = true
 						a.click()
+					}
 				})
 			})
 		}

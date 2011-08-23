@@ -68,7 +68,7 @@ window.onload = function() {
 
 	function loadSetInParallel(scripts, onSetAllLoaded) {
 		var countdown = scripts.length
-		while (scripts.length) {
+		while (scripts && scripts.length) {
 			loadScriptAsync(scripts.shift(), function(path) {
 				if (!--countdown)
 					onSetAllLoaded()

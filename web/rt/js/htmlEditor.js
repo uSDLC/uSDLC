@@ -83,7 +83,7 @@ $(function() {
 					usdlc.synopses()
 					return
 
-					
+
 
 				}
 				// Special case for the title - move it back where it belongs.
@@ -119,8 +119,7 @@ $(function() {
 						}
 					}
 				})
-				usdlc.checkForSynopsis($section)// See if we load synopsis from
-				// inner page link
+				usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
 				usdlc.savePage()
 				usdlc.scrollBack()
 			},

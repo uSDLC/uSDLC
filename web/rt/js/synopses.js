@@ -44,7 +44,11 @@ $(function() {
 			$('div.inclusion', section).hide()
 		},
 		checkForSynopsis : function(section) {
-			return $("a[action]", section).size() > 0
+			if ($("a[action]", section).size() > 0) {
+				section.addClass('synopsis')
+			} else {
+				section.removeClass('synopsis')
+			}
 		}
 	})
 
