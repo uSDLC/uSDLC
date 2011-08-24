@@ -13,24 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package Options.Configuration
-urlBase = ''
-srcPath = ['./', 'support/']
-dslPath = ['dsl/', 'usdlc/dsl/']
-//dslPath = ['dsl/', '../src/usdlc/dsl/']
-//dslPath = ['dsl/', 'jar:file:usdlc.jar!/usdlc/dsl/']
-libPath = ['lib/jars/']
-databases = [usdlc: 'jdbc:h2:.db/usdlc']
-browserDriverList = 'firefox:chrome:ie:htmlunit'
-alwaysCheckForRecompile = true
-port = 9000
-environmentRegister = [db: 'usdlc.db.Database']
-compressJs = true
-compressCss = true
+package usdlc.actor
 
-environments {
-	standalone {
-	}
-	servlet {
+import com.yahoo.platform.yui.compressor.CssCompressor
+
+/**
+ * Load javascript - minify if needed.
+ */
+class CssActor extends CompressorActor {
+	/**
+	 Use to generate HTML to display on the screen.
+	 */
+	void run() {
+		filter('css') { input, output ->
+			def compressor = new CssCompressor(input)
+			compressor.compress(output, 80)
+		}
 	}
 }

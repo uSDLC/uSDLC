@@ -38,7 +38,7 @@ class Store {
 	 */
 	Store rebase(String more = '') {
 		def store = new Store()
-		store.file = new File(config.baseDirectory, parent + camelCase(more))
+		store.file = new File(new File(config.baseDirectory, parent), camelCase(more))
 		store
 	}
 	/**
@@ -145,7 +145,7 @@ class Store {
 	 * Check the size of the file.
 	 * @return bytes in file.
 	 */
-	int size() {
+	long size() {
 		file.size()
 	}
 	/**

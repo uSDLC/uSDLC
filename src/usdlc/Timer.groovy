@@ -39,19 +39,19 @@ class Timer {
 		 if (elapsed > minimum) {
 			 string << title
 			if (elapsed < 1000) {
-				string.append("$elapsed ms")
+				string.append("${elapsed}ms")
 			} else {
 				elapsed /= 1000
 				def seconds = elapsed % 60
-				string.append("$seconds s")
+				string.append("${seconds}s")
 				elapsed /= 60
 				def minutes = elapsed % 60
 				def hours = elapsed / 60
 				if (hours || minutes) {
-					string.insert(0, "$minutes m ")
+					string.insert(0, "${minutes}m ")
 				}
 				if (hours) {
-					string.insert(0, "$hours h ")
+					string.insert(0, "${hours}h ")
 				}
 			}
 		}
@@ -59,5 +59,6 @@ class Timer {
 		return string
 	}
 
-	def start = System.currentTimeMillis(), minimum, title = '', autoReset, elapsed
+	def title = '', autoReset
+	long start = System.currentTimeMillis(), elapsed, minimum
 }
