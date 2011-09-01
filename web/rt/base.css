@@ -17,7 +17,7 @@
 /*
   External style sheets: TGFI (Thank God for Includes)
  */
-@import "../lib/jquery/css/ui-lightness/jquery-ui-1.8.13.custom.css";
+@import "../lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css";
 @import "../lib/jquery/css/fg.menu.css";
 @import "../lib/CodeMirror/lib/codemirror.css";
 @import "../lib/CodeMirror/theme/default.css";
@@ -200,7 +200,7 @@ p {
 }
 
 div.section {
-	padding-top: 0.5em;
+	padding: 0.5em;
 	border-bottom: #f2f2f2 1px solid;
 }
 

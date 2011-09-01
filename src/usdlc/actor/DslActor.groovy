@@ -16,8 +16,6 @@
 package usdlc.actor
 
 import org.codehaus.groovy.runtime.InvokerHelper
-
-import usdlc.actor.GroovyActor.UsdlcBinding
 import static usdlc.Config.config
 
 /**

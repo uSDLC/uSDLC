@@ -15,8 +15,6 @@
  */
 package usdlc.actor
 
-import usdlc.actor.GroovyActor.UsdlcBinding;
-
 /**
  * A DSL is loaded implicitly using the script extension or explicitly with a dsls command.
  * To load DSLs for csv and database processing

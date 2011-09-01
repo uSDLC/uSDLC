@@ -62,6 +62,7 @@ class MimeTypes {
 		clp: 'application/x-msclip',
 		cmx: 'image/x-cmx',
 		cod: 'image/cis-cod',
+		'coffee-script': 'application/javascript',
 		cpio: 'application/x-cpio',
 		crd: 'application/x-mscardfile',
 		crl: 'application/pkix-crl',

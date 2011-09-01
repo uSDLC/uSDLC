@@ -16,11 +16,6 @@ import usdlc.Store
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-/**
- * User: Paul Marrington
- * Date: 1/05/11
- * Time: 2:27 PM
- */
 doc.div(id: "pageTitle", 'class': "editable") {
 	h1("")
 	h2("")

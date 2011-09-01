@@ -52,6 +52,9 @@ class Store {
 	InputStream withInputStream(String fileName, Closure closure) {
 		new File(file, fileName).withInputStream(closure)
 	}
+	InputStream withInputStream(Closure closure) {
+		file.withInputStream(closure)
+	}
 	/**
 	 * Process a closure with a FileReader as the only parameter
 	 * <code>
@@ -206,9 +209,13 @@ class Store {
 		dirs(mask) { list << it.replaceAll(sloshRE, '/') }
 		list
 	}
-
-	long lastModified() {
-		file.lastModified()
+	/**
+	 * Used to see if a compile/processing action is required because the source is newer than the destination.
+	 * lastModified returns 0 if the file does not exist, so if the destination does not exist then the source
+	 * is flagged as newer.
+	 */
+	boolean newer(Store than) {
+		file.lastModified() > than.file.lastModified()
 	}
 	/**
 	 * Store.toString(), implicit or explicit will return the full path to the file or directory

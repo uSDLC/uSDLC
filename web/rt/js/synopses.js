@@ -54,14 +54,14 @@ $(function() {
 
 	function loadSynopsis(link, processor) {
 		var path = usdlc.normalizeURL(link.get(0).pathname)
+			var section = link.parents('div.synopsis')
+			var inclusion = $('<div/>').addClass('inclusion')
+			section.append(inclusion)
 		$.get(usdlc.serverActionUrl(path, 'raw'), function(data) {
 			if (data.length < 3) {
 				data = ''
 			}
-			var section = link.parents('div.synopsis')
-			var inclusion = $('<div/>').addClass('inclusion')
 			processor(inclusion, data, path)
-			section.append(inclusion)
 		})
 	}
 	// usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)

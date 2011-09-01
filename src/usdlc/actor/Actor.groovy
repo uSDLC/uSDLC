@@ -56,10 +56,10 @@ import usdlc.Store
 	 * Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
-		Matcher match = (store.path =~ ~/\.(\w+)$/)
+		Matcher match = (store.path =~ ~/\.([\w\-]+)$/)
 		def actor = null
 		if (match) {
-			String language = match[-1][1]
+			String language = match[-1][1].replaceAll(/\-/, '')
 			try {
 				if (language in DslActor.cache) {
 					actor = DslActor.cache[language].newInstance()

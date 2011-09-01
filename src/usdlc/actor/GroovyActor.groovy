@@ -47,7 +47,8 @@ class GroovyActor extends Actor {
 							gse.run(path, usdlcBinding)
 						},
 						out: { out.println it },
-						dsl: new DslInclusions(binding: usdlcBinding),
+						config: config,
+						dsl: new DslInclusions(binding: usdlcBinding)
 					]
 		}
 	}
@@ -57,42 +58,5 @@ class GroovyActor extends Actor {
 	void run() {
 		init()
 		context.gse.run script.path, context.usdlcBinding
-	}
-
-	public static class CaseCategory {
-		public static boolean isCase(Map caseValue, switchValue) {
-			return caseValue.containsKey(switchValue)
-		}
-	}
-
-	static class UsdlcBinding extends Binding {
-		def dslContext
-
-		UsdlcBinding(binding, dslBinding) {
-			super(binding as Map)
-			dslContext = dslBinding
-		}
-
-		def getVariable(String name) {
-			use (CaseCategory) {
-				switch (name) {
-					case variables: variables[name]; break
-					case dslContext: dslContext[name]; break
-					case variables.getters: variables.getters[name](); break
-					case dslContext.getters: dslContext.getters[name](); break
-					default: Log.err("No context '$name'"); null; break
-				}
-			}
-		}
-
-		void setVariable(String name, Object value) {
-			use (CaseCategory) {
-				switch (name) {
-					case variables.setters: variables.setters[name](value); break
-					case dslContext.setters: dslContext.setters[name](value); break
-					default: variables.put(name, value); break
-				}
-			}
-		}
 	}
 }

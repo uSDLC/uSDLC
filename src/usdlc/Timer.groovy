@@ -37,7 +37,6 @@ class Timer {
 		elapsed = end - start
 		def string = new StringBuffer()
 		 if (elapsed > minimum) {
-			 string << title
 			if (elapsed < 1000) {
 				string.append("${elapsed}ms")
 			} else {
@@ -46,13 +45,14 @@ class Timer {
 				string.append("${seconds}s")
 				elapsed /= 60
 				def minutes = elapsed % 60
-				def hours = elapsed / 60
+				def hours = (elapsed / 60) as Integer
 				if (hours || minutes) {
 					string.insert(0, "${minutes}m ")
 				}
 				if (hours) {
 					string.insert(0, "${hours}h ")
 				}
+			string.insert(0, title)
 			}
 		}
 		if (autoReset) { start = end }

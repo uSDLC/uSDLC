@@ -1,0 +1,2 @@
+load = {web.driver.get('http://127.0.0.1:9000')}
+checkTitle = {title -> assert find(by.cssSelector('#pageTitle>h1')).text == title}

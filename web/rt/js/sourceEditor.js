@@ -16,7 +16,7 @@
 
 $(function() {
 	var syntaxes = {
-		basic : 'basic',
+		//basic : 'basic',
 		c : 'clike',
 		h : 'clike',
 		cpp : 'clike',

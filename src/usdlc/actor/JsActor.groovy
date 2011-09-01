@@ -17,8 +17,9 @@ package usdlc.actor
 
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor
 import org.mozilla.javascript.ErrorReporter
-import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.EvaluatorException
 import usdlc.History
+import usdlc.JavaScript
 import usdlc.Log
 
 /**
@@ -29,25 +30,6 @@ class JsActor extends CompressorActor {
 	 Use to generate HTML to display on the screen.
 	 */
 	void run() {
-		filter('js') { input, output ->
-			def compressor = new JavaScriptCompressor(input, new CompressorErrorReporter())
-			compressor.compress(output, 80, false, false, false, false)
-		}
-	}
-}
-
-public class CompressorErrorReporter implements ErrorReporter {
-
-	public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
-		Log.err "$line:$lineOffset:$message"
-	}
-
-	public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
-		Log.err "$line:$lineOffset:$message"
-	}
-
-	public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
-		error(message, sourceName, line, lineSource, lineOffset)
-		return new EvaluatorException(message)
+		filter('js', JavaScript.&compress)
 	}
 }

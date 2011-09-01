@@ -1,0 +1,6 @@
+capabilities = web.driver.capabilities
+assert capabilities
+out capabilities.platform
+out capabilities.browserName
+out capabilities.version
+assert capabilities.isJavascriptEnabled()

@@ -46,7 +46,7 @@ class CompilingClassLoader extends ClassLoader {
 		Class<?> classReference;
 		Store classFile = Store.base(basePath(sourceFile) + '.class');
 		if (sourceFile.exists()) {
-			if (needsCompile(sourceFile, classFile)) compiler.compile(sourceFile);
+			if (sourceFile.newer(classFile)) compiler.compile(sourceFile);
 			byte[] contents = classFile.contents;
 			CompilingClassLoader instance = new CompilingClassLoader(dotSourceExt, compiler);
 			classReference = instance.defineClass(name, contents, 0, contents.length);
@@ -60,15 +60,5 @@ class CompilingClassLoader extends ClassLoader {
 	private static String basePath(Store store) {
 		String path = store.path;
 		return path.substring(0, path.length() - store.fullExt.length() - 2);
-	}
-	/**
-	 * Check to see if a recompile is on the cards.
-	 */
-	private static boolean needsCompile(Store sourceFile, Store classFile) {
-		if (classFile.exists()) {   // Check to see if source is more recent than class - if so, must compile
-			sourceFile.lastModified() > classFile.lastModified();
-		} else {
-			true;    // no class - must compile
-		}
 	}
 }

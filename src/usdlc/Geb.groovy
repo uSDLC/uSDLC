@@ -20,7 +20,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import geb.Browser
 import geb.driver.CachingDriverFactory
-import geb.driver.PropertyBasedDriverFactory
+//import geb.driver.PropertyBasedDriverFactory
 import static usdlc.Config.config
 
 class Geb {
@@ -33,7 +33,7 @@ class Geb {
 		close()
 		driverList = list.toLowerCase()
 		Properties drivers = ['geb.driver': driverList]
-		PropertyBasedDriverFactory factory = new PropertyBasedDriverFactory(drivers)
+//		PropertyBasedDriverFactory factory = new PropertyBasedDriverFactory(drivers)
 		browser = new Browser(factory.driver)
 	}
 	

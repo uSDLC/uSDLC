@@ -1,0 +1,26 @@
+load()
+    
+click by.id('USDLC')
+checkTitle 'Unifying the SDLC'
+    
+assert find(by.name('sampleInputFieldName')).getAttribute('id') == 'sifn'
+    
+click by.linkText('Options')
+checkTitle 'uSDLC System Maintenance'
+    
+assert find(by.cssSelector('#pageTitle>h1')).text == 'uSDLC System Maintenance'
+
+click by.id('USDLC')
+click by.linkText('Actors')
+click by.linkText('Web UI')
+click by.linkText('WebDriver')
+    
+click by.xpath('//*[(@id = "Home")]')
+checkTitle('Unifying the Software Development Life-cycle')
+    
+assert find(by.className('editable')).getAttribute('id') == 'pageTitle'
+    
+assert find(by.tagName('input')).getAttribute('id') == 'sifn'
+    
+click by.partialLinkText('Sand')
+checkTitle 'Sandbox'

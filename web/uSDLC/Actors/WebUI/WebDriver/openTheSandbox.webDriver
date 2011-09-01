@@ -1,0 +1,2 @@
+click by.linkText('Sandbox')
+checkTitle 'Sandbox'

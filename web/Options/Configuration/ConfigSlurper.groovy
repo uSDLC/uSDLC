@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 package Options.Configuration
+
 urlBase = ''
 srcPath = ['./', 'support/']
 dslPath = ['dsl/', 'usdlc/dsl/']
@@ -25,12 +26,25 @@ browserDriverList = 'firefox:chrome:ie:htmlunit'
 alwaysCheckForRecompile = true
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
-compressJs = true
 compressCss = true
+noCompression = ~".*/rt/.*"
+
+webDrivers = [
+	chrome : 'org.openqa.selenium.chrome.ChromeDriver',
+	firefox : 'org.openqa.selenium.firefox.FirefoxDriver',
+	ie : 'org.openqa.selenium.ie.InternetExplorerDriver',
+	htmlunit : 'org.openqa.selenium.htmlunit.HtmlUnitDriver',
+	iphone : 'org.openqa.selenium.iphone.IPhoneDriver',
+	android : 'org.openqa.selenium.android.AndroidDriver',
+	]
 
 environments {
 	standalone {
+		compressJs = false
+		webDriver = 'firefox'
 	}
 	servlet {
+		compressJs = true
+		webDriver = 'htmlunit'
 	}
 }

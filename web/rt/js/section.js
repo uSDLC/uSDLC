@@ -42,8 +42,8 @@ $(function() {
 		 */
 		getSection : function(element) {
 			var section = $(element || usdlc.inFocus)
-			if (!section.hasClass('section'))
-				section = section.parents('div.section')
+			if (!section.hasClass('editable'))
+				section = section.parents('div.editable')
 			return section
 		},
 		/**
@@ -54,7 +54,7 @@ $(function() {
 			var section = usdlc.getSection(element)
 			if (!section.hasClass("inFocus")) {
 				usdlc.clearFocus()
-				usdlc.inFocus = section.addClass('inFocus ui-state-highlight')
+				usdlc.inFocus = section.addClass('inFocus ui-widget-content')
 				usdlc.contentTree.jstree('disable_hotkeys')
 				usdlc.pageContentsSausages.sausage("setFocus", section)
 				return true // yup - we changed focus
@@ -65,7 +65,7 @@ $(function() {
 			if (!usdlc.inFocus) {
 				return
 			}
-			$('.inFocus').removeClass('inFocus ui-state-highlight')
+			$('.inFocus').removeClass('inFocus ui-widget-content')
 			usdlc.lastFocus = usdlc.inFocus
 			usdlc.inFocus = null
 			usdlc.contentTree.jstree('enable_hotkeys')

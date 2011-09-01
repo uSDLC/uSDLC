@@ -27,24 +27,21 @@ import static usdlc.Config.config
  * Uses a closure to filter input to output - saving the result
  */
 abstract class CompressorActor extends Actor {
-	/**
-	 Use to generate HTML to display on the screen.
-	 */
 	void filter(String type, Closure compress) {
-		def store
-		if (config."compress${type.capitalize()}") {
-			store = Store.base("store/$type/base").rebase(exchange.store.path)
-			if (! store.exists()  ||  store.lastModified() < exchange.store.lastModified()) {
-				store.mkdirs()
-				exchange.store.file.withReader { input ->
-					store.file.withWriter { output ->
+		def source = exchange.store, compressed
+		if (config."compress${type.capitalize()}" && !config.noCompression.matcher(source.path).matches()) {
+			compressed = Store.base("store/$type/base").rebase(source.path)
+			if (source.newer(compressed)) {
+				compressed.mkdirs()
+				source.file.withReader { input ->
+					compressed.file.withWriter { output ->
 						compress input, output
 					}
 				}
 			}
 		} else {
-			store = exchange.store
+			compressed = exchange.store
 		}
-		exchange.response.write store.read() ?: ''
+		exchange.response.write compressed.read() ?: ''
 	}
 }

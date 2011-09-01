@@ -1,0 +1,19 @@
+click 'USDLCActorsWebUIWebDriver'
+checkTitle 'Selenium WebDriver'
+    
+assert find('sampleInputFieldName').getAttribute('id') == 'sifn'
+    
+click 'Dependencies'
+checkTitle 'Dependencies'
+    
+assert find('#pageTitle>h1').text == 'Dependencies'
+    
+click '//*[(@id = "Home")]'
+checkTitle 'Unifying the Software Development Life-cycle'
+    
+assert find('editable').getAttribute('id') == 'pageTitle'
+
+assert find('input').getAttribute('id') == 'sifn'
+    
+click 'Living'
+checkTitle 'Living Documentation'
