@@ -25,8 +25,9 @@ import org.apache.http.impl.client.DefaultHttpClient
  * Time: 4:22 PM
  */
 class Ivy {
-	Ivy() {
-		log = Log.file('ivy')
+	Ivy(consoleWriter) {
+		def logFileWriter = Log.file('ivy')
+		log = { consoleWriter it; logFileWriter it }
 		ant = Ant.builder(log)
 		ivy = NamespaceBuilder.newInstance(ant, 'antlib:org.apache.ivy.ant')
 		ant.reset()

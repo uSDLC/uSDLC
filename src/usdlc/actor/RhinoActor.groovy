@@ -15,16 +15,11 @@
  */
 package usdlc.actor
 
-import usdlc.CoffeeScript
-import usdlc.Store
+import usdlc.JavaScript
 
-/**
- * Parse coffee-script to java-script for the browser. Compress if flagged to do so.
- */
-class CoffeescriptActor extends JsActor {
-	void run() {
-		CoffeeScript compiler = exchange.request.session.instance CoffeeScript
-		exchange.store = compiler.javascript(exchange.store)
-		super.run()
+class RhinoActor extends Actor {
+	public void run() {
+		JavaScript javascript = exchange.request.session.instance JavaScript
+		javascript.run(script, [exchange:exchange])
 	}
 }

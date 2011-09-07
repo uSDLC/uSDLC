@@ -15,13 +15,8 @@
  */
 package usdlc.dsl
 
-/**
- * User: paul
- * Date: 23/07/11
- * Time: 2:29 PM
- */
-
-worker = new usdlc.Ivy()
+exchange.response.html(false)
+worker = new usdlc.Ivy(exchange.response.&write)
 
 organisation = { worker.args.organisation = it; this }
 module = { worker.args.module = it; this }

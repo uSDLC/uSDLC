@@ -37,7 +37,7 @@ class UsdlcServlet extends HttpServlet {
 			Config.load('servlet', servletConfig.servletContext.getRealPath('/'), [])
 		}
 		Exchange exchange = new Exchange()
-		exchange.request(request.inputStream, loadHeader(request)).response(response.outputStream) {
+		exchange.request(request.inputStream, loadHeader(request)).loadResponse(response.outputStream) {
 			exchange.response.header.each { key, value -> response.addHeader(key, value) }
 			response.setStatus 200, 'OK'
 		}

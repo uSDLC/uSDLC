@@ -53,7 +53,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 				fragment: requestURI.fragment, cookie: (requestHeaders?.Cookie ?: [''])[0]
 				)
 		Exchange exchange = new Exchange()
-		exchange.request(requestBody, header).response(responseBody) {
+		exchange.request(requestBody, header).loadResponse(responseBody) {
 			exchange.response.header.each { key, value -> httpExchange.responseHeaders.add(key, value) }
 			httpExchange.sendResponseHeaders 200, 0
 		}

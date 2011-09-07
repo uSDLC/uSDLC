@@ -101,6 +101,7 @@ class MimeTypes {
 		iii: 'application/x-iphone',
 		ins: 'application/x-internet-signup',
 		isp: 'application/x-internet-signup',
+		ivy: 'text/plain',
 		jfif: 'image/pipeg',
 		jpe: 'image/jpeg',
 		jpeg: 'image/jpeg',

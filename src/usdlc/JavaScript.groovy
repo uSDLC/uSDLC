@@ -15,16 +15,72 @@
  */
 package usdlc
 
-import org.mozilla.javascript.ErrorReporter;
-import org.mozilla.javascript.EvaluatorException;
-
-import groovy.lang.Closure;
+import org.mozilla.javascript.Context
+import org.mozilla.javascript.ErrorReporter
+import org.mozilla.javascript.EvaluatorException
+import org.mozilla.javascript.Scriptable
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor
 
 class JavaScript {
+	/**
+	 * Set optimise to false to compile larger files
+	 */
+	def optimise = true
+	/**
+	 * Run a javascript file
+	 */
+	public run(Store js, binding = [:]) {
+		Context context = Context.enter()
+		Reader reader = null
+		try {
+			if (! optimise) {
+				context.optimizationLevel = -1 // Without this, Rhino hits a 64K byte-code limit and fails
+			}
+			def inputStream = js.file.newInputStream()
+			reader = new InputStreamReader(inputStream, "UTF-8")
+			return context.evaluateReader(scope(context, binding), reader, js.path, 0, null)
+		} finally {
+			reader?.close()
+			Context.exit()
+		}
+	}
+	/**
+	 * Run javascript statements from a string.
+	 */
+	public run(String js, binding = [:]) {
+		Context context = Context.enter()
+		try {
+			return context.evaluateString(scope(context, binding), js, 'inline', 0, null)
+		} finally {
+			Context.exit()
+		}
+	}
+	/**
+	 * The first scope is the global and all the rest hang off it. Load any set binding variables.
+	 */
+	private scope(context, binding) {
+		def scope
+		if (!globalScope) {
+			scope = globalScope = context.initStandardObjects()
+		} else if (binding.newScope) {
+			Scriptable compileScope = context.newObject(globalScope)
+			compileScope.parentScope = globalScope
+			scope = compileScope
+		} else {
+			scope = globalScope
+		}
+		binding.each { key, value ->
+			scope.put(key, scope, value)
+		}
+		scope
+	}
+	def globalScope = null
+	/**
+	 * Given javascript source, remove all the guff to make it as small as possible. Only useful if sending over a wire.
+	 */
 	static compress(input, output) {
-			def compressor = new JavaScriptCompressor(input, new CompressorErrorReporter())
-			compressor.compress(output, 80, false, false, false, false)
+		def compressor = new JavaScriptCompressor(input, new CompressorErrorReporter())
+		compressor.compress(output, 80, false, false, false, false)
 	}
 }
 

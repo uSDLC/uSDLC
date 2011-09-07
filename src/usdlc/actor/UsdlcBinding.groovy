@@ -18,6 +18,7 @@ package usdlc.actor
 import java.util.Map;
 
 import groovy.lang.Binding
+import usdlc.Log
 
 
 class UsdlcBinding extends Binding {

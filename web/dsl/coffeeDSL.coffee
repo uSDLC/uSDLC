@@ -1,0 +1,1 @@
+print = (text) -> exchange.response.print text

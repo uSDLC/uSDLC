@@ -149,7 +149,7 @@ import static usdlc.Config.config
 	def setActorState(to) {
 		linkStates[currentActor] = to
 		String elapsed = timer
-		wrapOutput(['<pre class="gray">','</pre>']) { write "\t$currentActor: $to$elapsed" }
+		wrapOutput(['<pre class="gray">','</pre>']) { write "\t$currentActor: $to $elapsed" }
 		Log.csv("${currentPage}.timings")("$currentActor,$to,$timer.elapsed,$elapsed")
 	}
 	def currentActor

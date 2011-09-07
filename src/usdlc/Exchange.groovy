@@ -82,6 +82,7 @@ class Exchange {
 	class Response {
 		PrintStream out
 		Map header = ['Connection': 'close']
+		String post = ''
 
 		void setSession(String to) {
 			header['Set-Cookie'] = "usdlc-session=$to; Path=/; Expires=Sun, 17 Jan 2038 19:14:07 GMT"
@@ -91,20 +92,37 @@ class Exchange {
 			header['Content-Type'] = mimeType
 		}
 
+		void print(Object text) {
+			String string = text.toString()
+			if (first) {
+				first = false
+				if (string[0] != '<') {
+					out.print '<pre>'
+					post = '</pre>'
+				}
+			}
+			out.print string
+			out.flush()
+		}
+		boolean first = true
+		
 		void write(Object text) {
 			out.print text.toString()
+			out.flush()
 		}
 
 		void write(byte[] bytes) {
 			out.write bytes
+			out.flush()
 		}
 
 		void complete() {
+			write(post)
 			out.close()
 		}
 	}
 
-	void response(OutputStream outputStream, Closure prepare) {
+	void loadResponse(OutputStream outputStream, Closure prepare) {
 		try {
 			response = new Response()
 			response.out = new PrintStream(outputStream, true)
@@ -134,7 +152,7 @@ class Exchange {
 		} catch (problem) {
 			problem.printStackTrace()
 		}
-		response.out.close()
+		response.complete()
 	}
 
 	static long lastSessionKey = 0

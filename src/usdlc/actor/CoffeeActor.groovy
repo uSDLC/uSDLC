@@ -18,13 +18,18 @@ package usdlc.actor
 import usdlc.CoffeeScript
 import usdlc.Store
 
-/**
- * Parse coffee-script to java-script for the browser. Compress if flagged to do so.
- */
-class CoffeescriptActor extends JsActor {
-	void run() {
-		CoffeeScript compiler = exchange.request.session.instance CoffeeScript
-		exchange.store = compiler.javascript(exchange.store)
+class CoffeeActor extends RhinoActor {
+	public void run() {
+		def me = script
+		compiler = exchange.request.session.instance CoffeeScript
+		compiler.bare = true
+		run coffeeDSL
+		run me
+	}
+	public void run(Store me) {
+		script = compiler.javascript(me)
 		super.run()
 	}
+	CoffeeScript compiler
+	static Store coffeeDSL = Store.base('dsl/coffeeDSL.coffee')
 }

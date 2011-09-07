@@ -11,39 +11,27 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class CoffeeScript {
-
-	private Scriptable globalScope
-	private boolean bare
-
+	def bare
+	/**
+	 * Constructor loads and compiles the coffee-script compiler
+	 */
 	CoffeeScript(boolean bare = false) {
 		this.bare = bare
-		Context context = Context.enter()
-		Reader reader = null
-		try {
-			context.setOptimizationLevel(-1) // Without this, Rhino hits a 64K byte-code limit and fails
-			globalScope = context.initStandardObjects()
-			def inputStream = Store.base('lib/coffee-script.js').file.newInputStream()
-			reader = new InputStreamReader(inputStream, "UTF-8");
-			context.evaluateReader(globalScope, reader, "coffee-script.js", 0, null)
-		} finally {
-			reader?.close()
-			Context.exit()
-		}
+		javascript.optimise = false // Without this, Rhino hits a 64K byte-code limit and fails
+		javascript.run(Store.base('lib/coffee-script.js'))
 	}
+	/**
+	 * Pass in a coffee-script file and the coffee-script compiler will do it's magic
+	 */
 	String compile(String coffeeScriptSource) {
-		Context context = Context.enter()
-		try {
-			Scriptable compileScope = context.newObject(globalScope)
-			compileScope.parentScope = globalScope
-			compileScope.put("coffeeScript", compileScope, coffeeScriptSource)
-			String options = bare ? "{bare: true}" : "{}"
-
-			return (String) context.evaluateString(compileScope,
-			"CoffeeScript.compile(coffeeScript, $options);", "source", 0, null)
-		} finally {
-			Context.exit()
-		}
+		String options = bare ? "{bare: true}" : "{}"
+		javascript.run("CoffeeScript.compile(coffeeScript, $options);",
+			[coffeeScript:coffeeScriptSource, newScope:true])
 	}
+	private javascript = new JavaScript()
+	/**
+	 * Retrieve a reference to the javascript file created from a coffee-script compile
+	 */
 	Store javascript(Store coffeescript) {
 		Store javascript = Store.base("store/coffee-script/base").rebase(coffeescript.path + '.js')
 
