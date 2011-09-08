@@ -26,6 +26,7 @@ class WebDriver {
 	String driverName = config.webDriver
 	org.openqa.selenium.WebDriver driver
 	Capabilities capabilities
+	int timeout = 10
 	org.openqa.selenium.WebDriver getDriver() {
 		if (! driver) {
 			setDriver(driverName)
@@ -55,20 +56,21 @@ class WebDriver {
 	/**
 	 * Wait for something to become available - for a given patience.
 	 */
-	WebElement waitFor(int timeout, Closure closure) {
+	WebElement waitFor(Closure closure) {
+		def countdown = timeout
 		WebElement result
 		timeout *= 2
-		while (!(result = closure()) && timeout) {
+		while (!(result = closure()) && countdown) {
 			sleep(500)
-			timeout--
+			countdown--
 		}
 		result
 	}
 	/**
 	 * Wait for a web element to become available - for a given patience.
 	 */
-	WebElement waitFor(By target, int timeout = 10) {
-		def result = waitFor(timeout) {
+	WebElement waitFor(By target, Closure action) {
+		def result = waitFor {
 			try {
 				return driver.findElement(target)
 			} catch (nsee) {
@@ -76,31 +78,38 @@ class WebDriver {
 			}
 		}
 		assert result, "No element $target"
-		result
+		action result
 	}
 	/**
 	 * Wait for a web element to become available - for a given patience.
 	 */
-	WebElement waitFor(String target, int timeout = 10) {
-		By id = By.id(target)
-		By name = By.name(target)
-		By linkText = By.linkText(target)
-		By cssSelector = By.cssSelector(target)
-		By xpath = By.xpath(target)
-		By className = By.className(target)
-		By tagName = By.tagName(target)
-		By partialLinkText = By.partialLinkText(target)
-		def result = waitFor(timeout) {
-			try {
-				return driver.findElement(id) ?: driver.findElement(name) ?:
-				driver.findElement(linkText) ?: driver.findElement(cssSelector) ?:
-				driver.findElement(xpath) ?: driver.findElement(className) ?:
-				driver.findElement(tagName) ?: driver.findElement(partialLinkText)
-			} catch (nsee) {
-				return null
+	WebElement waitFor(String targets, Closure action) {
+		def result
+		targets.split(/\s+->\s+/).each { target ->
+			By id = By.id(target)
+			By name = By.name(target)
+			By linkText = By.linkText(target)
+			By cssSelector = By.cssSelector(target)
+			By xpath = By.xpath(target)
+			By className = By.className(target.replaceAll(/\s/, '-'))
+			By tagName = By.tagName(target)
+			By partialLinkText = By.partialLinkText(target)
+			result = waitFor {
+					return findElement(id) ?: findElement(name) ?:
+					findElement(linkText) ?: findElement(cssSelector) ?:
+					findElement(xpath) ?: findElement(className) ?:
+					findElement(tagName) ?: findElement(partialLinkText)
 			}
+			assert result, "No element $target"
+			result = action result
 		}
-		assert result, "No element $target"
 		result
+	}
+	WebElement findElement(By by) {
+		try {
+			return driver.findElement(by)
+		} catch (nsee) {
+			return null
+		}
 	}
 }

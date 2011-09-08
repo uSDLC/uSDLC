@@ -166,6 +166,8 @@ import static usdlc.Config.config
 	 */
 	def reportException(Throwable throwable) {
 		def trace = throwable.stackTrace.find {
+			it.toString() ==~ ~/\w+\.run\(.*/
+		} ?: throwable.stackTrace.find {
 			it.fileName && it.lineNumber > 0 && !internalExceptions.matcher(it.className).find()
 		}
 		wrapOutput(['<pre>', '</pre>']) {

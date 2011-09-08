@@ -1,25 +1,30 @@
 load()
     
-click by.id('USDLC')
-checkTitle 'Unifying the SDLC'
+click by.id('Home')
+checkTitle 'Unifying the Software Development Life-cycle'
+    
+gotoWebDriverPage = {
+    click by.id('Home')
+    click by.linkText('uSDLC')
+    click by.linkText('Actors')
+    click by.linkText('Web UI')
+    click by.linkText('WebDriver')
+}
+gotoWebDriverPage()
     
 assert find(by.name('sampleInputFieldName')).getAttribute('id') == 'sifn'
     
-click by.linkText('Options')
-checkTitle 'uSDLC System Maintenance'
-    
-assert find(by.cssSelector('#pageTitle>h1')).text == 'uSDLC System Maintenance'
+assert find(by.cssSelector('#pageTitle>h1')).text == 'Selenium WebDriver'
 
-click by.id('USDLC')
-click by.linkText('Actors')
-click by.linkText('Web UI')
-click by.linkText('WebDriver')
+gotoWebDriverPage()
     
 click by.xpath('//*[(@id = "Home")]')
 checkTitle('Unifying the Software Development Life-cycle')
     
 assert find(by.className('editable')).getAttribute('id') == 'pageTitle'
     
+gotoWebDriverPage()
+
 assert find(by.tagName('input')).getAttribute('id') == 'sifn'
     
 click by.partialLinkText('Sand')
