@@ -1,0 +1,15 @@
+<DIV id='pageTitle' class='editable ui-widget-content'><H1>
+	Domain Specific Languages</H1><H2>
+	Making the basics simple and the complex possible</H2></DIV><DIV id='s1' contextmenu='section' class='editable section'><P>
+	Domain specific languages are just a way of expressing domain knowledge in a way that the computer can work with and the domain expert understand without a degree in software engineering. It is used heavily in uSDLC to hide unnecessary scaffolding from all the domains, both business and technical that make up the software development lifecycle for a project.</P></DIV><DIV id='s3' contextmenu='section' class='editable section'><H1>
+	What is a DSL?</H1><P>
+	For a primary DSL, the script file extension defines the name of the DSL.</P><P>
+	For external DSLs (not based on other scripting languages), the backing code is in <EM>usdlc/actor/<U>Name</U>Actor.<U>lang</U></EM>&#xa0;where <EM>Name</EM> is a capitalised extension defining the DSL and <EM>lang</EM> is the source language (groovy, java, scala, etc). JavaActor.groovy, for example, compiles java files if they are out of date and call the resulting class as a runnable interface.</P><P>
+	For internal DSLs (extensions of other scripting languages), the DSL description is in <EM>(usdlc|web)/dsl/nameDSL.lang</EM>. The script usdlc/dsl/webdriverDSL.groovy provides a simplified interface for controlling a browser from script.</P><P>
+	uSDLC uses groovy for technical DSLs and coffee-script for functional DSLs. Groovy provides a close interface to the Java and other JVM languages. For functional project members who are not software developers, coffee-script provides the cleanest and easiest DSL to understand.</P></DIV><DIV id='s4' contextmenu='section' class='editable section ui-widget-content synopsis'><P>
+	How to Associate with a DSL</P><P>
+	When creating a new DSL, it is necessary to tell uSDLC of the association. This is done with a static <A id='s4a0' action='runnable' class='usdlc sourceLink' href='creationMethod.groovy'>creation method</A> in DSL producing an empty <EM>web/dsl/nameDSL.lang</EM> file. If the file already exists, it is not over-written and the method returns false.</P></DIV><DIV id='s2' contextmenu='section' class='editable section footer'><DIV style='text-align: center;'><A id='s2a3' action='page' class='usdlc' href='../index.html'>Parent</A>
+		-
+		<A id='s2a0' action='runnable' class='usdlc' href='Startup.groovy'>Startup</A>
+		-
+		<A id='s2a0' action='runnable' class='usdlc' href='Cleanup.groovy'>Cleanup</A></DIV></DIV>

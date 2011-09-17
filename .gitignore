@@ -5,3 +5,4 @@ web/store/
 /*.DS_Store
 /.settings
 /.externalToolBuilders
+/store

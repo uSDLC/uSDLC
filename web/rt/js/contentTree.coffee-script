@@ -1,0 +1,34 @@
+$ ->
+	usdlc.contentTree = $('#contentTree').jstree
+		html_data :
+			ajax :
+				url : (li) ->
+					path = ''
+					if li is -1
+						path = usdlc.urlBase + '/frontPage.html'
+					else
+						path = $('a', li).get(0).pathname
+						path = '/' + path if path[0] != '/'
+					this.contentRoot = jQuery.url.setUrl(path).attr("directory")
+					path
+				success : (data) ->
+					tree = ' '
+					root = this.contentRoot
+					$('<ins/>').html(data).find('a.usdlc[action=page]').each ->
+						a = $(this)
+						href = usdlc.removeDomain(a.attr('href'))
+						if href.substring(0, 2) != '..'
+							href = root + href if href.charAt(0) != '/'
+							id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
+							tree += "<li id='#{id}' class='jstree-closed'><a href='#{href}' class='contentLink'>#{a.text()}</a></li>"
+					tree
+		hotkeys :
+			del : -> # Don't delete a node from here (yet)
+			f2 : -> # Stop the F2 rename function
+		cookies :
+			cookie_options :
+				expires : 1000
+		themes :
+			theme : 'classic'	# apple classic default
+		plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
+	usdlc.contentTree.removeClass('hidden')
