@@ -22,20 +22,18 @@ $(function() {
 		},
 		doSynopses : function() {
 			usdlc.clearSynopses()
-			$("div.synopsis a[action]").each(
-					function() {
-						var link = $(this)
-						var action = link.attr("action")
-						if (action == 'runnable') {
-							loadSynopsis(link, usdlc.displaySource)
-						} else {
-							loadSynopsis(link, function(wrapper, data) {
-								var html = $("<div/>").html(data).children(
-										"div.section").first().children()
-								wrapper.append(html)
-							})
-						}
+			$("div.synopsis a[action]").each(function() {
+				var link = $(this)
+				var action = link.attr("action")
+				if (action == 'runnable') {
+					loadSynopsis(link, usdlc.displaySource)
+				} else {
+					loadSynopsis(link, function(wrapper, data) {
+						var html = $("<div/>").html(data).children("div.section").first().children()
+						wrapper.append(html)
 					})
+				}
+			})
 		},
 		showSynopsis : function(section) {
 			$('div.inclusion', section).show()
@@ -53,16 +51,19 @@ $(function() {
 	})
 
 	function loadSynopsis(link, processor) {
-		var path = usdlc.normalizeURL(link.get(0).pathname)
+		var path = link.attr('href')
+		if (path.indexOf('..') == -1  && path.indexOf('://') == -1) {
+			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
 			var inclusion = $('<div/>').addClass('inclusion')
 			section.append(inclusion)
-		$.get(usdlc.serverActionUrl(path, 'raw'), function(data) {
-			if (data.length < 3) {
-				data = ''
-			}
-			processor(inclusion, data, path)
-		})
+			$.get(usdlc.serverActionUrl(path, 'raw'), function(data) {
+				if (data.length < 3) {
+					data = ''
+				}
+				processor(inclusion, data, path)
+			})
+		}
 	}
 	// usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)
 })

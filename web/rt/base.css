@@ -31,6 +31,10 @@ body {
 	overflow: hidden;
 }
 
+.footer {
+	text-align: center;
+}
+
 blockquote {
 	font-style: italic;
 }
@@ -207,6 +211,10 @@ div.section {
 div.section, #pageTitleTd {
 	background-repeat: repeat-y;
 	background-position: 0 -40px;
+}
+
+div.inFocus {
+	background-color: #FFFFDD
 }
 
 div.inclusion {
@@ -389,5 +397,5 @@ a.failed {
 	}
 a.succeeded {
 	border-color: #339933;
-	background-color: ccffcc;
+	background-color: #ccffcc;
 	}

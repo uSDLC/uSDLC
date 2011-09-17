@@ -30,7 +30,7 @@ $(function() {
 		},
 		cleanSections : function(sections) {
 			// clean up html of crap that builds up
-			sections.removeAttr('style').removeClass('inFocus ui-state-highlight').
+			sections.removeAttr('style').removeClass('inFocus ui-state-highlight ui-widget-content').
 					filter('.synopsis').children().removeAttr('style')
 			usdlc.clearSynopses(sections)
 		},
