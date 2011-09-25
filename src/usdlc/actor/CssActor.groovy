@@ -16,6 +16,7 @@
 package usdlc.actor
 
 import com.yahoo.platform.yui.compressor.CssCompressor
+import usdlc.Store
 
 /**
  * Load javascript - minify if needed.
@@ -24,7 +25,7 @@ class CssActor extends CompressorActor {
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
-	void run() {
+	void run(Store script) {
 		filter('css') { input, output ->
 			def compressor = new CssCompressor(input)
 			compressor.compress(output, 80)

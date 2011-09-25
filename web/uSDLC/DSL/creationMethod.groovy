@@ -1,4 +1,4 @@
-dslStore = usdlc.Store.base('testDSL.groovy')
+dslStore = usdlc.Store.base('dsl/testDSL.groovy')
 dslStore.delete()
 assert usdlc.DSL.associate('test', 'groovy')
 assert dslStore.exists()

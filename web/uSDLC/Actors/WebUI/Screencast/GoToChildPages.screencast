@@ -1,0 +1,7 @@
+insert link 'child page', 'html', 'Subtitle for Child Page',
+    'Synopsis for child page'
+click 'child page'
+check title 'Child Page'
+select section 'Synopsis for'
+click 'Parent'
+check title 'Screencast Test Page'

@@ -33,7 +33,7 @@ class JavaActor extends Actor {
 	 * instantiate it and call the run() method. Class needs to have a constructor
 	 * that receives one Map parameter for the environment.
 	 */
-	void run() { javaClassLoader.newInstance(exchange.store.absolutePath) }
+	void run(Store script) { javaClassLoader.newInstance(exchange.store.absolutePath) }
 
 	static CompilingClassLoader javaClassLoader = new CompilingClassLoader('java', new JavaCompiler())
 

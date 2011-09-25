@@ -19,17 +19,14 @@ import usdlc.CoffeeScript
 import usdlc.Store
 
 class CoffeeActor extends RhinoActor {
-	public void run() {
-		def me = script
+	void init() {
+		super.init()
+		binding += [delegate : new CoffeeScript.Delegate(exchange : exchange)]
 		compiler = exchange.request.session.instance CoffeeScript
 		compiler.bare = true
-		run coffeeDSL
-		run me
 	}
 	public void run(Store me) {
-		script = compiler.javascript(me)
-		super.run()
+		super.run(compiler.javascript(me))
 	}
 	CoffeeScript compiler
-	static Store coffeeDSL = Store.base('dsl/coffeeDSL.coffee')
 }

@@ -82,6 +82,8 @@ class WebDriver {
 	}
 	/**
 	 * Wait for a web element to become available - for a given patience.
+	 * id, name, link text, css selector, xpath, class name, tag name or partial link text.
+	 * Link text is a path with links separated by ->.
 	 */
 	WebElement waitFor(String targets, Closure action) {
 		def result

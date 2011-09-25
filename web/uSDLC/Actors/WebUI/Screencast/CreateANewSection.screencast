@@ -1,0 +1,6 @@
+insert section 'Section One Heading'
+    'Creates a section at the end of the page (above footer).'
+    'Each string will be entered as a paragraph in the section.'
+    'This paragraph links to a child page.'
+insert section 'Section Two'
+    'In most cases a section will be a single paragraph with a link to activation code.'

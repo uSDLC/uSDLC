@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="project/" kind="src" path="web/support"/>
-	<classpathentry kind="src" path="web/dsl"/>
+	<classpathentry kind="src" path="web/support"/>
 	<classpathentry kind="src" path="web/WEB-INF"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/optional"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/required"/>

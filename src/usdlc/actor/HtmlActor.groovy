@@ -30,7 +30,7 @@ class HtmlActor extends Actor {
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
-	void run() {
+	void run(Store script) {
 		switch (exchange.request.query['action']) {
 			case 'history':
 				def end = Integer.parseInt(exchange.request.query['index'].toString() ?: '-1')

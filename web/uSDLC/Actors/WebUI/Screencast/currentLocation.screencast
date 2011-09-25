@@ -1,0 +1,8 @@
+note 'before unregistered page load'
+
+click 'Home -> uSDLC'
+checkTitle 'Unifying the SDLC'
+
+note 'will return to current page now'
+
+check title 'Screencast Test Page'

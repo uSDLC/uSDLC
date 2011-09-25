@@ -17,7 +17,8 @@ package Options.Configuration
 
 urlBase = ''
 srcPath = ['./', 'support/']
-dslPath = ['dsl/', 'usdlc/dsl/']
+dslClassPath = ['usdlc/dsl/']
+dslSourcePath = ['support/usdlc']
 //dslPath = ['dsl/', '../src/usdlc/dsl/']
 //dslPath = ['dsl/', 'jar:file:usdlc.jar!/usdlc/dsl/']
 libPath = ['lib/jars/']

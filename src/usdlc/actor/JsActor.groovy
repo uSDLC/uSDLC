@@ -21,6 +21,7 @@ import org.mozilla.javascript.EvaluatorException
 import usdlc.History
 import usdlc.JavaScript
 import usdlc.Log
+import usdlc.Store
 
 /**
  * Load javascript - minify if needed.
@@ -29,7 +30,7 @@ class JsActor extends CompressorActor {
 	/**
 	 Use to generate HTML to display on the screen.
 	 */
-	void run() {
+	void run(Store script) {
 		filter('js', JavaScript.&compress)
 	}
 }

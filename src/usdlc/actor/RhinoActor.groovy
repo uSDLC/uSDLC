@@ -16,10 +16,26 @@
 package usdlc.actor
 
 import usdlc.JavaScript
+import usdlc.Store
 
 class RhinoActor extends Actor {
-	public void run() {
-		JavaScript javascript = exchange.request.session.instance JavaScript
-		javascript.run(script, [exchange:exchange])
+	JavaScript javascript
+	def binding
+
+	void init() {
+		javascript = exchange.request.session.instance JavaScript
+		binding = [exchange : exchange, rhino : new Support(), session : new Session()]
+	}
+
+	public void run(Store script) {
+		javascript.run(script, binding)
+	}
+	
+	class Session {
+		Object instance(Class of) { exchange.request.session.instance of }
+	}
+	
+	class Support {
+		
 	}
 }

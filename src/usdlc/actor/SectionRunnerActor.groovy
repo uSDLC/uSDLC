@@ -31,7 +31,7 @@ import static usdlc.Config.config
 	/**
 	 * Override to run the section runner script.
 	 */
-	void run() {
+	void run(Store script) {
 		runSectionsOnPage(Store.base(exchange.request.query.page),
 				exchange.request.query.sections.split(',') as Set)
 	}

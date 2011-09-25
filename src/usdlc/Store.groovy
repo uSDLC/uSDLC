@@ -321,7 +321,7 @@ class Store {
 	 * Delete the file pointed to by the store.
 	 */
 	def delete() {
-		ant.delete(file: file.name)
+		ant.delete(file: file.path)
 	}
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)

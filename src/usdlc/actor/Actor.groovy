@@ -15,22 +15,19 @@
  */
 package usdlc.actor
 
-import groovy.lang.Closure;
-import groovy.transform.AutoClone;
+import groovy.lang.Closure
+import groovy.transform.AutoClone
 
-import java.io.PrintStream;
+import java.io.PrintStream
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import usdlc.Exchange
-import usdlc.Exchange.Response;
+import usdlc.Exchange.Response
 import usdlc.Store
+import static usdlc.Config.config
 
-/**
- * User: paul
- * Date: 5/07/11
- * Time: 10:43 AM
- */
-@AutoClone abstract class Actor implements Runnable {
+
+@AutoClone abstract class Actor {
 	/** variables to pass between scripts as globals   */
 	def context = [:]
 	def dslContext = [:]
@@ -38,8 +35,20 @@ import usdlc.Store
 	Exchange exchange
 	/** Convenience to write to the response/browser  */
 	PrintStream out
+	/**
+	 * Set to false if you want the actor to be ignored
+	 */
+	boolean exists = true
+	/**
+	 * A list of scripts used to build up the DSL
+	 */
+	def backingScripts = []
 	/** Implement by concrete classes to be run as part of the browser/server exchange  */
-	abstract void run()
+	abstract void run(Store script)
+	/**
+	 * Initialisation before running backing or target scripts
+	 */
+	void init() {}
 	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {
 		context = binding
@@ -48,7 +57,9 @@ import usdlc.Store
 		context.session = exchange.request.session
 		context.getters = [:]
 		context.setters = [:]
-		run()
+		init()
+		backingScripts.each { run(it) }
+		if (script) run(script)
 	}
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
@@ -56,23 +67,63 @@ import usdlc.Store
 	 * Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
-		Matcher match = (store.path =~ ~/\.([\w\-]+)$/)
-		def actor = null
-		if (match) {
-			String language = match[-1][1].replaceAll(/\-/, '')
+		String language = language(store)
+		if (!cache[language]) {
+			def data = [scripts: [], groovyDSL: '', baseLanguage: '']
+			retrieveDefinitions(language, data)
 			try {
-				if (language in DslActor.cache) {
-					actor = DslActor.cache[language].newInstance()
-				} else {
-					def className = "usdlc.actor.${language.capitalize()}Actor"
-					actor = Class.forName(className).newInstance()
-				}
+				cache[language] = Class.forName("usdlc.actor.${data.baseLanguage.capitalize()}Actor").newInstance()
 			} catch (ClassNotFoundException cnfe) {
-				actor = DslActor.newInstance(language).newInstance()
+				cache[language] = new DslActor(data.groovyDSL)
+				if (!data.groovyDSL) {
+					cache[language].exists = false
+				}
 			}
-			actor?.script = store
+			cache[language].backingScripts = data.scripts
 		}
-		actor
+		if (!cache[language].exists) return null
+		def clone = cache[language].clone()
+		clone.script = store
+		clone
 	}
+	private static retrieveDefinitions(language, data) {
+		def dsl = "${language.toLowerCase()}DSL"
+		config.dslSourcePath.each { path ->
+			def base = Store.base(path)
+			base.dirs(~/${dsl}\..*/).each { name ->
+				Store store = Store.base(name)
+				def parentLanguage = Actor.language(store).toLowerCase()
+				def parentDSL = "${parentLanguage}DSL"
+				switch (parentLanguage) {
+					case language:
+						data.scripts << store
+						break
+					case 'groovy':
+						data.groovyDSL = parentDSL
+						break
+					default:
+						retrieveDefinitions(parentLanguage, data)
+						data.scripts << store
+						break
+				}
+			}
+		}
+		if (!data.baseLanguage) data.baseLanguage = language
+	}
+	/**
+	 * Given the store to a file, find out what language it is written in - based on extension.
+	 */
+	static String language(Store store) {
+		Matcher match = (store.path =~ ~/\.([\w\-]+)$/)
+		match ? match[-1][1].replaceAll(/\-/, '') : ''
+	}
+	/**
+	 * The script we want to run
+	 */
 	Store script
+	/**
+	 * Keep a cache of previous instances - one per language - so we don't have to recompile. The cache includes
+	 * instances that failed to find a script.
+	 */
+	static cache = [:]
 }

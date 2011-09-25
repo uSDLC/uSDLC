@@ -5,6 +5,7 @@ import com.google.common.io.InputSupplier
 import com.google.common.io.Resources
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.JavaScriptException
+import org.mozilla.javascript.NativeJavaPackage
 import org.mozilla.javascript.Scriptable
 
 import java.io.IOException
@@ -39,5 +40,27 @@ class CoffeeScript {
 			javascript.write(compile(coffeescript.text()))
 		}
 		javascript
+	}
+	
+	static class Delegate {
+		def commands = [:]
+		Exchange exchange
+		/**
+		 * Add another delegate if needed.
+		 */
+		void add(Class newDelegate) {
+//			String name = newDelegate.getName()
+//			Delegate instance = Groovy.loadClass(name).newInstance()
+			Delegate instance = newDelegate.newInstance()
+			instance.exchange = exchange
+			commands += instance.commands
+		}
+		/**
+		 * Domain Specific Command definition
+		 */
+		def dsc(cmd, params) {
+			assert cmd in commands
+			commands[cmd](params)
+		}
 	}
 }

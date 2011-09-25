@@ -34,7 +34,7 @@ import static usdlc.Config.config
  * Time: 7:26 PM
  */
 class GroovyActor extends Actor {
-	def init() {
+	void init() {
 		if (!context.gse) {
 			GroovyScriptEngine gse = new GroovyScriptEngine(config.srcPath as URL[])
 			UsdlcBinding usdlcBinding = new UsdlcBinding(context, dslContext)
@@ -55,8 +55,7 @@ class GroovyActor extends Actor {
 	/**
 	 * Run a groovy script or DSL. Provides methods for additional delegation, logging and script includes
 	 */
-	void run() {
-		init()
+	void run(Store script) {
 		context.gse.run script.path, context.usdlcBinding
 	}
 }

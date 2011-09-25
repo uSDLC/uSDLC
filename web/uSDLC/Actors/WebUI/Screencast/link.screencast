@@ -1,0 +1,16 @@
+timeout 1 second
+step slow
+insert link 'activation code', 'groovy', '''
+    import java.util.HashSet
+    
+    class ActivationCode {
+	HashSet<String> set = new HashSet<String>();
+	    
+	ActivationCode() {
+	    set.add('one');
+	}
+    }
+    '''
+step fast
+select source 'activation code'
+check source /'one'/

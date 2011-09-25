@@ -1,0 +1,6 @@
+select source 'activation code'
+insert control '^End Up Up End Enter'
+insert text '''String has(String key) {
+    	           return set.contains(key)
+    	       }'''
+check source /set.contains/

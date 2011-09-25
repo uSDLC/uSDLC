@@ -40,17 +40,26 @@ class Config {
 	}
 	static private buildClassPath() {
 		// Run through them all and add to the uSDLC classpath - so that compilers behave
-		Method method = URLClassLoader.class.getDeclaredMethod('addURL', [URL.class] as Class[])
+		Method method = URLClassLoader.class.getDeclaredMethod('addURL', [URL.class]as Class[])
 		method.accessible = true
 
+		config.classPath = []
+
 		config.libPath?.each { path ->
-			Store.base(path).dirs(~/.*\.jar$/).each { String fileName ->
-				def params = [Store.base("$path/$fileName").url] as Object[]
-				method.invoke(ClassLoader.systemClassLoader, params)
+			Store.base(path).dirs(~/.*\.jar/).each { String fileName ->
+				def url = Store.base("$path/$fileName").url
+				method.invoke(ClassLoader.systemClassLoader, [url]as Object[])
+				config.classPath << url
 			}
 		}
-		config.srcPath = config.srcPath?.collect { toURL(it) } ?: []
-		config.dslPathUrls = config.dslPath?.collect { toURL(it) } ?: []
+		config.srcPath = config.srcPath?.collect {  toURL(it)  } ?: []
+		config.srcPath.each { config.classPath << it }
+		//config.dslClassPath = config.dslClassPath?.collect { toURL(it) } ?: []
+
+		System.getProperty("java.class.path").
+				split(/${System.getProperty("java.path.separator")}/).each {
+					config.classPath << new File(it).toURI().toURL()
+				}
 	}
 	static private toURL(path) {
 		(path.indexOf(':') > 1) ? new URL(path) : Store.base(path).url
