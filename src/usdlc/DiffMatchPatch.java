@@ -730,7 +730,6 @@ public class DiffMatchPatch {
 	 *         suffix of text1, the prefix of text2, the suffix of text2 and the
 	 *         common middle. Or null if there was no match.
 	 */
-	@SuppressWarnings("null")
 	protected String[] diff_halfMatch(String text1, String text2) {
 		if (Diff_Timeout <= 0) {
 			// Don't risk returning a non-optimal diff if we have unlimited
@@ -821,7 +820,6 @@ public class DiffMatchPatch {
 	 * @param diffs
 	 *            LinkedList of Diff objects.
 	 */
-	@SuppressWarnings("null")
 	public void diff_cleanupSemantic(LinkedList<Diff> diffs) {
 		if (diffs.isEmpty()) {
 			return;
@@ -956,7 +954,6 @@ public class DiffMatchPatch {
 	 * @param diffs
 	 *            LinkedList of Diff objects.
 	 */
-	@SuppressWarnings("null")
 	public void diff_cleanupSemanticLossless(LinkedList<Diff> diffs) {
 		String equality1, edit, equality2;
 		String commonString;
@@ -1216,7 +1213,6 @@ public class DiffMatchPatch {
 	 * @param diffs
 	 *            LinkedList of Diff objects.
 	 */
-	@SuppressWarnings("null")
 	public void diff_cleanupMerge(LinkedList<Diff> diffs) {
 		diffs.add(new Diff(Operation.EQUAL, "")); // Add a dummy entry at the
 													// end.

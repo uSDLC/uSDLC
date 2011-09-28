@@ -12,6 +12,10 @@ class Groovy {
 	 * GroovyClassLoader will load a class - recompiling from source if needed.
 	 */
 	static loadClass(String className) {
-		gcl.loadClass(className, true, false, true)
+		try {
+			gcl.loadClass(className, true, false, true)
+		} catch (ClassNotFoundException cnfe) {
+			null
+		}
 	}
 }

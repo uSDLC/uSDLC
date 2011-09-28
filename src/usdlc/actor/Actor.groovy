@@ -23,11 +23,12 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import usdlc.Exchange
 import usdlc.Exchange.Response
+import usdlc.Groovy
 import usdlc.Store
 import static usdlc.Config.config
 
 
-@AutoClone abstract class Actor {
+@AutoClone class Actor {
 	/** variables to pass between scripts as globals   */
 	def context = [:]
 	def dslContext = [:]
@@ -44,11 +45,13 @@ import static usdlc.Config.config
 	 */
 	def backingScripts = []
 	/** Implement by concrete classes to be run as part of the browser/server exchange  */
-	abstract void run(Store script)
+	void run(Store script) {
+	}
 	/**
 	 * Initialisation before running backing or target scripts
 	 */
-	void init() {}
+	void init() {
+	}
 	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {
 		context = binding
@@ -71,13 +74,14 @@ import static usdlc.Config.config
 		if (!cache[language]) {
 			def data = [scripts: [], groovyDSL: '', baseLanguage: '']
 			retrieveDefinitions(language, data)
-			try {
-				cache[language] = Class.forName("usdlc.actor.${data.baseLanguage.capitalize()}Actor").newInstance()
-			} catch (ClassNotFoundException cnfe) {
-				cache[language] = new DslActor(data.groovyDSL)
-				if (!data.groovyDSL) {
-					cache[language].exists = false
-				}
+			if (data.groovyDSL) {
+				cache[language] = data.groovyDSL
+			} else {
+				def actorClass = Groovy.loadClass("usdlc.actor.${data.baseLanguage.capitalize()}Actor")
+					Groovy.loadClass("usdlc.dsl.${data.baseLanguage.toLowerCase()}DSL")
+				cache[language] = actorClass ? 
+					actorClass.newInstance() : 
+					new DslActor("${data.baseLanguage.toLowerCase()}DSL")
 			}
 			cache[language].backingScripts = data.scripts
 		}
@@ -99,7 +103,7 @@ import static usdlc.Config.config
 						data.scripts << store
 						break
 					case 'groovy':
-						data.groovyDSL = parentDSL
+						data.groovyDSL = new DslActor(parentDSL)
 						break
 					default:
 						retrieveDefinitions(parentLanguage, data)

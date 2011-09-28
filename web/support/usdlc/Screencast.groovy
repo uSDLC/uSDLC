@@ -1,9 +1,12 @@
 package usdlc
 
+import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
+
 class Screencast extends CoffeeScript.Delegate {
 	def commands = [
 		note: { params ->
-			assert false: "not implemented for $params"
+			async("usdlc.notes('${params.join(' ')}');")
 		},
 		prompt: { params ->
 			assert false: "not implemented for $params"
@@ -54,4 +57,18 @@ class Screencast extends CoffeeScript.Delegate {
 			assert false: "not implemented for $params"
 		},
 	]
+	WebDriver web = new WebDriver()
+	Screencast() {
+		web.driver.get("$exchange.request.header.host/Sandbox")
+		find(by.cssSelector('#pageTitle>h1')).text
+		web.waitFor(By.cssSelector('#pageTitle>h1')) { assert it.text == 'Sandbox' }
+	}
+	
+	void async(String script, Object... args) {
+			((JavascriptExecutor) web.driver).executeAsyncScript(script, args)
+	}
+	
+	void script(String script, Object... args) {
+			((JavascriptExecutor) web.driver).executeScript(script, args)
+	}
 }

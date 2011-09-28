@@ -16,29 +16,28 @@
 package usdlc.actor
 
 import org.codehaus.groovy.runtime.InvokerHelper
+
+import usdlc.Groovy
 import usdlc.Store
 import static usdlc.Config.config
 
 class DslActor extends GroovyActor {
-	private DslActor(String dsl) {
-		config.dslClassPath.findResult { path ->
+	DslActor(String dsl) {
+		languageScriptClass = config.dslClassPath.findResult { path ->
 			try {
-				languageScriptClass = Class.forName("${path.replaceAll('/', '.')}$dsl")
-			} catch (ClassNotFoundException cnfe) {
-				try {
-					GroovyScriptEngine gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
-					languageScriptClass = gse.loadScriptByName("${dsl}.groovy")
-				} catch (ResourceException re) {
-					null
-				}
+						Groovy.loadClass("${path.replaceAll('/', '.')}$dsl") ?:
+						gse.loadScriptByName("${dsl}.groovy")
+			} catch (ResourceException re) {
+				null
 			}
 		}
+		if (!languageScriptClass) exists = false
 	}
 	/**
 	 * The Script sub-class created by the groovy compiler from script source - or null if there is no source.
 	 */
 	Class languageScriptClass
-	
+
 	void init() {
 		super.init()
 		def dslBinding = new UsdlcBinding(dslContext, context)
@@ -49,5 +48,5 @@ class DslActor extends GroovyActor {
 	 * Keep a cache of previous instances - one per language - so we don't have to recompile. The cache includes
 	 * instances that failed to find a script.
 	 */
-	static cache = [:]
+	static gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
 }
