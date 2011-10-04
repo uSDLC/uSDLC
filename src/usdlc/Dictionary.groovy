@@ -16,8 +16,6 @@
 package usdlc
 /**
  * Dictionaries can be created from strings of name/value pairs - such as cookies, headers or the query string in a URL address.
- * User: Paul Marrington
- * Date: 9/01/11
  */
 class Dictionary {
 	def assign = '='

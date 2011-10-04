@@ -18,10 +18,12 @@ dsc 'click', /^/, "''",
     Enter id, name, link text path, css selector, xpath, class name, 
     tag name or partial link text. Link text is a path with links separated by ->.'
     
-dsc 'check', /^/, ['title','section','source'],
+dsc 'check', /^/, ['title','section','source','element'],
     'Checks text content or title, section or source for string or pattern.'
-dsc 'title', /check/, "''",
+dsc 'title', /^|check/, "''",
     'Set context to page title'
+dsc 'element', /check/, "''",
+    'Check that a page has a HTML element - given a selector and a text regular expression.'
 
 dsc 'insert', /^/, ['section','link','text'],
     'Insert something into the page - section, link or text.'

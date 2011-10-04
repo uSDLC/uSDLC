@@ -113,6 +113,7 @@ $(function() {
 					if (!usdlc.inEditor == !forSourceEditor) {
 						event.srcElement.usdlcKeyEvent = true
 						a.click()
+						event.preventDefault()
 					}
 				})
 			})

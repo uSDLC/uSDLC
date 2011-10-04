@@ -38,6 +38,15 @@ class WebDriver {
 		}
 		driver
 	}
+	void load(url) {
+		try {
+			driver.get(url)
+		} catch (exception) {
+			exception.printStackTrace()
+			setDriver(driverName)
+			driver.get(url)
+		}
+	}
 	/**
 	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit) or be the fully qualified class
 	 * name of a WebDriver.
@@ -57,9 +66,8 @@ class WebDriver {
 	 * Wait for something to become available - for a given patience.
 	 */
 	WebElement waitFor(Closure closure) {
-		def countdown = timeout
+		def countdown = timeout * 2
 		WebElement result
-		timeout *= 2
 		while (!(result = closure()) && countdown) {
 			sleep(500)
 			countdown--

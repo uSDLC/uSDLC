@@ -33,6 +33,7 @@ $(function() {
 			sections.removeAttr('style').removeClass('inFocus ui-state-highlight ui-widget-content').
 					filter('.synopsis').children().removeAttr('style')
 			usdlc.clearSynopses(sections)
+			usdlc.screencast.close()
 		},
 		moveSectionUp : function() {
 			if (usdlc.hasFocus()) {

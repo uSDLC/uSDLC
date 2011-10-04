@@ -23,7 +23,7 @@ dslSourcePath = ['support/usdlc']
 //dslPath = ['dsl/', 'jar:file:usdlc.jar!/usdlc/dsl/']
 libPath = ['lib/jars/']
 databases = [usdlc: 'jdbc:h2:.db/usdlc']
-browserDriverList = 'firefox:chrome:ie:htmlunit'
+browserDriverList = 'chrome:firefox:ie:htmlunit'
 alwaysCheckForRecompile = true
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
@@ -39,10 +39,14 @@ webDrivers = [
 	android : 'org.openqa.selenium.android.AndroidDriver',
 	]
 
+screencast = [
+	keys : ["` F12"]
+	]
+
 environments {
 	standalone {
 		compressJs = false
-		webDriver = 'firefox'
+		webDriver = 'chrome'
 	}
 	servlet {
 		compressJs = true

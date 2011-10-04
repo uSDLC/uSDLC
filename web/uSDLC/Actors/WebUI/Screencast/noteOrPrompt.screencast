@@ -1,4 +1,5 @@
 note 'A note stays on the screen for longer running tasks...'
 sleep 1
 timeout 1	# set timeout for 1 second so prompt will not sit forever
+keys '` F1'	# sample only as these are the default continue response keys
 prompt '... while a prompt requires a key or mouse click to continue'

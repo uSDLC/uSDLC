@@ -324,5 +324,14 @@ class Store {
 		ant.delete(file: file.path)
 	}
 
+	@Override
+	public int hashCode() {
+		return path.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		return path.equals(obj.path);
+	}
+
 	@Lazy ant = Ant.builder(Log.file('store'), 2)
 }

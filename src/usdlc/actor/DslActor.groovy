@@ -25,7 +25,7 @@ class DslActor extends GroovyActor {
 	DslActor(String dsl) {
 		languageScriptClass = config.dslClassPath.findResult { path ->
 			try {
-						Groovy.loadClass("${path.replaceAll('/', '.')}$dsl") ?:
+				Groovy.loadClass("${path.replaceAll('/', '.')}$dsl") ?:
 						gse.loadScriptByName("${dsl}.groovy")
 			} catch (ResourceException re) {
 				null

@@ -1,7 +1,7 @@
 note 'before unregistered page load'
 
 click 'Home -> uSDLC'
-checkTitle 'Unifying the SDLC'
+check title 'Unifying the SDLC'
 
 note 'will return to current page now'
 

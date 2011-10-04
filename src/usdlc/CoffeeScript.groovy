@@ -27,7 +27,7 @@ class CoffeeScript {
 	String compile(String coffeeScriptSource) {
 		String options = bare ? "{bare: true}" : "{}"
 		javascript.run("CoffeeScript.compile(coffeeScript, $options);",
-			[coffeeScript:coffeeScriptSource, newScope:true])
+				[coffeeScript:coffeeScriptSource, newScope:true])
 	}
 	private javascript = new JavaScript()
 	/**
@@ -41,26 +41,38 @@ class CoffeeScript {
 		}
 		javascript
 	}
-	
+
 	static class Delegate {
-		def commands = [:]
+		def commands = [:], defaults = []
 		Exchange exchange
 		/**
 		 * Add another delegate if needed.
 		 */
 		void add(Class newDelegate) {
-//			String name = newDelegate.getName()
-//			Delegate instance = Groovy.loadClass(name).newInstance()
-			Delegate instance = newDelegate.newInstance()
+			Delegate instance = exchange.request.session.instance(newDelegate)
 			instance.exchange = exchange
 			commands += instance.commands
+			defaults << instance.&command
+			instance.init()
+		}
+		void init() {
 		}
 		/**
 		 * Domain Specific Command definition
 		 */
 		def dsc(cmd, params) {
-			assert cmd in commands
-			commands[cmd](params)
+			if (cmd in commands) {
+				commands[cmd](*params)
+			} else {
+				defaults.find { it(cmd, params) }
+			}
+		}
+		/**
+		 * Default command for general execution if command is not in supplied list. Used to
+		 * separate server from client implementations.
+		 */
+		boolean command(cmd, params) {
+			false
 		}
 	}
 }

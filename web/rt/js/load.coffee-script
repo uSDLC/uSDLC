@@ -68,12 +68,13 @@ window.onload = ->
 					'/lib/jquery/js/jquery.hotkeys.js', '/lib/jquery/js/jquery.url.js', '/rt/js/base.js' ]
 			[ '/rt/js/init.js' ], [ '/rt/js/section.js', '/rt/js/template.js' ] ]
 	postload = [
-			[ '/lib/jquery/js/fg.menu.js', '/lib/jquery/js/fg.menu.js', '/lib/ckeditor/ckeditor.js',
-					'/lib/jquery/js/jquery.scrollTo.js', '/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js',
-					'/lib/CodeMirror/lib/codemirror.js' ],
-			[ '/rt/js/contentTree.coffee-script' ],
-			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js', '/rt/js/menu.js', '/rt/js/moveSection.js',
-					'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js', '/rt/js/sourceEditor.js'] ]
+			[ '/lib/jquery/js/fg.menu.js', '/lib/jquery/js/fg.menu.js', '/lib/ckeditor/ckeditor.js'
+					'/lib/jquery/js/jquery.scrollTo.js', '/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js'
+					'/lib/CodeMirror/lib/codemirror.js' ]
+			[ '/rt/js/contentTree.coffee-script' ]
+			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js', '/rt/js/menu.js', '/rt/js/moveSection.js'
+					'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js', '/rt/js/sourceEditor.js'
+					'/rt/js/screencast.coffee-script' ] ]
 
 	loader preload, ->
 		usdlc.init.pageLayout()
