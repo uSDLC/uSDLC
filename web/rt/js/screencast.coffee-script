@@ -1,0 +1,32 @@
+$ ->
+	usdlc.screencast =
+		close: -> $('div.screencast').remove()
+		title: (title) -> screencast().dialog('option', 'title', title) 
+		note: (html) -> screencast().html(html).dialog('open')
+		keys: (keys) -> bindKeys(keys)
+		
+	screencast = ->
+		console.log "screencast"
+		if not (sc = $ 'div.screencast').length
+			console.log 'create sc'
+			$('body').append sc = $('<div/>').addClass('screencast')
+			sc.dialog
+				autoOpen: false
+				show: 'blind'
+				hide: 'drop'
+				position: 'bottom'
+				width: 500
+				height: 'auto'
+				minHeight: 10
+		sc
+		
+	screencast()
+		
+	bindKeys = (keys) ->
+		doc = $(document)
+		doc.unbind 'keydown', respond
+		doc.bind 'keydown', keys, respond
+		
+	respond = ->
+		sc.dialog 'close'
+		$.get('usdlc/screencast/response')
