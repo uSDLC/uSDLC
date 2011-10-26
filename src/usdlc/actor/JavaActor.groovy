@@ -22,38 +22,37 @@ import usdlc.actor.JavaFileObjects.ClassFileManager
 import static usdlc.Config.config
 
 /**
- * Java actor super-class. Implement run() in your sub-class to do the real work. You will have access to the environment and browser.
- * User: Paul Marrington
- * Date: 14/01/11
- * Time: 3:54 PM
+ * Java actor super-class. Implement run() in your sub-class to do the real work. 
+ * You will have access to the environment and browser.
  */
 class JavaActor extends Actor {
 	/**
-	 * Called by uSDLC to start a java actor. It will compile the source if it is out of date, load the class,
-	 * instantiate it and call the run() method. Class needs to have a constructor
-	 * that receives one Map parameter for the environment.
+	 * Called by uSDLC to start a java actor. It will compile the source if it 
+	 * is out of date, load the class, instantiate it and call the run() method. 
+	 * Class needs to have a constructor that receives one Map parameter for the 
+	 * environment.
 	 */
-	void run(Store script) { javaClassLoader.newInstance(exchange.store.absolutePath) }
+	void run(Store script) {
+		javaClassLoader.newInstance(exchange.store.absolutePath)
+	}
 
-	static CompilingClassLoader javaClassLoader = new CompilingClassLoader('java', new JavaCompiler())
+	static javaClassLoader = new CompilingClassLoader('java', new JavaCompiler())
 
 	private static class JavaCompiler implements CompilingClassLoader.Compiler {
 		/**
-		 * Use the compile API to recompile the file to disk as a class file. Strangely enough we do this with a groovy script - so we can steal the classpath.
+		 * Use the compile API to recompile the file to disk as a class file. 
+		 * Strangely enough we do this with a groovy script - so we can steal 
+		 * the classpath.
 		 * @return true if compile behaved.
-		 private compile(name) {
-		 Filer script = Store.template('java/compile.groovy')
-		 Binding context = [actor : this]
-		 gse.run script.path, context
-		 return context.classBuffer
-		 }
 		 */
-		@Override
 		void compile(Store source) {
-			ClassFileManager classFileManager = new ClassFileManager(javaCompiler, javaClassLoader)
-			def options = ['-classpath', config.classPathString]
-			def unitsToCompile = [new JavaFileObjects.FromString(source.absolutePath, source.text())]
-			javaCompiler.getTask(null, classFileManager, null, options, null, unitsToCompile).call()
+			classFileManager = new ClassFileManager(javaCompiler, javaClassLoader)
+			def options = [ '-classpath', config.classPathString ]
+			def unitsToCompile = [
+				new JavaFileObjects.FromString(source.absolutePath, source.text)
+			]
+			javaCompiler.getTask(null, classFileManager, 
+				null, options, null, unitsToCompile).call()
 		}
 
 		javax.tools.JavaCompiler javaCompiler = ToolProvider.systemJavaCompiler

@@ -3,13 +3,17 @@ package usdlc
 import au.com.bytecode.opencsv.CSVReader
 /**
  * DSL support class for processing CSV files. Wrapper for opencsv.
- * @author paul
+ * e.g. new CSV(store : store, context: [headerLines : 1, separator : ',', quote : '"'])
+ * these are the defaults
  */
 class CSV {
+	static process(Store store, Closure closure) {
+		new CSV(store:store, context: [perRow : closure]).load()
+	}
 	/** Called by csvDSL to run the CSV through the provided or default closure */
 	CSV load() {
 		context = defaults + context
-		parent.rebase("${name}.csv").withReader {
+		store.withReader {
 			CSVReader reader = new CSVReader(it)
 			if (context.headerLines) {
 				if (! (header = reader.readNext().collect { it.trim() })) return
@@ -38,10 +42,8 @@ class CSV {
 	}
 	/** Number of rows is the size of the list retrieved */
 	def size() { list.size() }
-	/** Name for CSV file */
-	String name
 	/** Base directory reference to the CSV location on disk */
-	Store parent
+	Store store
 	/** Closure to execute per row processed */
 	Closure perRow = { list << it }
 

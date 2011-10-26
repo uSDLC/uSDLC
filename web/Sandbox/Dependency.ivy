@@ -1,0 +1,2 @@
+source(true)
+organisation('org.jsoup').module('jsoup').required()

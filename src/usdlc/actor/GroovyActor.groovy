@@ -15,13 +15,14 @@
  */
 package usdlc.actor
 
-import groovy.lang.Binding;
+import groovy.lang.Binding
 
-import java.util.Map;
+import java.util.Map
 
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
 
-import usdlc.CSV;
+import usdlc.CSV
+import usdlc.Groovy;
 import usdlc.Log
 import usdlc.Store
 import static usdlc.Config.config
@@ -53,9 +54,12 @@ class GroovyActor extends Actor {
 		}
 	}
 	/**
-	 * Run a groovy script or DSL. Provides methods for additional delegation, logging and script includes
+	 * Run a groovy script or DSL. Provides methods for additional delegation, 
+	 * logging and script includes
 	 */
 	void run(Store script) {
-		context.gse.run script.path, context.usdlcBinding
+		def scriptClass = Groovy.loadClass(script.parent, script.name) ?:
+				context.gse.loadScriptByName(script.path)
+		Groovy.run(scriptClass, context.usdlcBinding)
 	}
 }

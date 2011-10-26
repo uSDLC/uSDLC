@@ -1,10 +1,56 @@
-<DIV id='pageTitle' class='editable'><H1>
-	Screencasts</H1><H2>
-	for talks and web walk-throughs</H2></DIV><DIV id='s1' contextmenu='section' class='editable section'><P>
-	The Screencast DSL is designed to demonstrate uSDLC techniques from within this common framework. It is creating a DSL to simplify the use of WebDriver for screencasting.</P></DIV><DIV id='s3' contextmenu='section' class='editable section synopsis'><P><A id='s3a0' action='runnable' class='usdlc sourceLink succeeded' href='AssociateADSL.groovy'>Associate a DSL</A> name with a backing script provider.</P></DIV><DIV id='s4' contextmenu='section' class='editable section synopsis'><P>
-	Open a pop-up window that is both <A id='s4a0' action='runnable' class='usdlc sourceLink succeeded' href='driverAndPromptDisplay.screencast'>driver and prompt display</A>.</P></DIV><DIV id='s7' contextmenu='section' class='editable section synopsis'><P><A id='s7a0' action='runnable' class='usdlc sourceLink' href='CreateAScreencast.screencast'>Create a screencast</A> as a new named page in the Sandbox. Requires title, subtitle&#xa0;and synopsis.</P></DIV><DIV id='s5' contextmenu='section' class='editable section synopsis'><P>
-	Each command will end in a text field that will be displayed as a <A id='s5a0' action='runnable' class='usdlc sourceLink' href='noteOrPrompt.screencast'>note or prompt</A>..</P></DIV><DIV id='s6' contextmenu='section' class='editable section synopsis'><P>
-	Execution pauses until continue is requested. The <A id='s6a0' action='runnable' class='usdlc sourceLink running' href='currentLocation.screencast'>current location</A> is checked to&#xa0;make sure it has not changed before continuing.</P></DIV><DIV id='s9' contextmenu='section' class='editable section synopsis'><P><A id='s9a0' action='runnable' class='usdlc sourceLink' href='CreateANewSection.screencast'>Create a new section</A> at the end (but above footer). Requires a heading and a list of paragraphs&#xa0;to insert in the section.</P></DIV><DIV id='s10' contextmenu='section' class='editable section synopsis'><P><A id='s10a0' action='runnable' class='usdlc sourceLink' href='SelectASection.screencast'>Select a section</A> for processing based on some text in the section.</P></DIV><DIV id='s11' contextmenu='section' class='editable section synopsis'><P><A id='s11a0' action='runnable' class='usdlc sourceLink' href='SelectNextSection.screencast'>Select next section</A>.</P></DIV><DIV id='s12' contextmenu='section' class='editable section synopsis'><P>
-	Convert a string in the current section into a <A id='s12a0' action='runnable' class='usdlc sourceLink' href='link.screencast'>link</A>. Requires text, link type&#xa0;(html, groovy, ...), source and an option to pause during steps. If the current section does not have the text supplied, search other sections for it.</P></DIV><DIV id='s13' contextmenu='section' class='editable section synopsis'><P><A id='s13a0' action='runnable' class='usdlc sourceLink' href='GoToChildPages.screencast'>Go to child pages</A> based on link name.</P></DIV><DIV id='s14' contextmenu='section' class='editable section synopsis'><P><A id='s14a0' action='runnable' class='usdlc sourceLink' href='EditActivationScripts.screencast'>Edit activation scripts</A> based on name.</P></DIV><DIV id='s15' contextmenu='section' class='editable section synopsis'><P>
-	Bring up <A id='s15a0' action='runnable' class='usdlc sourceLink' href='contextMenu.screencast'>context menu</A> and run a command chain.</P></DIV><DIV id='s2' contextmenu='section' class='editable section footer synopsis'><DIV>
-	&#xa0;<A id='s2a3' action='page' class='usdlc' href='../index.html'>Parent</A> - <A id='s2a1' action='runnable' class='usdlc sourceLink' href='Setup.groovy'>Setup</A>&#xa0;-&#xa0;<A id='s2a0' action='runnable' class='usdlc sourceLink' href='Cleanup.groovy'>Cleanup</A>&#xa0;-&#xa0;<A id='s16a0' action='runnable' class='usdlc sourceLink' href='/support/usdlc/screencastDSL.coffee'>screencastDSL</A>&#xa0;-&#xa0;<A id='s16a1' action='runnable' class='usdlc sourceLink' href='/support/usdlc/Screencast.groovy'>Screencast</A></DIV></DIV>
+<div id="pageTitle" class="editable" uuid="7516c50b-03b7-4fb7-9491-7d216b04b866"> 
+ <h1> Screencasts</h1> 
+ <h2> for talks and web walk-throughs</h2> 
+</div> 
+<div id="s1" contextmenu="section" class="editable section"> 
+ <p> The Screencast DSL is designed to demonstrate uSDLC techniques from within this common framework. It is creating a DSL to simplify the use of WebDriver for screencasting.</p> 
+</div> 
+<div id="s3" contextmenu="section" class="editable section synopsis"> 
+ <p><a id="s3a0" action="runnable" class="usdlc sourceLink succeeded" href="AssociateADSL.groovy">Associate a DSL</a> name with a backing script provider.</p> 
+</div> 
+<div id="s4" contextmenu="section" class="editable section synopsis"> 
+ <p> Open a pop-up window that is both <a id="s4a0" action="runnable" class="usdlc sourceLink succeeded" href="driverAndPromptDisplay.screencast">driver and prompt display</a>.</p> 
+</div> 
+<div id="s7" contextmenu="section" class="editable section synopsis"> 
+ <p><a id="s7a0" action="runnable" class="usdlc sourceLink succeeded" href="CreateAScreencast.screencast">Create a screencast</a> as a new named page in the Sandbox. Requires title, subtitle&nbsp;and synopsis.</p> 
+</div> 
+<div id="s5" contextmenu="section" class="editable section synopsis"> 
+ <p> Each command will end in a text field that will be displayed as a <a id="s5a0" action="runnable" class="usdlc sourceLink succeeded" href="noteOrPrompt.screencast">note or prompt</a>..</p> 
+</div> 
+<div id="s6" contextmenu="section" class="editable section synopsis"> 
+ <p> Execution pauses until continue is requested. The <a class="usdlc sourceLink succeeded" href="currentLocation.screencast" id="s6a0" action="runnable">current location</a> is checked to&nbsp;make sure it has not changed before continuing. Ordinarily a prompt is wrapped in a snap and recover. Here they are called explicitly to highlight the functionality.</p> 
+ <div id="myEventWatcherDiv">
+   &nbsp; 
+ </div> 
+</div> 
+<div id="s9" contextmenu="section" class="editable section synopsis"> 
+ <p> <a class="usdlc sourceLink succeeded" href="CreateANewSection.screencast" id="s9a0" action="runnable">Create a new section</a> at the end (but above footer). Requires a heading and a list of paragraphs&nbsp;to append a section or insert above the one in focus. Existing sections can be selected by contents or relative position and checked to contain contents.</p> 
+</div> 
+<div id="s12" contextmenu="section" class="editable section synopsis"> 
+ <p> Convert a string in the current section into a <a id="s12a0" action="runnable" class="usdlc sourceLink succeeded" href="link.screencast">link</a>. Requires text, link type&nbsp;(html, groovy, ...), source and an option to pause during steps. If the current section does not have the text supplied, search other sections for it.</p> 
+</div> 
+<div id="s16" class="editable section synopsis" contextmenu="section"> 
+ <p> Instruction speed can be controlled between prompts to provide more visual feedback. Use <a class="usdlc sourceLink succeeded" href="step.screencast" id="s16a0" action="runnable">step</a> with fast, slow as the number of seconds.</p> 
+</div> 
+<div id="s13" contextmenu="section" class="editable section synopsis"> 
+ <p><a id="s13a0" action="runnable" class="usdlc sourceLink succeeded" href="GoToChildPages.screencast">Go to child pages</a> based on link name.</p> 
+</div> 
+<div id="s14" contextmenu="section" class="editable section synopsis"> 
+ <p><a id="s14a0" action="runnable" class="usdlc sourceLink" href="EditActivationScripts.screencast">Edit activation scripts</a> based on name.</p> 
+</div> 
+<div id="s15" contextmenu="section" class="editable section synopsis"> 
+ <p> Bring up <a action="runnable" class="usdlc sourceLink failed" href="contextMenu.screencast" id="s15a0">context menu</a> and run a command chain.</p> 
+</div> 
+<div id="s2" contextmenu="section" class="editable section footer synopsis"> 
+ <div>
+   &nbsp; 
+  <a class="usdlc" href="../index.html" id="s2a3" action="page">Parent</a> - 
+  <a class="usdlc sourceLink succeeded" href="Setup.screencast" id="s2a1" action="runnable">Setup</a>&nbsp;-&nbsp; 
+  <a class="usdlc sourceLink" href="Cleanup.groovy" id="s2a0" action="runnable">Cleanup</a>&nbsp;-&nbsp; 
+  <a class="usdlc sourceLink" href="/support/usdlc/screencastDSL.coffee" id="s16a0" action="runnable">screencastDSL</a>&nbsp;-&nbsp; 
+  <a class="usdlc sourceLink" href="/support/usdlc/Screencast.groovy" id="s16a1" action="runnable">Screencast</a> 
+ </div> 
+ <div id="myEventWatcherDiv">
+   &nbsp; 
+ </div> 
+</div>

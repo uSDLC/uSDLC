@@ -1,56 +1,56 @@
-delegate.add usdlc.Screencast
+server = session.instance usdlc.Screencast
+client = (cmd, params...) -> server.client(cmd, params)
 
-dsc 'note', /^/, "''",
-    'Display a note on the screencast prompter.'
-dsc 'prompt', /^/, "''",
-    'Display a prompt and wait for presenter input before continuing'
-    
-dsc 'create', /^/, 'screencast', 
-    'Create a new screencast. Provide title, subtitle and synopsis.'
-    
-dsc 'sleep', /^/, '1',
-    'Sleep for the specified number of seconds before continuing'
-dsc 'timeout', /^/, '1',
-    'Wait at prompt for specified number of seconds or "timeout off" for indefinitely'
+snap = -> client 'snap'
+recover = -> client 'recover'
+note = (title, content) -> client 'note', title, content
+prompt = (title, content) ->
+	snap()
+	note title, content
+	server.waitForResponse()
+	recover()
+   
+create = (target) -> target.create(target.args...)
+append = (target) -> target.append(target.args...)
+insert = (target) -> target.insert(target.args...)
+select = (target) -> target.select(target.args...)
+check = (target) -> target.check(target.args...)
+next = (target) -> target.next(target.args...)
+save = (target) -> target.save(target.args...)
 
-dsc 'click', /^/, "''",
-    'Click on the defined element.
-    Enter id, name, link text path, css selector, xpath, class name, 
-    tag name or partial link text. Link text is a path with links separated by ->.'
-    
-dsc 'check', /^/, ['title','section','source','element'],
-    'Checks text content or title, section or source for string or pattern.'
-dsc 'title', /^|check/, "''",
-    'Set context to page title'
-dsc 'element', /check/, "''",
-    'Check that a page has a HTML element - given a selector and a text regular expression.'
+timeout = (seconds) -> server.timeout seconds
+click = (targets) -> server.web.click targets
+keys = (keys) -> client('keys', keys)
+type = (keys) -> server.currentElement.sendKeys(keys)
+step = (seconds) -> server.stepDelay = Math.floor(seconds * 1000)
+slow = 2
+fast = 0.001
 
-dsc 'insert', /^/, ['section','link','text'],
-    'Insert something into the page - section, link or text.'
-dsc 'link', /insert/, "''",
-    'Insert a link into the current section - providing text string to link, 
-    type of link (html, groovy, etc.) and contents for link. For a
-    html link contexts consists of subtitle and synopsis.'
-    
-dsc 'select', /^/, ['section','source'],
-    'Select a section or source block to place into focus.'
-dsc 'next', /^/, 'section',
-    'Go to the section after the one with focus'
-
-dsc 'section', /check|insert|select|next|menu/, "''",
-    'Define the section to operate on'
-dsc 'source', /edit|check|select/, "''",
-    'Define source component to operate on'
-
-dsc 'keys', /^/, "''",
-    'Send keystrokes directly - mostly used for control keys. 
-    Separate controls with spaces. Use ^ for ctrl, alt+ or meta+. 
-    Named keys are as expected - Up, Tab or F1. 
-    To send printable keys, place in double-quotes. 
-    Example: ^End Up End Enter "add this line to end of section"'
-	
-menu = (what) -> screencast.menu what
-    
-step = (speed) -> screencast.pause speed
-slow = -> 'slow'
-fast = -> 'fast'
+screencast = ->
+	args: arguments
+	create: (title, subtitle, synopsis) -> 
+		server.createScreencast title, subtitle, synopsis
+page = ->
+	args: arguments
+	create: (title, subtitle, synopsis) -> 
+		server.createPage title, subtitle, synopsis
+title = ->
+	args: arguments
+	check: (contents) -> server.check 'div#pageTitle h1', contents
+element = ->
+	args: arguments
+	check: (selector, contents) -> server.check selector, contents
+section = ->
+	args: arguments
+	insert: (title, paragraphs...) -> client('insertSection', title, paragraphs)
+	append: (title, paragraphs...) -> client('appendSection', title, paragraphs)
+	select: -> (regex) -> server.findSection(regex).click()
+	check: (regex) -> server.findSection(regex)
+	next: -> server.setFocus(server.nextSection())
+code = ->
+	args: arguments
+	select: (linkText) -> server.code(linkText).click()
+	check: (regex) -> server.check(regex)
+	save: (contents) ->
+		client 'setCode', contents
+		server.focus.click()

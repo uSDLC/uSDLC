@@ -25,7 +25,7 @@ class JavaScript {
 	/**
 	 * Set optimise to false to compile larger files
 	 */
-	def optimise = true
+	def optimise = true, session
 	/**
 	 * Run a javascript file
 	 */
@@ -34,11 +34,13 @@ class JavaScript {
 		Reader reader = null
 		try {
 			if (! optimise) {
-				context.optimizationLevel = -1 // Without this, Rhino hits a 64K byte-code limit and fails
+				// Without this, Rhino hits a 64K byte-code limit and fails
+				context.optimizationLevel = -1 
 			}
 			def inputStream = js.file.newInputStream()
 			reader = new InputStreamReader(inputStream, "UTF-8")
-			return context.evaluateReader(scope(context, binding), reader, js.path, 0, null)
+			def scope = scope(context, binding)
+			return context.evaluateReader(scope, reader, js.path, 0, null)
 		} finally {
 			reader?.close()
 			Context.exit()
@@ -50,13 +52,15 @@ class JavaScript {
 	public run(String js, binding = [:]) {
 		Context context = Context.enter()
 		try {
-			return context.evaluateString(scope(context, binding), js, 'inline', 0, null)
+			def scope = scope(context, binding)
+			return context.evaluateString(scope, js, 'inline', 0, null)
 		} finally {
 			Context.exit()
 		}
 	}
 	/**
-	 * The first scope is the global and all the rest hang off it. Load any set binding variables.
+	 * The first scope is the global and all the rest hang off it. 
+	 * Load any set binding variables.
 	 */
 	private scope(context, binding) {
 		def scope
@@ -76,25 +80,30 @@ class JavaScript {
 	}
 	def globalScope = null
 	/**
-	 * Given javascript source, remove all the guff to make it as small as possible. Only useful if sending over a wire.
+	 * Given javascript source, remove all the guff to make it as small as 
+	 * possible. Only useful if sending over a wire.
 	 */
 	static compress(input, output) {
-		def compressor = new JavaScriptCompressor(input, new CompressorErrorReporter())
+		def reporter = new CompressorErrorReporter()
+		def compressor = new JavaScriptCompressor(input, reporter)
 		compressor.compress(output, 80, false, false, false, false)
 	}
 }
 
 public class CompressorErrorReporter implements ErrorReporter {
 
-	public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+	public void warning(String message, String sourceName, 
+		int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
-	public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+	public void error(String message, String sourceName, 
+		int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
-	public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+	public EvaluatorException runtimeError(String message, String sourceName, 
+		int line, String lineSource, int lineOffset) {
 		error(message, sourceName, line, lineSource, lineOffset)
 		return new EvaluatorException(message)
 	}

@@ -15,10 +15,15 @@
  */
 package usdlc.dsl
 
-def csvLoad(String name, Map params = [:]) { 
-	new usdlc.CSV(parent: exchange.store, name: name, context: params).load()
+def newCsv(String name, Map params = [:]) {
+	new usdlc.CSV(store: exchange.store.rebase("${name}.csv"), context: params)
 }
-def csvLoad(String name, Map params = [:], Closure perRow) {
-	new usdlc.CSV(parent: exchange.store, name: name, context: params, perRow: perRow).load()
+def csvLoad(String name, Map params = [:]) {
+	newCsv(name, params).load()
+}
+def csvLoad(String name, Map params, Closure perRow) {
+	def csv = newCsv(name, params)
+	csv.perRow = perRow
+	csv.load()
 }
 csv = this.&csvLoad

@@ -1,0 +1,70 @@
+<pre style="margin: 0; line-height: 125%"><span style="color: #AA22FF; font-weight: bold">class</span> JavaScript {
+	<span style="color: #008800; font-style: italic">/**</span>
+<span style="color: #008800; font-style: italic">	 * Set optimise to false to compile larger files</span>
+<span style="color: #008800; font-style: italic">	 */</span>
+	def optimise <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">true</span>
+	<span style="color: #008800; font-style: italic">/**</span>
+<span style="color: #008800; font-style: italic">	 * Run a javascript file</span>
+<span style="color: #008800; font-style: italic">	 */</span>
+	<span style="color: #AA22FF; font-weight: bold">public</span> run(Store js, binding <span style="color: #666666">=</span> [<span style="color: #666666">:</span>]) {
+		Context context <span style="color: #666666">=</span> Context.enter()
+		Reader reader <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">null</span>
+		<span style="color: #AA22FF; font-weight: bold">try</span> {
+			<span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span> optimise) {
+				<span style="color: #008800; font-style: italic">// Without this, Rhino hits a 64K byte-code limit and fails</span>&nbsp;&nbsp;
+				context.optimizationLevel <span style="color: #666666">=</span> <span style="color: #666666">-1</span> 
+			}
+			def inputStream <span style="color: #666666">=</span> js.file.newInputStream()
+			reader <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">new</span> InputStreamReader(inputStream, <span style="color: #BB4444">&quot;UTF-8&quot;</span>)
+			def scope <span style="color: #666666">=</span> scope(context, binding)
+			<span style="color: #AA22FF; font-weight: bold">return</span> context.evaluateReader(scope, reader, js.path, <span style="color: #666666">0</span>, <span style="color: #AA22FF; font-weight: bold">null</span>)
+		} <span style="color: #AA22FF; font-weight: bold">finally</span> {
+			reader<span style="color: #666666">?</span>.close()
+			Context.exit()
+		}
+	}
+	<span style="color: #008800; font-style: italic">/**</span>
+<span style="color: #008800; font-style: italic">	 * Run javascript statements from a string.</span>
+<span style="color: #008800; font-style: italic">	 */</span>
+	<span style="color: #AA22FF; font-weight: bold">public</span> run(<span style="color: #AA22FF">String</span> js, binding <span style="color: #666666">=</span> [<span style="color: #666666">:</span>]) {
+		Context context <span style="color: #666666">=</span> Context.enter()
+		<span style="color: #AA22FF; font-weight: bold">try</span> {
+			def scope <span style="color: #666666">=</span> scope(context, binding)
+			<span style="color: #AA22FF; font-weight: bold">return</span> context.evaluateString(scope, js, <span style="color: #BB4444">&#39;inline&#39;</span>, <span style="color: #666666">0</span>, <span style="color: #AA22FF; font-weight: bold">null</span>)
+		} <span style="color: #AA22FF; font-weight: bold">finally</span> {
+			Context.exit()
+		}
+	}
+	<span style="color: #008800; font-style: italic">/**</span>
+<span style="color: #008800; font-style: italic">	 * The first scope is the global and all the rest hang off it. </span>
+<span style="color: #008800; font-style: italic">	 * Load any set binding variables.</span>
+<span style="color: #008800; font-style: italic">	 */</span>
+	<span style="color: #AA22FF; font-weight: bold">private</span> scope(context, binding) {
+		def scope
+		<span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>globalScope) {
+			scope <span style="color: #666666">=</span> globalScope <span style="color: #666666">=</span> context.initStandardObjects()
+		} <span style="color: #AA22FF; font-weight: bold">else</span> <span style="color: #AA22FF; font-weight: bold">if</span> (binding.newScope) {
+			Scriptable compileScope <span style="color: #666666">=</span> context.newObject(globalScope)
+			compileScope.parentScope <span style="color: #666666">=</span> globalScope
+			scope <span style="color: #666666">=</span> compileScope
+		} <span style="color: #AA22FF; font-weight: bold">else</span> {
+			scope <span style="color: #666666">=</span> globalScope
+		}
+		binding.each { key, value <span style="color: #666666">-&gt;</span>
+			scope.put(key, scope, value)
+		}
+		scope
+	}
+	def globalScope <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">null</span>
+	<span style="color: #008800; font-style: italic">/**</span>
+<span style="color: #008800; font-style: italic">	 * Given javascript source, remove all the guff to make it as small as </span>
+<span style="color: #008800; font-style: italic">	 * possible. Only useful if sending over a wire.</span>
+<span style="color: #008800; font-style: italic">	 */</span>
+	<span style="color: #AA22FF; font-weight: bold">static</span> compress(input, output) {
+		def reporter <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">new</span> CompressorErrorReporter()
+		def compressor <span style="color: #666666">=</span> <span style="color: #AA22FF; font-weight: bold">new</span> JavaScriptCompressor(input, reporter)
+		compressor.compress(output, <span style="color: #666666">80</span>, <span style="color: #AA22FF; font-weight: bold">false</span>, <span style="color: #AA22FF; font-weight: bold">false</span>, <span style="color: #AA22FF; font-weight: bold">false</span>, <span style="color: #AA22FF; font-weight: bold">false</span>)
+	}
+}
+</pre></div>
+

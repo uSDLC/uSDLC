@@ -82,45 +82,8 @@ $(function() {
 					usdlc.scrollBack()
 					usdlc.synopses()
 					return
-
-
-
 				}
-				// Special case for the title - move it back where it belongs.
-				var baseId = $section.attr('id');
-				baseId += 'a'
-				// Process links to see what they should do
-				$('a', $section).removeAttr('action').each(function(idx) {
-					var self = $(this)
-					var targetId = baseId + idx
-					if (!self.attr('id')) {
-						self.attr('id', targetId)
-					}
-					var href = self.attr('href')
-					self.removeClass() // removes all classes so we can re-add
-					// them by page standards.
-					if (href && href.indexOf(':') == -1) {
-						self.addClass('usdlc')
-						href = usdlc.camelCase(href)
-						if (self.text() == '*') {
-							self.addClass('star')
-						}
-						if (href.charAt(href.length - 1) == '/') {
-							href += "index.html"
-						} else if (href.indexOf('.') == -1) {
-							href += "/index.html";
-						}
-						self.attr('href', href)
-						if (usdlc.mimeType(href).clientExt == 'html') {
-							self.attr('action', 'page')
-						} else {
-							self.attr('action', 'runnable')
-							self.addClass('sourceLink')
-						}
-					}
-				})
-				usdlc.checkForSynopsis($section)// See if we load synopsis from inner page link
-				usdlc.savePage()
+				usdlc.saveSection($section)
 				usdlc.scrollBack()
 			},
 			on : {

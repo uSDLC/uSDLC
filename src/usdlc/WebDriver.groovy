@@ -40,7 +40,7 @@ class WebDriver {
 	}
 	void load(url) {
 		try {
-			driver.get(url)
+			getDriver().get(url)
 		} catch (exception) {
 			exception.printStackTrace()
 			setDriver(driverName)
@@ -48,8 +48,8 @@ class WebDriver {
 		}
 	}
 	/**
-	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit) or be the fully qualified class
-	 * name of a WebDriver.
+	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit) 
+	 * or be the fully qualified class name of a WebDriver.
 	 */
 	void setDriver(String name) {
 		try {
@@ -114,6 +114,12 @@ class WebDriver {
 			result = action result
 		}
 		result
+	}
+	/**
+	 * Go from A to B by waiting and clicking links
+	 */
+	WebElement click(String targets) {
+		waitFor(targets) { it.click() }
 	}
 	WebElement findElement(By by) {
 		try {

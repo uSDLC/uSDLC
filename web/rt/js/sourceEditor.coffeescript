@@ -1,0 +1,112 @@
+$ ->
+	syntaxes =
+		basic : 'basic'
+		c : 'clike'
+		h : 'clike'
+		cpp : 'clike'
+		hpp : 'clike'
+		java : 'clike'
+		groovy : 'clike'
+		css : 'css'
+		html : 'htmlmixed'
+		htm : 'htmlmixed'
+		js : 'javascript'
+		coffeescript : 'coffeescript'
+		coffee : 'coffeescript'
+		lua : 'lua'
+		php : 'php'
+		py : 'python'
+		st : 'smalltalk'
+		clojure : 'clojure'
+		haskell : 'haskell'
+		jinja2 : 'jinja2'
+		pascal : 'pas'
+		perl : 'pl'
+		python : 'py'
+		r : 'r'
+		rst : 'rst'
+		ruby : 'ruby'
+		scheme : 'scheme'
+		smalltalk : 'smalltalk'
+		velocity : 'velocity'
+		sql : 'plsql'
+		plsql : 'plsql'
+		sparql : 'sparql'
+		stex : 'stex'
+		xml : 'xml'
+		xmlpure : 'xmlpure'
+		yaml : 'yaml'
+		diff : 'diff'
+		markdown : 'markdown'
+		ntriples : 'ntriples'
+		tiddlywiki : 'tiddlywiki'
+		
+	usdlc.getSourceEditorModes = ->
+		set = []
+		included = {}
+		$.each syntaxes, (key, value) ->
+			if not (value in included)
+				included[value] = true
+				set.push "/lib/CodeMirror/mode/#{value}/#{value}.js"
+		set
+		
+	usdlc.activeSourceEditor = null
+	
+	usdlc.saveSource = ->
+		if usdlc.inEditor and usdlc.activeSourceEditor.contentChanged
+			usdlc.deleteOutput()
+			content = usdlc.activeSourceEditor.getValue()
+			usdlc.save(usdlc.activeSourceEditor.url, content, '')
+			usdlc.activeSourceEditor.contentChanged = false
+	# Links that don't end in .html can be edited with the source editor
+	usdlc.displaySource = (wrapper, data, url) ->
+		ext = usdlc.mimeType(url).serverExt
+		ext = usdlc.dsls[ext] if ext of usdlc.dsls
+		ext = if ext of syntaxes then ext else 'groovy'
+		syntax = syntaxes[ext]
+		editorMode = (codemirror, inEditor) ->
+			usdlc.activeSourceEditor = codemirror
+			usdlc.inEditor = inEditor
+			usdlc.highlight()
+			theme = if inEditor then 'night' else 'elegant'
+			codemirror.setOption 'theme', theme
+			codemirror.setOption 'readOnly', !inEditor
+			
+		codemirror = CodeMirror wrapper.get(0),
+			value : data
+			mode : syntax
+			theme : 'elegant'
+			indentUnit : 4
+			indentWithTabs : true
+			tabMode : 'indent'
+			enterMode : 'indent'
+			electricChars : true
+			lineNumbers : true
+			gutter : true
+			readOnly : false
+			onChange : (editor) ->
+				editor.contentChanged = true
+			onCursorActivity : (editor) ->
+			onGutterClick : (editor) ->
+			onFocus : (editor) ->
+				usdlc.setFocus wrapper
+				editorMode editor, true
+			onBlur : (editor) ->
+				usdlc.saveSource()
+				editorMode editor, false
+			onScroll : (editor) ->
+			onHighlightComplete : (editor) ->
+			matchBrackets : true
+			onKeyEvent : (editor, event) ->
+				if event.altKey or event.ctrlKey or event.metaKey
+					if event.type in 'keydown'
+						event.srcElement.usdlcKeyEvent = false
+					wrapper.trigger(event)
+					if event.srcElement.usdlcKeyEvent
+						event.stop()
+				false
+				
+		codemirror.url = url
+		wrapper.data 'codemirror', codemirror
+		# CodeMirror stuffs up. It paints then resizes without painting again
+		setTimeout((-> codemirror.refresh()), 500)

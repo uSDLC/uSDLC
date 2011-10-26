@@ -1,0 +1,56 @@
+$ ->
+	pageContentsURL = ''
+	focus = null
+
+	usdlc.screencast =
+		close: -> sc().remove()
+		note: (title, content) ->
+			scd = sc()
+			if content
+				scd.dialog('option', 'title', title)
+			else
+				content = title 
+			scd.html(content).dialog('open')
+		keys: (keys) -> 
+			doc = $(document)
+			doc.unbind 'keydown', respond
+			doc.bind 'keydown', keys, respond
+		snap: ->
+			pageContentsURL = usdlc.pageContentsURL
+			focus = usdlc.focus
+		recover: -> 
+			if pageContentsURL != usdlc.pageContentsURL and pageContentsURL
+				usdlc.absolutePageContents pageContentsURL 
+			usdlc.setFocus focus
+		insertSection: (title, paragraphs...) ->
+			insertSection(title, paragraphs) 
+		appendSection: (title, paragraphs...) ->
+			usdlc.setFocus($('div.section:last'))
+			insertSection(title, paragraphs)
+		setCode: (code) ->
+			usdlc.activeSourceEditor.setValue(code)
+		
+	sc = ->
+		if not (screencast = $ 'div.screencast').length
+			$('body').append screencast = $('<div/>').addClass('screencast')
+			screencast.dialog
+				autoOpen: false
+				show: 'blind'
+				hide: 'drop'
+				position: 'bottom'
+				width: 500
+				height: 'auto'
+				minHeight: 10
+		screencast
+		
+	sc()
+		
+	respond = ->
+		sc.dialog 'close'
+		$.get('usdlc/screencast/response')
+
+	insertSection = (title, paragraphs) ->
+		paragraphs = for paragraph in paragraphs
+			"<p>#{paragraph}</p>"
+		usdlc.saveSection usdlc.insertSection('insertBefore').html(
+			"<h1>#{title}</h1>#{paragraphs.join('')}")

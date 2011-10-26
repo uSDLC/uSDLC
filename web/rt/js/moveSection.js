@@ -17,21 +17,33 @@
 $(function() {
 	$.extend(true, window.usdlc, {
 		/**
-		 * Used in a menu to insert a section above the page selection then edit it.
+		 * Insert a new paragraph above or below the one in focus.
 		 */
-		insertSectionAboveFocus : function() {
-			insertSection("insertBefore")
+		insertSection : function(beforeOrAfter) {
+			ne = newSection()
+			ne[beforeOrAfter]($('.inFocus'))
+			return usdlc.setFocus(ne)
 		},
 		/**
-		 * Used in a menu to insert a section below the page selection then edit it.
+		 * Used in a menu to insert a section above the page selection then edit
+		 * it.
+		 */
+		insertSectionAboveFocus : function() {
+			usdlc.insertSection("insertBefore")
+			usdlc.editSectionInFocus()
+		},
+		/**
+		 * Used in a menu to insert a section below the page selection then edit
+		 * it.
 		 */
 		insertSectionBelowFocus : function() {
-			insertSection("insertAfter")
+			usdlc.insertSection("insertAfter")
+			usdlc.editSectionInFocus()
 		},
 		cleanSections : function(sections) {
 			// clean up html of crap that builds up
-			sections.removeAttr('style').removeClass('inFocus ui-state-highlight ui-widget-content').
-					filter('.synopsis').children().removeAttr('style')
+			sections.removeAttr('style').removeClass('inFocus ui-state-highlight ui-widget-content')
+					.filter('.synopsis').children().removeAttr('style')
 			usdlc.clearSynopses(sections)
 			usdlc.screencast.close()
 		},
@@ -82,7 +94,7 @@ $(function() {
 			return true
 		},
 		splitIntoSections : function() {
-			if (! usdlc.inFocus) {
+			if (!usdlc.inFocus) {
 				return true
 			}
 			var pieces = usdlc.inFocus.find('li')
@@ -93,26 +105,31 @@ $(function() {
 				pieces = usdlc.inFocus.find('div')
 			}
 			var id = parseInt(usdlc.nextSectionId().substring(1))
-			pieces.wrapInner(
-					function() {
-						return newSection('s' + (id++))
-					}).children().insertAfter(usdlc.inFocus)
+			pieces.wrapInner(function() {
+				return newSection('s' + (id++))
+			}).children().insertAfter(usdlc.inFocus)
 			pieces.remove()
 			usdlc.savePage()
 			return false
 		},
 		/**
-		 * Called by the context menu - causing the section in focus to be created as a new page.
+		 * Called by the context menu - causing the section in focus to be
+		 * created as a new page.
 		 */
 		extractSectionInFocus : function() {
-			if (! usdlc.inFocus) {
+			if (!usdlc.inFocus) {
 				return false
 			}
 			var section = usdlc.parseSection(usdlc.inFocus)
 			var newPageName = section.name + '/index.html'
-			header = usdlc.createPageTitle(section.title, section.subtitle).replaceAll(section.header).after($('<div/>').attr('id', 's1').addClass('editable section').attr('contextmenu', "section").append(section.content))
+			header = usdlc.createPageTitle(section.title, section.subtitle).replaceAll(section.header).after(
+					$('<div/>').attr('id', 's1').addClass('editable section').attr('contextmenu', "section").append(
+							section.content))
 			usdlc.save(newPageName, usdlc.inFocus.html())
-			usdlc.inFocus.addClass('synopsis').empty().append($('<h1/>').append($('<a/>').attr('href', section.name + '/index.html').attr('id', section.id + 'a0').addClass('usdlc').attr('action', 'page').text(section.title)))
+			usdlc.inFocus.addClass('synopsis').empty().append(
+					$('<h1/>').append(
+							$('<a/>').attr('href', section.name + '/index.html').attr('id', section.id + 'a0')
+									.addClass('usdlc').attr('action', 'page').text(section.title)))
 			usdlc.savePageContents()
 			return true
 		}
@@ -120,38 +137,27 @@ $(function() {
 
 	// todo: reinstate with special key down only - stops editor from blurring
 	// Make it so we can move sections with drag and drop.
-//	usdlc.pageContents.sortable({
-//		axis : 'y',
-//		containment: 'parent',
-//		items : 'div.section',
-//		revert : true,
-//		placeholder : "ui-state-highlight",
-//		tolerance : 'pointer',
-//		opacity : 0.5,
-//		start : function(event) {
-//			usdlc.setFocus($(event.srcElement))
-//		},
-//		update : function() {
-//			usdlc.savePage()
-//		}
-//	})
-	/*
-	 Insert a new paragraph above or below the one in focus.
-	 */
-	function insertSection(beforeOrAfter) {
-		$('.inFocus').each(function() {
-			var ne = newSection()
-			ne[beforeOrAfter](this)
-			usdlc.setFocus(ne)
-			usdlc.editSectionInFocus()
-		})
-	}
+	// usdlc.pageContents.sortable({
+	// axis : 'y',
+	// containment: 'parent',
+	// items : 'div.section',
+	// revert : true,
+	// placeholder : "ui-state-highlight",
+	// tolerance : 'pointer',
+	// opacity : 0.5,
+	// start : function(event) {
+	// usdlc.setFocus($(event.srcElement))
+	// },
+	// update : function() {
+	// usdlc.savePage()
+	// }
+	// })
 
 	function newSection(id) {
 		return $("<div/>", {
-			id: id || usdlc.nextSectionId(),
-			'class': 'editable section',
-			contextMenu: 'section'
+			id : id || usdlc.nextSectionId(),
+			'class' : 'editable section',
+			contextMenu : 'section'
 		})
 	}
 })

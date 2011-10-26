@@ -24,18 +24,14 @@ class RhinoActor extends Actor {
 
 	void init() {
 		javascript = exchange.request.session.instance JavaScript
-		binding = [exchange : exchange, rhino : new Support(), session : new Session()]
+		binding = [exchange : exchange, support: this]
 	}
 
 	public void run(Store script) {
 		javascript.run(script, binding)
 	}
 	
-	class Session {
-		Object instance(Class of) { exchange.request.session.instance of }
-	}
-	
-	class Support {
-		
+	public $sleep(seconds) {
+		sleep((long) (seconds * 1000))
 	}
 }

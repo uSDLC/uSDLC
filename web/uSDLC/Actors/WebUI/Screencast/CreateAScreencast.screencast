@@ -1,2 +1,3 @@
-screencast 'Screencast Test Page', 'sub-title here',
+create screencast 'Screencast Test Page', 'sub-title here',
     'This page is used by the screencast definition page for testing.'
+check title 'Screencast Test Page'

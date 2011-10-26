@@ -26,7 +26,4 @@ class CoffeescriptActor extends JsActor {
 		CoffeeScript compiler = exchange.request.session.instance CoffeeScript
 		exchange.store = compiler.javascript(exchange.store)
 	}
-	void run(Store script) {
-		super.run(script)
-	}
 }

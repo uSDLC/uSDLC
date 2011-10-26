@@ -27,9 +27,9 @@ class Tasks {
 	static version = Database.version('classpath:/usdlc/reports/Tasks')
 
 	def processPage(contents) {
-		def page = new Page(contents)
-		page.sections { section ->
-		}
-		page.updated ? page.toString() : contents
+//		def page = new Page(contents)
+//		page.sections { section ->
+//		}
+//		page.updated ? page.toString() : contents
 	}
 }

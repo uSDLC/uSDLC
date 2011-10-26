@@ -55,7 +55,8 @@ $(function() {
 		if (path.indexOf('..') == -1  && path.indexOf('://') == -1) {
 			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
-			var inclusion = $('<div/>').addClass('inclusion')
+			var iid = link.attr('id') + '_inclusion'
+			var inclusion = $('<div/>').addClass('inclusion').attr('id', iid)
 			section.append(inclusion)
 			$.get(usdlc.serverActionUrl(path, 'raw'), function(data) {
 				if (data.length < 3) {

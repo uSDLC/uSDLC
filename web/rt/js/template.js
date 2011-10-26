@@ -28,7 +28,7 @@ $(function() {
 		/**
 		 * Give notice to an error by highlighting the page selection and
 		 * displaying a message.
-		 * 
+		 *
 		 * @param messageFile
 		 *            File/script to produce message to display
 		 */
@@ -95,6 +95,7 @@ $(function() {
 			document.title = $('h1', pageTitle).text()
 		},
 		absolutePageContents : function(path, afterwards) {
+			if (path[0] != '/') path = '/' + path
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
 			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
 			$('base').attr('href', base)
@@ -131,6 +132,7 @@ $(function() {
 			 * Give back to the usdlc.server.servletengine.server - after moving
 			 * page title back into the body temporarily.
 			 */
+			var focus = usdlc.inFocus
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)
@@ -138,6 +140,7 @@ $(function() {
 			usdlc.setPageTitle()
 			usdlc.scrollFiller(true)
 			usdlc.pageContentsSausages.sausage()
+			usdlc.setFocus(focus)
 		},
 		createPageTitle : function(heading, subtitle) {
 			return $('<div/>').attr('id', 'pageTitle').addClass('editable').append($('<h1/>').append(heading)).append(

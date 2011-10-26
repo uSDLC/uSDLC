@@ -54,7 +54,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return ret("number", "number");
     }      
     else if (/\d/.test(ch)) {
-      stream.match(/^\d*(?:\.\d*)?(?:e[+\-]?\d+)?/);
+      stream.match(/^\d*(?:\.\d*)?(?:[eE][+\-]?\d+)?/);
       return ret("number", "number");
     }
     else if (ch == "/") {
@@ -74,6 +74,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         stream.eatWhile(isOperatorChar);
         return ret("operator", null, stream.current());
       }
+    }
+    else if (ch == "#") {
+        stream.skipToEnd();
+        return ret("error", "error");
     }
     else if (isOperatorChar.test(ch)) {
       stream.eatWhile(isOperatorChar);

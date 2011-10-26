@@ -57,13 +57,13 @@ $(function() {
 				usdlc.inFocus = section.addClass('inFocus ui-widget-content')
 				usdlc.contentTree.jstree('disable_hotkeys')
 				usdlc.pageContentsSausages.sausage("setFocus", section)
-				return true // yup - we changed focus
 			}
-			return false // was already in focus
+			return section
 		},
 		clearFocus : function() {
 			if (!usdlc.inFocus) {
 				return
+
 			}
 			$('.inFocus').removeClass('inFocus ui-widget-content')
 			usdlc.lastFocus = usdlc.inFocus
@@ -136,6 +136,45 @@ $(function() {
 				section.data.name = usdlc.camelCase(section.data.title)
 			}
 			return section.data
+		},
+		/**
+		 * Process the HTML and save he section
+		 */
+		saveSection : function($section) {
+			var baseId = $section.attr('id');
+			baseId += 'a'
+			// Process links to see what they should do
+			$('a', $section).removeAttr('action').each(function(idx) {
+				var self = $(this)
+				var targetId = baseId + idx
+				if (!self.attr('id')) {
+					self.attr('id', targetId)
+				}
+				var href = self.attr('href')
+				self.removeClass() // removes all classes so we can re-add
+				// them by page standards.
+				if (href && href.indexOf(':') == -1) {
+					self.addClass('usdlc')
+					href = usdlc.camelCase(href)
+					if (self.text() == '*') {
+						self.addClass('star')
+					}
+					if (href.charAt(href.length - 1) == '/') {
+						href += "index.html"
+					} else if (href.indexOf('.') == -1) {
+						href += "/index.html";
+					}
+					self.attr('href', href)
+					if (usdlc.mimeType(href).clientExt == 'html') {
+						self.attr('action', 'page')
+					} else {
+						self.attr('action', 'runnable')
+						self.addClass('sourceLink')
+					}
+				}
+			})
+			usdlc.checkForSynopsis($section)
+			usdlc.savePage()
 		}
 	})
 

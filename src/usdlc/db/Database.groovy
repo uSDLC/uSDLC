@@ -20,11 +20,6 @@ import groovy.sql.Sql
 import org.h2.tools.RunScript
 import static usdlc.Config.config
 
-/**
- * User: Paul Marrington
- * Date: 7/05/11
- * Time: 5:16 PM
- */
 class Database {
 	Sql sql
 	/**
@@ -38,6 +33,7 @@ class Database {
 	 */
 	static Database connection(String database, Closure actions) {
 		Database connection = null
+		def result
 		try {
 			while (!connection?.active()) {
 				connection?.sql?.close()  // close off out-of-date one if exists
@@ -46,50 +42,63 @@ class Database {
 					connection = pool[database].pop()
 				}
 			}
-			actions(connection)
+			result = actions(connection)
+		} catch (exception) {
+			exception.printStackTrace()
 		} finally {
 			synchronized (pool) { pool[database] << connection }
 		}
-		connection
+		result
 	}
 	/**
-	 * The first time in a static run that we access a group of related tables we check the code generated version against that in the current database. If they differ, ask caller to migrate the data.
+	 * The first time in a static run that we access a group of related tables we 
+	 * check the code generated version against that in the current database. If 
+	 * they differ, ask caller to migrate the data.
 	 *
 	 * static version = db.version("classpath:usdlc/db/Core")
 	 *
 	 * @param tableGroup Name of group of related tables that use the same version
-	 * @param migrate Call to create tables or migrate old to new form. One parameter is the old version. If it is zero, the tables do not exist and have to be created but no migration needed. Must
-	 * return true if migration was successful so that the new version can be recorded. This parameter is optional and the code will migrate using scripts of the form $tableGroup.$version.sql to move up migration steps one at a time.
-	 * @param targetVersion - version to move to
-	 * @return true if no migration needed or migration succeeded
+	 * @param migrate Call to create tables or migrate old to new form. One parameter 
+	 * is the old version. If it is zero, the tables do not exist and have to be created
+	 * but no migration needed. Must return true if migration was successful so that the 
+	 * new version can be recorded. This parameter is optional and the code will migrate 
+	 * using scripts of the form $tableGroup.$version.sql to move up migration steps 
+	 * one at a time.
 	 */
 	static String version(String key, Closure migrate = migrateByScript) {
 		String[] group = (config.tableVersions[key] as String)?.split(',')
+		def dbVersion = 0
 		if (group) {
-			String url = group[0], tableGroup = group[1]
+			String url = config.databases[group[0]], tableGroup = group[1]
 			int targetVersion = group[2].toInteger()
 			connection(url) { Database db ->
-				def dbVersion = 0
 				try {
-					dbVersion = (db.sql.firstRow("select version from versions where tableGroup = $tableGroup") as GroovyResultSet)['version']
+					dbVersion = (db.sql.firstRow(
+						"select version from versions where tableGroup = $tableGroup") 
+					as GroovyResultSet)['version']
 				} catch (e) {
 					runSqlScript url, "${tableGroup}.001.sql"
 				}
 				if (!dbVersion) {
-					try { db.sql.executeUpdate "insert into versions values($tableGroup,0)" } catch (e) { e.printStackTrace() }
+					try { 
+						db.sql.executeUpdate "insert into versions values($tableGroup,0)"
+					} catch (e) { e.printStackTrace() }
 				}
 				def toVersion = targetVersion ?: 1
 				while (dbVersion != toVersion) {
 					dbVersion += 1
+					migrationNeeded = true
 					if (!migrate(url, tableGroup, dbVersion)) { return /* failure */ }
-					db.sql.executeUpdate "update versions set version = $dbVersion where tableGroup = $tableGroup"
+					db.sql.executeUpdate(
+						"update versions set version = $dbVersion where tableGroup = $tableGroup")
 				}
 			}
 		}
 		key
 	}
 	/**
-	 * Can be called by migration closures to find a script of the form "$tableGroup.$toVersion(3 digits).sql" and migrate it.
+	 * Can be called by migration closures to find a script of the form 
+	 * "$tableGroup.$toVersion(3 digits).sql" and migrate it.
 	 */
 	static migrateByScript = { String url, tableGroup, toVersion ->
 		try {

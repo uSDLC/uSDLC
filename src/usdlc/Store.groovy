@@ -29,10 +29,19 @@ class Store {
 	 * Build a store object for a path relative to the web root
 	 */
 	static Store base(String path = '') {
-		def store = new Store()
-		store.file = new File(config.baseDirectory, camelCase(path))
-		store
+		path = path.replaceFirst(~/.*~/, config.home)
+		new Store(file : new File(config.baseDirectory, camelCase(path)))
 	}
+	/**
+	 * Return a Store for a new (non-existent) file. It will refer to a new file
+	 * in /tmp. Use the ID to provide a reference name and file extension. All 
+	 * files here are deleted every time uSDLC is started.
+	 */
+	static Store tmp(String id = '.txt') {
+		Store.base tmpDir.uniquePath("/$id", uniqifier)
+	}
+	static int uniqifier = 0
+	@Lazy static Store tmpDir = Store.base('/tmp').rmdir()
 	/**
 	 * Sometimes we get a now store based on an old location
 	 */
@@ -75,6 +84,7 @@ class Store {
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	/** Directory in which file/directory resides */
 	@Lazy String parent = file.isDirectory() ? path : pathFromBase(file.parent)
+	@Lazy String name = file.name
 	@Lazy String path = pathFromBase(file.path)
 	@Lazy String absolutePath = file.path
 	@Lazy String relativePath = "$config.baseDirectory/$path"
@@ -116,8 +126,15 @@ class Store {
 	 * Public method used to read the file into a string.
 	 * @return File contents as a string.
 	 */
-	String text() {
-		new String(read())
+	String getText() {
+		file.text
+	}
+	/**
+	 * Set the contents of the file as a string (use write for binary)
+	 */
+	void setText(String contents) {
+		mkdirs()
+		file.text = contents
 	}
 	/**
 	 * Public method to write file contents.
@@ -191,23 +208,11 @@ class Store {
 	}
 	/**
 	 * Call a closure for the contents of a directory tree (as in dir /s)
-	 * @param mask - anything with isCase - typically a regular expression (~/re/)
-	 * @param closure - for every file that matches
 	 */
-	void dirs(mask, closure) {
+	void dirs(mask, Closure closure) {
 		file.traverse(type: FILES, nameFilter: mask) { File file ->
-			closure(pathFromBase(file))
+			closure(new Store(file : file))
 		}
-	}
-	/**
-	 * Fetch a list of contents of a directory tree (as in dir /s)
-	 * @param mask - anything with isCase - typically a regular expression (~/re/)
-	 * @return Array of results (empty if none)
-	 */
-	List dirs(mask) {
-		def list = []
-		dirs(mask) { list << it.replaceAll(sloshRE, '/') }
-		list
 	}
 	/**
 	 * Used to see if a compile/processing action is required because the source is newer than the destination.
@@ -227,13 +232,12 @@ class Store {
 	private File file
 
 	/**
-	 * Find a directory that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5). This path will sort correctly for creation date.
-	 * @return A string representation of the path - being the same base as the current store.
+	 * Find a directory that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
+	 * This path will sort correctly for creation date.
 	 */
-	String uniquePath(end) {
+	String uniquePath(id, uniquifier = 0) {
 		def timestamp = new Date().format(dateStampFormat)
-		def uniquifier = 0
-		def uniquePath = "${timestamp}_${uniquifier}_${camelCase(end)}"
+		def uniquePath = "${timestamp}_${uniquifier}_${camelCase(id)}"
 		def unique
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquifier++
@@ -241,9 +245,20 @@ class Store {
 		pathFromBase(unique)
 	}
 	/**
-	 * Convert any sentence into a single camel-case word. It remove all punctuation and makes the start of each work a capital letter. So "My friend Charlie (Watson-Smith-jones)" becomes MyFriendCharlieWatsonSmithJones
+	 * Find a file that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
+	 * This path will sort correctly for creation date.
+	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test.txt/  
 	 */
-	static String camelCase(text) {
+	Store unique(name) {
+		Store.base uniquePath(id)
+	}
+	/**
+	 * Convert any sentence into a single camel-case word. It remove all 
+	 * punctuation and makes the start of each work a capital letter. 
+	 * So "My friend Charlie (Watson-Smith-jones)" becomes 
+	 * MyFriendCharlieWatsonSmithJones
+	 */
+	static String camelCase(String text) {
 		text.replaceAll(~/([\s:\?\*%\|"<>]+)(\w)/) { it[2].toUpperCase() }
 	}
 	/**
@@ -282,9 +297,12 @@ class Store {
 	 * Split a fully qualified storage name into path, name and extension
 	 * @return [path : path, name : name, ext : ext]
 	 */
-	static Map split(path) {
+	static Map split(String path) {
 		def matcher = splitRE.matcher(path)[0]
 		[path: matcher[1], name: matcher[2], ext: matcher[3]]
+	}
+	def split() {
+		split(path)
 	}
 
 	static splitRE = ~/^(?:(.*)[\/\\])?([^\.]*)?(.*)?$/
@@ -306,8 +324,9 @@ class Store {
 	/**
 	 * Remove the path created for this store - if it is a directory
 	 */
-	def rmdir() {
+	Store rmdir() {
 		ant.delete(dir: file.path, includeemptydirs: true)
+		this
 	}
 	/**
 	 * Delete the named file that lives under the defined Store
@@ -326,11 +345,11 @@ class Store {
 
 	@Override
 	public int hashCode() {
-		return path.hashCode();
+		return path.hashCode()
 	}
 	@Override
 	public boolean equals(Object obj) {
-		return path.equals(obj.path);
+		return path.equals(obj.path)
 	}
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)

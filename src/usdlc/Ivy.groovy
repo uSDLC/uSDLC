@@ -19,11 +19,7 @@ import groovy.xml.NamespaceBuilder
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
 
-/**
- * User: Paul Marrington
- * Date: 27/03/11
- * Time: 4:22 PM
- */
+
 class Ivy {
 	Ivy(consoleWriter) {
 		def logFileWriter = Log.file('ivy')

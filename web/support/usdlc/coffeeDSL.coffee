@@ -1,9 +1,13 @@
 globals = (-> (-> this)())()
-contexts = {}
 usdlc = Packages.usdlc
-
-dsc = (cmd, context, next, help) ->
-	contexts[cmd] = {before : context, next : next, help : help}
-	globals[cmd] = (params...) -> delegate.dsc cmd, params
-	
 print = (text) -> exchange.response.print text
+$session = exchange.getRequest().session
+session = 
+	instance : (cls) -> $session.get('instance').call cls
+
+assert = (test, msg) -> throw msg if not test
+
+startTime = java.lang.System.currentTimeMillis()
+timer = -> 
+	Math.floor((java.lang.System.currentTimeMillis() - startTime) / 1000)
+sleep = (seconds) -> support.$sleep(seconds)

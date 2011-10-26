@@ -21,11 +21,7 @@ import com.gargoylesoftware.htmlunit.CollectingAlertHandler
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 
-/**
- * User: Paul Marrington
- * Date: 27/03/11
- * Time: 4:22 PM
- */
+
 class HtmlunitActor extends GroovyActor {
 	Map dsl = [client: new HtmlUnit()]
 

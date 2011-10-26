@@ -35,7 +35,7 @@ class Exchange {
 		InputStream inputStream
 		Header header
 		Map<String, String> query, cookies
-		String userId, sessionKey
+		String userId
 		def session
 
 		String body() {
@@ -53,22 +53,8 @@ class Exchange {
 				query = Dictionary.query(header.query)
 				cookies = Dictionary.cookies(header.cookie)
 				userId = cookies['userId'] ?: 'anon'
-				sessionKey = cookies['usdlc-session'] ?: {
-					long before = lastSessionKey
-					lastSessionKey = System.currentTimeMillis()
-					if (lastSessionKey == before) lastSessionKey++
-					lastSessionKey
-				}()
-				if (!sessions.containsKey(sessionKey)) {
-					session = sessions[sessionKey] = [created : System.currentTimeMillis()]
-					session.instance = { Class ofClass ->
-						if (! session.containsKey(ofClass.name)) {
-							session[ofClass.name] = ofClass.newInstance()
-						}
-						session[ofClass.name]
-					}
-				}
-				session = sessions[sessionKey]
+				session = Session.load(cookies['usdlc-session'])
+				session.exchange = this
 			}
 			setStore(header.uri)
 		} catch (problem) {
@@ -82,10 +68,10 @@ class Exchange {
 	class Response {
 		PrintStream out
 		Map header = ['Connection': 'close']
-		String post = ''
+		def post = ''
 
-		void setSession(String to) {
-			header['Set-Cookie'] = "usdlc-session=$to; Path=/; Expires=Sun, 17 Jan 2038 19:14:07 GMT"
+		void setSessionCookie(String session) {
+			header['Set-Cookie'] = "usdlc-session=$session; Path=/; Expires=Sun, 17 Jan 2038 19:14:07 GMT"
 		}
 
 		void setContentType(String mimeType) {
@@ -105,7 +91,7 @@ class Exchange {
 			out.flush()
 		}
 		boolean first = true
-		
+
 		void write(Object text) {
 			out.print text.toString()
 			out.flush()
@@ -125,9 +111,9 @@ class Exchange {
 	void loadResponse(OutputStream outputStream, Closure prepare) {
 		try {
 			response = new Response()
+			if (request.session.isNewSession) response.sessionCookie = request.session.key
 			response.out = new PrintStream(outputStream, true)
 			response.contentType = request.query.mimeType ?: mimeType(store.path)
-			response.session = request.sessionKey
 			prepare()
 			switch (request.query['action']) {
 				case 'save':    // saves html and actor
@@ -155,7 +141,6 @@ class Exchange {
 		response.complete()
 	}
 
-	static long lastSessionKey = 0
 	Store store
 
 	void setStore(String path) {
@@ -176,7 +161,7 @@ class Exchange {
 		// Create a history file so we can rebuild any version if and when we want to.
 		history.save(request.userId, before, newContents)
 	}
-
+	
 	// Point Apache Commons logging to a uSDLC proxy.
 	static { apacheCommons() }
 }

@@ -15,10 +15,11 @@
  */
 package Options.Configuration
 
+home = '../..'	// for ~/path - defaults to one directory above uSDLC
 urlBase = ''
 srcPath = ['./', 'support/']
 dslClassPath = ['usdlc/dsl/']
-dslSourcePath = ['support/usdlc']
+dslSourcePath = ['support/usdlc/']
 //dslPath = ['dsl/', '../src/usdlc/dsl/']
 //dslPath = ['dsl/', 'jar:file:usdlc.jar!/usdlc/dsl/']
 libPath = ['lib/jars/']
@@ -39,9 +40,7 @@ webDrivers = [
 	android : 'org.openqa.selenium.android.AndroidDriver',
 	]
 
-screencast = [
-	keys : ["` F12"]
-	]
+screencast = [ keys : "` F12" ]
 
 environments {
 	standalone {

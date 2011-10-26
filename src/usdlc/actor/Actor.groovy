@@ -93,8 +93,7 @@ import static usdlc.Config.config
 		def dsl = "${language.toLowerCase()}DSL"
 		config.dslSourcePath.each { path ->
 			def base = Store.base(path)
-			base.dirs(~/${dsl}\..*/).each { name ->
-				Store store = Store.base(name)
+			base.dirs(~/${dsl}\..*/) { Store store ->
 				def parentLanguage = Actor.language(store).toLowerCase()
 				def parentDSL = "${parentLanguage}DSL"
 				switch (parentLanguage) {

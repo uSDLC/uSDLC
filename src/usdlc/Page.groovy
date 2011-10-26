@@ -1,7 +1,3 @@
-package usdlc
-
-import groovy.xml.StreamingMarkupBuilder
-
 /*
  * Copyright 2011 Paul Marrington for http://usdlc.net
  *
@@ -17,43 +13,109 @@ import groovy.xml.StreamingMarkupBuilder
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package usdlc
+
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
+
+import groovy.util.slurpersupport.GPathResult
+import groovy.xml.StreamingMarkupBuilder
+
 /**
  * Here we read in a uSDLC page and provide access to the internals:
- *
- * title: html element for the title element.
- * title.uuid: UUID for this page - unique across instances and uSDLC projects
- * html: the html document
- * updated: whether to write changes on update.
  */
 class Page {
+	@Delegate Document dom
 	/**
-	 * Given a uSdlc html content file, provide action to the individual components.
-	 * @param sourceFile mime-type container for the file to run - gives path, name, etc
-	 * @return A run instance ready to use for a specific file.
+	 * Load a file if it exists - otherwise load the template.
 	 */
-	Page(contents) {
-		html = slurper.parseText(contents)
-		namespace = html[0].namespaceURI()
+	Page(String fileName) {
+		load(Store.base(fileName))
+	}
+	/**
+	 * Load a file if it exists - otherwise load the template.
+	 */
+	Page(Store from) {
+		load(from)
+	}
+	/**
+	 * Load a file if it exists - otherwise load the template.
+	 */
+	private load(Store from) {
+		store = from
+		updated = !from.exists()
+		dom = Jsoup.parse(updated ? template : from.text)
+		titleDiv = dom.select('#pageTitle')
+		title = titleDiv.select('h1').first()
+		subtitle = titleDiv.select('h2').first()
+		sections = new Sections(dom.select('div.section'))
+		synopsis = sections.first()
 
-		title = html.find {it.@id == 'pageTitle'}
-		if (!title?.@uuid) {
-			title.@uuid = UUID.randomUUID()
+		if (updated) {
+			title.text(Store.decamel(from.split().name))
+		}
+
+		if (!titleDiv.hasAttr('uuid')) {
+			titleDiv.attr('uuid', UUID.randomUUID().toString())
 			updated = true
 		}
 	}
 	/**
-	 Action all sections on the page...
+	 * Get page title
 	 */
-	def sections(closure) {
-		html.breadthFirst().findAll {it.@contextmenu == 'section'}.each(closure)
+	String getTitle() {
+		return title.html()
 	}
-
-	String toString() {
-		def outputBuilder = new StreamingMarkupBuilder()
-		String xml = outputBuilder.bind { mkp.yield html }
-		return xml
+	/**
+	 * Set page title
+	 */
+	void setTitle(newTitle) {
+		title.html(newTitle)
+		updated = true
+	}
+	/**
+	 * Get page subtitle
+	 */
+	String getSubtitle() {
+		subtitle.html()
+	}
+	/**
+	 * Set page subtitle
+	 */
+	void setSubtitle(newTitle) {
+		subtitle.html(newTitle)
+		updated = true
+	}
+	/**
+	 * Retrieve the Synopsis
+	 */
+	String getSynopsis() {
+		sections.get(0).html()
+	}
+	/**
+	 * Fill in the Synopsis (first section)
+	 */
+	void setSynopsis(text) {
+		synopsis.html(text)
+		updated = true
+	}
+	class Sections {
+		@Delegate Elements sections
+		Sections(list) { sections = list }
+		Sections select(String selector) {
+			new Sections(sections.select(selector))
+		}
+	}
+	/**
+	 * Save the modified html file
+	 */
+	void save(to = store) {
+		if (updated) store.text = dom.outerHtml()
 	}
 
 	static slurper = new XmlSlurper(new org.cyberneko.html.parsers.SAXParser())
-	def out = new StreamingMarkupBuilder(), html, namespace, title, updated
+	static template = Store.base("rt/template.html").text
+	def out = new StreamingMarkupBuilder(), titleDiv, updated
+	def store, title, subtitle, sections, synopsis
 }

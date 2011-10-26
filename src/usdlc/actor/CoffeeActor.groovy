@@ -21,7 +21,7 @@ import usdlc.Store
 class CoffeeActor extends RhinoActor {
 	void init() {
 		super.init()
-		binding += [delegate : new CoffeeScript.Delegate(exchange : exchange)]
+		//binding += [delegate : new CoffeeScript.Delegate(exchange : exchange)]
 		compiler = exchange.request.session.instance CoffeeScript
 		compiler.bare = true
 	}

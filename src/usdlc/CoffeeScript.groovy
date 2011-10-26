@@ -12,17 +12,18 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class CoffeeScript {
-	def bare
+	def bare, session
 	/**
 	 * Constructor loads and compiles the coffee-script compiler
 	 */
 	CoffeeScript(boolean bare = false) {
 		this.bare = bare
-		javascript.optimise = false // Without this, Rhino hits a 64K byte-code limit and fails
-		javascript.run(Store.base('lib/coffee-script.js'))
+		// Without this, Rhino hits a 64K byte-code limit and fails
+		javascript.optimise = false
+		javascript.run(Store.base('lib/coffeescript.js'))
 	}
 	/**
-	 * Pass in a coffee-script file and the coffee-script compiler will do it's magic
+	 * Pass in a coffee-script file and the compiler will do it's magic
 	 */
 	String compile(String coffeeScriptSource) {
 		String options = bare ? "{bare: true}" : "{}"
@@ -31,48 +32,20 @@ class CoffeeScript {
 	}
 	private javascript = new JavaScript()
 	/**
-	 * Retrieve a reference to the javascript file created from a coffee-script compile
+	 * Retrieve a reference to the javascript file created from a cs compile
 	 */
 	Store javascript(Store coffeescript) {
-		Store javascript = Store.base("store/coffee-script/base").rebase(coffeescript.path + '.js')
+		Store javascript = Store.base("store/coffeescript/base").
+				rebase(coffeescript.path + '.js')
 
 		if (coffeescript.newer(javascript)) {
-			javascript.write(compile(coffeescript.text()))
-		}
-		javascript
-	}
-
-	static class Delegate {
-		def commands = [:], defaults = []
-		Exchange exchange
-		/**
-		 * Add another delegate if needed.
-		 */
-		void add(Class newDelegate) {
-			Delegate instance = exchange.request.session.instance(newDelegate)
-			instance.exchange = exchange
-			commands += instance.commands
-			defaults << instance.&command
-			instance.init()
-		}
-		void init() {
-		}
-		/**
-		 * Domain Specific Command definition
-		 */
-		def dsc(cmd, params) {
-			if (cmd in commands) {
-				commands[cmd](*params)
-			} else {
-				defaults.find { it(cmd, params) }
+			try {
+				javascript.write(compile(coffeescript.text))
+			} catch (exception) {
+				throw new RuntimeException(
+				"Error in $coffeescript.path ($exception.message)", exception)
 			}
 		}
-		/**
-		 * Default command for general execution if command is not in supplied list. Used to
-		 * separate server from client implementations.
-		 */
-		boolean command(cmd, params) {
-			false
-		}
+		javascript
 	}
 }

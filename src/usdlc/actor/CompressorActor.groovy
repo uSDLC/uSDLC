@@ -15,11 +15,6 @@
  */
 package usdlc.actor
 
-import com.yahoo.platform.yui.compressor.JavaScriptCompressor
-import org.mozilla.javascript.ErrorReporter
-import org.mozilla.javascript.EvaluatorException;
-import usdlc.History
-import usdlc.Log
 import usdlc.Store
 import static usdlc.Config.config
 
@@ -29,7 +24,8 @@ import static usdlc.Config.config
 abstract class CompressorActor extends Actor {
 	void filter(String type, Closure compress) {
 		def source = exchange.store, compressed
-		if (config."compress${type.capitalize()}" && !config.noCompression.matcher(source.path).matches()) {
+		if (config."compress${type.capitalize()}" && 
+			!config.noCompression.matcher(source.path).matches()) {
 			compressed = Store.base("store/$type/base").rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()

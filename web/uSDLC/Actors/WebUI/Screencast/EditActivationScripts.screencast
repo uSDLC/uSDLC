@@ -1,6 +1,15 @@
-select source 'activation code'
-insert control '^End Up Up End Enter'
-insert text '''String has(String key) {
-    	           return set.contains(key)
-    	       }'''
-check source /set.contains/
+append section 'Showing a code link', "<a href='This.groovy'>This</a> is a groovy link"
+
+select code 'This'
+save code '''
+  println 'Hello "Groovy"'
+  '''
+edit code 'This',"""
+    /Groovy/s/Groovy/World/
+    a
+    myVar = 22
+    println "myVar = $myVar"
+    .
+    """
+line = edit code '/myVar'
+assert /myVar = 22/.test line

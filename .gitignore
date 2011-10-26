@@ -6,3 +6,4 @@ web/store/
 /.settings
 /.externalToolBuilders
 /store
+/.db
