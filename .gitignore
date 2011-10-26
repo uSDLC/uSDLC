@@ -7,3 +7,5 @@ web/store/
 /.externalToolBuilders
 /store
 /.db
+/chromedriver.log
+/chromedriver (Paul's Macbook's conflicted copy 2011-10-23).log
