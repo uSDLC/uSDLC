@@ -35,7 +35,7 @@ class Exchange {
 		InputStream inputStream
 		Header header
 		Map<String, String> query, cookies
-		String userId
+		User user
 		def session
 
 		String body() {
@@ -52,7 +52,7 @@ class Exchange {
 			request.with {
 				query = Dictionary.query(header.query)
 				cookies = Dictionary.cookies(header.cookie)
-				userId = cookies['userId'] ?: 'anon'
+				user = new User(cookies['userId'] ?: 'anon')
 				session = Session.load(cookies['usdlc-session'])
 				session.exchange = this
 			}
@@ -111,29 +111,36 @@ class Exchange {
 	void loadResponse(OutputStream outputStream, Closure prepare) {
 		try {
 			response = new Response()
-			if (request.session.isNewSession) response.sessionCookie = request.session.key
+			if (request.session.isNewSession) {
+				response.sessionCookie = request.session.key
+			}
 			response.out = new PrintStream(outputStream, true)
 			response.contentType = request.query.mimeType ?: mimeType(store.path)
 			prepare()
-			switch (request.query['action']) {
-				case 'save':    // saves html and actor
-				// Contents to write are sent from the browser.
-				// Get them and save them to the file
-					save(request.body())
-					response.write "usdlc.highlight('sky');"
-					response.write request.query['after'] ?: ''
-					break
-				case 'raw':    // so actors are send to browser for editing instead of running
-					response.write store.read()
-					break
-				default:        // act for active, return content for static content
-					Actor actor = Actor.load(store)
-					if (actor) {
-						actor.run([exchange: this])
-					} else {
+			def action = request.query['action'] ?: 'read'
+			if (request.user.authorised(store, action))
+				switch (action) {
+					case 'save':    // saves html and actor
+					// Contents to write are sent from the browser.
+					// Get them and save them to the file
+						save(request.body())
+						response.write "usdlc.highlight('sky');"
+						response.write request.query['after'] ?: ''
+						break
+					case 'raw':    // actors sent rather than run (editing)
 						response.write store.read()
-					}
-					break
+						break
+					default:   // act for active, return content for static content
+						Actor actor = Actor.load(store)
+						if (actor) {
+							actor.run([exchange: this])
+						} else {
+							response.write store.read()
+						}
+						break
+				}
+			else {
+				if (action == 'save') response.write "usdlc.highlight('red');"
 			}
 		} catch (problem) {
 			problem.printStackTrace()
@@ -145,7 +152,8 @@ class Exchange {
 
 	void setStore(String path) {
 		if (path.startsWith(config.urlBase)) {
-			// For servers that have usdlc on a sub-path - as in http:myServer.com/myApps/usdlc.
+			// For servers that have usdlc on a sub-path -
+			// as in http:myServer.com/myApps/usdlc.
 			path = path.substring(config.urlBase.size())
 		}
 		store = Store.base(path)
@@ -154,14 +162,15 @@ class Exchange {
 
 	private void save(newContents) {
 		def history = new History(store.path, 'updates')
-		// If we don't have a history file for any reason, then we should save the contents of the full file first.
+		// If we don't have a history file for any reason,
+		// then we should save the contents of the full file first.
 		String before = (history.store.size() < 3) ? '' : newContents
 		// Save changed contents to disk
 		store.write newContents.bytes
 		// Create a history file so we can rebuild any version if and when we want to.
-		history.save(request.userId, before, newContents)
+		history.save(request.user.id, before, newContents)
 	}
-	
+
 	// Point Apache Commons logging to a uSDLC proxy.
 	static { apacheCommons() }
 }

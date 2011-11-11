@@ -63,7 +63,7 @@ $(function() {
 	function resizeOutputFrameImmediate() {
 		var frame = $('iframe.output').last()
 		var height = $("div#output", frame.contents()).height() + 33
-		frame.height((height < 40) ? 0 : height)
+		frame.height((height < 20) ? 0 : height)
 	}
 
 	function runSections(sections) {

@@ -38,6 +38,12 @@ import static usdlc.Config.config
 	 * @see usdlc.actor.Actor#run(usdlc.Store)
 	 */
 	void run(Store script) {
+		def user = exchange.request.user
+		if (!user.authorised(script, 'run')){
+			reportError "$user.id is not authorised to execute on this page"
+			return
+		}
+		
 		rerun = (script.path == 'last.sectionRunner')
 		if (rerun) {
 			if (lastRunner) {
@@ -146,8 +152,11 @@ import static usdlc.Config.config
 			context.each { key, value ->
 				if (value?.metaClass.respondsTo('close')) value.close()
 			}
-			js('parent.usdlc.resizeOutputFrame()')
+			resizeOutputFrame()
 		}
+	}
+	void resizeOutputFrame() {
+		js('parent.usdlc.resizeOutputFrame()')
 	}
 	/**
 	 * Given a pattern, run all scripts that match it the base directory. 
@@ -216,9 +225,10 @@ import static usdlc.Config.config
 	 */
 	def reportError(String text) {
 		wrapOutput([
-			'<span class="error">',
+			'<span style="color:red;">',
 			'</span>'
 		]) { write text }
+		resizeOutputFrame()
 	}
 	/**
 	 * Inject javascript into the output stream
