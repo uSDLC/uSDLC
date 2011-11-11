@@ -49,8 +49,10 @@ class Page {
 		titleDiv = dom.select('#pageTitle')
 		title = titleDiv.select('h1').first()
 		subtitle = titleDiv.select('h2').first()
-		sections = new Sections(dom.select('div.section'))
+		sections = dom.select('div.section')
 		synopsis = sections.first()
+		footer = sections.last()
+		sections = sections.not('div.footer, div:lt(1)')
 
 		if (updated) {
 			title.text(Store.decamel(from.split().name))
@@ -100,13 +102,6 @@ class Page {
 		synopsis.html(text)
 		updated = true
 	}
-	class Sections {
-		@Delegate Elements sections
-		Sections(list) { sections = list }
-		Sections select(String selector) {
-			new Sections(sections.select(selector))
-		}
-	}
 	/**
 	 * Save the modified html file
 	 */
@@ -117,5 +112,5 @@ class Page {
 	static slurper = new XmlSlurper(new org.cyberneko.html.parsers.SAXParser())
 	static template = Store.base("rt/template.html").text
 	def out = new StreamingMarkupBuilder(), titleDiv, updated
-	def store, title, subtitle, sections, synopsis
+	def store, title, subtitle, sections, synopsis, footer
 }

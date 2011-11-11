@@ -1,0 +1,12 @@
+create page 'Read CSV Files', 'The lowest common data denominator',
+    '''CSV stands for Comma Separated Variables. All spreadsheets and most database clients
+    can be asked to create CSV files. There is no standard. Comma is common, but so is tab
+    and column alignment (COBOL). The data may contain the separator, so a mechanism to quote
+    each variable is used. This is most commonly single or double-quotes, but percent is also 
+    used. Lastly, some mechanisms allow a quoted variable to include multiple lines. When
+    reading, each record is a dictionary with common names take from the title row. For small
+    CSV files, we can retrieve all data. For very large ones it will be better to process
+    each row in sequence.'''
+prompt 'CSV Page Definition',
+    '''As before, the synopsis paragraph is a brief on what is needed - from which we can
+    methodically create the page.'''

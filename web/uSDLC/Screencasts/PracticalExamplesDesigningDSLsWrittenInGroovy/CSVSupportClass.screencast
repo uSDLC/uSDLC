@@ -1,0 +1,52 @@
+prompt 'CSV Support Class',
+    'Does not need a constructor since Groovy will automagically fill instance data.'
+edit code 'CSV', '''$i
+    def store, context
+.'''
+
+prompt 'One method binds them all.'
+edit code 'CSV', '''
+$i
+    void load() {
+        def process
+        context = defaults + context
+        store.withReader {
+            CSVReader reader = new CSVReader(it)
+            if (context.headerLines) {
+                def header = reader.readNext().collect { it.trim() }
+                if (!header) return
+                    if (context.headerLines > 1) {
+                        for (line in [1..<context.headerLines]) {
+                            if (! reader.readNext()) return
+                        }
+                    }
+                process = { row -> 
+                    [header, row].transpose().collectEntries{it}
+                }
+            } else {
+                process = { row -> row }
+            }
+            def row
+            while (row = reader.readNext()) {
+                perRow(process(row.collect {it.trim()}))
+            }
+        }
+    }
+.'''
+
+prompt 'If we do not specify an action for each line, collect then for return.'
+edit code 'CSV', '''
+$i
+    def list = [], perRow = { list << it }
+
+    def context = [:], defaults = [
+        /** number of lines before we get to data */
+        headerLines : 1,
+        /** separator between variables - comma, tab or | */
+        separator: ',',
+        /** quoting character - ', " or % */
+        quote: '"'
+    ]
+}
+.'''
+prompt 'We have not tested variations (yet), but we do need to provide defaults.'

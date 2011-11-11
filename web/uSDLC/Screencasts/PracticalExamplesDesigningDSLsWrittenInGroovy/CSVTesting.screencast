@@ -1,0 +1,8 @@
+prompt 'CSV Testing',
+    '''To prove the effectiveness of the code, select the section and run it.'''
+select section 'CSV Loader'
+menu 'Run -> Run Section'
+prompt 'If the section works as expected it will turn green.'
+prompt 'Now try the CSV Iterator.'
+select section 'CSV Iterator'
+menu 'Run -> Run Section'

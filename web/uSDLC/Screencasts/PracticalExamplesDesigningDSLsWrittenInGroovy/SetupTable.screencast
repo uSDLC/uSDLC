@@ -1,0 +1,9 @@
+edit code 'Setup', '''$i
+database(memoryDb('test')) {
+    execute "drop table actors"
+    data = csv 'Sample Data'
+    execute "create table actors (${headings data[0]})"
+}
+.'''
+prompt 'Initialise Table', 
+    '''We need a section to run - whether alone or with the complete page.'''

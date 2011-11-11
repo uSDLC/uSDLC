@@ -1,0 +1,9 @@
+create screencast 'Data Migration', 'Even data needs change',
+    '''<b>Brief:</b> Support the creation of data migration packages. Data updates
+    will be repeatedly applied to development environments prior to production release.
+    Data changes will be in either comma-separated text files and sql files. Change can
+    be reversed. Change and reversal records are kept.'''
+timeout 10000
+prompt 'Data Migration Brief',
+    '''All projects and sub-projects start with a brief to define the scope of the project.
+    The brief provides enough information to break down the project into manageable parts.'''

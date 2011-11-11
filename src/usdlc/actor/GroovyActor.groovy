@@ -48,6 +48,7 @@ class GroovyActor extends Actor {
 							gse.run(path, usdlcBinding)
 						},
 						out: { out.println it },
+						pre: { out.println "<pre>\t  $it</pre>" },
 						config: config,
 						dsl: new DslInclusions(binding: usdlcBinding)
 					]

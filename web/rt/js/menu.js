@@ -30,7 +30,7 @@ $(function() {
 		var contextMenus = {}
 
 		usdlc.contextMenu = null
-		usdlc.onContextMenu = function(target, top, left) {
+		usdlc.getContextMenu = function(target) {
 			var contextMenuName = target.attr('contextMenu')
 			if (usdlc.inEditor) {
 				contextMenuName = 'sourceeditor'
@@ -41,8 +41,12 @@ $(function() {
 				}
 			}
 			contextMenuName = 'menu' + contextMenuName
-			if (contextMenus[contextMenuName]) {
-				var div = contextMenus[contextMenuName].css({
+			return contextMenus[contextMenuName]
+		}
+		usdlc.onContextMenu = function(target, top, left) {
+			var contextMenu = usdlc.getContextMenu(target)
+			if (contextMenu) {
+				var div = contextMenu.css({
 					top : top,
 					left : left
 				})

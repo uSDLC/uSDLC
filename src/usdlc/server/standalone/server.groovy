@@ -19,6 +19,8 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
+
+import usdlc.Desktop;
 import usdlc.Exchange
 import usdlc.Exchange.Header
 import usdlc.Config
@@ -37,6 +39,7 @@ Config.load('standalone', 'web', args)
 def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
 System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
+Desktop.openURL("http://localhost:$config.port/$config.urlBase")
 
 HttpServer server
 def socket = new InetSocketAddress(config.port)

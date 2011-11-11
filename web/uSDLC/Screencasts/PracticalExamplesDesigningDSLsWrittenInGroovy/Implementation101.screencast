@@ -1,0 +1,82 @@
+prompt 'Implementation',
+    'We are now ready to hand over to our tame coder',
+    'Some say he can eat pizza without leaving grease on the keyboard…'
+    '… All we know is that he is called Albert'
+section menu 'Run -> Run Page'
+prompt 'Page instrumentation',
+    '''As planned the CSV page runs without incident. The database fails because it is
+    unimplemented. Time for Albert to get to work.'''
+edit code 'Database', '''$i
+	@Delegate Sql sql
+	/**
+	 * Connect to a database by name. 
+	 * The url for this name can be in the config file.
+	 */
+	static connection(String database, Closure actions) {
+		Database connection = null
+		def result
+		try {
+			while (!connection?.active()) {
+				connection?.sql?.close()  // close off out-of-date one if exists
+				synchronized (pool) {
+					if (!pool[database]) {
+						pool[database] = [new Database(database)]
+					}
+					connection = pool[database].pop()
+				}
+			}
+			// This magic allows actions to call database methods implicitly.
+			actions.setDelegate(connection)
+			result = actions()
+			connection.sql.commit()
+		} catch (exception) {
+			connection.sql.rollback()
+			exception.printStackTrace()
+		} finally {
+			synchronized (pool) { pool[database] << connection }
+		}
+		result
+	}
+	/** List of unused connections keyed on database they belong to */
+	final static Map<String, List<Database>> pool = [:]
+	/** Open a simple database by URL or config name only */
+	private Database(String name) {
+		this([url: config.databases[name] ?: name])
+	}
+	/** Open a database with parameters (i.e. credentials) */
+	private Database(Map properties) {
+		sql = Sql.newInstance(properties as Properties)
+	}
+	/** See if connection can be used - 1 hour old max. */
+	boolean active() {
+		sql.connection && (System.currentTimeMillis() - created) < 3600000
+	}
+	/** Close all open databases in the pools */
+	static void close() { pool.each { it.sql.connection?.close() } }
+
+	long created = System.currentTimeMillis()
+	/** Check the base version and migrate if necessary.      */
+	static String usdlcDatabase = version('usdlc-core')
+.'''
+prompt 'Delegates',
+    '''The magic of delegates in Groovy make DSL work so much easier. Any Groovy SQL
+    method can be called on Database because of the delegation on the first line
+    of the class.'''
+prompt '''By using setDelegate() on our closure we can use all methods within
+    the closure braces as unadorned DSL commands. Only when not within a database
+    closure do we need to use command explicitly created in gsqlDSL.'''
+edit code 'Database', '''$i
+	/** Fetch an in-memory database for testing or small temporary functions */ 
+	String memoryDb = { "jdbc:h2:mem:$it:$it" }
+	/** Given a row from a csv, use the heading to return a list for create */
+	String headings(row) {
+		def columns = []
+		row.each { column, value -> columns << "$column as varchar(255)" }
+		columns.join(', ')
+	}
+	/** Wrapper for SQL SELECT command */
+	def select(String sql, Closure actions = null) {
+		actions ? eachRow("select $sql", actions) : rows("select $sql")
+	}
+'''
+prompt "Validation", 'Give Albert a bag of peanuts. Lets run it to make sure...'

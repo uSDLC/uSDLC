@@ -1,0 +1,15 @@
+ant.unzip(src: 'web/lib/jars/required/groovy.jar', dest: 'lib') {
+	patternset { include(name: '**/RootLoader.class') }
+    }
+ant.jar(destfile: 'uSDLC.jar', compress: true, index: true) {
+    def includes = 'bin/**/*.class,lib/**/*,src/**/*,web/**/*,uSDLC.sh,uSDLC.bat'
+    def excludes = '''web/store/**/*,web/tmp/**/*,**/.*,web/lib/javadoc/**/*,
+	web/lib/source/**/*,web/lib/jars/optional/**/*,lib/**/*'''
+    fileset(dir: '.', includes: includes, excludes: excludes)
+    fileset(dir: 'bin', includes: '**/UsdlcJarLauncher*.class')
+    fileset(dir: 'lib', includes: '**/RootLoader*.class')
+    manifest {
+	attribute(name: 'Specification-Version', value: version)
+	attribute(name: 'Main-Class', value: 'usdlc.server.standalone.UsdlcJarLauncher')
+    }
+}

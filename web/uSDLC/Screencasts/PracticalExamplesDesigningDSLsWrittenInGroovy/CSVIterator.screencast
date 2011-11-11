@@ -1,0 +1,8 @@
+append section '<a href="CSVIterator.groovy">CSV Iterator</a>',
+    'Process a CSV one line at a time.'
+edit code 'CSV Iterator', '''i
+csv('Sample Data') { person ->
+    assert person["First Name"] ==~ /(Fred|Barney)/
+.'''
+prompt 'CSV Iterator Test',
+    'Some files may be too large to process in memory.'

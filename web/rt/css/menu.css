@@ -1,0 +1,65 @@
+div.contextMenu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+div#vakata-contextmenu {
+	display: none;
+}
+
+ul.fg-menu {
+	font-size: 0.7em;
+	font-weight: bolder;
+}
+
+div.fg-menu-container {
+	padding: 4px;
+}
+
+.fg-menu a, .fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
+	padding: 1px 1px 1px 4px;
+	display: block;
+	cursor: pointer;
+}
+
+.fg-menu-breadcrumb {
+	font-size: 0.7em;
+}
+
+.topMenu a {
+	text-decoration: none;
+	margin: 0 5px 0 5px;
+	padding: 0 5px;
+	border: 1px solid #FFF;
+	color: black;
+}
+
+.topMenu a:hover {
+	background: #e8eff7;
+	border: 1px solid #aecff7;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+a kbd {
+	float: right;
+}
+
+a span.ui-icon {
+	float: right;
+}
+
+.menu {
+	color: #000;
+	background-color: #fff;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: bold;
+	text-align: center;
+}

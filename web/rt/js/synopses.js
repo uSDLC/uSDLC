@@ -29,8 +29,11 @@ $(function() {
 					loadSynopsis(link, usdlc.displaySource)
 				} else {
 					loadSynopsis(link, function(wrapper, data) {
-						var html = $("<div/>").html(data).children("div.section").first().children()
-						wrapper.append(html)
+						var html = $("<div/>").html(data).children("div.section").first()
+						if (html.text()) {
+							var children = html.children()
+							wrapper.append(children.length ? children : html)
+						}
 					})
 				}
 			})
@@ -52,7 +55,7 @@ $(function() {
 
 	function loadSynopsis(link, processor) {
 		var path = link.attr('href')
-		if (path.indexOf('..') == -1  && path.indexOf('://') == -1) {
+		if (path.indexOf('..') == -1 && path.indexOf('://') == -1) {
 			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
 			var iid = link.attr('id') + '_inclusion'

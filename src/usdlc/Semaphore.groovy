@@ -20,9 +20,9 @@ import java.util.concurrent.TimeUnit
 class Semaphore extends java.util.concurrent.Semaphore {
 	/**
 	 * Default constructor requires a release before first acquire. No fairness to order applied.
-	 * Default timeout is 10 minutes
+	 * Default timeout is 30 minutes
 	 */
-	Semaphore(int timeout = 600) {
+	Semaphore(int timeout = 1800) {
 		super(-1, false)
 		this.timeout = timeout
 	}

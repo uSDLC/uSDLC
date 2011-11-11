@@ -65,6 +65,9 @@
 		//
 		// Creates the sausage UI elements.
 		draw: function () {
+			// Detach from DOM while making changes.
+			this.$sausages.detach().empty()
+
 			var self = this,
 					hWin = self.sausageContainer.height(),
 					$items = self.options.page(),
@@ -78,9 +81,6 @@
 			});
 			self.count = $items.length;
 			var hRatio = hWin / hDoc
-
-			// Detach from DOM while making changes.
-			self.$sausages.detach().empty()
 
 			for (var i = 0; i < self.count; i++) {
 				var $page = $items.eq(i);

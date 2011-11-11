@@ -1,0 +1,9 @@
+append section 'Support Library',
+    '''It looks like Open CSV (
+    <a href="http://opencsv.sourceforge.net/">http://opencsv.sourceforge.net/</a>)
+    will provide all the csv processing we need.'''
+edit code 'CSV', '''1a
+    import au.com.bytecode.opencsv.CSVReader
+    .'''
+prompt 'Open Source Support',
+    '''Always look to open source libraries to leverage.'''

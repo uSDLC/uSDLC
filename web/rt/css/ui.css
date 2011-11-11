@@ -1,0 +1,28 @@
+
+button.ui-button-icon-only {
+	width: 20px;
+	height: 20px;
+}
+td#contentTreeTd {
+	vertical-align: top;
+}
+
+div#contentTree {
+	overflow: auto;
+	padding-right: 22px;
+}
+
+img#treeHider {
+	float: right;
+	margin-right: -12px;
+}
+
+form {
+	border: #f5f5dc thin solid;
+	padding: 2px 10px 2px 10px; /*margin: 5px;*/
+}
+
+li.jstree-leaf > ins.jstree-icon {
+	opacity: 0.2;
+<!-- [ if IE ] > filter : alpha ( opacity = 20 ) < ! [ endif ] -->
+}

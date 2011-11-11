@@ -1,0 +1,2 @@
+section menu "Run -> Run Page"
+prompt "Done", 'All green - our DSL is complete'

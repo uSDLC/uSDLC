@@ -1,0 +1,19 @@
+append section '<a href="SimpleQuery.gsql">Simple Query</a>',
+    'Commands not wrapped in a database closure will use the last database and auto-commit'
+edit code 'Simple Query', '''i
+lines = []
+select('* from actors order by surname') {
+  lines << "$it.firstName $it.surname -- $it.comment"
+}
+results = lines.join('\n')
+assert results =~ 'Bob Hope -- Comedy'
+.'''
+prompt 'Simple does not simplify',
+   '''To do commands outside a database scope, we will need to add scaffolding ourselves'''
+edit code 'gsqlDSL', '''$a
+
+select = { sql, actions = null -> database { select(sql, actions) } }
+.'''
+prompt 'Left unsaid',
+    '''We can add more functionality as it is needed, but it will be just more of the same.
+    We are now ready for implementation…'''

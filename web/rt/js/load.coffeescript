@@ -78,7 +78,7 @@ window.onload = ->
 			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
 				'/rt/js/menu.js', '/rt/js/moveSection.js', '/rt/js/clipboard.js',
 				'/rt/js/run.js', '/rt/js/htmlEditor.js', 
-				'/rt/js/sourceEditor.coffeescript'
+				'/rt/js/sourceEditor.coffeescript', '/rt/js/ex.coffeescript',
 				'/rt/js/screencast.coffeescript' ] ]
 
 	loader preload, ->

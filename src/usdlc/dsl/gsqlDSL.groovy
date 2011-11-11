@@ -14,6 +14,20 @@
  *  limitations under the License.
  */
 package usdlc.dsl
-import usdlc.db.Database
 
-database = Database.&connection
+defaultDatabase = usdlc.db.Database.usdlcDatabase
+def connection(String dbName) {
+	connection(dbName) {}
+}
+def connection(Closure sqlCommands) {
+	connection defaultDatabase, sqlCommands	
+}
+def connection(String dbName, Closure sqlCommands) {
+	defaultDatabase = dbName
+	usdlc.db.Database.connection dbName, sqlCommands 
+}
+
+database = this.&connection
+select = { sql, actions = null -> database { select(sql, actions) } }
+first = { sql -> database { first(sql) } }
+

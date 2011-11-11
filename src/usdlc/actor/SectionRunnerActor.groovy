@@ -54,7 +54,8 @@ import static usdlc.Config.config
 					]
 		}
 		rerun = rerun || exchange.request.query.rerun
-		if (rerun) {	// dump command line and redirect output to server.
+		if (rerun) {
+			// dump command line and redirect output to server.
 			println "$lastRunner.url&rerun=true"
 			exchange.response.out = System.out
 		}
@@ -70,9 +71,13 @@ import static usdlc.Config.config
 	void runSectionsOnPage(Store page, String sectionsToRunCsv = '') {
 		currentPage = page
 		def html = new Page(page)
-		def sectionSelector = 'div#'+sectionsToRunCsv.replaceAll(/,/, ',div#')
+		def sections = html.sections
+		if (sectionsToRunCsv) {
+			sections = sections.select(
+					'div#'+sectionsToRunCsv.replaceAll(/,/, ',div#'))
+		}
 		def linkSelector = 'a[action=page],a[action=runnable]'
-		def links = html.sections.select(sectionSelector).select(linkSelector)
+		def links = sections.select(linkSelector)
 		if (links.size()) {
 			write """<html><head>
 					<link type='text/css' rel='stylesheet' 
@@ -81,7 +86,7 @@ import static usdlc.Config.config
 					<div id='output'>"""
 			def actors = []
 			def hrefs = [:]
-			// Walk through each section specified and run linked pages (saving actors)
+			// Walk through each section specified and run linked pages
 			links.each { link ->
 				String href = link.attr('href')
 				hrefs[href] = link
@@ -145,13 +150,15 @@ import static usdlc.Config.config
 		}
 	}
 	/**
-	 * Given a pattern, run all scripts that match it the base directory. Used to Setup and Cleanup scripts for a page
+	 * Given a pattern, run all scripts that match it the base directory. 
+	 * Used to Setup and Cleanup scripts for a page
 	 */
 	void runFiles(Pattern pattern, Store base) {
 		base.dir(pattern) { runActor(Store.base(it)) }
 	}
 	/**
-	 * Give a reference to an actor, load it and run it - wrapping the output in HTML if needed.
+	 * Give a reference to an actor, load it and run it - wrapping the output 
+	 * in HTML if needed.
 	 */
 	void runActor(Store actorStore) {
 		currentActor = actorStore.pathFrom(currentPage)
@@ -163,11 +170,9 @@ import static usdlc.Config.config
 		}
 	}
 	/**
-	 * If the actor is on the currently displayed page, show the state in the browser.
-	 * If on another page, display as part of the output
+	 * If the actor is on the currently displayed page, show the state in the 
+	 * browser. If on another page, display as part of the output
 	 * In all cases update the state in the page for persistence.
-	 * @param to
-	 * @return
 	 */
 	def setActorState(to) {
 		linkStates[currentActor] = to
@@ -176,10 +181,12 @@ import static usdlc.Config.config
 			'<pre class="gray">',
 			'</pre>'
 		]) { write "\t$currentActor: $to $elapsed" }
-		Log.csv("${currentPage}.timings")("$currentActor,$to,$timer.elapsed,$elapsed")
+		Log.csv("${currentPage}.timings")(
+				"$currentActor,$to,$timer.elapsed,$elapsed")
 	}
 	def currentActor
-	usdlc.Timer timer = new usdlc.Timer(title : 'in ', minimum : 100, autoReset : true)
+	usdlc.Timer timer = new usdlc.Timer(
+	title : 'in ', minimum : 100, autoReset : true)
 	/**
 	 * Special to run the script while wrapping the output for best effort.
 	 */
@@ -187,14 +194,15 @@ import static usdlc.Config.config
 		wrapOutput(script.path, binding) { delegate.run(binding) }
 	}
 	/**
-	 * If an exception is thrown we need to display the error in a user-friendly way and flag the actor
-	 * as having failed it's job.
+	 * If an exception is thrown we need to display the error in a user-friendly 
+	 * way and flag the actor as having failed it's job.
 	 */
 	def reportException(Throwable throwable) {
 		def trace = throwable.stackTrace.find {
 			it.toString() ==~ ~/\w+\.run\(.*/
 		} ?: throwable.stackTrace.find {
-			it.fileName && it.lineNumber > 0 && !internalExceptions.matcher(it.className).find()
+			it.fileName && it.lineNumber > 0 &&
+					!internalExceptions.matcher(it.className).find()
 		}
 		wrapOutput(['<pre>', '</pre>']) {
 			write throwable.message
@@ -203,7 +211,8 @@ import static usdlc.Config.config
 		actorState = 'failed'
 	}
 	/**
-	 * If we detect an error that is not an exception, we had better still treat it as something bad to tell the user.
+	 * If we detect an error that is not an exception, we had better still treat 
+	 * it as something bad to tell the user.
 	 */
 	def reportError(String text) {
 		wrapOutput([
@@ -222,7 +231,8 @@ import static usdlc.Config.config
 	 */
 	def wrapOutput(String fileName, Closure closure) {
 		def type = mimeType(fileName)
-		wrapOutput(mimeTypeWrappers.get(mimeType(fileName), ['<!--', '-->']), closure)
+		wrapOutput(mimeTypeWrappers.get(
+			mimeType(fileName), ['<!--', '-->']), closure)
 	}
 	/**
 	 * Wrap data in a HTML tag

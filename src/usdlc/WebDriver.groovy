@@ -105,10 +105,10 @@ class WebDriver {
 			By tagName = By.tagName(target)
 			By partialLinkText = By.partialLinkText(target)
 			result = waitFor {
-					return findElement(id) ?: findElement(name) ?:
-					findElement(linkText) ?: findElement(cssSelector) ?:
-					findElement(xpath) ?: findElement(className) ?:
-					findElement(tagName) ?: findElement(partialLinkText)
+				return findElement(id) ?: findElement(name) ?:
+				findElement(linkText) ?: findElement(cssSelector) ?:
+				findElement(xpath) ?: findElement(className) ?:
+				findElement(tagName) ?: findElement(partialLinkText)
 			}
 			assert result, "No element $target"
 			result = action result

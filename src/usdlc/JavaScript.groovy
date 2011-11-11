@@ -35,7 +35,7 @@ class JavaScript {
 		try {
 			if (! optimise) {
 				// Without this, Rhino hits a 64K byte-code limit and fails
-				context.optimizationLevel = -1 
+				context.optimizationLevel = -1
 			}
 			def inputStream = js.file.newInputStream()
 			reader = new InputStreamReader(inputStream, "UTF-8")
@@ -49,11 +49,11 @@ class JavaScript {
 	/**
 	 * Run javascript statements from a string.
 	 */
-	public run(String js, binding = [:]) {
+	synchronized run(String js, binding = [:]) {
 		Context context = Context.enter()
 		try {
-			def scope = scope(context, binding)
-			return context.evaluateString(scope, js, 'inline', 0, null)
+				def scope = scope(context, binding)
+				return context.evaluateString(scope, js, 'inline', 0, null)
 		} finally {
 			Context.exit()
 		}
@@ -92,18 +92,18 @@ class JavaScript {
 
 public class CompressorErrorReporter implements ErrorReporter {
 
-	public void warning(String message, String sourceName, 
-		int line, String lineSource, int lineOffset) {
+	public void warning(String message, String sourceName,
+	int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
-	public void error(String message, String sourceName, 
-		int line, String lineSource, int lineOffset) {
+	public void error(String message, String sourceName,
+	int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
-	public EvaluatorException runtimeError(String message, String sourceName, 
-		int line, String lineSource, int lineOffset) {
+	public EvaluatorException runtimeError(String message, String sourceName,
+	int line, String lineSource, int lineOffset) {
 		error(message, sourceName, line, lineSource, lineOffset)
 		return new EvaluatorException(message)
 	}

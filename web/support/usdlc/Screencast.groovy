@@ -24,7 +24,8 @@ class Screencast {
 	boolean client(cmd, params) {
 		sleep(stepDelay)
 		params = params.flatten().collect {
-			it ? "'"+it.replaceAll(/'/,/\\'/).replaceAll("\n", /\\n/)+"'" : "''"
+			it ? "'"+it.toString().
+					replaceAll(/'/,/\\'/).replaceAll("\n", /\\n/)+"'" : "''"
 		}.join(',')
 		script("usdlc.screencast.$cmd($params)")
 		true
@@ -40,14 +41,15 @@ class Screencast {
 			web.load("http://$host?$store.path")
 			web.waitFor(By.cssSelector('div.screencast')) {}
 			client('keys', [config.screencast.keys])
-			Actor.cache['usdlc/screencast/response'] =
+			Actor.cache['screencastResponse'] =
 					new ScreencastResponseActor(semaphore: semaphore)
 		}
+		session.screencastBase = store
 		page(store, title, subtitle, synopsis)
 	}
 	def createPage(title, subtitle, synopsis) {
 		sleep(stepDelay)
-		def store = session.screencastBase.rebase("${title}/index.html")
+		def store = session.screencastPage.rebase("${title}/index.html")
 		page(store, title, subtitle, synopsis)
 	}
 	def timeout(seconds) {
@@ -65,7 +67,7 @@ class Screencast {
 	def web, currentElement, session, stepDelay = 1
 
 	void page(store, title, subtitle, synopsis) {
-		session.screencastBase = store
+		session.screencastPage = store
 		page = new Page(store)
 		page.title = title
 		page.subtitle = subtitle
@@ -88,30 +90,38 @@ class Screencast {
 		element
 	}
 
+	def click(targets) {
+		web.waitFor(targets) { element ->
+			if (element.getAttribute('action') == 'page') {
+				def href = element.getAttribute('href').
+						replaceAll("http://[^/]*", '')
+				session.screencastPage = Store.base(href)
+				script("usdlc.relativePageContents('$href')")
+			} else {
+				element.click()
+			}
+		}
+		sleep(stepDelay)
+	}
+
 	def findElementById(id) {
 		findElement By.id(id), "an Id '$id'"
 	}
 
-	def code(String text) {
+	def codeId(String text) {
 		findElement By.linkText(text), "a link '$text'"
 		def linkId = currentElement.getAttribute('id')
-		findElementById "${linkId}_inclusion"
-		sleep(stepDelay)
+		"${linkId}_inclusion"
 	}
 
 	def findSection(String regex) {
 		checkElement(
 				sections.find { it.text =~ regex },
-				"Can't find section for '$regex'")
+				"Can't find section for '$regex'").getAttribute('id')
 	}
 
 	def getFocus() {
 		findElement By.className('inFocus'), 'focus'
-	}
-
-	void setFocus(section) {
-		section.click()
-		sleep(stepDelay)
 	}
 
 	def nextSection() {
@@ -125,9 +135,9 @@ class Screencast {
 						lastId = it.getAttribute('id')
 						false
 					}
-				}, 'a next section')
+				}, 'a next section').getAttribute('id')
 	}
-	
+
 	void sleep(Double ms) {
 		sleep(ms as long)
 	}
@@ -139,7 +149,7 @@ class Screencast {
 	void script(String script, Object... args) {
 		((JavascriptExecutor) web.driver).executeScript(script, args)
 	}
-	Semaphore semaphore = new Semaphore(120) // defaults to 2 minutes
+	Semaphore semaphore = new Semaphore(1200) // defaults to 20 minutes
 	Page page
 }
 

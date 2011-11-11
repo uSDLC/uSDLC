@@ -1,1 +1,1 @@
-tools\bash.exe uSDLC
+@java -jar usdlc.jar

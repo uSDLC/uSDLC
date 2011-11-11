@@ -1,0 +1,75 @@
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	color: #2f4f4f;
+}
+
+.footer {
+	text-align: center;
+}
+
+.inclusion {
+	text-align: left;
+}
+
+.hidden, .ui-dialog #pageTitle, div#pasteList {
+	position: absolute;
+	top: 0;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.logMessage {
+	width: 600px;
+	color: #FFFFFF;
+	background-color: #000000;
+}
+
+div#alertBox div.ui-state-error {
+	padding: 0 .7em;
+	position: absolute;
+	z-index: 9999;
+}
+
+div#alertBox div.ui-icon {
+	float: left;
+	margin-right: 0.3em;
+}
+
+.toolbar {
+	padding: 3px 4px 6px;
+}
+
+.toolbar .ui-button-text {
+	font-size: 0.5em;
+}
+
+/*
+ Page contents region and control
+ */
+table#pageContentsTable {
+}
+
+td#pageContentsTd {
+	vertical-align: top;
+	width: 100%;
+}
+
+div#pageContents, .CodeMirror {
+	margin: 0;
+	padding: 5px 5px 5px 5px;
+	border: #f2f2f2 2px solid;
+	overflow: auto;
+}
+
+#modalMask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9000;
+	background-color: #000;
+}

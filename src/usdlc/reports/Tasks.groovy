@@ -18,11 +18,6 @@ package usdlc.reports
 import usdlc.Page
 import usdlc.db.Database
 
-/**
- * User: Paul Marrington
- * Date: 8/05/11
- * Time: 9:48 AM
- */
 class Tasks {
 	static version = Database.version('classpath:/usdlc/reports/Tasks')
 

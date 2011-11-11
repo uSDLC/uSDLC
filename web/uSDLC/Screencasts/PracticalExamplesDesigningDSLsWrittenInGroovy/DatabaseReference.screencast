@@ -1,0 +1,45 @@
+append section '<a href="DatabaseReference.gsql">Database Reference</a>',
+    'Wrap database instantiation and access up'
+edit code 'Database Reference', '''i
+// Use the last opened database (in Setup)
+defaultDb = database { /* actions */ }
+// Open an in-memory database
+database memoryDb 'db-name'
+// or connect using a know target...
+database("jdbc:h2:~/temp/testSqlActor") { /* actions */ }
+// Or open with driver properties (user, password, driver, url)
+database([url: "jdbc:h2:~/temp/testSqlActor", driver: "org.h2.Driver"]) {
+    /* actions */
+}
+// If you need more than one database, you can assign and switch...
+database { db1 ->
+    database("jdbc:h2:~/testSqlActor") { db2 ->
+        /* actions */
+    }
+}
+// database() can have properties
+database(
+    "jdbc:h2:~/temp/testEncryptedSqlActor;CIPHER=AES",
+    user: "me", password: "adfs asdf") { /* actions */ }
+// Return to Setup db
+database defaultDb
+.'''
+prompt 'A New Database',
+    '''SQL database requests are always enclosed in database braces. The database only
+    need be referenced by name if more than one are in play.'''
+edit code 'gsqlDSL', '''$a
+defaultDatabase = usdlc.db.Database.usdlcDatabase
+
+def connection(String dbName) {
+	connection(dbName) {}
+}
+def connection(Closure sqlCommands) {
+	connection defaultDatabase, sqlCommands	
+}
+def connection(String dbName, Closure sqlCommands) {
+	defaultDatabase = dbName
+	usdlc.db.Database.connection dbName, sqlCommands 
+}
+
+database = this.&connection
+.'''

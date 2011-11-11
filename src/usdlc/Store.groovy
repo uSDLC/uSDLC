@@ -286,7 +286,7 @@ class Store {
 	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(\w*)/
 	static decamelRE = ~/\B([A-Z])/
 	static sloshRE = ~'\\\\'
-	static dateStampFormat = 'yyyy-MM-dd_HH-mm-ss'
+	static dateStampFormat = 'yyyy_MM_dd__HH_mm_ss'
 	/**
 	 * Turn a camel-case name back into a sentence
 	 */

@@ -17,7 +17,7 @@ $ ->
 					$('<ins/>').html(data).find('a.usdlc[action=page]').each ->
 						a = $(this)
 						href = usdlc.removeDomain(a.attr('href'))
-						if href.substring(0, 2) != '..'
+						if href.substring(0, 2) != '..' and href[0] != '/'
 							href = root + href if href.charAt(0) != '/'
 							id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
 							tree += "<li id='#{id}' class='jstree-closed'><a href='#{href}' class='contentLink'>#{a.text()}</a></li>"

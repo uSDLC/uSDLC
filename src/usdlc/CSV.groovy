@@ -11,37 +11,39 @@ class CSV {
 		new CSV(store:store, context: [perRow : closure]).load()
 	}
 	/** Called by csvDSL to run the CSV through the provided or default closure */
-	CSV load() {
+	void load() {
+		def process
 		context = defaults + context
 		store.withReader {
 			CSVReader reader = new CSVReader(it)
 			if (context.headerLines) {
-				if (! (header = reader.readNext().collect { it.trim() })) return
-				if (context.headerLines > 1) {
-					for (line in [1..<context.headerLines]) {
-						if (! reader.readNext()) return
+				def header = reader.readNext().collect { it.trim() }
+				if (!header) return
+					if (context.headerLines > 1) {
+						for (line in [1..<context.headerLines]) {
+							if (! reader.readNext()) return
+						}
 					}
+				process = { row -> 
+					[header, row].transpose().collectEntries{it}
 				}
+			} else {
+				process = { row -> row }
 			}
 			def row
 			while (row = reader.readNext()) {
-				perRow(build(row.collect { it.trim() }))
+				perRow(process(row.collect {it.trim()}))
 			}
 		}
-		this
 	}
 	/** Retrieval will return each row as a map */
-	def getAt(int row) { list[row] }
-	/** Turn a list into a map using the headers */
-	def build(row) {
-		if (context.headerLines) {
-			[header,row].transpose().collectEntries{it}
-		} else {
-			row
-		}
+	def getAt(int row) {
+		list[row]
 	}
 	/** Number of rows is the size of the list retrieved */
-	def size() { list.size() }
+	def size() {
+		list.size()
+	}
 	/** Base directory reference to the CSV location on disk */
 	Store store
 	/** Closure to execute per row processed */
@@ -57,6 +59,4 @@ class CSV {
 	]
 	/** List to hold results in memory (if no iterator) */
 	def list = []
-	/** header list if file has header */
-	String[] header
 }

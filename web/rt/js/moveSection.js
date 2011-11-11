@@ -42,8 +42,10 @@ $(function() {
 		},
 		cleanSections : function(sections) {
 			// clean up html of crap that builds up
-			sections.removeAttr('style').removeClass('inFocus ui-state-highlight ui-widget-content')
-					.filter('.synopsis').children().removeAttr('style')
+			sections.removeAttr('style')
+			.removeClass('inFocus ui-state-highlight ui-widget-content')
+			.filter('.synopsis').children().removeAttr('style')
+			$('div#myEventWatcherDiv').remove()
 			usdlc.clearSynopses(sections)
 			usdlc.screencast.close()
 		},

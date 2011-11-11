@@ -52,8 +52,8 @@ $ ->
 		
 	usdlc.activeSourceEditor = null
 	
-	usdlc.saveSource = ->
-		if usdlc.inEditor and usdlc.activeSourceEditor.contentChanged
+	usdlc.saveSource = (force = usdlc.activeSourceEditor?.contentChanged) ->
+		if usdlc.inEditor and force
 			usdlc.deleteOutput()
 			content = usdlc.activeSourceEditor.getValue()
 			usdlc.save(usdlc.activeSourceEditor.url, content, '')
@@ -107,6 +107,7 @@ $ ->
 				false
 				
 		codemirror.url = url
+		codemirror.ex = new usdlc.Ex codemirror
 		wrapper.data 'codemirror', codemirror
 		# CodeMirror stuffs up. It paints then resizes without painting again
 		setTimeout((-> codemirror.refresh()), 500)

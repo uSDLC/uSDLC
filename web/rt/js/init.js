@@ -17,7 +17,7 @@ usdlc.init = {
 	queue : [],
 	pageLayout : function() {
 		setPageLayout()
-		$(window).resize(setPageLayout).load(setPageLayout)
+		$(window).load(setPageLayout).resize(setPageLayout)
 		setModalMask()
 
 		function setModalMask() {
@@ -32,28 +32,54 @@ usdlc.init = {
 			var w = $(window)
 			var ptt = $('table#pageTitleTable')
 			usdlc.pageContents = $('div#pageContents')
-			var pad = usdlc.pageContents.outerHeight() - usdlc.pageContents.height()
-			if (pad < 0 || pad > 50)
-				pad = 25
-			var viewPortHeight = w.height() - ptt.outerHeight() - pad
-			var aboveScroll = (viewPortHeight > 500) ? 100 : 50
-			var belowScroll = viewPortHeight - aboveScroll
-			usdlc.pageContents.outerHeight(viewPortHeight)
-			$('#contentTree').outerHeight(viewPortHeight)
-			$('#pageContentsTable').css('maxWidth', w.width())
-
-			var lastScrollTop = 0
-			usdlc.scrollTo = function(element) {
-				lastScrollTop = usdlc.pageContents.parent().scrollTop()
-				var elementHeight = element.outerHeight()
-				var elementTop = 0
-				element.prevAll('.section').each(function() {
-					elementTop += $(this).outerHeight()
-				})
-				var newTop = (elementHeight > belowScroll) ? elementTop : (elementTop - aboveScroll)
-				usdlc.pageContents.scrollTop(newTop)
-				usdlc.setFocus(element)
+			var ct = $('#contentTree')
+			usdlc.titleVisible = function() {
+				return ptt.css('margin-top') == '0px'
 			}
+			var lastScrollTop = 0
+			function setViewportHeight() {
+				var pad = usdlc.pageContents.outerHeight() - usdlc.pageContents.height()
+				if (pad < 0 || pad > 50)
+					pad = 25
+				var viewPortHeight = w.height() - ptt.outerHeight() - pad
+				viewPortHeight += usdlc.titleVisible() ? 0 : 50
+				var aboveScroll = (viewPortHeight > 500) ? 100 : 50
+				var belowScroll = viewPortHeight - aboveScroll
+				usdlc.pageContents.outerHeight(viewPortHeight)
+				ct.outerHeight(viewPortHeight)
+				usdlc.init.decoratePage && usdlc.init.decoratePage()
+				usdlc.scrollTo = function(element) {
+					lastScrollTop = usdlc.pageContents.parent().scrollTop()
+					var elementHeight = element.outerHeight()
+					var elementTop = 0
+					element.prevAll('.section').each(function() {
+						elementTop += $(this).outerHeight()
+					})
+					var newTop = (elementHeight > belowScroll) ?
+							elementTop : (elementTop - aboveScroll)
+					usdlc.pageContents.scrollTop(newTop)
+					usdlc.setFocus(element)
+				}
+			}
+			setViewportHeight()
+			$('#pageContentsTable').css('maxWidth', w.width())
+			usdlc.toggleHideTitle = function() {
+				ptt.animate({
+					'margin-top' : usdlc.titleVisible() ? -50 : 0
+				}, setPageLayout)
+			}
+			$('img#pageTitleImage').unbind().bind('click', usdlc.toggleHideTitle)
+			var treeHider = $('img#treeHider').fadeTo(1, 0.3)
+			var pct = $('table#pageContentsTable')
+			var ctt = $('div#contentTree')
+			usdlc.toggleHideContentTree = function() {
+				var left = treeHider.offset().left
+				left = left <= 0 ? 0 : -left
+				pct.animate({
+					'margin-left' : left
+				})
+			}
+			treeHider.unbind().bind('click', usdlc.toggleHideContentTree)
 
 			usdlc.scrollBack = function() {
 				usdlc.pageContents.scrollTop(lastScrollTop)
@@ -70,14 +96,15 @@ usdlc.init = {
 			scrollTo : usdlc.scrollTo,
 			content : function(i, $page) {
 				var title = usdlc.parseSection($page).title
-				return '<span class="sausage-span">' + title + '</span>';
+				return '<span class="red-box rounded menu sausage-span">' + title + '</span>';
 			}
 		})
 
 		usdlc.scrollFiller = function(on) {
 			if (on) {
 				if ($('div.scrollFiller').size() === 0)
-					usdlc.pageContents.append($("<div/>").height(usdlc.pageContents.height() * 0.6).addClass(
+					usdlc.pageContents.append($("<div/>").height(
+							usdlc.pageContents.height() * 0.6).addClass(
 							'scrollFiller'))
 			} else
 				$('div.scrollFiller').remove()

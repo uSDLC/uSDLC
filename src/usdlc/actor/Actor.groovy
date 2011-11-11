@@ -24,6 +24,7 @@ import java.util.regex.Pattern
 import usdlc.Exchange
 import usdlc.Exchange.Response
 import usdlc.Groovy
+import usdlc.Log;
 import usdlc.Store
 import static usdlc.Config.config
 

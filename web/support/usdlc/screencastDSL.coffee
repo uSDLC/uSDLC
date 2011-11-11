@@ -3,6 +3,7 @@ client = (cmd, params...) -> server.client(cmd, params)
 
 snap = -> client 'snap'
 recover = -> client 'recover'
+zoom = (zoomContents) -> client 'zoomContents', zoomContents
 note = (title, content) -> client 'note', title, content
 prompt = (title, content) ->
 	snap()
@@ -11,18 +12,20 @@ prompt = (title, content) ->
 	recover()
    
 create = (target) -> target.create(target.args...)
+cut = (target) -> target.cut(target.args...)
 append = (target) -> target.append(target.args...)
 insert = (target) -> target.insert(target.args...)
 select = (target) -> target.select(target.args...)
 check = (target) -> target.check(target.args...)
 next = (target) -> target.next(target.args...)
-save = (target) -> target.save(target.args...)
+edit = (target) -> target.edit(target.args...)
 
 timeout = (seconds) -> server.timeout seconds
-click = (targets) -> server.web.click targets
-keys = (keys) -> client('keys', keys)
-type = (keys) -> server.currentElement.sendKeys(keys)
-step = (seconds) -> server.stepDelay = Math.floor(seconds * 1000)
+click = (targets) -> server.click targets
+keys = (keys) -> client 'keys', keys
+type = (keys) -> server.currentElement.sendKeys keys
+step = (seconds) -> server.stepDelay = Math.floor seconds * 1000
+menu = (path) -> client 'menu', path.split /\s*->\s*/
 slow = 2
 fast = 0.001
 
@@ -42,15 +45,17 @@ element = ->
 	check: (selector, contents) -> server.check selector, contents
 section = ->
 	args: arguments
-	insert: (title, paragraphs...) -> client('insertSection', title, paragraphs)
-	append: (title, paragraphs...) -> client('appendSection', title, paragraphs)
-	select: -> (regex) -> server.findSection(regex).click()
+	insert: (title, paragraphs...) -> client 'insertSection', title, paragraphs
+	append: (title, paragraphs...) -> client 'appendSection', title, paragraphs
+	select: (regex) -> client 'setFocus', server.findSection(regex)
+	cut: (regex) -> 
+		client 'setFocus', server.findSection(regex)
+		client 'deleteSection'
 	check: (regex) -> server.findSection(regex)
-	next: -> server.setFocus(server.nextSection())
+	next: -> client 'setFocus', server.nextSection()
 code = ->
 	args: arguments
 	select: (linkText) -> server.code(linkText).click()
 	check: (regex) -> server.check(regex)
-	save: (contents) ->
-		client 'setCode', contents
-		server.focus.click()
+	edit: (linkText, command) ->
+		client 'editCode', server.codeId(linkText), command.split /\r*\n/g

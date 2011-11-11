@@ -25,10 +25,24 @@ $ ->
 		insertSection: (title, paragraphs...) ->
 			insertSection(title, paragraphs) 
 		appendSection: (title, paragraphs...) ->
-			usdlc.setFocus($('div.section:last'))
+			usdlc.setFocus $ 'div.section:last'
 			insertSection(title, paragraphs)
-		setCode: (code) ->
-			usdlc.activeSourceEditor.setValue(code)
+		deleteSection: -> usdlc.copySectionInFocus 'cut'
+		setFocus: (id) -> usdlc.setFocus $ 'div#'+id
+		editCode: (editorId, cmds...) ->
+			$('div#'+editorId).data('codemirror').focus()
+			usdlc.activeSourceEditor.ex.command cmd for cmd in cmds
+			usdlc.activeSourceEditor.ex.command 'w'
+		menu: (path...) ->
+			offset = usdlc.inFocus.offset()
+			[top, left] = [offset.top + 50, offset.left + 60]
+			usdlc.onContextMenu usdlc.inFocus, top, left
+			console.log usdlc.contextMenu.contextMenu
+		zoomContents: (zoom) ->
+			zoomed = !usdlc.titleVisible()
+			if !zoomed != !zoom
+				usdlc.toggleHideTitle()
+				usdlc.toggleHideContentTree()
 		
 	sc = ->
 		if not (screencast = $ 'div.screencast').length
@@ -41,16 +55,20 @@ $ ->
 				width: 500
 				height: 'auto'
 				minHeight: 10
+			setTimeout( "usdlc.screencast.keys('Esc')", 1000)
 		screencast
 		
 	sc()
 		
 	respond = ->
-		sc.dialog 'close'
-		$.get('usdlc/screencast/response')
+		sc().dialog 'close'
+		$.get 'usdlc.screencastResponse'
 
 	insertSection = (title, paragraphs) ->
-		paragraphs = for paragraph in paragraphs
-			"<p>#{paragraph}</p>"
-		usdlc.saveSection usdlc.insertSection('insertBefore').html(
-			"<h1>#{title}</h1>#{paragraphs.join('')}")
+		if paragraphs
+			paragraphs = for paragraph in paragraphs
+				"<p>#{paragraph}</p>"
+			paragraphs = "<h1>#{title}</h1>#{paragraphs.join('')}"
+		else
+			paragraphs = title
+		usdlc.saveSection usdlc.insertSection('insertBefore').html(paragraphs)

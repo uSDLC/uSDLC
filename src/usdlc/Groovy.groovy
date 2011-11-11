@@ -33,7 +33,7 @@ class Groovy {
 	static loadClass(String className) {
 		try {
 			gcl.loadClass(className, true, false, true)
-		} catch (ClassNotFoundException cnfe) {
+		} catch (Throwable cnfe) {
 			null
 		}
 	}
