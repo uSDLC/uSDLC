@@ -19,5 +19,9 @@ class Desktop {
 	 * Open a defined URL on the default browser for the current operating system.
 	 * Requires Java 6. Should work on Windows, OS X and *nix
 	 */
-	static openURL(url) { java.awt.Desktop.desktop.browse(URI.create(url)) }
+	static openURL(url) {
+		try {
+		java.awt.Desktop.desktop.browse(URI.create(url))
+		} catch (e) {}
+	}
 }

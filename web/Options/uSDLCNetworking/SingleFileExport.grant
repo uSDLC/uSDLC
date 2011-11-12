@@ -4,7 +4,7 @@ ant.unzip(src: 'web/lib/jars/required/groovy.jar', dest: 'lib') {
 ant.jar(destfile: 'uSDLC.jar', compress: true, index: true) {
     def includes = 'bin/**/*.class,lib/**/*,src/**/*,web/**/*,uSDLC.sh,uSDLC.bat'
     def excludes = '''web/store/**/*,web/tmp/**/*,**/.*,web/lib/javadoc/**/*,
-	web/lib/source/**/*,web/lib/jars/optional/**/*,lib/**/*'''
+	web/lib/source/**/*,web/lib/jars/optional/**/scala*,lib/**/*'''
     fileset(dir: '.', includes: includes, excludes: excludes)
     fileset(dir: 'bin', includes: '**/UsdlcJarLauncher*.class')
     fileset(dir: 'lib', includes: '**/RootLoader*.class')

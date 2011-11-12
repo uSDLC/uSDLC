@@ -1,1 +1,1 @@
-java -jar usdlc.jar
+java -jar uSDLC.jar

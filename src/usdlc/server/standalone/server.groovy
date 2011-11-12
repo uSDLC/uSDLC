@@ -20,7 +20,7 @@ import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
 
-import usdlc.Desktop;
+import usdlc.Desktop
 import usdlc.Exchange
 import usdlc.Exchange.Header
 import usdlc.Config
@@ -39,17 +39,26 @@ Config.load('standalone', 'web', args)
 def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
 System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
-Desktop.openURL("http://localhost:$config.port/$config.urlBase")
+try {
+	Desktop.openURL("http://localhost:$config.port/$config.urlBase")
+} catch (e) {
+	System.out.println "\tHeaderless (no local browser)"
+}
 
 HttpServer server
 def socket = new InetSocketAddress(config.port)
 try {
 	server = HttpServer.create(socket, 0)
 } catch (BindException be) {
-	try { "${baseUrl}rt/util/exit.groovy?action=stop".toURL().text } catch (e) { /* Not needed */ }
+	try {
+		"${baseUrl}rt/util/exit.groovy?action=stop".toURL().text
+	} catch (e) {
+		/* Not needed */
+	}
 	server = HttpServer.create(socket, 0)
 }
-server.createContext '/', { HttpExchange httpExchange ->
+server.createContext '/', {
+	HttpExchange httpExchange ->
 	httpExchange.with {
 		def header = new Header(
 				host: requestHeaders.Host[0], method: requestMethod, query: requestURI.query, uri: requestURI.path,
@@ -64,4 +73,4 @@ server.createContext '/', { HttpExchange httpExchange ->
 } as HttpHandler
 
 server.executor = Executors.newCachedThreadPool()
-server.start();
+server.start()
