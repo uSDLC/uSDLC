@@ -1,0 +1,27 @@
+create screencast 'Unifying the SDLC', 'The power of one',
+    '''The uSDLC project is the core of an interactive manual for  implement 
+    Lean and Agile methodology across the software development life-cycle.'''
+timeout 10000
+click 'Home'
+prompt 'Unifying the SDLC', 
+    '''I will start with an overview and end with an example for software developers'''
+zoom on
+click 'uSDLC -> How to use uSDLC -> Customer'
+prompt 'Members of the uSDLC',
+    '''Allow for customer involvement for a better project result'''
+click 'Parent -> Project Manager'
+prompt 'Someone needs to hold all the strings'
+click 'Parent -> Architect'
+prompt '''A discipline that needs to be be integrated into the SDLC, but rarely is.'''
+click 'Parent -> Team Lead'
+prompt '''This is about as far up the ladder as agile application goes. How sad'''
+click 'Parent -> Software Designer'
+prompt '''Often a hat worn by team lead and developers as needed.'''
+click 'Parent -> Developer'
+prompt '''The developer is often expected to wear every hat in the SDLC'''
+click 'Parent -> Tester'
+prompt '''A much maligned and often overlooked member of the SDLC'''
+click 'Parent -> Technical Writer'
+prompt '''A rare and valuable skill to make the complex clear through words'''
+click 'Parent -> Support'
+prompt '''Don't keep them in the dark'''
