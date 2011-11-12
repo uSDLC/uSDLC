@@ -16,7 +16,7 @@
 
 def now = new Date().time
 def base = usdlc.Store.base('store/clipboard')
-if (base) {
+if (base && base.exists()) {
 	base.dir().sort().reverse().each { clip ->
 		def item = usdlc.Store.parseUnique(clip)
 		if (item) {

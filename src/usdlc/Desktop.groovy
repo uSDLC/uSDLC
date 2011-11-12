@@ -21,7 +21,9 @@ class Desktop {
 	 */
 	static openURL(url) {
 		try {
-		java.awt.Desktop.desktop.browse(URI.create(url))
-		} catch (e) {}
+			java.awt.Desktop.desktop.browse(URI.create(url))
+		} catch (e) {
+			System.out.println "\tHeaderless (no local browser)"
+		}
 	}
 }

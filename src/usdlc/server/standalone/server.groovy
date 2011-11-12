@@ -39,11 +39,7 @@ Config.load('standalone', 'web', args)
 def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
 System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
-try {
-	Desktop.openURL("http://localhost:$config.port/$config.urlBase")
-} catch (e) {
-	System.out.println "\tHeaderless (no local browser)"
-}
+Desktop.openURL("http://localhost:$config.port/$config.urlBase")
 
 HttpServer server
 def socket = new InetSocketAddress(config.port)
@@ -57,8 +53,7 @@ try {
 	}
 	server = HttpServer.create(socket, 0)
 }
-server.createContext '/', {
-	HttpExchange httpExchange ->
+server.createContext '/', { HttpExchange httpExchange ->
 	httpExchange.with {
 		def header = new Header(
 				host: requestHeaders.Host[0], method: requestMethod, query: requestURI.query, uri: requestURI.path,
