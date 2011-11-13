@@ -37,7 +37,7 @@ class UsdlcBinding extends Binding {
 				case variables.getters: variables.getters[name](); break
 				case dslContext.getters: dslContext.getters[name](); break
 				default:
-					throw new MissingPropertyException(name, this.class())
+					throw new MissingPropertyException(name, this.class)
 					break
 			}
 		}

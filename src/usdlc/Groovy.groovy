@@ -17,7 +17,7 @@ package usdlc
 
 import static Config.config
 
-import org.codehaus.groovy.runtime.InvokerHelper;
+import org.codehaus.groovy.runtime.InvokerHelper
 /**
  * Groovy script support
  */
