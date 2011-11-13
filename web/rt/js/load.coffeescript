@@ -74,7 +74,7 @@ window.onload = ->
 				'/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js'
 				'/lib/CodeMirror/lib/codemirror.js' ]
 			[ '/rt/js/contentTree.coffeescript',
-				'/usdlc/dsl/associations.js.groovy' ]
+				'/usdlc/dsl/dslAssociationList_js.groovy' ]
 			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
 				'/rt/js/menu.js', '/rt/js/moveSection.js', '/rt/js/clipboard.js',
 				'/rt/js/run.js', '/rt/js/htmlEditor.js', 

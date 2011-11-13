@@ -32,7 +32,7 @@ class MimeTypes {
 	 * Return the client-side mime-type to put in a response header - being the first ext that has a known mime-type.
 	 */
 	static String mimeType(String fileName) {
-		fileName.split(/\./).tail().findResult('text/html') { mimeTypes[it] }
+		fileName.split(/[\._]/).tail().findResult('text/html') { mimeTypes[it] }
 	}
 	/**
 	 * Mime-types to look for.

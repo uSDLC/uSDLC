@@ -1,90 +1,15 @@
-<div id="pageTitle" class="editable"><h1>
-	uSDLC Stand-Alone</h1>
-
-	<h2>
-		No install - just run</h2>
+<div id="pageTitle" class="editable" uuid="3f6ef8bd-7a07-4643-bc8e-598d50edb4f1"> 
+ <h1> uSDLC Stand-Alone</h1> 
+ <h2> No install - just run</h2> 
+</div> 
+<div id="s1" class="editable section" contextmenu="section"> 
+ <p> The stand-alone version is designed for systems that do not have an Internet or repository connection. It is a single uSDLC-full.jar file. Copy it into an empty directory in your project and run it with</p> 
+ <blockquote> 
+  <p> java -jar uSDLC-full.jar</p> 
+ </blockquote> 
+ <p> It will unpack itself - by only over-writing files that are newer in the archive than on disk. This way you can update uSDLC on an existing project safely.</p> 
+</div> 
+<div id="s3" class="editable section synopsis" contextmenu="section"> 
+ <h3> <a class="usdlc sourceLink succeeded" href="Snapshot.grant" id="s3a0" action="runnable">Snapshot</a></h3> 
+ <p> It is possible to take a snapshot of the uSDLC tree at any time and create a self-extracting jar file by running this section. It can be copied to any machine with Java installed and run to create a copy of the current system. The same jar can be copied again at any time. When it is run it will update the uSDLC tree by extracting only the newer files.</p> 
 </div>
-
-<div id="s1" class="editable section" contextmenu="section"></div>
-
-<div id="s3" class="editable section" contextmenu="section"><h1>
-	The Single Install Model</h1>
-
-	<p>
-		If you have a Java jre installed you can download a <a class="usdlc" href="SingleExecutableJar.groovy" id="s3a0"
-		                                                       action="runnable">single executable</a> uSDLC.jar that
-		will unpack and prepare itself for use. Optional components, languages and systems are downloaded as required.
-	</p>
-
-	<p>
-		For Windows, If you don't have Java installed then you can download a <a class="usdlc"
-		                                                                         href="BootstrapLoader.groovy" id="s3a1"
-		                                                                         action="runnable">bootstrap loader</a>.
-		When run it will create the environment needed by uSDLC, download the executable jar and run it. All Unix
-		varients will have a version of java available. "<em>java -jar usdlc</em>" is enough to unpack and run uSDLC.
-	</p>
-
-	<p>
-		Local configurations and optional components need only be set up on one machine. Additional machines once added
-		to the<a class="usdlc" href="USDLCWebUpdate.groovy" id="s3a2" action="runnable"> uSDLC web will update</a>
-		themselves as needed.</p>
-</div>
-<div id="s2" class="editable section" contextmenu="section"><h1>
-	Running the Server</h1>
-
-	<p>
-		Once the system has been unpacked you have access to the start script in the uSDLC root directory. Just type
-		uSDLC on the command line and the server will <a class="usdlc" href="StartUsingDefaultValuesGroovy/index.html"
-		                                                 id="s2a0" action="page">start using default values</a>. This is
-		a bash script that can work in any environment. On windows it is wrapped in a bat file that uses bash.exe to
-		execute the script.</p>
-
-	<p>
-		If the uSDLC server is already running on the same port, <a class="usdlc"
-		                                                            href="TheRunningInstanceIsStoppedBeforeTheNewOneStartsGroovy/index.html"
-		                                                            id="s2a1" action="page">the running instance is
-		stopped before the new one starts</a>. This is useful if you change libraries or other cached code or data.</p>
-</div>
-<div id="s6" class="editable section" contextmenu="section"><p>
-	-- test bash script on OS/X</p>
-</div>
-<div id="s4" class="editable section synopsis" contextmenu="section"><h1>
-	Running the Client</h1>
-
-	<p>
-		uSDLC is browser based. It should work correctly from any modern offering that supports JQuery. When the server
-		starts it gives the host address to use. Using this address the server can be accessed from any machine on the
-		same network.</p>
-
-	<p>
-		The browser can be pointed to any page in the document by giving it's full address. This address can be copied
-		to the clipboard by right-clicking on the page title and saving it from the context menu. By default the page
-		will open in a uSDLC decoration page. If, however, the command line option <a href="ActionRun.htmlunit"
-		                                                                              id="s4a0" class="usdlc"
-		                                                                              action="runnable"><em>action=run</em></a>
-		is added, the page will be run after loading.</p>
-</div>
-<div id="s5" class="editable section" contextmenu="section"><h1>
-	Headless Operations</h1>
-
-	<p>
-		uSDLC can be treated as a service by adding the command line option <a class="usdlc" href="ModeServer.groovy"
-		                                                                       id="s5a0" action="runnable"><em>mode=server</em></a>.
-		Headless operation means that a browser is not needed to perform the operations. The default response is HTML.
-		Use the <em>format </em>option:</p>
-	<ol>
-		<li>
-			<a class="usdlc" href="FormatHtml.groovy" id="s5a1" action="runnable"><em>format=html</em></a>: Output will
-			be sent to the browser as it is created. It will look like plain human-readable text with some decorations.
-		</li>
-		<li>
-			<a class="usdlc" href="FormatXml.groovy" id="s5a2" action="runnable"><em>format=xml</em></a>: Output is in
-			XML for consumption by another program - such as a contiuous build system.
-		</li>
-		<li>
-			<a class="usdlc" href="FormatText.groovy" id="s5a3" action="runnable"><em>format=text</em></a>: Output is
-			plain text. Useful if running with curl or save to a file.
-		</li>
-	</ol>
-</div>
-

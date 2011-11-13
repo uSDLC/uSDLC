@@ -39,10 +39,14 @@ $ ->
 			usdlc.onContextMenu usdlc.inFocus, top, left
 			console.log usdlc.contextMenu.contextMenu
 		zoomContents: (zoom) ->
-			zoomed = !usdlc.titleVisible()
-			if !zoomed != !zoom
-				usdlc.toggleHideTitle()
-				usdlc.toggleHideContentTree()
+			switch zoom
+				when 'left'
+					usdlc.toggleHideTree() if usdlc.treeVisible()
+				when 'top'
+					usdlc.toggleHideTitle() if usdlc.titleVisible()
+				else
+					usdlc.toggleHideTitle() if !usdlc.titleVisible() != !zoom
+					usdlc.toggleHideTree() if !usdlc.treeVisible() != !zoom
 		
 	sc = ->
 		if not (screencast = $ 'div.screencast').length

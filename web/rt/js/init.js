@@ -36,6 +36,10 @@ usdlc.init = {
 			usdlc.titleVisible = function() {
 				return ptt.css('margin-top') == '0px'
 			}
+			var treeHider = $('img#treeHider').fadeTo(1, 0.3)
+			usdlc.treeVisible = function() {
+				return treeHider.offset().left > 0
+			}
 			var lastScrollTop = 0
 			function setViewportHeight() {
 				var pad = usdlc.pageContents.outerHeight() - usdlc.pageContents.height()
@@ -69,17 +73,21 @@ usdlc.init = {
 				}, setPageLayout)
 			}
 			$('img#pageTitleImage').unbind().bind('click', usdlc.toggleHideTitle)
-			var treeHider = $('img#treeHider').fadeTo(1, 0.3)
 			var pct = $('table#pageContentsTable')
 			var ctt = $('div#contentTree')
-			usdlc.toggleHideContentTree = function() {
+			usdlc.toggleHideTree = function() {
 				var left = treeHider.offset().left
 				left = left <= 0 ? 0 : -left
 				pct.animate({
 					'margin-left' : left
 				})
 			}
-			treeHider.unbind().bind('click', usdlc.toggleHideContentTree)
+			treeHider.unbind().bind('click', usdlc.toggleHideTree)
+			$('body').delegate('.hideOnHover', 'mouseenter', function() {
+				var element = $(this)
+				element.hide()
+				setTimeout(function(){element.show()}, 5000)
+			})
 
 			usdlc.scrollBack = function() {
 				usdlc.pageContents.scrollTop(lastScrollTop)

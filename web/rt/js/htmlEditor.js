@@ -53,7 +53,7 @@ $(function() {
 	})
 	// fetch data for report form
 	$.ajax({
-		url : usdlc.urlBase + "/rt/reports/support/list.js.groovy",
+		url : usdlc.urlBase + "/rt/reports/support/reportList_js.groovy",
 		dataType : 'script'
 	})
 	/*

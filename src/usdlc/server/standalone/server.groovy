@@ -42,7 +42,7 @@ System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
 Desktop.openURL("http://localhost:$config.port/$config.urlBase")
 
 HttpServer server
-def socket = new InetSocketAddress(config.port)
+def socket = new InetSocketAddress(config.port.toInteger())
 try {
 	server = HttpServer.create(socket, 0)
 } catch (BindException be) {

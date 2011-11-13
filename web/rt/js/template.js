@@ -95,7 +95,8 @@ $(function() {
 			document.title = $('h1', pageTitle).text()
 		},
 		absolutePageContents : function(path, afterwards) {
-			if (path[0] != '/') path = '/' + path
+			if (path[0] != '/')
+				path = '/' + path
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
 			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
 			$('base').attr('href', base)
@@ -148,17 +149,28 @@ $(function() {
 		}
 	})
 
-	$('a.usdlc[action=page]').live('click', function(ev) {
-		usdlc.relativePageContents(ev.currentTarget.pathname)
+	$('a').live('click', function(ev) {
+		if (ev.currentTarget.protocol != 'http:') {
+			return true
+		}
+		var a = $(ev.currentTarget)
+		var url = ev.currentTarget.pathname
+		switch (a.attr('action')) {
+		case 'page':
+			usdlc.relativePageContents(url)
+			break
+		case 'runnable':
+			usdlc.runSectionInFocus()
+			break
+		default:
+			url = a.attr('href')
+			window.open(url, 'from-usdlc', 'status=0,toolbar=0,location=0,menubar=0,directories=0')
+			break
+		}
 		return false
 	})
 
-	$('a.contentLink').live('click', function(ev) {
-		usdlc.absolutePageContents(ev.currentTarget.pathname)
-		return false
-	})
-
-	// The last thing we do is make the page visible. Hopefully and the visual
+	// The last thing we do is make the page visible. Hopefully all the visual
 	// work will be done by now.
 	$('body').removeAttr('style')
 })

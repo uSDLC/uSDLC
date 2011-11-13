@@ -20,7 +20,7 @@ $ ->
 						if href.substring(0, 2) != '..' and href[0] != '/'
 							href = root + href if href.charAt(0) != '/'
 							id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
-							tree += "<li id='#{id}' class='jstree-closed'><a href='#{href}' class='contentLink'>#{a.text()}</a></li>"
+							tree += "<li id='#{id}' class='jstree-closed'><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
 					tree
 		hotkeys :
 			del : -> # Don't delete a node from here (yet)

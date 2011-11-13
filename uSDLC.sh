@@ -1,1 +1,1 @@
-java -jar uSDLC-full.jar
+java -jar uSDLC-full.jar userId=anonymous

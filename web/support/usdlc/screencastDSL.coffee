@@ -28,6 +28,8 @@ step = (seconds) -> server.stepDelay = Math.floor seconds * 1000
 menu = (path) -> client 'menu', path.split /\s*->\s*/
 slow = 2
 fast = 0.001
+left = 'left'
+top = 'top'
 
 screencast = ->
 	args: arguments

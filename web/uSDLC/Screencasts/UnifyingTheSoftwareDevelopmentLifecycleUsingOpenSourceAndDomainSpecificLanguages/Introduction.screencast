@@ -5,7 +5,7 @@ timeout 10000
 click 'Home'
 prompt 'Unifying the SDLC', 
     '''I will start with an overview and end with an example for software developers'''
-zoom on
+zoom left
 click 'uSDLC -> How to use uSDLC -> Customer'
 prompt 'Members of the uSDLC',
     '''Allow for customer involvement for a better project result'''
@@ -25,3 +25,5 @@ click 'Parent -> Technical Writer'
 prompt '''A rare and valuable skill to make the complex clear through words'''
 click 'Parent -> Support'
 prompt '''Don't keep them in the dark'''
+click 'Home -> uSDLC -> Open Source Projects'
+prompt 'An exercise for the audience...'
