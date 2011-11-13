@@ -157,7 +157,11 @@ class Exchange {
 			path = path.substring(config.urlBase.size())
 		}
 		store = Store.base(path)
-		if (store.path.indexOf('.') == -1) store = store.rebase('index.html')
+		if (store.path.indexOf('.') == -1)
+		{
+			store = store.rebase('index.gsp')
+			if (! store.exists()) store = store.rebase('index.html')
+		}
 	}
 
 	private void save(newContents) {

@@ -45,7 +45,10 @@ import static usdlc.Config.config
 	 * A list of scripts used to build up the DSL
 	 */
 	def backingScripts = []
-	/** Implement by concrete classes to be run as part of the browser/server exchange  */
+	/** 
+	 * Implement by concrete classes to be run as part of the browser/server 
+	 * exchange
+	 */
 	void run(Store script) {
 	}
 	/**
@@ -67,8 +70,8 @@ import static usdlc.Config.config
 	}
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
-	 * Called to see if a URL refers to an actor/dsl. It creates an instance of the class.
-	 * Null is returned if no actor class or dsl script exists.
+	 * Called to see if a URL refers to an actor/dsl. It creates an instance of 
+	 * the class. Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
 		String language = language(store)

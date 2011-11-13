@@ -37,7 +37,10 @@ class Session {
 							def instances = sessions[key].instances
 							if (! instances.containsKey(name)) {
 								instances[name] = ofClass.newInstance()
-								instances[name].session = sessions[key]
+								try {
+									instances[name].session = sessions[key]
+								} catch (e) {
+								}
 							}
 							instances[name]
 						},
