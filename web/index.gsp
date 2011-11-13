@@ -5,7 +5,7 @@
 	<link type="text/css" rel="stylesheet" href="rt/base.css">
 	<script type="text/javascript" src='rt/js/load.coffeescript'></script>
 </head>
-<body style="display: none">
+<body>
 
 <table id="pageTitleTable">
 	<tr>
@@ -33,7 +33,9 @@
 			</div>
 		</td>
 		<td id="pageContentsTd">
-			<div id="pageContents"></div>
+			<div id="pageContents">
+				${usdlc.Store.base('frontPage.html').text}
+			</div>
 		</td>
 		<td id="pageContentsSausages"></td>
 	</tr>
