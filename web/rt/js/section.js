@@ -181,7 +181,7 @@ $(function() {
 	// Anything that has focus can be edited.
 	$('.editable').css('background-image', "none").live('click', function(ev) {
 		usdlc.setFocus(ev.currentTarget)
-		return false
+		return true
 	}).live('contextmenu', function(ev) {
 		usdlc.setFocus(ev.currentTarget)
 	})

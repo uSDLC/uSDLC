@@ -1,1 +1,1 @@
-java -jar uSDLC-full.jar port=80
+java -jar uSDLC-full.jar port=80&

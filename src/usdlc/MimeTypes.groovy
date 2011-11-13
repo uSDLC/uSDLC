@@ -103,6 +103,7 @@ class MimeTypes {
 		isp: 'application/x-internet-signup',
 		ivy: 'text/plain',
 		jfif: 'image/pipeg',
+		jar: 'application/octet-stream',
 		jpe: 'image/jpeg',
 		jpeg: 'image/jpeg',
 		jpg: 'image/jpeg',

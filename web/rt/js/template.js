@@ -150,22 +150,30 @@ $(function() {
 	})
 
 	$('a').live('click', function(ev) {
-		if (ev.currentTarget.protocol != 'http:') {
+		var a = $(ev.currentTarget)
+		if (a.attr('target')) {
 			return true
 		}
-		var a = $(ev.currentTarget)
 		var url = ev.currentTarget.pathname
-		switch (a.attr('action')) {
-		case 'page':
-			usdlc.relativePageContents(url)
-			break
-		case 'runnable':
-			usdlc.runSectionInFocus()
-			break
+		switch (ev.currentTarget.protocol) {
+		case 'http:':
+		case 'https:':
+			switch (a.attr('action')) {
+			case 'page':
+				usdlc.relativePageContents(url)
+				break
+			case 'runnable':
+				usdlc.runSectionInFocus()
+				break
+			default:
+				url = a.attr('href')
+				var p = 'status=0,toolbar=0,location=0,menubar=0,directories=0'
+				window.open(url, 'from-usdlc', p)
+				break
+			}
+			break;
 		default:
-			url = a.attr('href')
-			window.open(url, 'from-usdlc', 'status=0,toolbar=0,location=0,menubar=0,directories=0')
-			break
+			return true
 		}
 		return false
 	})
