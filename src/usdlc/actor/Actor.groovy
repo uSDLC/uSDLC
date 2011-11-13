@@ -66,7 +66,7 @@ import static usdlc.Config.config
 		context.setters = [:]
 		init()
 		backingScripts.each { run(it) }
-		if (script) run(script)
+		if (script && user.authorised(script, 'run')) run(script)
 	}
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
