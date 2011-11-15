@@ -11,7 +11,7 @@ class CSV {
 		new CSV(store:store, context: [perRow : closure]).load()
 	}
 	/** Called by csvDSL to run the CSV through the provided or default closure */
-	void load() {
+	CSV load() {
 		def process
 		context = defaults + context
 		store.withReader {
@@ -35,6 +35,7 @@ class CSV {
 				perRow(process(row.collect {it.trim()}))
 			}
 		}
+		this
 	}
 	/** Retrieval will return each row as a map */
 	def getAt(int row) {

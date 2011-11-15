@@ -22,7 +22,7 @@ import java.util.Map
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
 
 import usdlc.CSV
-import usdlc.Groovy;
+import usdlc.Groovy
 import usdlc.Log
 import usdlc.Store
 import static usdlc.Config.config
@@ -43,14 +43,16 @@ class GroovyActor extends Actor {
 						usdlcBinding: usdlcBinding,
 						log: { Log.err it },
 						gse: gse,
-						include: { String include ->
-							def path = Store.base("$script.parent/$include").path
-							gse.run(path, usdlcBinding)
+						include: {
+							gse.run script.rebase(it).path, usdlcBinding
 						},
 						out: { out.println it },
 						pre: { out.println "<pre>\t  $it</pre>" },
 						config: config,
-						dsl: new DslInclusions(binding: usdlcBinding)
+						dsl: new DslInclusions(binding: usdlcBinding),
+						compile: {
+							gse.loadScriptByName script.rebase(it).path
+						},
 					]
 		}
 	}

@@ -1,16 +1,16 @@
 prompt 'CSV Scaffolding', 'Both calls instantiate a new object.'
 edit code 'csvDSL', '''$a
-def newCsv(String name, Map params = [:]) {
-	new usdlc.CSV(store: exchange.store.rebase("${name}.csv"), context: params)
+def newCsv(String name) {
+	new usdlc.CSV(store: exchange.store.rebase("${name}.csv"))
 }
 .'''
 prompt 'and can be implemented by an overloaded method.'
 edit code 'csvDSL', '''$a
-def csvLoad(String name, Map params = [:]) {
-	newCsv(name, params).load()
+def csvLoad(String name) {
+	newCsv(name).load()
 }
-def csvLoad(String name, Map params, Closure perRow) {
-	def csv = newCsv(name, params)
+def csvLoad(String name, Closure perRow) {
+	def csv = newCsv(name)
 	csv.perRow = perRow
 	csv.load()
 }

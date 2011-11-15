@@ -1,8 +1,7 @@
-edit code 'Setup', '''$i
-database(memoryDb('test')) {
-    execute "drop table actors"
-    data = csv 'Sample Data'
-    execute "create table actors (${headings data[0]})"
+edit code 'Setup', '''$a
+database("jdbc:h2:mem:test:test") {
+    drop "table actors"
+    insert 'actors', csv('Sample Data')
 }
 .'''
 prompt 'Initialise Table', 

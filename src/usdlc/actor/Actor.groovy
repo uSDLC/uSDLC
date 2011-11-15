@@ -65,11 +65,8 @@ import static usdlc.Config.config
 		context.getters = [:]
 		context.setters = [:]
 		init()
-		backingScripts.each { authorisedRun(it) }
-		if (script) authorisedRun(script)
-	}
-	void authorisedRun(Store script) {
-		if (exchange.request.user.authorised(script, 'run')) run(script)
+		backingScripts.each { run(it) }
+		if (script) run(script)
 	}
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**

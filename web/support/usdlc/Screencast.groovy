@@ -23,7 +23,7 @@ import static usdlc.Config.config
 class Screencast {
 	boolean client(cmd, params) {
 		sleep(stepDelay)
-		params = params.flatten().collect {
+		params = (params as List).flatten().collect {
 			it ? "'"+it.toString().
 					replaceAll(/'/,/\\'/).replaceAll("\n", /\\n/)+"'" : "''"
 		}.join(',')

@@ -9,18 +9,24 @@ create page 'SQL DSL',
 
 zoom on
 append section '<a href="gsqlDSL.groovy">gsqlDSL</a>'
-append section '<a href="Database.groovy">Database</a>'
+append section '<a href="DatabaseImplementation.groovy">Database Implementation</a>'
 edit code 'gsqlDSL', '''i
     package usdlc.dsl
-
     .'''
-edit code 'Database', '''i
+edit code 'Database Implementation', '''i
     package usdlc.db
+    'Embed code to turn class into script for spike'
+    import groovy.sql.Sql
 
     class Database {
-    }
     .'''
 prompt 'DSL Support',
     '''As before we create a thin DSL scaffolding script and a class for logic. This time
     the open source heavy lifting is provided by the Groovy SQL DSL - itself a thin wrapper
     over jdbc.'''
+edit code 'Setup', '''i
+    include '../ReadCSVFiles/csvImplementation.groovy'
+    include '../ReadCSVFiles/csvDSL.groovy'
+    include 'DatabaseImplementation.groovy'
+    include 'gsqlDSL.groovy'
+    .'''

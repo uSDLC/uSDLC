@@ -107,6 +107,7 @@ $(function() {
 				usdlc.setPageTitle()
 				usdlc.synopses()
 				usdlc.pageContentsSausages.sausage()
+				usdlc.scrollTop()
 				afterwards && afterwards()
 			})
 		},

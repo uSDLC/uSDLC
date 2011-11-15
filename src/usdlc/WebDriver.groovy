@@ -69,7 +69,7 @@ class WebDriver {
 		def countdown = timeout * 2
 		WebElement result
 		while (!(result = closure()) && countdown) {
-			sleep(500)
+			sleep(200)
 			countdown--
 		}
 		result

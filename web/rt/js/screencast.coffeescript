@@ -28,11 +28,17 @@ $ ->
 			usdlc.setFocus $ 'div.section:last'
 			insertSection(title, paragraphs)
 		deleteSection: -> usdlc.copySectionInFocus 'cut'
-		setFocus: (id) -> usdlc.setFocus $ 'div#'+id
+		runSection: -> usdlc.runSectionInFocus()
+		setFocus: (id) ->
+			section = $ 'div#'+id
+			usdlc.setFocus section
+			usdlc.scrollTo section
 		editCode: (editorId, cmds...) ->
 			$('div#'+editorId).data('codemirror').focus()
 			usdlc.activeSourceEditor.ex.command cmd for cmd in cmds
 			usdlc.activeSourceEditor.ex.command 'w'
+			usdlc.setFocus usdlc.inFocus
+			usdlc.scrollTo usdlc.inFocus
 		menu: (path...) ->
 			offset = usdlc.inFocus.offset()
 			[top, left] = [offset.top + 50, offset.left + 60]
@@ -45,8 +51,8 @@ $ ->
 				when 'top'
 					usdlc.toggleHideTitle() if usdlc.titleVisible()
 				else
-					usdlc.toggleHideTitle() if !usdlc.titleVisible() != !zoom
-					usdlc.toggleHideTree() if !usdlc.treeVisible() != !zoom
+					usdlc.toggleHideTitle() if !usdlc.titleVisible() == !zoom
+					usdlc.toggleHideTree() if !usdlc.treeVisible() == !zoom
 		
 	sc = ->
 		if not (screencast = $ 'div.screencast').length

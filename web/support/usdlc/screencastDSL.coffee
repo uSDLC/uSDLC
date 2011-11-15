@@ -19,6 +19,7 @@ select = (target) -> target.select(target.args...)
 check = (target) -> target.check(target.args...)
 next = (target) -> target.next(target.args...)
 edit = (target) -> target.edit(target.args...)
+run = (target) -> target.run(target.args...)
 
 timeout = (seconds) -> server.timeout seconds
 click = (targets) -> server.click targets
@@ -45,16 +46,16 @@ title = ->
 element = ->
 	args: arguments
 	check: (selector, contents) -> server.check selector, contents
+$setFocus = (regex) -> client 'setFocus', server.findSection regex
 section = ->
 	args: arguments
 	insert: (title, paragraphs...) -> client 'insertSection', title, paragraphs
 	append: (title, paragraphs...) -> client 'appendSection', title, paragraphs
-	select: (regex) -> client 'setFocus', server.findSection(regex)
-	cut: (regex) -> 
-		client 'setFocus', server.findSection(regex)
-		client 'deleteSection'
-	check: (regex) -> server.findSection(regex)
+	select: (regex) -> $setFocus regex
+	cut: (regex) -> $setFocus regex; client 'deleteSection'
+	check: (regex) -> server.findSection regex
 	next: -> client 'setFocus', server.nextSection()
+	run: (regex) -> $setFocus regex; client 'runSection'
 code = ->
 	args: arguments
 	select: (linkText) -> server.code(linkText).click()

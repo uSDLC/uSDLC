@@ -1,52 +1,43 @@
+select section 'CSV Implementation'
 prompt 'CSV Support Class',
     'Does not need a constructor since Groovy will automagically fill instance data.'
-edit code 'CSV', '''$i
-    def store, context
+edit code 'CSV Implementation', '''
+$i
+    def store
 .'''
 
 prompt 'One method binds them all.'
-edit code 'CSV', '''
+edit code 'CSV Implementation', '''
 $i
-    void load() {
+    CSV load() {
         def process
-        context = defaults + context
         store.withReader {
             CSVReader reader = new CSVReader(it)
-            if (context.headerLines) {
-                def header = reader.readNext().collect { it.trim() }
-                if (!header) return
-                    if (context.headerLines > 1) {
-                        for (line in [1..<context.headerLines]) {
-                            if (! reader.readNext()) return
-                        }
-                    }
-                process = { row -> 
-                    [header, row].transpose().collectEntries{it}
-                }
-            } else {
-                process = { row -> row }
+            def header = reader.readNext().collect { it.trim() }
+            process = { row -> 
+              [header, row].transpose().collectEntries{it}
             }
             def row
             while (row = reader.readNext()) {
                 perRow(process(row.collect {it.trim()}))
             }
         }
+        this
     }
-.'''
 
-prompt 'If we do not specify an action for each line, collect then for return.'
-edit code 'CSV', '''
-$i
     def list = [], perRow = { list << it }
-
-    def context = [:], defaults = [
-        /** number of lines before we get to data */
-        headerLines : 1,
-        /** separator between variables - comma, tab or | */
-        separator: ',',
-        /** quoting character - ', " or % */
-        quote: '"'
-    ]
+	
+    /** Retrieval will return each row as a map */
+    def getAt(int row) {
+        list[row]
+    }
+    /** Number of rows is the size of the list retrieved */
+    def size() {
+        list.size()
+    }
+    def each(Closure action) { list.each(action) }
 }
+"Make me a script so I can load for testing"
 .'''
-prompt 'We have not tested variations (yet), but we do need to provide defaults.'
+
+prompt 'If we do not specify an action for each line, collect them for return.'

@@ -1,9 +1,9 @@
-zoom on
 append section '<a href="ReadCSVFiles/index.html">Read CSV Files</a>'
 append section '<a href="SQLDSL/index.html">SQL DSL</a>'
 append section 'Process SQL Files'
 append section 'Reversals',
     'Flesh out the mechanisms and requirements to be able to reverse out migration changes.'
+select section 'Read CSV Files'
 prompt 'Data Migration Overview',
     '''I have sketched out the requirements from the brief. Normally we would flesh these out,
     but as the focus of this screencast is writing a DSL in Groovy, we will move directly to

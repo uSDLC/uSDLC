@@ -47,7 +47,7 @@ usdlc.init = {
 					pad = 25
 				var viewPortHeight = w.height() - ptt.outerHeight() - pad
 				viewPortHeight += usdlc.titleVisible() ? 0 : 50
-				var aboveScroll = (viewPortHeight > 500) ? 100 : 50
+				var aboveScroll = (viewPortHeight > 800) ? 100 : 0
 				var belowScroll = viewPortHeight - aboveScroll
 				usdlc.pageContents.outerHeight(viewPortHeight)
 				ct.outerHeight(viewPortHeight)
@@ -63,6 +63,9 @@ usdlc.init = {
 							elementTop : (elementTop - aboveScroll)
 					usdlc.pageContents.scrollTop(newTop)
 					usdlc.setFocus(element)
+				}
+				usdlc.scrollTop = function() {
+					usdlc.pageContents.scrollTop(0)
 				}
 			}
 			setViewportHeight()

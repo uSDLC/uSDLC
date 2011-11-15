@@ -5,15 +5,16 @@ lines = []
 select('* from actors order by surname') {
   lines << "$it.firstName $it.surname -- $it.comment"
 }
-results = lines.join('\n')
+results = lines.join(', ')
 assert results =~ 'Bob Hope -- Comedy'
 .'''
-prompt 'Simple does not simplify',
-   '''To do commands outside a database scope, we will need to add scaffolding ourselves'''
+prompt 'Functional Testing',
+   '''As we add functionality we need to add description and test sections here.'''
 edit code 'gsqlDSL', '''$a
 
 select = { sql, actions = null -> database { select(sql, actions) } }
+insert = { table, data -> database { insert(table, data) } }
+script = { name -> database { script(name) } }
 .'''
-prompt 'Left unsaid',
-    '''We can add more functionality as it is needed, but it will be just more of the same.
-    We are now ready for implementation…'''
+prompt 'Simple does not simplify implementation',
+    '''To execute commands outside of a database closure we add them to the scaffolding'''

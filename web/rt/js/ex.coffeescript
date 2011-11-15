@@ -101,6 +101,14 @@ $ ->
 		insert: (before, text = @registers['.']) ->
 			pos = {line : before, ch : 0}
 			@editor.replaceRange text, pos, pos
+			@removeBlankLinesAtEnd()
+		removeBlankLinesAtEnd: ->
+			lastLine = @editor.lineCount() - 1
+			while lastLine > 1 and @blank(lastLine)
+				@editor.removeLine lastLine
+				lastLine -= 1
+		blank: (lno) ->
+			@editor.lineInfo(lno)?.text.match /^\s*$/
 		copy: (aboveThis) ->
 			@insert aboveThis, @editor.getSelection()
 		delete : (tail) ->
