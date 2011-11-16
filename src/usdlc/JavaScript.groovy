@@ -20,6 +20,8 @@ import org.mozilla.javascript.ErrorReporter
 import org.mozilla.javascript.EvaluatorException
 import org.mozilla.javascript.Scriptable
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor
+import static usdlc.FileProcessor.fileProcessor
+import static usdlc.Config.config
 
 class JavaScript {
 	/**
@@ -52,8 +54,8 @@ class JavaScript {
 	synchronized run(String js, binding = [:]) {
 		Context context = Context.enter()
 		try {
-				def scope = scope(context, binding)
-				return context.evaluateString(scope, js, 'inline', 0, null)
+			def scope = scope(context, binding)
+			return context.evaluateString(scope, js, 'inline', 0, null)
 		} finally {
 			Context.exit()
 		}
@@ -106,5 +108,27 @@ public class CompressorErrorReporter implements ErrorReporter {
 	int line, String lineSource, int lineOffset) {
 		error(message, sourceName, line, lineSource, lineOffset)
 		return new EvaluatorException(message)
+	}
+
+	static Store javascriptBuilder(files, coffeeCompiler) {
+		fileProcessor('js', files) { inputFile, writer ->
+			switch (inputFile.split().ext) {
+				case 'js':
+					if (config.compressJs) {
+						inputFile.file.withReader {JavaScript.compress(it, writer)}
+					} else {
+						writer.write(inputFile.read())
+					}
+					break
+				case 'coffeescript':
+					def code = coffeeCompiler.compile(inputFile)
+					if (config.compressJs) {
+						JavaScript.compress(new StringReader(code), writer)
+					} else {
+						writer.write(code)
+					}
+					break
+			}
+		}
 	}
 }

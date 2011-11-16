@@ -1,0 +1,4 @@
+click 'uSDLC -> Open Source Projects'
+prompt 'Open Source' , 
+    '''In common with most modern software, 
+    uSDLC would not be possible without Open Source'''

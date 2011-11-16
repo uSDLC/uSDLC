@@ -1,0 +1,77 @@
+create screencast 'Read CSV Files', 'The lowest common data denominator',
+    '''We need to read in csv files. Given that the first line is heading,
+    access each line as a dictionary of name value pairs'''
+prompt 'CSV Page Definition',
+    '''We have been given a brief on what is needed - from which we can
+    methodically create the page.'''
+zoom on
+append section '<a href="CSVLoader.groovy">CSV Loader</a>', 
+    'Load <a href="aCSVFile.csv">a CSV file</a> into memory and check for expected results.'
+edit code 'CSV Loader', '''i
+data = csv 'a CSV file'
+
+assert data.size() == 2
+assert data[0] == [column1: 'one.one', column2: 'one.two']
+assert data[1].column1 == 'two.one'
+.'''
+edit code 'a CSV file', '''i
+column1, column2
+one.one, one.two
+two.one, two.two
+.'''
+prompt 'Turn words into code',
+    '''There is good reason to writing the test first. It can be compared with the written
+    description - and once it works we are done'''
+run section 'CSV Loader'
+prompt 'Not yet', 'Naturally as we do not have any backing code'
+
+append section '<a href="csvDSL.groovy">csvDSL</a>'
+append section '<a href="CSVImplementation.groovy">CSV Implementation</a>'
+edit code 'csvDSL', '''i
+package usdlc.dsl
+
+csv = { name ->
+    new usdlc.CSV(store: exchange.store.rebase("${name}.csv")).load()
+}
+.'''
+edit code 'CSV Implementation', '''i
+package usdlc
+import au.com.bytecode.opencsv.CSVReader
+ 
+class CSV {
+    def store
+    CSV load() {
+        list = []
+        def process
+        store.withReader {
+            CSVReader reader = new CSVReader(it)
+            def row, header = reader.readNext().collect { it.trim() }
+            while (row = reader.readNext()) {
+                list << [header, row.collect {it.trim()}].transpose().collectEntries{it}
+            }
+        }
+        this
+    }
+    def list = []
+    def getAt(int row) {list[row]}
+    def size() {list.size()}
+}
+'Turn class to script for spike'
+.'''
+prompt 'Implementation', 'And through the magic of instant coding...'
+
+edit code 'Setup', '''i
+include 'csvImplementation.groovy'
+include 'csvDSL.groovy'
+.'''
+prompt 'Tie the DSL together', '''
+Eventually the implementation will become library and the DSL made available.
+Until then we need to include them manually for our tests to run'''
+
+run section 'CSV Loader'
+prompt 'Test the test','''
+And this time our test passes - as signified by green'''
+
+click 'uSDLC -> Actors -> Web UI -> Screencast'
+prompt 'A Big One', '''
+This is the same approach, but for the DSL that runs this screencast for me.'''

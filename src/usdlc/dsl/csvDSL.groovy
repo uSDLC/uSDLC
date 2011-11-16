@@ -27,3 +27,4 @@ def csvLoad(String name, Map params, Closure perRow) {
 	csv.load()
 }
 csv = this.&csvLoad
+dataSource = true

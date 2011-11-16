@@ -24,15 +24,13 @@ import static usdlc.Config.config
 abstract class CompressorActor extends Actor {
 	void filter(String type, Closure compress) {
 		def source = exchange.store, compressed
-		if (config."compress${type.capitalize()}" && 
-			!config.noCompression.matcher(source.path).matches()) {
+		if (config."compress${type.capitalize()}" &&
+		!config.noCompression.matcher(source.path).matches()) {
 			compressed = Store.base("store/$type/base").rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()
 				source.file.withReader { input ->
-					compressed.file.withWriter { output ->
-						compress input, output
-					}
+					compressed.file.withWriter { output -> compress input, output }
 				}
 			}
 		} else {

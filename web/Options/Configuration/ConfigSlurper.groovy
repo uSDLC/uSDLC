@@ -29,6 +29,7 @@ alwaysCheckForRecompile = true
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
 compressCss = true
+conpressJs = true
 noCompression = ~".*/rt/.*"
 
 webDrivers = [

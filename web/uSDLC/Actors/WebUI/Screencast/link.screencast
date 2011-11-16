@@ -1,7 +1,6 @@
 append section 'Showing a code link', "<a href='This.groovy'>This</a> is a groovy link"
 
-select code 'This'
-save code '''import java.util.HashSet
+edit code 'This', '''import java.util.HashSet
     
     class ActivationCode {
         HashSet<String> set = new HashSet<String>();
@@ -10,6 +9,6 @@ save code '''import java.util.HashSet
             set.add('one');
         }
     }
-    '''
+.'''
 select code 'This'
 check code "'one'"

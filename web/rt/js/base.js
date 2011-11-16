@@ -15,8 +15,56 @@
  */
 
 $(function() {
+//	window.usdlc = {
+//		synopses : function(){}, //# we will provide one with teeth after
+//		/*
+//		 Given a path (from a URL), return the parent path - being the complete
+//		 directory structure without file name.
+//		 */
+//		parentPath : function(path) {
+//			lastSlash = path.lastIndexOf('/')
+//			if (lastSlash != -1) path = path.substring(0,lastSlash)
+//			return path
+//		},
+//
+//		removeUrlBase : function(path) {
+//			b = usdlc.urlBase + '/'
+//			if (path.substring(0, b.length) == b)
+//				path = path.substring(b.length)
+//			return path
+//		},
+//		urlBase : usdlc.parentPath(window.location.pathname),
+//	}
+
+	head = document.getElementsByTagName('head')[0]
+	base = document.createElement('base')
+	base.setAttribute('href', usdlc.urlBase)
+	head.appendChild(base)
+
 	var percentRE = /^(\d+)%$/
 	$.extend(true, window.usdlc, {
+		loadScriptAsync : function(path, onScriptLoaded) {
+			script = document.createElement("script")
+			script.type = "text/javascript"
+			script.async = "async"
+
+			if (script.readyState) { // # IE
+				script.onreadystatechange = function() {
+					if (script.readyState == "loaded" ||
+							script.readyState == "complete") {
+						script.onreadystatechange = null;
+						onScriptLoaded(path);
+					}
+				}
+			} else { // # Other browsers
+				script.onload = function() {
+					onScriptLoaded(path);
+				}
+			}
+
+			script.src = usdlc.urlBase + path
+			head.appendChild(script)
+		},
 		/**
 		 * Create a dialog box to wrap an existing item. Options are those for
 		 * jquery dialog, but height can be a percentage as well as a pixel

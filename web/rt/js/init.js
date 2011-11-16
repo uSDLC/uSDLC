@@ -143,5 +143,8 @@ usdlc.init = {
 		// loaded first page.
 		usdlc.synopses = usdlc.doSynopses
 		usdlc.synopses()
+	},
+	postLoader: function() {
+		usdlc.loadScriptAsync('/rt/js/usdlc_postload_js.groovy', usdlc.init.finalise)
 	}
 }

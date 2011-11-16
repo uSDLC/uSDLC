@@ -9,8 +9,8 @@
 
 
 <div id="s2" class="editable section" contextmenu="section"><p>
-	Pages can be in edit or run mode. The latter activates links and commands that connect the documentation context to
-	the system under review.</p>
+	Sections can be activated by attaching DSL scripts to implement in code a view on the information presented. DSL is domain specific, so it should be readable and modifiable by the domain experts and not just the programmers.</p>
+
 </div>
 <div id="s3" class="editable section" contextmenu="section"><h3>
 	Links</h3>
@@ -23,8 +23,7 @@
 	Absolute Links</h5>
 
 	<p>
-		Absolute links - whether to&nbsp;<a href="http://google.com" id="s5a0">another site</a>&nbsp;or&nbsp;<a
-			href="/idontexist.groovy" id="s5a1" class="usdlc sourceLink">within uSDLC</a> are treated
+		Absolute links - whether to&nbsp;<a href="http://google.com" id="s5a0">another site</a>&nbsp;or&nbsp;<a href="/idontexist.groovy" id="s5a1" class="usdlc sourceLink">within uSDLC</a> are treated
 		like any
 		other web application - click on them to follow them. They are not followed as part of the run. When running
 		this page, neither of the two links in this paragraph should cause an error.</p>
@@ -47,16 +46,13 @@
 		should mark as a pass during a test run. Note that it is created by clicking the link icon on the editor
 		tool-bar. Leave the type as local and enter the name as a sentence. For this example, <em>Relative links</em>
 		was typed in. On save this translates to <span style="color:#0000cd;">./RelativeLinks/index.html</span>. If you
-		want to specify a different directory or a file in the current directory, specify it fulling (as in<span
-			style="color:#0000cd;"> RelativeLinks.html</span> or <span
-			style="color:#0000cd;">myTests/RelativeLinks.html</span>)</p>
+		want to specify a different directory or a file in the current directory, specify it fulling (as in<span style="color:#0000cd;"> RelativeLinks.html</span> or <span style="color:#0000cd;">myTests/RelativeLinks.html</span>)</p>
 </div>
 <div id="s7" class="editable section" contextmenu="section"><h4>
 	Actors</h4>
 
 	<p>
-		uSDLC supports actors numerous scripting languages. Links to scripts are of the form <span
-			style="color:#0000cd;">name.client.server</span>&nbsp;so that we can define action on both sides of the
+		uSDLC supports actors numerous scripting languages. Links to scripts are of the form <span style="color:#0000cd;">name.client.server</span>&nbsp;so that we can define action on both sides of the
 		divide. A file <span style="color:#0000cd;">myScript.js.groovy</span> will run a groovy script that is expected
 		to send javascript back to the server. To produce a script that responds with HTML, either don't give it a
 		client extension or use <span style="color:#0000ff;">.htm</span>.</p>
@@ -67,19 +63,15 @@
 	<p>
 		When you create a link to an actor you will see a purple underline. This indicates that the underlying actor has
 		not been created. Once it has been created it will have a red underline until it returns a success. Currently
-		successful links will have a green underline. Attempting to run a <a class="usdlc"
-		                                                                     href="ScriptThatDoesNotExistWillRaiseAFailure.htmlunit"
-		                                                                     id="s15a0" action="runnable">script that
+		successful links will have a green underline. Attempting to run a <a class="usdlc" href="ScriptThatDoesNotExistWillRaiseAFailure.htmlunit" id="s15a0" action="runnable">script that
 		does not exist will raise a failure</a>.</p>
 </div>
 <div id="s13" class="editable section" contextmenu="section"><h2>
 	Script Activation</h2>
 
 	<p>
-		<a class="usdlc" href="ClickingOnAScriptLinkHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a0"
-		   action="page">Clicking on a actor link</a> will cause the script to run. To edit the script instead, hold the
-		<a class="usdlc" href="AltKeyToEditHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a1"
-		   action="page">Alt key</a> down before selecting the link. Hovering over a link will provide reminder text for
+		<a class="usdlc" href="ClickingOnAScriptLinkHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a0" action="page">Clicking on a actor link</a> will cause the script to run. To edit the script instead, hold the
+		<a class="usdlc" href="AltKeyToEditHtmlunitIndexHtmlIndexHtmlIndexHtmlIndexHtml/index.html" id="s13a1" action="page">Alt key</a> down before selecting the link. Hovering over a link will provide reminder text for
 		this functionality. The context menu (and the R key) will run all actors in the current highlighted section. You
 		can run all actors on a page and child pages from the <strong><em>Run Page</em></strong> button on the tool-bar.
 	</p>
@@ -121,18 +113,12 @@
 
 	<p>
 		Links can provide script specific parameters. Other parameters are provided by the environment. All scripts are
-		provided a parameter called <a class="usdlc" href="ScriptIdParameter.htmlunit" id="s14a0"
-		                               action="runnable">id</a> that uniquely specifies the source for the link in the
+		provided a parameter called <a class="usdlc" href="ScriptIdParameter.htmlunit" id="s14a0" action="runnable">id</a> that uniquely specifies the source for the link in the
 		form page.path.s1a1, being the path to the page followed by the section number and link number within the
 		section.</p>
 
 	<p>
-		The <em>event </em>parameter defines how the actor was triggered - <a href="PageLoadEvent.htmlunit" id="s14a1"
-		                                                                      class="usdlc"
-		                                                                      action="runnable">pageLoad</a>, <a
-			href="RunEvent.htmlunit" id="s14a2" class="usdlc" action="runnable">run</a> or <a href="ClickEvent.htmlunit"
-		                                                                                      id="s14a3" class="usdlc"
-		                                                                                      action="runnable">click</a>.
+		The <em>event </em>parameter defines how the actor was triggered - <a href="PageLoadEvent.htmlunit" id="s14a1" class="usdlc" action="runnable">pageLoad</a>, <a href="RunEvent.htmlunit" id="s14a2" class="usdlc" action="runnable">run</a> or <a href="ClickEvent.htmlunit" id="s14a3" class="usdlc" action="runnable">click</a>.
 	</p>
 </div>
 <div id="s12" class="editable section synopsis" contextmenu="section"><h2>
@@ -148,9 +134,7 @@
 	<p>
 		For developers we recommend adding uSDLC to your IDE project. That way you can make use of the advanced IDE
 		editing features. For quick changes or tests outside a development environment, uSDLC integrates a source code
-		editor, <a href="http://www.cdolivet.com/index.php?page=editArea&amp;sess=2e35fca6b6217c9cd20753a2a5ad4fc8"
-		           id="s17a0">EditArea</a>. For many languages, <a href="AutoFormatting.htmlunit" id="s17a1"
-		                                                           class="usdlc" action="runnable">auto-formatting</a>
+		editor, <a href="http://www.cdolivet.com/index.php?page=editArea&amp;sess=2e35fca6b6217c9cd20753a2a5ad4fc8" id="s17a0">EditArea</a>. For many languages, <a href="AutoFormatting.htmlunit" id="s17a1" class="usdlc" action="runnable">auto-formatting</a>
 		and <a href="CodeCompletion.htmlunit" id="s17a2" class="usdlc" action="runnable">code completion</a> are turned
 		on.</p>
 </div>
@@ -158,8 +142,7 @@
 	Actor Input</h2>
 
 	<p>
-		A free-standing actor will be passed the content of the <a href="SurroundingSectionAsInput.htmlunit" id="s16a0"
-		                                                           class="usdlc" action="runnable">surrounding section
+		A free-standing actor will be passed the content of the <a href="SurroundingSectionAsInput.htmlunit" id="s16a0" class="usdlc" action="runnable">surrounding section
 		as input</a>.</p>
 </div>
 <div id="s11" class="editable section synopsis" contextmenu="section"><h2>
@@ -178,17 +161,14 @@
 
 	<p>
 		Any script not in a table is run as a free-standing script. It is executed and the results returned to the
-		browser in a form defined in the client extension. This <a action="runnable" class="usdlc"
-		                                                           href="RedHeading.js.groovy" id="s8a3">script</a> will
+		browser in a form defined in the client extension. This <a action="runnable" class="usdlc" href="RedHeading.js.groovy" id="s8a3">script</a> will
 		change the page heading to red. This <a action="runnable" class="usdlc" href="CheckRedHeading.js" id="s8a4">script</a>
 		is purely client-side and will check to make sure the heading is red.</p>
 
 	<p>
 		Most scripts will call a server-side actor to interact with the system under review. Once a script has been run
 		any responses will display on a pop-up window. Clicking on a script that has already been run will redisplay the
-		results window. To run again go to edit mode and back to run mode. <a action="runnable" class="usdlc"
-		                                                                      href="StandAloneScript.htm.groovy"
-		                                                                      id="s8a2">This script</a> is a groovy
+		results window. To run again go to edit mode and back to run mode. <a action="runnable" class="usdlc" href="StandAloneScript.htm.groovy" id="s8a2">This script</a> is a groovy
 		actor that will display a simple message. Note that the link changes colour during and after the script has been
 		run.</p>
 </div>

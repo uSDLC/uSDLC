@@ -1,4 +1,5 @@
 list = csv 'Editing a CSV File'
+    
 assert list.size() == 2
 assert list[0] == [
     'First Name': 'Fred',

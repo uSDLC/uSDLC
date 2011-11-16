@@ -25,6 +25,17 @@ class CoffeeScript {
 	/**
 	 * Pass in a coffee-script file and the compiler will do it's magic
 	 */
+	String compile(Store coffeescript) {
+		try {
+			compile(coffeescript.text)
+		} catch (exception) {
+			throw new RuntimeException(
+			"Error in $coffeescript.path ($exception.message)", exception)
+		}
+	}
+	/**
+	 * Pass in a coffee-script file and the compiler will do it's magic
+	 */
 	String compile(String coffeeScriptSource) {
 		String options = bare ? "{bare: true}" : "{}"
 		javascript.run("CoffeeScript.compile(coffeeScript, $options);",
@@ -39,12 +50,7 @@ class CoffeeScript {
 				rebase(coffeescript.path + '.js')
 
 		if (coffeescript.newer(javascript)) {
-			try {
-				javascript.write(compile(coffeescript.text))
-			} catch (exception) {
-				throw new RuntimeException(
-				"Error in $coffeescript.path ($exception.message)", exception)
-			}
+			javascript.write(compile(coffeescript))
 		}
 		javascript
 	}
