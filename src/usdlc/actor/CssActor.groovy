@@ -20,7 +20,7 @@ import usdlc.Store
 
 class CssActor extends CompressorActor {
 	void run(Store script) {
-		filter('css') { input, output ->
+		filter('css') { Reader input, Writer output ->
 			def compressor = new CssCompressor(input)
 			compressor.compress(output, 80)
 		}

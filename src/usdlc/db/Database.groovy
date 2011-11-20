@@ -23,7 +23,14 @@ import static usdlc.Config.config
 class Database {
 	@Delegate Sql sql
 	/**
-	 * Connect to a database by name. 
+	 * Connect to a database by name.
+	 * The url for this name can be in the config file.
+	 */
+	static connection(Closure actions) {
+		connection(usdlcDatabase, actions)
+	}
+	/**
+	 * Connect to a database by name.
 	 * The url for this name can be in the config file.
 	 */
 	static connection(String database, Closure actions) {
@@ -71,9 +78,9 @@ class Database {
 	long created = System.currentTimeMillis()
 	/** Check the base version and migrate if necessary.      */
 	static String usdlcDatabase = version('usdlc-core')
-	/** Fetch an in-memory database for testing or small temporary functions */ 
+	/** Fetch an in-memory database for testing or small temporary functions */
 	String memoryDb = { "jdbc:h2:mem:$it:$it" }
-	/** Get a database for the in-build h2 database */ 
+	/** Get a database for the in-build h2 database */
 	String h2Db = { "jdbc:h2:.db/$it" }
 	/** Given a row from a csv, use the heading to return a list for create */
 	String headings(row) {
@@ -88,19 +95,19 @@ class Database {
 	/** Wrapper for SQL SELECT command for one record */
 	def first(String sql) { firstRow("select $sql") }
 	/**
-	 * The first time in a static run that we access a group of related tables 
+	 * The first time in a static run that we access a group of related tables
 	 * we check the code generated version against that in the current database.
 	 * If they differ, ask caller to migrate the data.
 	 *
 	 * static version = db.version("classpath:usdlc/db/Core")
 	 *
 	 * @param tableGroup group of related tables that use the same version
-	 * @param migrate Call to create tables or migrate old to new form. One 
-	 * parameter is the old version. If it is zero, the tables do not exist and 
+	 * @param migrate Call to create tables or migrate old to new form. One
+	 * parameter is the old version. If it is zero, the tables do not exist and
 	 * have to be created but no migration needed. Must return true if migration
 	 * was successful so that the new version can be recorded. This parameter is
 	 * optional and the code will migrate using scripts of the form
-	 * $tableGroup.$version.sql to move up migration steps 
+	 * $tableGroup.$version.sql to move up migration steps
 	 * one at a time.
 	 */
 	static String version(String key, Closure migrate = migrateByScript) {
@@ -140,7 +147,7 @@ class Database {
 		key
 	}
 	/**
-	 * Can be called by migration closures to find a script of the form 
+	 * Can be called by migration closures to find a script of the form
 	 * "$tableGroup.$toVersion(3 digits).sql" and migrate it.
 	 */
 	static migrateByScript = { String url, tableGroup, toVersion ->

@@ -34,7 +34,7 @@ class Store {
 	}
 	/**
 	 * Return a Store for a new (non-existent) file. It will refer to a new file
-	 * in /tmp. Use the ID to provide a reference name and file extension. All 
+	 * in /tmp. Use the ID to provide a reference name and file extension. All
 	 * files here are deleted every time uSDLC is started.
 	 */
 	static Store tmp(String id = '.txt') {
@@ -77,7 +77,7 @@ class Store {
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	private mkdirs() {
+	public mkdirs() {
 		new File(config.baseDirectory, parent).mkdirs()
 	}
 
@@ -90,6 +90,7 @@ class Store {
 	@Lazy String relativePath = "$config.baseDirectory/$path"
 	@Lazy URI uri = file.toURI()
 	@Lazy URL url = uri.toURL()
+	@Lazy parts = split(path)
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */
@@ -229,7 +230,7 @@ class Store {
 		path
 	}
 
-	private File file
+	File file
 
 	/**
 	 * Find a directory that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
@@ -247,15 +248,15 @@ class Store {
 	/**
 	 * Find a file that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
 	 * This path will sort correctly for creation date.
-	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test.txt/  
+	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test.txt/
 	 */
 	Store unique(name) {
 		Store.base uniquePath(id)
 	}
 	/**
-	 * Convert any sentence into a single camel-case word. It remove all 
-	 * punctuation and makes the start of each work a capital letter. 
-	 * So "My friend Charlie (Watson-Smith-jones)" becomes 
+	 * Convert any sentence into a single camel-case word. It remove all
+	 * punctuation and makes the start of each work a capital letter.
+	 * So "My friend Charlie (Watson-Smith-jones)" becomes
 	 * MyFriendCharlieWatsonSmithJones
 	 */
 	static String camelCase(String text) {
@@ -301,11 +302,8 @@ class Store {
 		def matcher = splitRE.matcher(path)[0]
 		[path: matcher[1], name: matcher[2], ext: matcher[3]]
 	}
-	def split() {
-		split(path)
-	}
 
-	static splitRE = ~/^(?:(.*)[\/\\])?([^\.]*)?(.*)?$/
+	static splitRE = ~/^(?:(.*)[\/\\])?(.*?)(?:\.([^\.]*))?$/
 	/**
 	 * Copy a file or directory to a target directory.
 	 */

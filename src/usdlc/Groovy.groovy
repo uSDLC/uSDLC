@@ -53,7 +53,7 @@ class Groovy {
 	/**
 	 * Run a previously loaded script.
 	 */
-	static void run(scriptClass, binding) {
+	static void run(Class scriptClass, binding = new Binding()) {
 		InvokerHelper.createScript(scriptClass, binding).run()
 	}
 }

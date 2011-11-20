@@ -49,6 +49,7 @@ class UsdlcServlet extends HttpServlet {
 		new Header(
 				host: request.getHeader('Host'), method: request.method,
 				query: request.queryString, uri: uri,
+				acceptEncoding: request.getHeader('Accept-Encoding'),
 				fragment: fragment, cookie: request.getHeader('Cookie') ?: ''
 				)
 	}

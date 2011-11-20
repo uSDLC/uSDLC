@@ -1,37 +1,26 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc.actor
 
 import usdlc.Store
 import static usdlc.Config.config
+import static usdlc.FileProcessor.gzip
 
 /**
  * Uses a closure to filter input to output - saving the result
  */
 abstract class CompressorActor extends Actor {
 	void filter(String type, Closure compress) {
-		def source = exchange.store, compressed
+		Store source = exchange.store, compressed
 		if (config."compress${type.capitalize()}" &&
-		!config.noCompression.matcher(source.path).matches()) {
+		    !config.noCompression.matcher(source.path).matches()) {
 			compressed = Store.base("store/$type/base").rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()
-				source.file.withReader { input ->
-					compressed.file.withWriter { output -> compress input, output }
+				source.file.withReader { Reader input ->
+					compressed.file.withWriter { Writer output ->
+						compress input, output
+					}
 				}
+				gzip(compressed, source)
 			}
 		} else {
 			compressed = exchange.store

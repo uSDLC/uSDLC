@@ -15,26 +15,28 @@
  */
 
 $(function() {
-//	window.usdlc = {
-//		synopses : function(){}, //# we will provide one with teeth after
-//		/*
-//		 Given a path (from a URL), return the parent path - being the complete
-//		 directory structure without file name.
-//		 */
-//		parentPath : function(path) {
-//			lastSlash = path.lastIndexOf('/')
-//			if (lastSlash != -1) path = path.substring(0,lastSlash)
-//			return path
-//		},
-//
-//		removeUrlBase : function(path) {
-//			b = usdlc.urlBase + '/'
-//			if (path.substring(0, b.length) == b)
-//				path = path.substring(b.length)
-//			return path
-//		},
-//		urlBase : usdlc.parentPath(window.location.pathname),
-//	}
+	window.usdlc = {
+		synopses : function(){}, //# we will provide one with teeth after
+		/*
+		 Given a path (from a URL), return the parent path - being the complete
+		 directory structure without file name.
+		 */
+		parentPath : function(path) {
+			lastSlash = path.lastIndexOf('/')
+			if (lastSlash != -1) path = path.substring(0,lastSlash)
+			return path
+		},
+
+		removeUrlBase : function(path) {
+			b = usdlc.urlBase + '/'
+			if (path.substring(0, b.length) == b)
+				path = path.substring(b.length)
+			return path
+		},
+	}
+	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
+	window.CKEDITOR_BASEPATH = '/lib/ckeditor/'
+
 
 	head = document.getElementsByTagName('head')[0]
 	base = document.createElement('base')

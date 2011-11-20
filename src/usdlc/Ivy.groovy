@@ -39,7 +39,7 @@ class Ivy {
 	}
 
 	Ivy remove(String toRemove) {
-		toRemove?.split()?.each {
+		toRemove?.parts?.each {
 			ant.delete(file: "lib/$group/$it", verbose: true)
 		}
 		this
@@ -64,7 +64,7 @@ class Ivy {
 		def entity = new DefaultHttpClient().execute(new HttpGet(url)).entity
 		if (entity) {
 			log "Download $url, $entity.contentLength bytes\n"
-			Map uri = Store.split(to ?: url)
+			Map uri = Store.parts(to ?: url)
 			mkdir()
 			def out = new FileOutputStream("web/lib/$group/${uri['name']}${uri['ext']}")
 			entity.writeTo(out)

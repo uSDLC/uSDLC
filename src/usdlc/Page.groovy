@@ -55,7 +55,7 @@ class Page {
 		sections = sections.not('div.footer, div:lt(1)')
 
 		if (updated) {
-			title.text(Store.decamel(from.split().name))
+			title.text(Store.decamel(from.parts.name))
 		}
 
 		if (!titleDiv.hasAttr('uuid')) {

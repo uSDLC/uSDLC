@@ -181,7 +181,7 @@ $(function() {
 
 	// The last thing we do is make the page visible. Hopefully all the visual
 	// work will be done by now.
-	//usdlc.init.pageLayout()
-	//usdlc.init.decoratePage()
+	usdlc.init.pageLayout()
+	usdlc.init.decoratePage()
 	$('body').removeAttr('style')
 })

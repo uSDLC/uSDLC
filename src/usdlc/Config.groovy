@@ -17,6 +17,8 @@ package usdlc
 
 import java.lang.reflect.Method
 
+import usdlc.actor.GroovyActor;
+
 /**
  * Wrapper for configSlurper so we can access multiple configuration files
  * easily. You will still need to restart the usdlc.server.servletengine.server 
@@ -39,6 +41,7 @@ class Config {
 		buildClassPath()
 		config.classPathString = config.srcPath.join(';')
 		config.tableVersions = loadTableVersions()
+		runStartupScripts()
 		loaded = true
 	}
 	static private buildClassPath() {
@@ -74,5 +77,12 @@ class Config {
 			store.withInputStream() { stream -> properties.load(stream) }
 		}
 		properties
+	}
+	static private runStartupScripts() {
+		def actor = new GroovyActor()
+		actor.init()
+		config.startupScripts.each {
+			actor.run(Store.base(it))
+		}
 	}
 }

@@ -1,24 +1,9 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc
 
 /**
  This module does more than just decipher the mime type - it uses the information to act on it. It uses the file
  extension(s) to decide what action is to be taken. All files can have one or two extensions. The first, or only,
- is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string - 
+ is the classic client-side mime-type. The toString fact will return the browser recognised mime-type string -
  as in text/html or application/javascript.There is more.. a second extension specifies the
  usdlc.server.servletengine.server side script that will produce this code. The actor entry tells us whether there
  is a usdlc.server.servletengine.server component and what to run if there is.

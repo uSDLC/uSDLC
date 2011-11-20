@@ -18,7 +18,7 @@ package usdlc
 import usdlc.db.Database
 
 class Session {
-	static load(String key) {
+	static Map load(String key) {
 		boolean isNewSession = ! key
 		if (isNewSession) {
 			long before = lastKey
@@ -34,13 +34,13 @@ class Session {
 						instances : [:],
 						instance : { Class ofClass ->
 							def name = ofClass.name
-							def instances = sessions[key].instances
+							Map instances = sessions[key].instances
 							if (! instances.containsKey(name)) {
 								instances[name] = ofClass.newInstance()
+								//noinspection GroovyEmptyCatchBlock
 								try {
 									instances[name].session = sessions[key]
-								} catch (e) {
-								}
+								} catch (exception) {}
 							}
 							instances[name]
 						},
@@ -48,9 +48,9 @@ class Session {
 			sessions[key].session = sessions[key]
 			sessions[key].persist = new Session(session:sessions[key])
 		}
-		sessions[key]
+		return sessions[key]
 	}
-	static sessions = [:]
+	static Map<String,Map> sessions = [:]
 	static long lastKey = 0
 
 	def session
@@ -64,7 +64,7 @@ class Session {
 
 	def propertyMissing(String name, value) {
 		Database.connection { db ->
-			def sql = """update sessions set value=$value 
+			def sql = """update sessions set value=$value
 						where session=$key and key=$name"""
 			if (!db.sql.executeUpdate(sql)) {
 				sql = "insert into sessions values($key,$name,$value)"

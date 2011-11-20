@@ -74,7 +74,7 @@ import static usdlc.Config.config
 	 * the class. Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
-		String language = language(store)
+		String language = store.parts.ext
 		if (!cache[language]) {
 			def data = [scripts: [], groovyDSL: '', baseLanguage: '']
 			retrieveDefinitions(language, data)
@@ -98,7 +98,7 @@ import static usdlc.Config.config
 		config.dslSourcePath.each { path ->
 			def base = Store.base(path)
 			base.dirs(~/${dsl}\..*/) { Store store ->
-				def parentLanguage = Actor.language(store).toLowerCase()
+				def parentLanguage = store.parts.ext.toLowerCase()
 				def parentDSL = "${parentLanguage}DSL"
 				switch (parentLanguage) {
 					case language:
@@ -115,13 +115,6 @@ import static usdlc.Config.config
 			}
 		}
 		if (!data.baseLanguage) data.baseLanguage = language
-	}
-	/**
-	 * Given the store to a file, find out what language it is written in - based on extension.
-	 */
-	static String language(Store store) {
-		Matcher match = (store.path =~ ~/\.([\w\-]+)$/)
-		match ? match[-1][1].replaceAll(/\-/, '') : ''
 	}
 	/**
 	 * The script we want to run

@@ -1,10 +1,10 @@
 package usdlc
-import usdlc.Store
-import static usdlc.Config.config
+
+import java.util.zip.GZIPOutputStream
 
 class FileProcessor {
-	static Store fileProcessor(String type, files, Closure processor) {
-		def outputFile = Store.base("store/usdlc.$type")
+	static Store fileProcessor(String outputName, files, Closure processor) {
+		def outputFile = Store.base(outputName)
 		files = files.collect { Store.base(it) }
 		def newest = files.inject(outputFile) { l, r ->
 			l.newer(r) ? l : r
@@ -15,7 +15,18 @@ class FileProcessor {
 			outputFile.file.withWriter { output ->
 				files.each { processor(it, output) }
 			}
+			gzip(outputFile, outputFile)
 		}
 		outputFile
+	}
+
+	static gzip(Store inputFile, Store outputFile) {
+		def gzipFile = Store.base("${outputFile.path}.gzip")
+		gzipFile.file.withOutputStream {
+			def gzos = new GZIPOutputStream(it)
+			def bytes = inputFile.read()
+			gzos.write(bytes, 0, bytes.length)
+			gzos.finish()
+		}
 	}
 }

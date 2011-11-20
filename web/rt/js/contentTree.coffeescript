@@ -30,5 +30,6 @@ $ ->
 				expires : 1000
 		themes :
 			theme : 'classic'	# apple classic default
+			url : '/lib/jquery/js/themes/classic/style.css'
 		plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
 	usdlc.contentTree.removeClass('hidden')

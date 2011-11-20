@@ -9,7 +9,6 @@
  * Original idea by:
  * Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
  */
-
 (function(jQuery) {
 
     jQuery.hotkeys = {
@@ -96,4 +95,4 @@
         jQuery.event.special[ this ] = { add: keyHandler };
     });
 
-})(jQuery);
+})(jQuery)

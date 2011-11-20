@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package Options.Configuration
+package usdlc
 
 home = '../..'	// for ~/path - defaults to one directory above uSDLC
 urlBase = ''
@@ -28,8 +28,7 @@ browserDriverList = 'chrome:firefox:ie:htmlunit'
 alwaysCheckForRecompile = true
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
-compressCss = true
-conpressJs = true
+compressCss = false
 noCompression = ~".*/rt/.*"
 
 webDrivers = [
@@ -43,13 +42,17 @@ webDrivers = [
 
 screencast = [ keys : "` F12" ]
 
+startupScripts = [
+	"rt/css_and_js_builder.groovy"
+	]
+
 environments {
 	standalone {
 		compressJs = false
 		webDriver = 'chrome'
 	}
 	servlet {
-		compressJs = true
+		compressJs = false
 		webDriver = 'htmlunit'
 	}
 }
