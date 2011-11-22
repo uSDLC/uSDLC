@@ -1,8 +1,8 @@
 package usdlc
 
 import usdlc.actor.Actor
-import static usdlc.Log.apacheCommons
 import static usdlc.Config.config
+import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
 
 /**
@@ -19,10 +19,10 @@ class Exchange {
 
 	class Request {
 		InputStream inputStream
-		Header      header
-		Map         query, cookies
-		User        user
-		Map         session
+		Header header
+		Map query, cookies
+		User user
+		Map session
 
 		String body() { inputStream.text }
 	}
@@ -53,14 +53,14 @@ class Exchange {
 	Response response
 	class Response {
 		PrintStream out
-		Map         header = [:]
-		def         post   = ''
+		Map header = [:]
+		def post = '', isStatic = false
 
 		void setSessionCookie(String session) {
 			header['Set-Cookie'] =
 				'usdlc-session=$session;' +
-				'Path=/;' +
-				'Expires=Sun, 17 Jan 2038 19:14:07 GMT'
+						'Path=/;' +
+						'Expires=Sun, 17 Jan 2038 19:14:07 GMT'
 		}
 
 		void print(Object text) {
@@ -89,14 +89,16 @@ class Exchange {
 		}
 
 		def complete() {
-			write(post)
-			out.close()
-			true
+			if (!isStatic) {
+				write(post)
+				out.close()
+			}
+			isStatic
 		}
 	}
 
 	def loadResponse(OutputStream outputStream,
-	                 Closure sendResponseHeader) {
+			Closure sendResponseHeader) {
 		this.sendResponseHeader = sendResponseHeader
 		try {
 			String action = request.query['action'] ?: 'read'
@@ -181,9 +183,9 @@ class Exchange {
 		}
 	}
 
-	static  bootstrapJs =
+	static bootstrapJs =
 		"<script src='/rt/js/bootstrap.coffeescript'></script>".bytes
-	Store   store
+	Store store
 	boolean inferredTarget
 
 	void setStore(String path) {

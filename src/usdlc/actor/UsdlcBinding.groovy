@@ -15,22 +15,16 @@
  */
 package usdlc.actor
 
-import java.util.Map;
-
-import groovy.lang.Binding
-import usdlc.Log
-
-
 class UsdlcBinding extends Binding {
-	def dslContext
+	Binding dslContext
 
-	UsdlcBinding(binding, dslBinding) {
-		super(binding as Map)
-		dslContext = dslBinding
+	UsdlcBinding(Map binding, Map dslBinding) {
+		super(binding)
+		dslContext = dslBinding as Binding
 	}
 
 	def getVariable(String name) {
-		use (CaseCategory) {
+		use(CaseCategory) {
 			switch (name) {
 				case variables: variables[name]; break
 				case dslContext: dslContext[name]; break
@@ -44,18 +38,20 @@ class UsdlcBinding extends Binding {
 	}
 
 	void setVariable(String name, Object value) {
-		use (CaseCategory) {
+		use(CaseCategory) {
 			switch (name) {
 				case variables.setters: variables.setters[name](value); break
-				case dslContext.setters: dslContext.setters[name](value); break
-				default: variables.put(name, value); break
+				case dslContext.setters:
+					dslContext.setters[name](value);
+					break
+				default: variables[name] = value; break
 			}
 		}
 	}
 
 	public static class CaseCategory {
-		public static boolean isCase(Map caseValue, switchValue) {
-			return caseValue.containsKey(switchValue)
+		public static boolean isCase(Map caseValue, Object switchValue) {
+			return caseValue?.containsKey(switchValue)
 		}
 	}
 }

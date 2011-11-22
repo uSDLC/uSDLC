@@ -1,4 +1,8 @@
 package usdlc.dsl
 
-ant = usdlc.Ant.builder(pre)
+import usdlc.Ant
+// We need to remove the include directive so it can become an ant command.
+// use dsl.include instead.
+binding.dslContext.remove('include')
+ant = Ant.builder(pre)
 version = new Date().format('yy.MM.dd')

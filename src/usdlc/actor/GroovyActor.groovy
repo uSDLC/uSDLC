@@ -15,13 +15,6 @@
  */
 package usdlc.actor
 
-import groovy.lang.Binding
-
-import java.util.Map
-
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
-
-import usdlc.CSV
 import usdlc.Groovy
 import usdlc.Log
 import usdlc.Store
@@ -37,32 +30,32 @@ import static usdlc.Config.config
 class GroovyActor extends Actor {
 	void init() {
 		if (!context.gse) {
-			GroovyScriptEngine gse = new GroovyScriptEngine(config.srcPath as URL[])
+			def gse = new GroovyScriptEngine(config.srcPath as URL[])
 			UsdlcBinding usdlcBinding = new UsdlcBinding(context, dslContext)
+			def dsl = new DslInclusions(binding: usdlcBinding)
 			context << [
-						usdlcBinding: usdlcBinding,
-						log: { Log.err it },
-						gse: gse,
-						include: {
-							gse.run script.rebase(it).path, usdlcBinding
-						},
-						out: { out.println it },
-						pre: { out.println "<pre>\t  $it</pre>" },
-						config: config,
-						dsl: new DslInclusions(binding: usdlcBinding),
-						compile: {
-							gse.loadScriptByName script.rebase(it).path
-						},
-					]
+					script: script,
+					usdlcBinding: usdlcBinding,
+					log: { String message -> Log.err message },
+					gse: gse,
+					include: dsl.&include,
+					out: { String text -> out.println text },
+					pre: { String text -> out.println "<pre>\t  $text</pre>" },
+					config: config,
+					dsl: dsl,
+					compile: { String scriptName ->
+						gse.loadScriptByName script.rebase(scriptName).path
+					},
+			]
 		}
 	}
 	/**
-	 * Run a groovy script or DSL. Provides methods for additional delegation, 
+	 * Run a groovy script or DSL. Provides methods for additional delegation,
 	 * logging and script includes
 	 */
 	void run(Store script) {
 		def scriptClass = Groovy.loadClass(script.parent, script.name) ?:
-				context.gse.loadScriptByName(script.path)
+			context.gse.loadScriptByName(script.path)
 		Groovy.run(scriptClass, context.usdlcBinding)
 	}
 }

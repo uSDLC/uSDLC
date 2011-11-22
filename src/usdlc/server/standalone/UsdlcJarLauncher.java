@@ -1,8 +1,10 @@
 /* ZipSelfExtractor.java */
 /* Author: Z.S. Jin
- Updates: John D. Mitchell 
+ Updates: John D. Mitchell
  Converted to launcher for uSDLC: Paul Marrington */
 package usdlc.server.standalone;
+
+import org.codehaus.groovy.tools.RootLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,14 +23,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.codehaus.groovy.tools.RootLoader;
-
 public class UsdlcJarLauncher {
-	private String myClassName;
-	static String MANIFEST = "META-INF/MANIFEST.MF";
-	private String version;
+	private      String myClassName = null;
+	static final String MANIFEST    = "META-INF/MANIFEST.MF";
+	private      String version     = null;
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		new UsdlcJarLauncher().go(args);
 	}
 
@@ -36,7 +36,7 @@ public class UsdlcJarLauncher {
 		ZipFile archive;
 		try {
 			version = this.getClass().getPackage().getSpecificationVersion();
-			System.out.println("uSDLC release "+version);
+			System.out.println("uSDLC release " + version);
 			archive = new ZipFile(new File(getJarFileName()));
 			if (newVersion(archive)) {
 				extract(archive);
@@ -51,7 +51,7 @@ public class UsdlcJarLauncher {
 			System.setProperty("groovy.home", groovyHomeProperty);
 
 			URLClassLoader loader = new RootLoader(classpaths(),
-					ClassLoader.getSystemClassLoader());
+			                                       ClassLoader.getSystemClassLoader());
 			Thread.currentThread().setContextClassLoader(loader);
 			String mainClassName = "usdlc.server.standalone.server";
 			Class<?> mainClass = loader.loadClass(mainClassName);
@@ -61,28 +61,31 @@ public class UsdlcJarLauncher {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private URL[] classpaths() throws Exception {
-			ArrayList<URL> list = new ArrayList<URL>();
-			list.add(new File("bin").toURI().toURL());
-			list.addAll(lib("required"));
-			list.addAll(lib("optional"));
-			URL[] classpath = new URL[list.size()];
-			return list.toArray(classpath);
+		ArrayList<URL> list = new ArrayList<URL>();
+		list.add(new File("bin").toURI().toURL());
+		list.addAll(lib("required"));
+		list.addAll(lib("optional"));
+		URL[] classpath = new URL[list.size()];
+		return list.toArray(classpath);
 	}
-	
+
 	private List<URL> lib(String dir) {
 		List<URL> list = new ArrayList<URL>();
 		new File("web/lib/jars", dir).listFiles(new JarFilter(list));
 		return list;
 	}
-	
+
 	static class JarFilter implements FileFilter {
 		private List<URL> list;
+
 		JarFilter(List<URL> list) {
 			this.list = list;
 		}
-		@Override public boolean accept(File file) {
+
+		@Override
+		public boolean accept(File file) {
 			if (file.getName().endsWith(".jar")) {
 				try {
 					list.add(file.toURI().toURL());
@@ -93,7 +96,7 @@ public class UsdlcJarLauncher {
 			return false;
 		}
 	}
-	
+
 	private String getJarFileName() {
 		myClassName = this.getClass().getName().replaceAll("\\.", "/") + ".class";
 		URL urlJar = ClassLoader.getSystemResource(myClassName);
@@ -114,7 +117,7 @@ public class UsdlcJarLauncher {
 				Date archiveTime = new Date(entry.getTime());
 				File outFile = new File(pathname);
 				if (!outFile.exists() ||
-						archiveTime.after(new Date(outFile.lastModified()))) {
+				    archiveTime.after(new Date(outFile.lastModified()))) {
 					return outFile;
 				}
 			}
@@ -132,8 +135,10 @@ public class UsdlcJarLauncher {
 
 		try {
 			BufferedWriter log = new BufferedWriter(
-					new FileWriter("install.log", true));
-			log.write("uSDLC "+version+" installed "+new Date().toString());
+					                                       new FileWriter("install.log",
+					                                                      true));
+			log.write("uSDLC " + version + " installed " + new Date().toString()
+			          + "\n");
 
 			Enumeration<? extends ZipEntry> entries = zf.entries();
 
@@ -142,7 +147,7 @@ public class UsdlcJarLauncher {
 				outFile = getOutFile(entry);
 				if (outFile == null)
 					continue;
-				log.write("\t" + outFile.getPath());
+				log.write('\t' + outFile.getPath() + '\n');
 
 				File parent = outFile.getParentFile();
 				if (parent != null && !parent.exists()) {
@@ -169,5 +174,13 @@ public class UsdlcJarLauncher {
 				outFile.delete();
 			throw e;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "UsdlcJarLauncher{" +
+		       "myClassName='" + myClassName + '\'' +
+		       ", version='" + version + '\'' +
+		       '}';
 	}
 }
