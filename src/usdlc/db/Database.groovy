@@ -18,7 +18,7 @@ package usdlc.db
 import groovy.sql.GroovyResultSet
 import groovy.sql.Sql
 import org.h2.tools.RunScript
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 class Database {
 	@Delegate Sql sql
@@ -58,41 +58,41 @@ class Database {
 		}
 		result
 	}
-	/** List of unused connections keyed on database they belong to */
+	/** List of unused connections keyed on database they belong to  */
 	final static Map<String, List<Database>> pool = [:]
-	/** Open a simple database by URL or config name only */
+	/** Open a simple database by URL or config name only  */
 	private Database(String name) {
 		this([url: config.databases[name] ?: name])
 	}
-	/** Open a database with parameters (i.e. credentials) */
+	/** Open a database with parameters (i.e. credentials)  */
 	private Database(Map properties) {
 		sql = Sql.newInstance(properties as Properties)
 	}
-	/** See if connection can be used - 1 hour old max. */
+	/** See if connection can be used - 1 hour old max.  */
 	boolean active() {
 		sql.connection && (System.currentTimeMillis() - created) < 3600000
 	}
-	/** Close all open databases in the pools */
+	/** Close all open databases in the pools  */
 	static void close() { pool.each { it.sql.connection?.close() } }
 
 	long created = System.currentTimeMillis()
-	/** Check the base version and migrate if necessary.      */
+	/** Check the base version and migrate if necessary.       */
 	static String usdlcDatabase = version('usdlc-core')
-	/** Fetch an in-memory database for testing or small temporary functions */
+	/** Fetch an in-memory database for testing or small temporary functions  */
 	String memoryDb = { "jdbc:h2:mem:$it:$it" }
-	/** Get a database for the in-build h2 database */
+	/** Get a database for the in-build h2 database  */
 	String h2Db = { "jdbc:h2:.db/$it" }
-	/** Given a row from a csv, use the heading to return a list for create */
+	/** Given a row from a csv, use the heading to return a list for create  */
 	String headings(row) {
 		def columns = []
 		row.each { column, value -> columns << "$column as varchar(255)" }
 		columns.join(', ')
 	}
-	/** Wrapper for SQL SELECT command */
+	/** Wrapper for SQL SELECT command  */
 	def select(String sql, Closure actions = null) {
 		actions ? eachRow("select $sql", actions) : rows("select $sql")
 	}
-	/** Wrapper for SQL SELECT command for one record */
+	/** Wrapper for SQL SELECT command for one record  */
 	def first(String sql) { firstRow("select $sql") }
 	/**
 	 * The first time in a static run that we access a group of related tables
@@ -119,9 +119,9 @@ class Database {
 			connection(url) { Database db ->
 				try {
 					dbVersion = (db.sql.firstRow(
-							"select version from versions "+
-							"where tableGroup=$tableGroup")
-							as GroovyResultSet)['version']
+							"select version from versions " +
+									"where tableGroup=$tableGroup")
+					as GroovyResultSet)['version']
 				} catch (e) {
 					runSqlScript url, "${tableGroup}.001.sql"
 				}
@@ -139,8 +139,8 @@ class Database {
 						return /* failure */
 					}
 					db.sql.executeUpdate(
-							"update versions set version = $dbVersion "+
-							"where tableGroup = $tableGroup")
+							"update versions set version = $dbVersion " +
+									"where tableGroup = $tableGroup")
 				}
 			}
 		}

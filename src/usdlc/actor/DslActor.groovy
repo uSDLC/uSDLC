@@ -15,11 +15,8 @@
  */
 package usdlc.actor
 
-import org.codehaus.groovy.runtime.InvokerHelper
-
 import usdlc.Groovy
-import usdlc.Store
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 /**
  * Given a Groovy DSL (script), first try and load it using the class-loader
@@ -31,14 +28,14 @@ class DslActor extends GroovyActor {
 		try {
 			languageScriptClass = config.dslClassPath.findResult {
 				Groovy.loadClass(it, dsl) ?:
-						gse.loadScriptByName("$it${dsl}.groovy")
+					gse.loadScriptByName("$it${dsl}.groovy")
 			}
 		} catch (ResourceException re) {
 			exists = false
 		}
 	}
 	/**
-	 * The Script sub-class created by the groovy compiler from script source - 
+	 * The Script sub-class created by the groovy compiler from script source -
 	 * or null if there is no source.
 	 */
 	Class languageScriptClass
@@ -48,7 +45,7 @@ class DslActor extends GroovyActor {
 		Groovy.run(languageScriptClass, new UsdlcBinding(dslContext, context))
 	}
 	/**
-	 * Keep a cache of previous instances - one per language - so we don't have 
+	 * Keep a cache of previous instances - one per language - so we don't have
 	 * to recompile. The cache includes instances that failed to find a script.
 	 */
 	static gse = new GroovyScriptEngine(config.dslPathUrls as URL[])

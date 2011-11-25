@@ -1,8 +1,8 @@
 package usdlc.actor
 
 import usdlc.Store
-import static usdlc.Config.config
 import static usdlc.FileProcessor.gzip
+import static usdlc.config.Config.config
 
 /**
  * Uses a closure to filter input to output - saving the result
@@ -11,7 +11,7 @@ abstract class CompressorActor extends Actor {
 	void filter(String type, Closure compress) {
 		Store source = exchange.store, compressed
 		if (config."compress${type.capitalize()}" &&
-		    !config.noCompression.matcher(source.path).matches()) {
+				!config.noCompression.matcher(source.path).matches()) {
 			compressed = Store.base("store/$type/base").rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()

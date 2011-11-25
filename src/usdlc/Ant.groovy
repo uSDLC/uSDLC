@@ -17,7 +17,7 @@ package usdlc
 
 import org.apache.tools.ant.BuildEvent
 import org.apache.tools.ant.BuildListener
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 /**
  * User: Paul Marrington
@@ -39,12 +39,14 @@ class Ant extends AntBuilder {
 	}
 
 	def reset(level = 0) {
-		// removing all registered build listeners, including default (that writes to console)
+		// removing all registered build listeners, including default (that
+		// writes to console)
 		project.buildListeners.each {
 			project.removeBuildListener(it)
 		}
 		// and adding our own
-		project.addBuildListener(new UsdlcBuildListener(log: log, level: level ?: this.level))
+		project.addBuildListener(new UsdlcBuildListener(log: log,
+				level: level ?: this.level))
 	}
 
 	def log = {}, ant, level

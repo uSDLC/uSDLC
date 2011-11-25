@@ -19,7 +19,7 @@ import usdlc.db.Database
 
 class Session {
 	static Map load(String key) {
-		boolean isNewSession = ! key
+		boolean isNewSession = !key
 		if (isNewSession) {
 			long before = lastKey
 			lastKey = System.currentTimeMillis()
@@ -28,36 +28,41 @@ class Session {
 		}
 		if (!sessions.containsKey(key)) {
 			sessions[key] = [
-						key : key,
-						isNewSession : isNewSession,
-						created : System.currentTimeMillis(),
-						instances : [:],
-						instance : { Class ofClass ->
-							def name = ofClass.name
-							Map instances = sessions[key].instances
-							if (! instances.containsKey(name)) {
-								instances[name] = ofClass.newInstance()
-								//noinspection GroovyEmptyCatchBlock
-								try {
-									instances[name].session = sessions[key]
-								} catch (exception) {}
-							}
-							instances[name]
-						},
-					]
+					key: key,
+					isNewSession: isNewSession,
+					created: System.currentTimeMillis(),
+					instances: [:],
+					instance: { Class ofClass ->
+						def name = ofClass.name
+						entry name, {ofClass.newInstance()}
+					},
+					entry: { String name, Closure creator ->
+						Map instances = sessions[key].instances
+						if (!instances.containsKey(name)) {
+							instances[name] = creator(name)
+							//noinspection GroovyEmptyCatchBlock
+							try {
+								instances[name].session = sessions[key]
+							} catch (exception) {}
+						}
+						instances[name]
+					},
+			]
 			sessions[key].session = sessions[key]
-			sessions[key].persist = new Session(session:sessions[key])
+			sessions[key].persist = new Session(session: sessions[key])
 		}
 		return sessions[key]
 	}
-	static Map<String,Map> sessions = [:]
+
+	static Map<String, Map> sessions = [:]
 	static long lastKey = 0
 
 	def session
 
 	def propertyMissing(String name) {
 		Database.connection { db ->
-			def sql = "select * from sessions where session=$key and key=$name"
+			def sql = """select * from sessions where session=$key and
+key=$name"""
 			db.sql.firstRow(sql)?.value
 		}
 	}

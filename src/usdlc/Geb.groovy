@@ -15,30 +15,29 @@
  */
 package usdlc
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+//import geb.driver.PropertyBasedDriverFactory
+
 
 import geb.Browser
-import geb.driver.CachingDriverFactory
-//import geb.driver.PropertyBasedDriverFactory
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 class Geb {
 	Browser browser
 
 	def driverList = config.browserDriverList
 	def browseDepth = 0
-	
+
 	def driver(String list) {
 		close()
 		driverList = list.toLowerCase()
 		Properties drivers = ['geb.driver': driverList]
-//		PropertyBasedDriverFactory factory = new PropertyBasedDriverFactory(drivers)
+//		PropertyBasedDriverFactory factory = new PropertyBasedDriverFactory
+// (drivers)
 		browser = new Browser(factory.driver)
 	}
-	
+
 	def close() { browser?.driver?.quit() }
-	
+
 	def reset() { close(); driver(driverList) }
 
 	def browse(Class pageClass, String authority) {

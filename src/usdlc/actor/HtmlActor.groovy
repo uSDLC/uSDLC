@@ -17,10 +17,11 @@ package usdlc.actor
 
 import usdlc.History
 import usdlc.Store
-import static usdlc.Config.config
 
 /**
- * uSDLC supports actor and filters. This filter provides HTML templating. By default it runs templates/pasteList.html.groovy that provides header, body and scrolling elements.
+ * uSDLC supports actor and filters. This filter provides HTML templating. By
+ * default it runs templates/pasteList.html.groovy that provides header,
+ * body and scrolling elements.
  *
  * User: Paul Marrington
  * Date: 23/11/10
@@ -33,7 +34,8 @@ class HtmlActor extends Actor {
 	void run(Store script) {
 		switch (exchange.request.query['action']) {
 			case 'history':
-				def end = Integer.parseInt(exchange.request.query['index'].toString() ?: '-1')
+				def end = Integer.parseInt(exchange.request.query['index'].toString()
+				?: '-1')
 				def contents = new History(exchange.store.path, 'updates').restore(end)
 				out.println contents
 				break
@@ -46,8 +48,10 @@ class HtmlActor extends Actor {
 			case 'paste':
 				paste()
 				break
-			default:    // Suck the HTML file contents - converting from byte[] to String.
-				exchange.response.write exchange.store.read() ?: Store.base('rt/template.html').read()
+			default:    // Suck the HTML file contents - converting from byte[] to
+			// String.
+				exchange.response.write exchange.store.read() ?: Store.base
+				('rt/template.html').read()
 				break
 		}
 	}
@@ -55,8 +59,10 @@ class HtmlActor extends Actor {
 	private void transfer(Closure transfer) {
 		Store clipboard = Store.base('store/clipboard')
 		String targetName = clipboard.uniquePath(exchange.request.query['title'])
-		exchange.request.query['dependents'].tokenize(',').each { String dependent ->
-			transfer(exchange.store.rebase(dependent), "store/clipboard/$targetName");
+		exchange.request.query['dependents'].tokenize(', ').each {
+			String dependent ->
+			transfer(exchange.store.rebase(dependent),
+					"store/clipboard/$targetName");
 		}
 		def contents = exchange.request.body().bytes
 		clipboard.base("$targetName/Section.html").write(contents)
@@ -69,7 +75,8 @@ class HtmlActor extends Actor {
 		def target = exchange.store.parent
 		def from = Store.base("store/clipboard/${exchange.request.query['from']}")
 		from.dir(~/[^.]*/) { String dir -> from.rebase(dir).move(target) }
-		out.println new String(Store.base("${exchange.request.query['from']}/Section.html").read())
+		out.println new String(Store.base(
+				"${exchange.request.query['from']}/Section.html").read())
 		from.rmdir()
 	}
 }

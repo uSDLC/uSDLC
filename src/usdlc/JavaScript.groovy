@@ -1,27 +1,12 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc
 
+import com.yahoo.platform.yui.compressor.JavaScriptCompressor
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.ErrorReporter
 import org.mozilla.javascript.EvaluatorException
 import org.mozilla.javascript.Scriptable
-import com.yahoo.platform.yui.compressor.JavaScriptCompressor
-import static usdlc.FileProcessor.fileProcessor
-import static usdlc.Config.config
+import static usdlc.FileProcessor.fileProcessorWithGzip
+import static usdlc.config.Config.config
 
 class JavaScript {
 	/**
@@ -35,7 +20,7 @@ class JavaScript {
 		Context context = Context.enter()
 		Reader reader = null
 		try {
-			if (! optimise) {
+			if (!optimise) {
 				// Without this, Rhino hits a 64K byte-code limit and fails
 				context.optimizationLevel = -1
 			}
@@ -61,7 +46,7 @@ class JavaScript {
 		}
 	}
 	/**
-	 * The first scope is the global and all the rest hang off it. 
+	 * The first scope is the global and all the rest hang off it.
 	 * Load any set binding variables.
 	 */
 	private scope(context, binding) {
@@ -80,9 +65,10 @@ class JavaScript {
 		}
 		scope
 	}
+
 	def globalScope = null
 	/**
-	 * Given javascript source, remove all the guff to make it as small as 
+	 * Given javascript source, remove all the guff to make it as small as
 	 * possible. Only useful if sending over a wire.
 	 */
 	static compress(input, output) {
@@ -92,7 +78,7 @@ class JavaScript {
 	}
 
 	static Store javascriptBuilder(outputName, files, coffeeCompiler) {
-		fileProcessor(outputName, files) { inputFile, writer ->
+		fileProcessorWithGzip(outputName, files) { inputFile, writer ->
 			writer.write ";\n\n// $inputFile.name\n"
 			switch (inputFile.parts.ext) {
 				case 'js':
@@ -118,17 +104,17 @@ class JavaScript {
 public class CompressorErrorReporter implements ErrorReporter {
 
 	public void warning(String message, String sourceName,
-	int line, String lineSource, int lineOffset) {
+			int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
 	public void error(String message, String sourceName,
-	int line, String lineSource, int lineOffset) {
+			int line, String lineSource, int lineOffset) {
 		Log.err "$line:$lineOffset:$message"
 	}
 
 	public EvaluatorException runtimeError(String message, String sourceName,
-	int line, String lineSource, int lineOffset) {
+			int line, String lineSource, int lineOffset) {
 		error(message, sourceName, line, lineSource, lineOffset)
 		return new EvaluatorException(message)
 	}

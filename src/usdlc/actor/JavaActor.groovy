@@ -19,17 +19,18 @@ import javax.tools.ToolProvider
 import usdlc.CompilingClassLoader
 import usdlc.Store
 import usdlc.actor.JavaFileObjects.ClassFileManager
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 /**
- * Java actor super-class. Implement run() in your sub-class to do the real work. 
+ * Java actor super-class. Implement run() in your sub-class to do the real
+ * work.
  * You will have access to the environment and browser.
  */
 class JavaActor extends Actor {
 	/**
-	 * Called by uSDLC to start a java actor. It will compile the source if it 
-	 * is out of date, load the class, instantiate it and call the run() method. 
-	 * Class needs to have a constructor that receives one Map parameter for the 
+	 * Called by uSDLC to start a java actor. It will compile the source if it
+	 * is out of date, load the class, instantiate it and call the run() method.
+	 * Class needs to have a constructor that receives one Map parameter for the
 	 * environment.
 	 */
 	void run(Store script) {
@@ -40,19 +41,19 @@ class JavaActor extends Actor {
 
 	private static class JavaCompiler implements CompilingClassLoader.Compiler {
 		/**
-		 * Use the compile API to recompile the file to disk as a class file. 
-		 * Strangely enough we do this with a groovy script - so we can steal 
+		 * Use the compile API to recompile the file to disk as a class file.
+		 * Strangely enough we do this with a groovy script - so we can steal
 		 * the classpath.
 		 * @return true if compile behaved.
 		 */
 		void compile(Store source) {
 			classFileManager = new ClassFileManager(javaCompiler, javaClassLoader)
-			def options = [ '-classpath', config.classPathString ]
+			def options = ['-classpath', config.classPathString]
 			def unitsToCompile = [
-				new JavaFileObjects.FromString(source.absolutePath, source.text)
+					new JavaFileObjects.FromString(source.absolutePath, source.text)
 			]
-			javaCompiler.getTask(null, classFileManager, 
-				null, options, null, unitsToCompile).call()
+			javaCompiler.getTask(null, classFileManager,
+					null, options, null, unitsToCompile).call()
 		}
 
 		javax.tools.JavaCompiler javaCompiler = ToolProvider.systemJavaCompiler

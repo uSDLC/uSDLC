@@ -4,11 +4,11 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import java.util.concurrent.Executors
-import usdlc.Config
 import usdlc.Desktop
 import usdlc.Exchange
 import usdlc.Exchange.Header
-import static usdlc.Config.config
+import usdlc.config.Config
+import static usdlc.config.Config.config
 
 /**
  * This is a Groovy script that starts up a web server to serve uSDLC content.
@@ -63,8 +63,10 @@ server.createContext '/', { HttpExchange httpExchange ->
 		)
 		Exchange exchange = new Exchange()
 		exchange.request(requestBody, header).loadResponse(responseBody) {
-			exchange.response.header.each { key, value -> httpExchange
-			.responseHeaders.add(key, value) }
+			exchange.response.header.each { key, value ->
+				httpExchange
+						.responseHeaders.add(key, value)
+			}
 			httpExchange.sendResponseHeaders 200, 0
 		}
 	}

@@ -1,5 +1,6 @@
 package usdlc
-import static usdlc.Config.config
+
+import static usdlc.config.Config.config
 
 class User {
 	String id

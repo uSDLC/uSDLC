@@ -18,21 +18,23 @@ package usdlc
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import usdlc.actor.Actor
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 class Screencast {
 	boolean client(cmd, params) {
 		sleep(stepDelay)
 		params = (params as List).flatten().collect {
-			it ? "'"+it.toString().
-					replaceAll(/'/,/\\'/).replaceAll("\n", /\\n/)+"'" : "''"
+			it ? "'" + it.toString().
+					replaceAll(/'/, /\\'/).replaceAll("\n", /\\n/) + "'" : "''"
 		}.join(',')
 		script("usdlc.screencast.$cmd($params)")
 		true
 	}
+
 	def waitForResponse() {
 		semaphore.wait {}
 	}
+
 	def createScreencast(title, subtitle, synopsis) {
 		def store = Store.tmp("${Store.camelCase(title)}/index.html")
 		if (!web) {
@@ -42,28 +44,33 @@ class Screencast {
 			web.waitFor(By.cssSelector('div.screencast')) {}
 			client('keys', [config.screencast.keys])
 			Actor.cache['screencastResponse'] =
-					new ScreencastResponseActor(semaphore: semaphore)
+				new ScreencastResponseActor(semaphore: semaphore)
 		}
 		session.screencastBase = store
 		page(store, title, subtitle, synopsis)
 	}
+
 	def createPage(title, subtitle, synopsis) {
 		sleep(stepDelay)
 		def store = session.screencastPage.rebase("${title}/index.html")
 		page(store, title, subtitle, synopsis)
 	}
+
 	def timeout(seconds) {
 		semaphore.timeout = seconds
 	}
+
 	void check(selector, regex) {
 		web.waitFor(selector) { element ->
 			currentElement = element
 			assert element.text =~ regex
 		}
 	}
+
 	void check(regex) {
 		assert currentElement.text =~ regex
 	}
+
 	def web, currentElement, session, stepDelay = 1
 
 	void page(store, title, subtitle, synopsis) {
@@ -149,6 +156,7 @@ class Screencast {
 	void script(String script, Object... args) {
 		((JavascriptExecutor) web.driver).executeScript(script, args)
 	}
+
 	Semaphore semaphore = new Semaphore(1200) // defaults to 20 minutes
 	Page page
 }
@@ -157,5 +165,6 @@ class ScreencastResponseActor extends Actor {
 	void run(Store script) {
 		semaphore.release()
 	}
+
 	Semaphore semaphore
 }

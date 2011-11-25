@@ -18,7 +18,7 @@ package usdlc.actor
 import usdlc.Groovy
 import usdlc.Log
 import usdlc.Store
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 /**
  * The Groovy actor calls the named groovy script
@@ -40,7 +40,6 @@ class GroovyActor extends Actor {
 					gse: gse,
 					include: dsl.&include,
 					out: { String text -> out.println text },
-					pre: { String text -> out.println "<pre>\t  $text</pre>" },
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->

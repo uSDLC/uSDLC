@@ -15,9 +15,9 @@
  */
 package usdlc
 
-import static Config.config
-
 import org.codehaus.groovy.runtime.InvokerHelper
+import static usdlc.config.Config.config
+
 /**
  * Groovy script support
  */

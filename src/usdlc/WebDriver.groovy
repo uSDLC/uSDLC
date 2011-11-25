@@ -14,21 +14,20 @@
  *  limitations under the License.
  */
 package usdlc
-import static usdlc.Config.config
 
+import org.openqa.selenium.By
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.By
-import org.openqa.selenium.support.ui.ExpectedCondition
-import org.openqa.selenium.support.ui.WebDriverWait
+import static usdlc.config.Config.config
 
 class WebDriver {
 	String driverName = config.webDriver
 	org.openqa.selenium.WebDriver driver
 	Capabilities capabilities
 	int timeout = 10
+
 	org.openqa.selenium.WebDriver getDriver() {
-		if (! driver) {
+		if (!driver) {
 			setDriver(driverName)
 		}
 		try {
@@ -38,6 +37,7 @@ class WebDriver {
 		}
 		driver
 	}
+
 	void load(url) {
 		try {
 			getDriver().get(url)
@@ -48,7 +48,7 @@ class WebDriver {
 		}
 	}
 	/**
-	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit) 
+	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit)
 	 * or be the fully qualified class name of a WebDriver.
 	 */
 	void setDriver(String name) {
@@ -90,7 +90,8 @@ class WebDriver {
 	}
 	/**
 	 * Wait for a web element to become available - for a given patience.
-	 * id, name, link text, css selector, xpath, class name, tag name or partial link text.
+	 * id, name, link text, css selector, xpath, class name,
+	 * tag name or partial link text.
 	 * Link text is a path with links separated by ->.
 	 */
 	WebElement waitFor(String targets, Closure action) {
@@ -106,9 +107,9 @@ class WebDriver {
 			By partialLinkText = By.partialLinkText(target)
 			result = waitFor {
 				return findElement(id) ?: findElement(name) ?:
-				findElement(linkText) ?: findElement(cssSelector) ?:
-				findElement(xpath) ?: findElement(className) ?:
-				findElement(tagName) ?: findElement(partialLinkText)
+					findElement(linkText) ?: findElement(cssSelector) ?:
+						findElement(xpath) ?: findElement(className) ?:
+							findElement(tagName) ?: findElement(partialLinkText)
 			}
 			assert result, "No element $target"
 			result = action result
@@ -121,6 +122,7 @@ class WebDriver {
 	WebElement click(String targets) {
 		waitFor(targets) { it.click() }
 	}
+
 	WebElement findElement(By by) {
 		try {
 			return driver.findElement(by)

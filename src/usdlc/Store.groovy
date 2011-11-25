@@ -16,21 +16,25 @@
 package usdlc
 
 import static groovy.io.FileType.FILES
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 /**
- * Not all platforms that will use uSDLC will have access to a traditional file system.
- * Google Appengine, for example, only allows data to be stored in BigTable - the database.
+ * Not all platforms that will use uSDLC will have access to a traditional
+ * file system.
+ * Google Appengine, for example, only allows data to be stored in BigTable -
+ * the database.
  * For this reason, all uSDLC uses Store for persistence.
- * The long-term plan is to more the base persistence calls the platform specific code.
+ * The long-term plan is to more the base persistence calls the platform
+ * specific code.
  */
 class Store {
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
 	static Store base(String path = '') {
-		path = path.replaceFirst(~/.*~/, config.home)
-		new Store(file : new File(config.baseDirectory, camelCase(path)))
+		path = path.replaceFirst(~/.*~/, config.home as String)
+		new Store(file: new File(config.baseDirectory as String,
+				camelCase(path)))
 	}
 	/**
 	 * Return a Store for a new (non-existent) file. It will refer to a new file
@@ -38,16 +42,17 @@ class Store {
 	 * files here are deleted every time uSDLC is started.
 	 */
 	static Store tmp(String id = '.txt') {
-		Store.base tmpDir.uniquePath("/$id", uniqifier)
+		Store.base tmpDir.uniquePath("/$id")
 	}
-	static int uniqifier = 0
+
 	@Lazy static Store tmpDir = Store.base('/tmp').rmdir()
 	/**
 	 * Sometimes we get a now store based on an old location
 	 */
 	Store rebase(String more = '') {
 		def store = new Store()
-		store.file = new File(new File(config.baseDirectory, parent), camelCase(more))
+		store.file = new File(new File(config.baseDirectory as String, parent),
+				camelCase(more))
 		store
 	}
 	/**
@@ -55,12 +60,13 @@ class Store {
 	 * <code>
 	 * def dir = Store.base("rt")
 	 * def lines
-	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream.readLines() }
-	 * </code>
+	 * dir.withInputStream('pasteList.html.groovy') { stream -> stream
+	 * .readLines() }* </code>
 	 */
 	InputStream withInputStream(String fileName, Closure closure) {
 		new File(file, fileName).withInputStream(closure)
 	}
+
 	InputStream withInputStream(Closure closure) {
 		file.withInputStream(closure)
 	}
@@ -68,8 +74,7 @@ class Store {
 	 * Process a closure with a FileReader as the only parameter
 	 * <code>
 	 * list = []
-	 * store.withReader { list << it }
-	 * </code>
+	 * store.withReader { list << it }* </code>
 	 */
 	Reader withReader(Closure closure) {
 		new FileReader(file).withReader(closure)
@@ -82,7 +87,7 @@ class Store {
 	}
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
-	/** Directory in which file/directory resides */
+	/** Directory in which file/directory resides  */
 	@Lazy String parent = file.isDirectory() ? path : pathFromBase(file.parent)
 	@Lazy String name = file.name
 	@Lazy String path = pathFromBase(file.path)
@@ -104,7 +109,8 @@ class Store {
 		pathFromBase(new File(path))
 	}
 	/**
-	 * Relative path from some base directory (store may be of file in directory).
+	 * Relative path from some base directory (store may be of file in
+	 * directory).
 	 */
 	String pathFrom(Store from) {
 		File fromFile = from.file.isDirectory() ? from.file : from.file.parentFile
@@ -177,7 +183,8 @@ class Store {
 	}
 	/**
 	 * Fetch a list of matching contents of a directory - names only, no path
-	 * @param mask - anything with isCase - typically a regular expression (~/re/)
+	 * @param mask - anything with isCase - typically a regular expression
+	 * (~/re/)
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(mask, Closure closure) {
@@ -192,7 +199,8 @@ class Store {
 	}
 	/**
 	 * Fetch a list of matching contents of a directory
-	 * @param mask - anything with isCase - typically a regular expression (~/re/)
+	 * @param mask - anything with isCase - typically a regular expression
+	 * (~/re/)
 	 * @return list of matching file paths
 	 */
 	List dir(mask) {
@@ -212,19 +220,22 @@ class Store {
 	 */
 	void dirs(mask, Closure closure) {
 		file.traverse(type: FILES, nameFilter: mask) { File file ->
-			closure(new Store(file : file))
+			closure(new Store(file: file))
 		}
 	}
 	/**
-	 * Used to see if a compile/processing action is required because the source is newer than the destination.
-	 * lastModified returns 0 if the file does not exist, so if the destination does not exist then the source
+	 * Used to see if a compile/processing action is required because the
+	 * source is newer than the destination.
+	 * lastModified returns 0 if the file does not exist,
+	 * so if the destination does not exist then the source
 	 * is flagged as newer.
 	 */
 	boolean newer(Store than) {
 		file.lastModified() > than.file.lastModified()
 	}
 	/**
-	 * Store.toString(), implicit or explicit will return the full path to the file or directory
+	 * Store.toString(), implicit or explicit will return the full path to the
+	 * file or directory
 	 */
 	String toString() {
 		path
@@ -233,20 +244,24 @@ class Store {
 	File file
 
 	/**
-	 * Find a directory that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
+	 * Find a directory that doesn't exist - based on a timestamp (i.e.
+	 * 2011-02-05_14-55-38-489_5).
 	 * This path will sort correctly for creation date.
 	 */
-	String uniquePath(id, uniquifier = 0) {
+	String uniquePath(id) {
 		def timestamp = new Date().format(dateStampFormat)
-		def uniquePath = "${timestamp}_${uniquifier}_${camelCase(id)}"
+		def uniquePath = "${timestamp}_${uniqifier}_${camelCase(id)}"
 		def unique
 		while ((unique = new File(file, uniquePath)).exists()) {
-			uniquifier++
+			uniquePath = "${timestamp}_${uniqifier++}_${camelCase(id)}"
 		}
 		pathFromBase(unique)
 	}
+
+	static int uniqifier = 0
 	/**
-	 * Find a file that doesn't exist - based on a timestamp (i.e. 2011-02-05_14-55-38-489_5).
+	 * Find a file that doesn't exist - based on a timestamp (i.e.
+	 * 2011-02-05_14-55-38-489_5).
 	 * This path will sort correctly for creation date.
 	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test.txt/
 	 */
@@ -274,10 +289,10 @@ class Store {
 			String dateString = matcher[0][1]
 			String title = matcher[0][3]
 			unique = [
-						date: Date.parse(dateStampFormat, dateString),
-						title: decamel(title),
-						path: uniqueName.replaceAll(sloshRE, '/')
-					]
+					date: Date.parse(dateStampFormat, dateString),
+					title: decamel(title),
+					path: uniqueName.replaceAll(sloshRE, '/')
+			]
 		} else {
 			unique = null
 		}
@@ -345,6 +360,7 @@ class Store {
 	public int hashCode() {
 		return path.hashCode()
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return path.equals(obj.path)

@@ -1,9 +1,9 @@
 package usdlc
 
 import usdlc.actor.Actor
-import static usdlc.Config.config
 import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
+import static usdlc.config.Config.config
 
 /**
  * Core Processor for uSDLC - no matter which web server is in
@@ -203,7 +203,7 @@ class Exchange {
 		}
 	}
 
-	private void save(String newContents) {
+	void save(String newContents) {
 		def history = new History(store.path, 'updates')
 		// If we don't have a history file for any reason,
 		// then we should save the contents of the full file first.

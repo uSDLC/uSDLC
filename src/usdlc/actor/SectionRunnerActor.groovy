@@ -15,20 +15,13 @@
  */
 package usdlc.actor
 
-import java.util.List
-import java.util.Map
+import groovy.transform.AutoClone
 import java.util.regex.Pattern
-
-import org.jsoup.Jsoup
-
 import usdlc.Log
 import usdlc.Page
 import usdlc.Store
-import groovy.lang.Closure
-import groovy.transform.AutoClone
-import groovy.xml.StreamingMarkupBuilder
 import static usdlc.MimeTypes.mimeType
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
@@ -37,27 +30,30 @@ import static usdlc.Config.config
 	/* (non-Javadoc)
 	 * @see usdlc.actor.Actor#run(usdlc.Store)
 	 */
+
 	void run(Store script) {
 		def user = exchange.request.user
-		if (!user.authorised(script, 'run')){
+		if (!user.authorised(script, 'run')) {
 			reportError "$user.id is not authorised to execute on this page"
 			return
 		}
-		
+
 		rerun = (script.path == 'last.sectionRunner')
 		if (rerun) {
 			if (lastRunner) {
-				exchange.request.session.persist.lastSectionRunner = lastRunner
+				exchange.request.session.persist.lastSectionRunner =
+					lastRunner
 			} else {
-				lastRunner = exchange.request.session.persist.lastSectionRunner
+				lastRunner = exchange.request.session.persist
+						.lastSectionRunner
 			}
 		} else {
 			def rq = exchange.request
 			lastRunner = [
-						url : rq.header.with { "http://$host$uri?$query" },
-						page : rq.query.page,
-						sections : rq.query.sections
-					]
+					url: rq.header.with { "http://$host$uri?$query" },
+					page: rq.query.page,
+					sections: rq.query.sections
+			]
 		}
 		rerun = rerun || exchange.request.query.rerun
 		if (rerun) {
@@ -67,26 +63,27 @@ import static usdlc.Config.config
 		}
 		runSectionsOnPage(Store.base(lastRunner.page), lastRunner.sections)
 	}
+
 	static lastRunner
 	boolean rerun
 	/**
-	 * Given a page reference and an optional list of sections, parse html and 
-	 * process each section looking for sub-pages to run and actors to run 
+	 * Given a page reference and an optional list of sections, parse html and
+	 * process each section looking for sub-pages to run and actors to run
 	 * afterwards. If no sections are provided, all sections processed.
 	 */
 	void runSectionsOnPage(Store page, String sectionsToRunCsv = '') {
 		currentPage = page
-		def html = new Page(page)
+		Page html = new Page(page)
 		def sections = html.sections
 		if (sectionsToRunCsv) {
 			sections = sections.select(
-					'div#'+sectionsToRunCsv.replaceAll(/,/, ',div#'))
+					'div#' + sectionsToRunCsv.replaceAll(/,/, ',div#'))
 		}
 		def linkSelector = 'a[action=page],a[action=runnable]'
 		def links = sections.select(linkSelector)
 		if (links.size()) {
 			write """<html><head>
-					<link type='text/css' rel='stylesheet' 
+					<link type='text/css' rel='stylesheet'
 						href='$config.urlBase/rt/outputFrame.css'>
 				</head><body>
 					<div id='output'>"""
@@ -106,11 +103,13 @@ import static usdlc.Config.config
 					case 'runnable':
 						actors.push(linkStore)
 						break
+					default:
+						break
 				}
 			}
 			wrapOutput([
-				'<pre class="gray">',
-				'</pre>'
+					'<span class="gray">',
+					'</span>'
 			]) { write "Page $currentPage.parent" }
 			// afterwards run any actors in the referenced sections
 			if (actors) runActorsOnPage(actors)
@@ -131,6 +130,7 @@ import static usdlc.Config.config
 			write '</div></body></html>'
 		}
 	}
+
 	def onScreen = true
 	def currentPage
 	def linkStates = [:]
@@ -141,7 +141,7 @@ import static usdlc.Config.config
 		try {
 			def base = Store.base(actors[0].parent)
 			runFiles(~/^Setup\..*/, base)
-			actors.each { runActor(it) }
+			actors.each { Store actor -> runActor(actor) }
 			runFiles(~/^Cleanup\..*/, base)
 		} catch (AssertionError assertion) {
 			reportException(assertion)
@@ -150,23 +150,31 @@ import static usdlc.Config.config
 			throwable.printStackTrace()
 		} finally {
 			context.each { key, value ->
-				if (value?.metaClass.respondsTo('close')) value.close()
+				if (value?.metaClass?.respondsTo('close')) {
+					actorState "finalise $key"
+					try { value.close() } catch (throwable) {
+						reportException(throwable)
+						throwable.printStackTrace()
+					}
+					actorState = 'succeeded'
+				}
 			}
 			resizeOutputFrame()
 		}
 	}
+
 	void resizeOutputFrame() {
 		js('parent.usdlc.resizeOutputFrame()')
 	}
 	/**
-	 * Given a pattern, run all scripts that match it the base directory. 
+	 * Given a pattern, run all scripts that match it the base directory.
 	 * Used to Setup and Cleanup scripts for a page
 	 */
 	void runFiles(Pattern pattern, Store base) {
 		base.dir(pattern) { runActor(Store.base(it)) }
 	}
 	/**
-	 * Give a reference to an actor, load it and run it - wrapping the output 
+	 * Give a reference to an actor, load it and run it - wrapping the output
 	 * in HTML if needed.
 	 */
 	void runActor(Store actorStore) {
@@ -179,31 +187,33 @@ import static usdlc.Config.config
 		}
 	}
 	/**
-	 * If the actor is on the currently displayed page, show the state in the 
+	 * If the actor is on the currently displayed page, show the state in the
 	 * browser. If on another page, display as part of the output
 	 * In all cases update the state in the page for persistence.
 	 */
-	def setActorState(to) {
+	void setActorState(String to) {
 		linkStates[currentActor] = to
 		String elapsed = timer
 		wrapOutput([
-			'<pre class="gray">',
-			'</pre>'
+				'<span class="gray">',
+				'</span>'
 		]) { write "\t$currentActor: $to $elapsed" }
 		Log.csv("${currentPage}.timings")(
 				"$currentActor,$to,$timer.elapsed,$elapsed")
 	}
-	def currentActor
+
+	String currentActor
 	usdlc.Timer timer = new usdlc.Timer(
-	title : 'in ', minimum : 100, autoReset : true)
+			title: 'in ', minimum: 100, autoReset: true)
 	/**
 	 * Special to run the script while wrapping the output for best effort.
 	 */
 	void runScript(Map binding) {
-		wrapOutput(script.path, binding) { delegate.run(binding) }
+		wrapOutput(script.path) { delegate.run(binding) }
 	}
 	/**
-	 * If an exception is thrown we need to display the error in a user-friendly 
+	 * If an exception is thrown we need to display the error in a
+	 * user-friendly
 	 * way and flag the actor as having failed it's job.
 	 */
 	def reportException(Throwable throwable) {
@@ -213,41 +223,40 @@ import static usdlc.Config.config
 			it.fileName && it.lineNumber > 0 &&
 					!internalExceptions.matcher(it.className).find()
 		}
-		wrapOutput(['<pre>', '</pre>']) {
-			write throwable.message
-			if (trace) write "\n\n${trace.toString()}"
-		}
+		write throwable.message
+		if (trace) write "\n\n${trace.toString()}"
 		actorState = 'failed'
 	}
 	/**
-	 * If we detect an error that is not an exception, we had better still treat 
+	 * If we detect an error that is not an exception,
+	 * we had better still treat
 	 * it as something bad to tell the user.
 	 */
 	def reportError(String text) {
 		wrapOutput([
-			'<span style="color:red;">',
-			'</span>'
+				'<span style="color:red;">',
+				'</span>'
 		]) { write text }
 		resizeOutputFrame()
 	}
 	/**
 	 * Inject javascript into the output stream
 	 */
-	void js(content) {
+	void js(String content) {
 		wrapOutput(['<script>', '</script>']) { write content.toString() }
 	}
 	/**
-	 * Wrap data of defined mime-type as if it were to be included in a HTML file
+	 * Wrap data of defined mime-type as if it were to be included in a
+	 * HTML file
 	 */
 	def wrapOutput(String fileName, Closure closure) {
 		def type = mimeType(fileName)
-		wrapOutput(mimeTypeWrappers.get(
-			mimeType(fileName), ['<!--', '-->']), closure)
+		wrapOutput(mimeTypeWrappers.get(type, ['<!--', '-->']), closure)
 	}
 	/**
 	 * Wrap data in a HTML tag
 	 */
-	def wrapOutput(List wrapper, Closure closure) {
+	def wrapOutput(List<String> wrapper, Closure closure) {
 		write wrapper[0]
 		try {
 			closure()
@@ -255,14 +264,15 @@ import static usdlc.Config.config
 			write wrapper[1]
 		}
 	}
+
 	static mimeTypeWrappers = [
-		'text/html': ['', ''],
-		'application/javascript': ['<script>', '</script>'],
-		'text/plain': ['<pre>', '</pre>']]
+			'text/html': ['</pre>', '<pre>'],
+			'application/javascript': ['</pre><script>', '</script><pre>'],
+			'text/plain': ['', '']]
 	/**
 	 * Write text to response output stream
 	 */
-	def write(text) {
+	def write(String text) {
 		if (!rerun) exchange.response.write text
 	}
 }

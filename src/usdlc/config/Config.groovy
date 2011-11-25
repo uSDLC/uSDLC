@@ -13,9 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package usdlc
+package usdlc.config
 
 import java.lang.reflect.Method
+import usdlc.Dictionary
+import usdlc.Store
 import usdlc.actor.GroovyActor
 
 /**
@@ -32,17 +34,32 @@ class Config {
 	 * configuration.
 	 */
 	static load(String environment, String baseDirectory, argList) {
-		def configUrl = new File(baseDirectory,
-				'/Options/Configuration/ConfigSlurper.groovy').toURI().toURL()
-		config = new ConfigSlurper(environment).parse(configUrl)
+		baseDir = baseDirectory
+		slurper = new ConfigSlurper(environment)
+		config = parse('base')
+		['webDriver', 'languages'].each { String scriptName ->
+			config.merge(parse(scriptName))
+		}
 		config.baseDirectory = baseDirectory
-		Dictionary.commandLine(argList).each { k, v -> config[k] = v }
+		Dictionary.commandLine(argList).each { String k,
+				String v ->
+			config[k] = v
+		}
 		buildClassPath()
 		config.classPathString = config.srcPath.join(';')
 		config.tableVersions = loadTableVersions()
 		runStartupScripts()
 		loaded = true
 	}
+
+	static Map parse(String scriptName) {
+		def url = new File(baseDir,
+				"/Options/Configuration/${scriptName}.groovy").toURI().toURL()
+		slurper.parse(url)
+	}
+
+	static ConfigSlurper slurper
+	static String baseDir
 
 	static private buildClassPath() {
 		// Add to the uSDLC classpath - so that compilers behave
@@ -52,24 +69,24 @@ class Config {
 
 		def systemClassLoader = ClassLoader.systemClassLoader
 		config.classPath = []
-		config.libPath.each { path ->
+		config.libPath.each { String path ->
 			Store.base(path).dirs(~/.*\.jar/) { Store store ->
 				method.invoke(systemClassLoader, [store.url] as Object[])
 				config.classPath << store.url
 			}
 		}
-		config.srcPath = config.srcPath.collect { toURL(it) }
-		config.srcPath.each { config.classPath << it }
+		config.srcPath = config.srcPath.collect { String path -> toURL(path) }
+		config.srcPath.each { URL url -> config.classPath << url }
 		//config.dslClassPath = config.dslClassPath?.collect { toURL(it) }
 		// ?: []
 
 		System.getProperty("java.class.path").
 				split(/${System.getProperty("java.path.separator")}/).each {
 			config.classPath << new File(it).toURI().toURL()
-				}
+		}
 	}
 
-	static private toURL(path) {
+	static private toURL(String path) {
 		(path.indexOf(':') > 1) ? new URL(path) : Store.base(path).url
 	}
 

@@ -3,21 +3,29 @@ package usdlc
 import java.util.zip.GZIPOutputStream
 
 class FileProcessor {
-	static Store fileProcessor(String outputName, files, Closure processor) {
+	static Store fileProcessor(String outputName, files,
+			Closure inputProcessor, Closure outputProcessor = {}) {
 		def outputFile = Store.base(outputName)
 		files = files.collect { Store.base(it) }
-		def newest = files.inject(outputFile) { l, r ->
+		def newest = files.inject(outputFile) { Store l, r ->
 			l.newer(r) ? l : r
 		}
 
 		if (newest != outputFile) {
 			outputFile.mkdirs()
-			outputFile.file.withWriter { output ->
-				files.each { processor(it, output) }
+			outputFile.file.withWriter { Writer output ->
+				files.each { Store file -> inputProcessor file, output }
 			}
-			gzip(outputFile, outputFile)
+			outputProcessor(outputFile)
 		}
 		outputFile
+	}
+
+	static Store fileProcessorWithGzip(String outputName, files,
+			Closure inputProcessor) {
+		fileProcessor(outputName, files, inputProcessor) { Store store ->
+			gzip(store, store)
+		}
 	}
 
 	static gzip(Store inputFile, Store outputFile) {

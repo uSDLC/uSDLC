@@ -4,15 +4,15 @@ import groovy.transform.AutoClone
 import usdlc.Exchange
 import usdlc.Groovy
 import usdlc.Store
-import static usdlc.Config.config
+import static usdlc.config.Config.config
 
 @AutoClone class Actor {
-	/** variables to pass between scripts as globals    */
+	/** variables to pass between scripts as globals        */
 	def context = [:]
 	def dslContext = [:]
-	/** Http Exchange data - including request and response   */
+	/** Http Exchange data - including request and response       */
 	Exchange exchange
-	/** Convenience to write to the response/browser   */
+	/** Convenience to write to the response/browser       */
 	PrintStream out
 	/**
 	 * Set to false if you want the actor to be ignored
@@ -32,7 +32,7 @@ import static usdlc.Config.config
 	 */
 	void init() {
 	}
-	/** Actors run with a known binding use by all in the session  */
+	/** Actors run with a known binding use by all in the session      */
 	void run(Map binding) {
 		context = binding
 		exchange = context.exchange
@@ -49,7 +49,8 @@ import static usdlc.Config.config
 
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
-	 * Called to see if a URL refers to an actor/dsl. It creates an instance of
+	 * Called to see if a URL refers to an actor/dsl. It creates an
+	 * instance of
 	 * the class. Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {
@@ -60,8 +61,8 @@ import static usdlc.Config.config
 			if (data.groovyDSL) {
 				cache[language] = data.groovyDSL
 			} else {
-				def actorClass = Groovy.loadClass("usdlc.actor.${data.baseLanguage
-				.capitalize()}Actor")
+				def actorClass = Groovy.loadClass(
+						"usdlc.actor.${data.baseLanguage.capitalize()}Actor")
 				cache[language] = actorClass ?
 					actorClass.newInstance() :
 					new DslActor("${data.baseLanguage.toLowerCase()}DSL")
