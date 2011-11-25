@@ -50,8 +50,8 @@ class HtmlActor extends Actor {
 				break
 			default:    // Suck the HTML file contents - converting from byte[] to
 			// String.
-				exchange.response.write exchange.store.read() ?: Store.base
-				('rt/template.html').read()
+				exchange.response.write exchange.store.read() ?:
+					Store.base('rt/template.html').read()
 				break
 		}
 	}
