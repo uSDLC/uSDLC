@@ -1,2 +1,0 @@
-source true
-organisation('org.eclipse.jgit').module('org.eclipse.jgit').required()

@@ -12,6 +12,7 @@ class FileProcessor {
 		}
 
 		if (newest != outputFile) {
+			Log.inf "Build $outputFile.name"
 			outputFile.mkdirs()
 			outputFile.file.withWriter { Writer output ->
 				files.each { Store file -> inputProcessor file, output }
@@ -29,6 +30,7 @@ class FileProcessor {
 	}
 
 	static gzip(Store inputFile, Store outputFile) {
+		Log.inf "Gzip $outputFile.name"
 		def gzipFile = Store.base("${outputFile.path}.gzip")
 		gzipFile.file.withOutputStream {
 			def gzos = new GZIPOutputStream(it)

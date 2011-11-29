@@ -48,7 +48,8 @@ class WebDriver {
 		}
 	}
 	/**
-	 * Driver can be named from configuration (chrome, firefox, ie or htmlunit)
+	 * Driver can be named from configuration (chrome, firefox,
+	 * ie or htmlunit)
 	 * or be the fully qualified class name of a WebDriver.
 	 */
 	void setDriver(String name) {
@@ -95,7 +96,7 @@ class WebDriver {
 	 * Link text is a path with links separated by ->.
 	 */
 	WebElement waitFor(String targets, Closure action) {
-		def result
+		def result = null
 		targets.split(/\s+->\s+/).each { target ->
 			By id = By.id(target)
 			By name = By.name(target)
@@ -106,10 +107,11 @@ class WebDriver {
 			By tagName = By.tagName(target)
 			By partialLinkText = By.partialLinkText(target)
 			result = waitFor {
-				return findElement(id) ?: findElement(name) ?:
+				findElement(id) ?: findElement(name) ?:
 					findElement(linkText) ?: findElement(cssSelector) ?:
 						findElement(xpath) ?: findElement(className) ?:
-							findElement(tagName) ?: findElement(partialLinkText)
+							findElement(tagName) ?: findElement
+				(partialLinkText)
 			}
 			assert result, "No element $target"
 			result = action result

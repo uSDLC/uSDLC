@@ -51,6 +51,11 @@ class Log extends SimpleLog {
 		return { store.append it }
 	}
 	/**
+	 * Shortcut convenience method to write to stdout (server output stream).
+	 * @param message Message to write
+	 */
+	static inf(message) { System.out.println message; message }
+	/**
 	 * Shortcut convenience method to write to stderr (server output stream).
 	 * @param message Message to write
 	 */

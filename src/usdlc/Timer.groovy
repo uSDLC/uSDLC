@@ -58,6 +58,24 @@ class Timer {
 		if (autoReset) { start = end }
 		return string
 	}
+	/**
+	 * See how many minutes have elapsed since creation
+	 * <code>
+	 * timer = new Timer()
+	 * ...
+	 * if (timer.minutes > 5) println '5 minutes have passed'
+	 * </code>
+	 */
+	int getMinutes() { (System.currentTimeMillis() - start) / 60000 }
+	/**
+	 * See how many minutes have elapsed since creation
+	 * <code>
+	 * timer = new Timer()
+	 * ...
+	 * if (timer.minutes > 5) println '5 minutes have passed'
+	 * </code>
+	 */
+	int getDays() { (System.currentTimeMillis() - start) / 90000000 }
 
 	def title = '', autoReset
 	long start = System.currentTimeMillis(), elapsed, minimum

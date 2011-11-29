@@ -16,7 +16,11 @@
 	</tr>
 	<tr>
 		<td>
-			<div href="rt/toolbar.html" class="toolbar"></div>
+			<table width="98%"><tr><td>
+				<div href="rt/toolbar.html" class="toolbar"></div>
+			</td><td>
+				<div id='newsBar'></div>
+			</td></tr></table>
 		</td>
 	</tr>
 </table>
@@ -24,7 +28,8 @@
 <table id="pageContentsTable">
 	<tr>
 		<td id="contentTreeTd">
-			<img id="treeHider" src="lib/circular-icons/arrows_east_west.png">
+			<img id="treeHider" src="lib/circular-icons/arrows_east_west.png"
+			     alt="">
 
 			<div id="contentTree" class="hidden">
 				<ul>
@@ -43,6 +48,11 @@
 					<a href="http://usdlc.proboards.com/">Forum</a> -
 					<a href="http://github.usdlc.net">GitHub</a> -
 					<a href="/uSDLC/License.html">OSS License</a>
+
+					<p class='newsHeadline'>
+						${usdlc.News.cache.headline}
+					</p>
+					${usdlc.News.cache.description}
 				</div>
 			</div>
 		</td>
@@ -58,7 +68,6 @@
      action="loadContextMenu"></div>
 
 <div id="pasteList" href="rt/pasteList.html.groovy"></div>
-
 <script type="text/javascript" src='/store/js/usdlcPre.js'></script>
 </body>
 </html>

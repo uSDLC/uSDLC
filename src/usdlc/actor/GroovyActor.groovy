@@ -39,7 +39,7 @@ class GroovyActor extends Actor {
 					log: { String message -> Log.err message },
 					gse: gse,
 					include: dsl.&include,
-					out: { String text -> out.println text },
+					write: { String text -> out.print text },
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->

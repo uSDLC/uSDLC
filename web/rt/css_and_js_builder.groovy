@@ -3,6 +3,7 @@ package usdlc
 files = [
 		"lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css",
 		"lib/jquery/css/fg.menu.css",
+		"lib/underscore.js",
 		"lib/CodeMirror/lib/codemirror.css",
 		"lib/CodeMirror/theme/default.css",
 		"lib/CodeMirror/theme/elegant.css",
@@ -68,7 +69,8 @@ files = [
 		'rt/js/clipboard.js',
 		'rt/js/htmlEditor.js',
 		'rt/js/ex.coffeescript',
-		'rt/js/screencast.coffeescript'
+		'rt/js/screencast.coffeescript',
+		'rt/js/news.coffeescript'
 ]
 Store.base('lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
 	files += store.path;

@@ -27,6 +27,17 @@ class Session {
 			key = lastKey.toString()
 		}
 		if (!sessions.containsKey(key)) {
+			Closure entry = { String name, Closure creator ->
+				Map instances = sessions[key].instances
+				if (!instances.containsKey(name)) {
+					instances[name] = creator(name)
+					//noinspection GroovyEmptyCatchBlock
+					try {
+						instances[name].session = sessions[key]
+					} catch (exception) {}
+				}
+				instances[name]
+			}
 			sessions[key] = [
 					key: key,
 					isNewSession: isNewSession,
@@ -36,17 +47,7 @@ class Session {
 						def name = ofClass.name
 						entry name, {ofClass.newInstance()}
 					},
-					entry: { String name, Closure creator ->
-						Map instances = sessions[key].instances
-						if (!instances.containsKey(name)) {
-							instances[name] = creator(name)
-							//noinspection GroovyEmptyCatchBlock
-							try {
-								instances[name].session = sessions[key]
-							} catch (exception) {}
-						}
-						instances[name]
-					},
+					entry: entry,
 			]
 			sessions[key].session = sessions[key]
 			sessions[key].persist = new Session(session: sessions[key])

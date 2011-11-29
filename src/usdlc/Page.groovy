@@ -15,12 +15,9 @@
  */
 package usdlc
 
+import groovy.xml.StreamingMarkupBuilder
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
-
-import groovy.util.slurpersupport.GPathResult
-import groovy.xml.StreamingMarkupBuilder
 
 /**
  * Here we read in a uSDLC page and provide access to the internals:

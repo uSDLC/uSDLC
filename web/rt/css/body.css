@@ -48,6 +48,23 @@ div#alertBox div.ui-icon {
 	font-size: 0.5em;
 }
 
+.newsHeadline {
+	color: #666;
+	margin-top: 1em;
+	font-size: 1.5em;
+}
+
+#newsBar {
+	text-align: right;
+}
+#newsBar a {
+	color: #999;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 1.2em;
+	margin-top: -20px;
+}
+
 /*
  Page contents region and control
  */
