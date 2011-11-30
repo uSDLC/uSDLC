@@ -70,7 +70,7 @@ class UsdlcBuildListener implements BuildListener {
 			def message = "${buildEvent.message.replaceAll(/\.{2,}/, '')}\n"
 			if (!(message ==~ /[\s\.]*/)) {
 				log message
-				if (level > 2) { Log.write(message) }
+				if (level > 2) { Log.inf(message) }
 			}
 		}
 	}

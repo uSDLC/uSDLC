@@ -32,10 +32,10 @@ class HtmlActor extends Actor {
 	 Use to generate HTML to display on the screen.
 	 */
 	void run(Store script) {
-		switch (exchange.request.query['action']) {
+		Map query = exchange.request.query
+		switch (query.action) {
 			case 'history':
-				def end = Integer.parseInt(exchange.request.query['index'].toString()
-				?: '-1')
+				def end = Integer.parseInt(query.index.toString() ?: '-1')
 				def contents = new History(exchange.store.path, 'updates').restore(end)
 				out.println contents
 				break
@@ -48,13 +48,15 @@ class HtmlActor extends Actor {
 			case 'paste':
 				paste()
 				break
-			default:    // Suck the HTML file contents - converting from byte[] to
-			// String.
+			default:
 				exchange.response.write exchange.store.read() ?:
 					Store.base('rt/template.html').read()
+				exchange.response.write bootstrapJs
 				break
 		}
 	}
+	static bootstrapJs =
+		"<script src='/rt/js/bootstrap.coffeescript'></script>".bytes
 
 	private void transfer(Closure transfer) {
 		Store clipboard = Store.base('store/clipboard')

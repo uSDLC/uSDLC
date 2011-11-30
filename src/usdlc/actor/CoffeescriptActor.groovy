@@ -21,9 +21,10 @@ import usdlc.Store
 /**
  * Parse coffee-script to java-script for the browser. Compress if flagged to do so.
  */
-class CoffeescriptActor extends JsActor {
-	void init() {
+class CoffeescriptActor extends Actor {
+	void run(Store script) {
 		CoffeeScript compiler = exchange.request.session.instance CoffeeScript
-		exchange.store = compiler.javascript(exchange.store)
+		Store js = compiler.javascript(exchange.store)
+		exchange.response.write js.read() ?: ''
 	}
 }

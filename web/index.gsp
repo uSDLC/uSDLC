@@ -12,6 +12,7 @@
 		<td rowspan="2">
 			<img id="pageTitleImage" src="rt/base.logo.small.png" alt="Unifying the Software Development
 				Lifecycle using Document Driven Development">
+			<div id='pageTitleVersion'>${usdlc.config.Config.version}</div>
 		</td>
 	</tr>
 	<tr>

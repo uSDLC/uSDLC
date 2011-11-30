@@ -15,12 +15,7 @@
  */
 package usdlc.actor
 
-import com.yahoo.platform.yui.compressor.JavaScriptCompressor
-import org.mozilla.javascript.ErrorReporter
-import org.mozilla.javascript.EvaluatorException
-import usdlc.History
 import usdlc.JavaScript
-import usdlc.Log
 import usdlc.Store
 
 /**

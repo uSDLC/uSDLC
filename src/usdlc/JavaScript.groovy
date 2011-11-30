@@ -1,9 +1,6 @@
 package usdlc
 
-import com.yahoo.platform.yui.compressor.JavaScriptCompressor
 import org.mozilla.javascript.Context
-import org.mozilla.javascript.ErrorReporter
-import org.mozilla.javascript.EvaluatorException
 import org.mozilla.javascript.Scriptable
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.config.Config.config
@@ -18,7 +15,7 @@ class JavaScript {
 	 */
 	public run(Store js, binding = [:]) {
 		Context context = Context.enter()
-		Reader reader = null
+		Reader reader
 		try {
 			if (!optimise) {
 				// Without this, Rhino hits a 64K byte-code limit and fails
@@ -72,9 +69,7 @@ class JavaScript {
 	 * possible. Only useful if sending over a wire.
 	 */
 	static compress(input, output) {
-		def reporter = new CompressorErrorReporter()
-		def compressor = new JavaScriptCompressor(input, reporter)
-		compressor.compress(output, 80, false, false, false, false)
+		output << Reader.text
 	}
 
 	static Store javascriptBuilder(outputName, files, coffeeCompiler) {
@@ -83,7 +78,9 @@ class JavaScript {
 			switch (inputFile.parts.ext) {
 				case 'js':
 					if (config.compressJs) {
-						inputFile.file.withReader {JavaScript.compress(it, writer)}
+						inputFile.file.withReader {
+							JavaScript.compress(it, writer)
+						}
 					} else {
 						writer.write inputFile.text
 					}
@@ -96,26 +93,9 @@ class JavaScript {
 						writer.write code
 					}
 					break
+				default:
+					break
 			}
 		}
-	}
-}
-
-public class CompressorErrorReporter implements ErrorReporter {
-
-	public void warning(String message, String sourceName,
-			int line, String lineSource, int lineOffset) {
-		Log.err "$line:$lineOffset:$message"
-	}
-
-	public void error(String message, String sourceName,
-			int line, String lineSource, int lineOffset) {
-		Log.err "$line:$lineOffset:$message"
-	}
-
-	public EvaluatorException runtimeError(String message, String sourceName,
-			int line, String lineSource, int lineOffset) {
-		error(message, sourceName, line, lineSource, lineOffset)
-		return new EvaluatorException(message)
 	}
 }

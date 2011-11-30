@@ -120,11 +120,7 @@ class Exchange {
 						if (actor) {
 							dynamicResponse { actor.run([exchange: this]) }
 						} else {
-							byte[] bytes = store.read()
-							if (inferredTarget) {
-								bytes += bootstrapJs
-							}
-							staticResponse bytes
+							staticResponse store.read()
 						}
 						break
 				}
@@ -183,16 +179,12 @@ class Exchange {
 		}
 	}
 
-	static bootstrapJs =
-		"<script src='/rt/js/bootstrap.coffeescript'></script>".bytes
 	Store store
 	boolean inferredTarget
 
 	void setStore(String path) {
 		String urlBase = config.urlBase
 		if (path.startsWith(urlBase)) {
-			// For servers that have usdlc on a sub-path -
-			// as in http:myServer.com/myApps/usdlc.
 			path = path.substring(urlBase.size())
 		}
 		store = Store.base(path)

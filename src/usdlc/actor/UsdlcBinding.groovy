@@ -27,7 +27,7 @@ class UsdlcBinding extends Binding {
 		use(CaseCategory) {
 			switch (name) {
 				case variables: variables[name]; break
-				case dslContext: dslContext[name]; break
+				case dslContext.variables: dslContext[name]; break
 				case variables.getters: variables.getters[name](); break
 				case dslContext.getters: dslContext.getters[name](); break
 				default:

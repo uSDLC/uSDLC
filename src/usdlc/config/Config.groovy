@@ -16,6 +16,7 @@
 package usdlc.config
 
 import java.lang.reflect.Method
+import java.util.jar.Manifest
 import usdlc.Dictionary
 import usdlc.Store
 import usdlc.actor.GroovyActor
@@ -106,4 +107,17 @@ class Config {
 		}
 		actor.run([:])
 	}
+
+	@Lazy static manifest = {
+		def attributes = null
+		try {
+			Store store = Store.base('../META-INF/MANIFEST.MF')
+			Manifest mf = new Manifest(store.url.openStream());
+			attributes = mf.mainAttributes
+		} catch (Exception e) { }
+		attributes
+	}()
+	@Lazy static version = {
+		Config.manifest?.getValue('Specification-Version') ?: 'Development'
+	}()
 }

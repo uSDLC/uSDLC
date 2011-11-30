@@ -1,28 +1,33 @@
-table#pageTitleTable {
+#pageTitleTable {
 	width: 100%;
 }
 
-img#pageTitleImage {
-	float: right;
+#pageTitleImage {
 	border: none;
 	overflow: visible;
 }
 
-td#pageTitleTd {
+#pageTitleVersion {
+	margin-top: -22px;
+	text-align: center;
+	color: #ccc;
+}
+
+#pageTitleTd {
 	vertical-align: middle;
 	width: 100%;
 }
 
-td#pageTitleTd h1, td#pageTitleTd h2, div.inclusion h1, div.inclusion h2 {
+#pageTitleTd h1, #pageTitleTd h2, div.inclusion h1, div.inclusion h2 {
 	text-align: center;
 }
 
-td#pageTitleTd h1 {
+#pageTitleTd h1 {
 	font-size: 1.4em;
 	margin: 0;
-} 
+}
 
-td#pageTitleTd h2, div.inclusion h2 {
+#pageTitleTd h2, div.inclusion h2 {
 	margin: 0;
 	font-size: 0.9em;
 }

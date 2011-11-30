@@ -64,8 +64,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 		Exchange exchange = new Exchange()
 		exchange.request(requestBody, header).loadResponse(responseBody) {
 			exchange.response.header.each { key, value ->
-				httpExchange
-						.responseHeaders.add(key, value)
+				httpExchange.responseHeaders.add(key, value)
 			}
 			httpExchange.sendResponseHeaders 200, 0
 		}

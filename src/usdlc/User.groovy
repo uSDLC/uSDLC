@@ -6,7 +6,7 @@ class User {
 	String id
 
 	User(id) {
-		this.id = (id != 'anon') ? id : config.userId ?: 'anon'
+		this.id = (id != 'anon') ? id : config.userId ?: 'anonymous'
 	}
 
 	boolean authorised(Store path, String action) {

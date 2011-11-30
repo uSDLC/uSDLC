@@ -21,18 +21,11 @@ files = [
 ]
 
 fileProcessorWithGzip('store/css/usdlc.css', files) {
-	Store inputFile, Writer writer ->
-	if (config.compressCss) {
-		inputFile.file.withReader {new CssCompressor(it).compress(writer, 80)}
-	} else {
-		writer.write(inputFile.text)
-	}
+	Store inputFile, Writer writer -> writer.write(inputFile.text)
 }
 
-import com.yahoo.platform.yui.compressor.CssCompressor
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.JavaScript.javascriptBuilder
-import static usdlc.config.Config.config
 
 files = [
 		'lib/jquery/js/jquery.js',

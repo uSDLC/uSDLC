@@ -14,12 +14,12 @@ class News {
 	 * every day thereafter.
 	 */
 	public load() {
+		parser = new XmlParser()
 		if (!items || timer.days)
 			try {
 				index = -1
-				items = new XmlParser().parseText(new URL(config.newsUrl)
-						.text)
-						.channel[0].item
+				def text = new URL(config.newsUrl).text
+				items = parser.parseText(text).channel[0].item
 				if (items.size()) {
 					cache.headline = headline
 					cache.description = description
@@ -29,6 +29,7 @@ class News {
 			} catch (e) {
 			}
 	}
+	XmlParser parser
 	/**
 	 * If done the first time returns the first item - otherwise goes for the
 	 * next, wrapping when we run out of news.
