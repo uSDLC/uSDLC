@@ -5,12 +5,13 @@ $ ->
 				url : (li) ->
 					path = ''
 					if li is -1
-						path = usdlc.urlBase + '/frontPage.html'
+						path = usdlc.urlBase + '/contentTree_html.groovy'
 					else
 						path = $('a', li).get(0).pathname
 						path = '/' + path if path[0] != '/'
+						path += '?action=raw'
 					this.contentRoot = jQuery.url.setUrl(path).attr("directory")
-					"#{path}?action=raw"
+					path
 				success : (data) ->
 					tree = ' '
 					root = this.contentRoot
