@@ -16,18 +16,18 @@
 package usdlc.actor
 
 class UsdlcBinding extends Binding {
-	Binding dslContext
+	def dslContext
 
 	UsdlcBinding(Map binding, Map dslBinding) {
 		super(binding)
-		dslContext = dslBinding as Binding
+		dslContext = dslBinding
 	}
 
 	def getVariable(String name) {
 		use(CaseCategory) {
 			switch (name) {
 				case variables: variables[name]; break
-				case dslContext.variables: dslContext[name]; break
+				case dslContext: dslContext[name]; break
 				case variables.getters: variables.getters[name](); break
 				case dslContext.getters: dslContext.getters[name](); break
 				default:

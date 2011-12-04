@@ -1,16 +1,5 @@
 package usdlc
 
-import com.google.common.base.Charsets
-import com.google.common.io.InputSupplier
-import com.google.common.io.Resources
-import org.mozilla.javascript.Context
-import org.mozilla.javascript.JavaScriptException
-import org.mozilla.javascript.NativeJavaPackage
-import org.mozilla.javascript.Scriptable
-
-import java.io.IOException
-import java.io.InputStreamReader
-
 class CoffeeScript {
 	def bare, session
 	/**

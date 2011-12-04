@@ -43,7 +43,7 @@ import static usdlc.config.Config.config
 		if (!dslContext.getters) dslContext.getters = [:]
 		if (!dslContext.setters) dslContext.setters = [:]
 		init()
-		backingScripts.each { Store script -> run(script) }
+		backingScripts.each { Store backingScript -> run(backingScript) }
 		if (script && !dslContext.dataSource) run(script)
 	}
 

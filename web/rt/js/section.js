@@ -165,11 +165,11 @@ $(function() {
 						href += "/index.html";
 					}
 					self.attr('href', href)
-					if (usdlc.mimeType(href).clientExt == 'html') {
-						self.attr('action', 'page')
-					} else {
+					if (usdlc.mimeType(href).clientExt != 'html') {
 						self.attr('action', 'runnable')
 						self.addClass('sourceLink')
+					} else {
+						self.attr('action', 'page')
 					}
 				}
 			})

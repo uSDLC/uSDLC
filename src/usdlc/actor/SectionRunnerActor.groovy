@@ -1,18 +1,3 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc.actor
 
 import groovy.transform.AutoClone
@@ -27,10 +12,6 @@ import static usdlc.config.Config.config
 	/**
 	 * Override to run the section runner script.
 	 */
-	/* (non-Javadoc)
-	 * @see usdlc.actor.Actor#run(usdlc.Store)
-	 */
-
 	void run(Store script) {
 		def user = exchange.request.user
 		if (!user.authorised(script, 'run')) {
@@ -108,8 +89,8 @@ import static usdlc.config.Config.config
 				}
 			}
 			wrapOutput([
-					'<span class="gray">',
-					'</span>'
+					'<div class="gray">',
+					'</div>'
 			]) { write "Page $currentPage.parent" }
 			// afterwards run any actors in the referenced sections
 			if (actors) runActorsOnPage(actors)
@@ -195,9 +176,9 @@ import static usdlc.config.Config.config
 		linkStates[currentActor] = to
 		String elapsed = timer
 		wrapOutput([
-				'<span class="gray">',
-				'</span>'
-		]) { write "\t$currentActor: $to $elapsed" }
+				'<span class="gray" style="padding-left:2em;">',
+				'</span><br>'
+		]) { write "$currentActor: $to $elapsed" }
 		Log.csv("${currentPage}.timings")(
 				"$currentActor,$to,$timer.elapsed,$elapsed")
 	}
@@ -223,8 +204,10 @@ import static usdlc.config.Config.config
 			it.fileName && it.lineNumber > 0 &&
 					!internalExceptions.matcher(it.className).find()
 		}
-		write throwable.message
-		if (trace) write "\n\n${trace.toString()}"
+		reportError {
+			write throwable.message
+			if (trace) write "\n\n${trace.toString()}"
+		}
 		actorState = 'failed'
 	}
 	/**
@@ -233,10 +216,14 @@ import static usdlc.config.Config.config
 	 * it as something bad to tell the user.
 	 */
 	def reportError(String text) {
+		reportError({write text})
+	}
+
+	def reportError(Closure writeContent) {
 		wrapOutput([
-				'<span style="color:red;">',
-				'</span>'
-		]) { write text }
+				'<pre style="color:red;padding-left:4em;">',
+				'</pre>'
+		], writeContent)
 		resizeOutputFrame()
 	}
 	/**
@@ -266,9 +253,9 @@ import static usdlc.config.Config.config
 	}
 
 	static mimeTypeWrappers = [
-			'text/html': ['</pre>', '<pre>'],
-			'application/javascript': ['</pre><script>', '</script><pre>'],
-			'text/plain': ['', '']]
+			'text/html': ['<pre style="padding-left:4em;">', '\n</pre>'],
+			'application/javascript': ['<script>', '</script>'],
+			'text/plain': ['<pre style="padding-left:4em;">', '\n</pre>']]
 	/**
 	 * Write text to response output stream
 	 */
