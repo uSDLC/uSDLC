@@ -132,7 +132,7 @@ $(function() {
 					$('<h1/>').append(
 							$('<a/>').attr('href', section.name + '/index.html').attr('id', section.id + 'a0')
 									.addClass('usdlc').attr('action', 'page').text(section.title)))
-			usdlc.savePageContents()
+			usdlc.savePage()
 			return true
 		}
 	})

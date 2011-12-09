@@ -5,10 +5,6 @@ $(function () {
 			editSection(this)
 		})
 	}
-	window.usdlc.savePage = function () {
-		// clean up html of crap that builds up
-		usdlc.savePageContents()
-	}
 	$.extend(true, window.usdlc, {
 		actorDefault:      usdlc.cookie("actorDefault") || 'groovy',
 		reportsTabData:    {
