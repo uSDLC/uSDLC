@@ -55,6 +55,7 @@ import static usdlc.config.Config.config
 	 */
 	static Actor load(Store store) {
 		String language = store.parts.ext
+		if (! language) return null
 		if (!cache[language]) {
 			def data = [scripts: [], groovyDSL: '', baseLanguage: '']
 			retrieveDefinitions(language, data)

@@ -19,7 +19,8 @@ class CoffeeScript {
 			compile(coffeescript.text)
 		} catch (exception) {
 			throw new RuntimeException(
-			"Error in $coffeescript.path ($exception.message)", exception)
+			"Error in $coffeescript.pathFromWebBase ($exception.message)",
+					exception)
 		}
 	}
 	/**
@@ -36,10 +37,10 @@ class CoffeeScript {
 	 */
 	Store javascript(Store coffeescript) {
 		Store javascript = Store.base("store/coffeescript/base").
-				rebase(coffeescript.path + '.js')
+				rebase(coffeescript.pathFromWebBase + '.js')
 
 		if (coffeescript.newer(javascript)) {
-			javascript.write(compile(coffeescript))
+			javascript.write(compile(coffeescript).bytes)
 		}
 		javascript
 	}

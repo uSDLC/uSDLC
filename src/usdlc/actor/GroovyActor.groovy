@@ -43,7 +43,8 @@ class GroovyActor extends Actor {
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->
-						gse.loadScriptByName script.rebase(scriptName).path
+						gse.loadScriptByName script.
+								rebase(scriptName).pathFromWebBase
 					},
 			]
 		}
@@ -54,7 +55,7 @@ class GroovyActor extends Actor {
 	 */
 	void run(Store script) {
 		def scriptClass = Groovy.loadClass(script.parent, script.name) ?:
-			context.gse.loadScriptByName(script.path)
+			context.gse.loadScriptByName(script.pathFromWebBase)
 		Groovy.run(scriptClass, context.usdlcBinding)
 	}
 }

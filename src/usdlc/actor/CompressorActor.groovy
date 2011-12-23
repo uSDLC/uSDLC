@@ -11,8 +11,10 @@ abstract class CompressorActor extends Actor {
 	void filter(String type, Closure compress) {
 		Store source = exchange.store, compressed
 		if (config."compress${type.capitalize()}" &&
-				!config.noCompression.matcher(source.path).matches()) {
-			compressed = Store.base("store/$type/base").rebase(source.path)
+				!config.noCompression.matcher(
+						source.pathFromWebBase).matches()) {
+			compressed = Store.base("store/$type/base").
+					rebase(source.pathFromWebBase)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()
 				source.file.withReader { Reader input ->

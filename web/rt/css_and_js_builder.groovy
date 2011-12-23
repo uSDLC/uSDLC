@@ -1,9 +1,10 @@
 package usdlc
+import static usdlc.FileProcessor.fileProcessorWithGzip
+import static usdlc.JavaScript.javascriptBuilder
 
 files = [
 		"lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css",
 		"lib/jquery/css/fg.menu.css",
-		"lib/underscore.js",
 		"lib/CodeMirror/lib/codemirror.css",
 		"lib/CodeMirror/theme/default.css",
 		"lib/CodeMirror/theme/elegant.css",
@@ -24,11 +25,9 @@ fileProcessorWithGzip('store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
 }
 
-import static usdlc.FileProcessor.fileProcessorWithGzip
-import static usdlc.JavaScript.javascriptBuilder
-
 files = [
 		'lib/jquery/js/jquery.js',
+		'lib/underscore.js',
 		'lib/jquery/js/jquery-ui.js',
 		'lib/jquery/js/jquery.cookie.js',
 		'lib/jquery/js/jquery.sausage.js',
@@ -66,7 +65,7 @@ files = [
 		'rt/js/news.coffeescript'
 ]
 Store.base('lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
-	files += store.path;
+	files += store.pathFromWebBase;
 	return
 }
 

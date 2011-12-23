@@ -27,7 +27,7 @@ class CompilerActor extends Actor {
 					Source: full.absolutePath,
 			]
 
-			fileProcessor(full.path, context.compiles[language], {
+			fileProcessor(full.pathFromWebBase, context.compiles[language], {
 				Store source, Writer out -> out.write(source.text)
 			}, { Store source -> // only compile on change
 				compiler.compile.execute(binding, out)

@@ -58,7 +58,7 @@ class CompilingClassLoader extends ClassLoader {
 	}
 
 	private static String basePath(Store store) {
-		String path = store.path;
+		String path = store.pathFromWebBase;
 		return path.substring(0, path.length() - store.fullExt.length() - 2);
 	}
 }

@@ -160,7 +160,7 @@ class Exchange {
 		}
 		response.out = new PrintStream(outputStream, true)
 		response.header['Content-Type'] =
-			request.query.mimeType ?: mimeType(store.path)
+			request.query.mimeType ?: mimeType(store.pathFromWebBase)
 		return response
 	}
 	/**
@@ -171,7 +171,7 @@ class Exchange {
 	 */
 	private checkForStaticGzip() {
 		if (request.header.acceptEncoding.indexOf('gzip') != -1) {
-			def gzip = Store.base("${store.path}.gzip")
+			def gzip = Store.base("${store.pathFromWebBase}.gzip")
 			if (gzip.exists() && !store.newer(gzip)) {
 				response.header['Content-Encoding'] = 'gzip'
 				store = gzip
@@ -188,7 +188,7 @@ class Exchange {
 			path = path.substring(urlBase.size())
 		}
 		store = Store.base(path)
-		inferredTarget = (store.path.indexOf('.') == -1)
+		inferredTarget = (store.pathFromWebBase.indexOf('.') == -1)
 		if (inferredTarget) {
 			store = store.rebase('index.gsp')
 			if (!store.exists()) store = store.rebase('index.html')
@@ -196,15 +196,7 @@ class Exchange {
 	}
 
 	void save(String newContents) {
-		def history = new History(store.path, 'updates')
-		// If we don't have a history file for any reason,
-		// then we should save the contents of the full file first.
-		String before = (history.store.size() < 3) ? '' : newContents
-		// Save changed contents to disk
 		store.write newContents.bytes
-		// Create a history file so we can rebuild any version if and when
-		// we want to.
-		history.save(request.user.id, before, newContents)
 	}
 
 	// Point Apache Commons logging to a uSDLC proxy.

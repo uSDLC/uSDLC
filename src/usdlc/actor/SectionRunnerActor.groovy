@@ -19,7 +19,7 @@ import static usdlc.config.Config.config
 			return
 		}
 
-		rerun = (script.path == 'last.sectionRunner')
+		rerun = (script.pathFromWebBase == 'last.sectionRunner')
 		if (rerun) {
 			if (lastRunner) {
 				exchange.request.session.persist.lastSectionRunner =
@@ -104,8 +104,9 @@ import static usdlc.config.Config.config
 				}
 			}
 			String text = html.select('body').html()
-			if (exchange.store.path.endsWith('.sectionRunner')) {
-				exchange.store = Store.base(exchange.store.path[0..-15])
+			def path = exchange.store.pathFromWebBase
+			if (path.endsWith('.sectionRunner')) {
+				exchange.store = Store.base(path[0..-15])
 			}
 			exchange.save(text)
 			write '</div></body></html>'
@@ -190,7 +191,7 @@ import static usdlc.config.Config.config
 	 * Special to run the script while wrapping the output for best effort.
 	 */
 	void runScript(Map binding) {
-		wrapOutput(script.path) { delegate.run(binding) }
+		wrapOutput(script.pathFromWebBase) { delegate.run(binding) }
 	}
 	/**
 	 * If an exception is thrown we need to display the error in a

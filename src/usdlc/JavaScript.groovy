@@ -24,7 +24,8 @@ class JavaScript {
 			def inputStream = js.file.newInputStream()
 			reader = new InputStreamReader(inputStream, "UTF-8")
 			def scope = scope(context, binding)
-			return context.evaluateReader(scope, reader, js.path, 0, null)
+			return context.evaluateReader(
+					scope, reader, js.pathFromWebBase, 0, null)
 		} finally {
 			reader?.close()
 			Context.exit()

@@ -148,8 +148,8 @@ $(function() {
 		},
 		postLoader : function() {
 			usdlc.loadScriptAsync('/store/js/usdlcPost.js', usdlc.init.finalise)
-			usdlc.loadScriptAsync('/usdlc/dsl/dslAssociationList_js.groovy', function() {
+			usdlc.loadScriptAsync('/usdlc/dslAssociationList_js.groovy', function() {
 			})
-		},
+		}
 	}
 })

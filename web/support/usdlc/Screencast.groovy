@@ -40,7 +40,7 @@ class Screencast {
 		if (!web) {
 			web = new WebDriver()
 			def host = session.exchange.request.header.host
-			web.load("http://$host?$store.path")
+			web.load("http://$host?$store.pathFromWebBase")
 			web.waitFor(By.cssSelector('div.screencast')) {}
 			client('keys', [config.screencast.keys])
 			Actor.cache['screencastResponse'] =
@@ -80,7 +80,7 @@ class Screencast {
 		page.subtitle = subtitle
 		page.synopsis = synopsis
 		page.save()
-		script("usdlc.absolutePageContents('$store.path')")
+		script("usdlc.absolutePageContents('$store.pathFromWebBase')")
 	}
 
 	def getSections() {

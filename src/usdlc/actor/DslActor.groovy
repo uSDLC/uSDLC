@@ -1,5 +1,6 @@
 package usdlc.actor
 
+import usdlc.Grape
 import usdlc.Groovy
 import static usdlc.config.Config.config
 
@@ -29,6 +30,9 @@ class DslActor extends GroovyActor {
 
 	void init() {
 		super.init()
+		context << [
+		        grab: { Map dependency -> Grape.grab(dependency) }
+		]
 		Groovy.run(languageScriptClass, new UsdlcBinding(dslContext, context))
 	}
 	/**

@@ -4,7 +4,6 @@ import groovy.xml.NamespaceBuilder
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
 
-
 class Ivy {
 	Ivy(consoleWriter) {
 		def logFileWriter = Log.file('ivy')

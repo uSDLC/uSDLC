@@ -32,9 +32,18 @@ class Store {
 	 * Build a store object for a path relative to the web root
 	 */
 	static Store base(String path = '') {
-		path = path.replaceFirst(~/.*~/, config.home as String)
-		new Store(file: new File(config.baseDirectory as String,
-				camelCase(path)))
+		new Store(camelCase(path.replaceFirst(~/.*~/, config.home as String)))
+	}
+	private Store(String pathFromWebBase) {
+		if (pathFromWebBase[0] == '/') {
+			if (pathFromWebBase.size() > 1) {
+			pathFromWebBase = pathFromWebBase[1..-1]
+			} else {
+				pathFromWebBase = ''
+			}
+		}
+		this.pathFromWebBase = pathFromWebBase
+		file = new File(config.baseDirectory as String, pathFromWebBase)
 	}
 	/**
 	 * Return a Store for a new (non-existent) file. It will refer to a new file
@@ -47,13 +56,10 @@ class Store {
 
 	@Lazy static Store tmpDir = Store.base('/tmp').rmdir()
 	/**
-	 * Sometimes we get a now store based on an old location
+	 * Sometimes we get a new store based on an old location
 	 */
 	Store rebase(String more = '') {
-		def store = new Store()
-		store.file = new File(new File(config.baseDirectory as String, parent),
-				camelCase(more))
-		store
+		new Store("$parent/${camelCase(more)}")
 	}
 	/**
 	 * If we need to read a source as a stream...
@@ -88,32 +94,37 @@ class Store {
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	/** Directory in which file/directory resides  */
-	@Lazy String parent = file.isDirectory() ? path : pathFromBase(file.parent)
+	@Lazy String parent = file.isDirectory() ? pathFromWebBase : calcParent()
 	@Lazy String name = file.name
-	@Lazy String path = pathFromBase(file.path)
-	@Lazy String absolutePath = file.path
-	@Lazy String relativePath = "$config.baseDirectory/$path"
+	@Lazy String absolutePath = file.absolutePath
 	@Lazy URI uri = file.toURI()
 	@Lazy URL url = uri.toURL()
-	@Lazy parts = split(path)
-	/**
-	 * Return a string being the file path relative to the base directory.
-	 */
-	private static String pathFromBase(File file) {
-		baseDirectoryURI.relativize(file.toURI()).path
+	@Lazy parts = split(pathFromWebBase)
+
+	private String calcParent() {
+		int drop = file.path.size() - file.parent.size() + 1
+		if (drop >= pathFromWebBase.size()) {
+			return ''
+		} else {
+			return pathFromWebBase[0..-drop]
+		}
 	}
 	/**
 	 * Return a string being the file path relative to the base directory.
 	 */
 	private static String pathFromBase(String path) {
-		pathFromBase(new File(path))
+		if (path.startsWith(config.baseDirectory)) {
+			path = path[config.baseDirectory.size()..-1]
+		}
+		return path
 	}
 	/**
 	 * Relative path from some base directory (store may be of file in
 	 * directory).
 	 */
 	String pathFrom(Store from) {
-		File fromFile = from.file.isDirectory() ? from.file : from.file.parentFile
+		File fromFile = from.file.isDirectory() ?
+			from.file : from.file.parentFile
 		fromFile.toURI().relativize(uri).path
 	}
 	/**
@@ -147,7 +158,7 @@ class Store {
 	 * Public method to write file contents.
 	 * @param contents Byte array of contents to write.
 	 */
-	void write(contents) {
+	void write(byte[] contents) {
 		mkdirs()
 		file.bytes = contents
 	}
@@ -188,7 +199,9 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(mask, Closure closure) {
-		file.eachFileMatch mask, { closure(pathFromBase(it)) }
+		file.eachFileMatch mask, { File file ->
+			closure(pathFromBase(file.path))
+		}
 	}
 	/**
 	 * Fetch a list of all contents of a directory
@@ -220,7 +233,7 @@ class Store {
 	 */
 	void dirs(mask, Closure closure) {
 		file.traverse(type: FILES, nameFilter: mask) { File file ->
-			closure(new Store(file: file))
+			closure(new Store(pathFromBase(file.path)))
 		}
 	}
 	/**
@@ -238,10 +251,11 @@ class Store {
 	 * file or directory
 	 */
 	String toString() {
-		path
+		pathFromWebBase
 	}
 
 	File file
+	String pathFromWebBase
 
 	/**
 	 * Find a directory that doesn't exist - based on a timestamp (i.e.
@@ -255,7 +269,7 @@ class Store {
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquePath = "${timestamp}_${uniqifier++}_${camelCase(id)}"
 		}
-		pathFromBase(unique)
+		pathFromBase(unique.path)
 	}
 
 	static int uniqifier = 0
@@ -358,12 +372,12 @@ class Store {
 
 	@Override
 	public int hashCode() {
-		return path.hashCode()
+		return pathFromWebBase.hashCode()
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return path.equals(obj.path)
+		return pathFromWebBase.equals(obj.pathFromWebBase)
 	}
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)
