@@ -59,7 +59,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 				uri: requestURI.path,
 				fragment: requestURI.fragment,
 				cookie: (requestHeaders?.Cookie ?: [''])[0],
-				acceptEncoding: requestHeaders['Accept-Encoding'][0],
+				acceptEncoding: (requestHeaders?.'Accept-Encoding' ?: [''])[0],
 		)
 		Exchange exchange = new Exchange()
 		exchange.request(requestBody, header).loadResponse(responseBody) {

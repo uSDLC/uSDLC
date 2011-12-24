@@ -14,6 +14,8 @@ package usdlc
 class Grape extends groovy.grape.Grape {
 
 	static grab(Map dependency) {
+		// todo: think I'll go back to @Grab?
 		groovy.grape.Grape.grab dependency
+		// todo: grab source, etc if possible
 	}
 }
