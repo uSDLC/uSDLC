@@ -3,7 +3,7 @@
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
 	<link type="text/css" rel="stylesheet" href="/store/css/usdlc.css">
-	<% if (usdlc.config.Config.config.port == 80) { %>
+	<% if (usdlc.config.Config.config.port == "80") { %>
 	<link
 		href="https://plus.google.com/116900499382012938759"
 		rel="publisher"/>
@@ -81,7 +81,7 @@
 
 <div id="pasteList" href="rt/pasteList.html.groovy"></div>
 <script type="text/javascript" src='/store/js/usdlcPre.js'></script>
-<% if (usdlc.config.Config.config.port == 80) { %>
+<% if (usdlc.config.Config.config.port == "80") { %>
 <div style="position:absolute; bottom:10; left:10;">
 	<a href="https://plus.google.com/116900499382012938759?prsrc=3"
 	   style="text-decoration:none;" target="_blank"><img
