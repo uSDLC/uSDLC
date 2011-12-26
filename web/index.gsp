@@ -1,4 +1,4 @@
-<html>
+<html xmlns:g="">
 <head>
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
