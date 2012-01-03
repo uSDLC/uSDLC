@@ -1,4 +1,3 @@
-"use strict"
 $(function () {
 	window.usdlc.editSectionInFocus = function () {
 		$('.inFocus').each(function () {
@@ -6,8 +5,8 @@ $(function () {
 		})
 	}
 	$.extend(true, window.usdlc, {
-		actorDefault:      usdlc.cookie("actorDefault") || 'groovy',
-		reportsTabData:    {
+		actorDefault:  usdlc.cookie("actorDefault") || 'groovy',
+		reportsTabData:{
 			id:       'reportsTab',
 			label:    'Reports',
 			accessKey:'R',
@@ -27,7 +26,7 @@ $(function () {
 				}
 			]
 		},
-		reportItems:       function (items) {
+		reportItems:   function (items) {
 			usdlc.reportsTabData.elements[0].items = items
 		}
 	})
@@ -44,10 +43,10 @@ $(function () {
 	 */
 	function editSection(section) {
 		var $section = $(section)
-		usdlc.setFocus($section)
-		usdlc.highlight(false) // remove highlighting so save will stand out
+		//usdlc.highlight(false) // remove highlighting so save will stand out
 		usdlc.clearSynopses()
 		usdlc.scrollTo($section)
+		usdlc.clearFocus()
 		$section.ckeditor(function () {
 			usdlc.modalOn()
 		}, {
@@ -59,12 +58,14 @@ $(function () {
 				// saved content.
 				editor.destroy()
 				if (!updateContents) {
+					usdlc.setFocus($section)
 					usdlc.scrollBack()
 					usdlc.synopses()
 					return
 				}
 				usdlc.saveSection($section)
 				usdlc.scrollBack()
+				usdlc.setFocus($section)
 			},
 			on:          {
 				instanceReady:function (ev) {
@@ -170,13 +171,10 @@ $(function () {
 						case '':
 							linkRadioDefault = ext
 							break
-						case 'html':
-							if (url.indexOf("/index.html") != -1) {
-								url = url.substring(0, url.length - 11)
-								urlField.setValue(url)
-								ext = ''
-							}
-							linkRadioDefault = ext
+						case 'htm':
+							url = url.substring(0, url.length - 11)
+							urlField.setValue(url)
+							ext = ''
 							break
 						default:
 							linkRadioDefault = 'Actor'
@@ -204,7 +202,7 @@ $(function () {
 						label:  'Link Type',
 						items:  [
 							[ 'Child Page', '' ],
-							[ 'Sibling Page', 'html' ],
+							[ 'Sibling Page', 'htm' ],
 							[ 'Actor' ]
 						],
 						onClick:function () {

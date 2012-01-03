@@ -1,6 +1,8 @@
 package usdlc
+
+import usdlc.drivers.CoffeeScript
 import static usdlc.FileProcessor.fileProcessorWithGzip
-import static usdlc.JavaScript.javascriptBuilder
+import static usdlc.drivers.JavaScript.javascriptBuilder
 
 files = [
 		"lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css",
@@ -35,7 +37,7 @@ files = [
 		'lib/jquery/js/jquery.url.js',
 		'rt/js/base.js',
 		'rt/js/init.js',
-		'rt/js/section.js',
+		'rt/js/section.coffeescript',
 		'rt/js/template.js',
 		'lib/jquery/js/jquery.scrollTo.js',
 		'lib/jquery/js/jquery.jstree.js',

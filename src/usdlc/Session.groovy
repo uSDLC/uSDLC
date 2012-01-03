@@ -1,24 +1,14 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc
 
 import usdlc.db.Database
-
+/**
+ * entry = session.entry // null if doesn't exists
+ * entry = session.instance MyClass // creates new instance if needed
+ * entry = session MyClass // shortcut creates new instance if needed
+ * entry = session.entry { "create new entry" }   // sets first time only
+ */
 class Session {
-	static Map load(String key) {
+	static Session load(String key) {
 		boolean isNewSession = !key
 		if (isNewSession) {
 			long before = lastKey
@@ -34,23 +24,13 @@ class Session {
 					//noinspection GroovyEmptyCatchBlock
 					try {
 						instances[name].session = sessions[key]
-					} catch (exception) {}
+					} catch (e) {}
 				}
 				instances[name]
 			}
-			sessions[key] = [
-					key: key,
-					isNewSession: isNewSession,
-					created: System.currentTimeMillis(),
-					instances: [:],
-					instance: { Class ofClass ->
-						def name = ofClass.name
-						entry name, {ofClass.newInstance()}
-					},
-					entry: entry,
-			]
-			sessions[key].session = sessions[key]
-			sessions[key].persist = new Session(session: sessions[key])
+			sessions[key] = new Session(key: key, isNewSession: isNewSession)
+			sessions[key].persist = new PersistedSession(session:
+					sessions[key])
 		}
 		return sessions[key]
 	}
@@ -58,12 +38,47 @@ class Session {
 	static Map<String, Map> sessions = [:]
 	static long lastKey = 0
 
+	def data = [
+			instances: [:],
+			created: System.currentTimeMillis()
+	]
+
+	Session(Map init) { if (init) data << init }
+	/**
+	 * Returns a property if it exists. If not call a method by that name to
+	 * set the property (first time only). Otherwise, null.
+	 */
+	public Object getProperty(String name) { return data[name] }
+	/** We can set the property explicitly */
+	public void setProperty(String name, value) { data[name] = value }
+	/** or as an instance of a defined class */
+	public instance(Class c, Object[] args) {
+		if (!data[c.name])
+			data[c.name] = c.newInstance(args)
+		return data[c.name]
+	}
+	/** or from a closure (only called if property does not exist */
+	public Object invokeMethod(String name, Object args) {
+		if (data.containsKey(name)) return data[name]
+		def argv = (Object[]) args
+		if (argv.size()) {
+			if (argv[0] instanceof Closure) {
+				return data[name] = argv[0]()
+			}
+			if (argv[0] instanceof Class)
+				return data[name] = argv[0].newInstance()
+		}
+		return data[name] = null
+	}
+}
+
+class PersistedSession {
 	def session
 
 	def propertyMissing(String name) {
 		Database.connection { db ->
-			def sql = """select * from sessions where session=$key and
-key=$name"""
+			def sql = """select * from sessions
+				where session=$session.key and key=$name"""
 			db.sql.firstRow(sql)?.value
 		}
 	}

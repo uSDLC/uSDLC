@@ -1,7 +1,7 @@
 package usdlc.actor
 
-import usdlc.Jython
 import usdlc.Store
+import usdlc.drivers.Jython
 
 class JythonActor extends Actor {
 	Jython jython

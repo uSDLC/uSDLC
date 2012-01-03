@@ -15,8 +15,8 @@
  */
 package usdlc.actor
 
-import usdlc.CoffeeScript
 import usdlc.Store
+import usdlc.drivers.CoffeeScript
 
 /**
  * Parse coffee-script to java-script for the browser. Compress if flagged to do so.

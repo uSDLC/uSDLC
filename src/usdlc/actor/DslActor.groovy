@@ -1,7 +1,7 @@
 package usdlc.actor
 
-import usdlc.Grape
-import usdlc.Groovy
+import usdlc.drivers.Grape
+import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
 /**

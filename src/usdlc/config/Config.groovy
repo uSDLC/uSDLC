@@ -1,18 +1,3 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc.config
 
 import java.lang.reflect.Method
@@ -37,26 +22,45 @@ class Config {
 	static load(String environment, String baseDirectory, argList) {
 		baseDir = baseDirectory
 		slurper = new ConfigSlurper(environment)
-		config = parse('base')
+		config = parseOptions('base')
 		['webDriver', 'languages'].each { String scriptName ->
-			config.merge(parse(scriptName))
+			config.merge(parseOptions(scriptName))
 		}
 		config.baseDirectory = baseDirectory
 		Dictionary.commandLine(argList).each { String k,
 				String v ->
 			config[k] = v
 		}
+		// add home to source path so we can go app.blah
+		config.srcPath << new File(config.home).absolutePath
 		buildClassPath()
 		config.classPathString = config.srcPath.join(';')
 		config.tableVersions = loadTableVersions()
+		config.projects = [:]
 		runStartupScripts()
 		loaded = true
 	}
 
-	static Map parse(String scriptName) {
-		def url = new File(baseDir,
-				"/Options/Configuration/${scriptName}.groovy").toURI().toURL()
-		slurper.parse(url)
+	private static Map parseOptions(String scriptName) {
+		parse("/Options/Configuration/${scriptName}.groovy")
+	}
+
+	private static Map parse(String scriptPath) {
+		def file = new File(baseDir, scriptPath)
+		if (!file.exists()) return [:]
+		def url = file.toURI().toURL()
+		return slurper.parse(url)
+	}
+
+
+	static Map project(String name) {
+		if (!config.projects[name]) {
+			Map pc = parse("$config.home/$name/usdlc/Config.groovy")
+			if (!pc.paths) pc.paths = [:]
+			if (!pc.paths.p) pc.paths.p = name
+			config.projects[name] = pc
+		}
+		return config.projects[name]
 	}
 
 	static ConfigSlurper slurper

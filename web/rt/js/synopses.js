@@ -39,7 +39,16 @@ $(function() {
 
 	function loadSynopsis(link, processor) {
 		var path = link.attr('href')
-		if (path.indexOf('..') == -1 && path.indexOf('://') == -1) {
+		function isInHeader() { return link.closest('h3,h2,h1').size() > 0 }
+		function isInFooter() {
+			if (link.closest('.footer').size()) {
+				var ext = usdlc.splitUrl(path).ext
+				console.log(path+"="+ext)
+				return "html.gsp.htm".indexOf(ext) == -1
+			}
+			return false
+		}
+		if (isInHeader() || isInFooter()) {
 			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
 			var iid = link.attr('id') + '_inclusion'

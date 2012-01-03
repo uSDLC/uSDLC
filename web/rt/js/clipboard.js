@@ -16,7 +16,7 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-		copySectionInFocus : function(cutOrCopy) {
+		cutOrCopySectionInFocus : function(cutOrCopy) {
 			var toCut = usdlc.inFocus
 			if (toCut) {
 				var toMove = {}, toMoveList = []
@@ -64,6 +64,12 @@ $(function() {
 				return true
 			}
 			return false
+		},
+		copySectionInFocus : function() {
+			usdlc.cutOrCopySectionInFocus('copy')
+		},
+		cutSectionInFocus : function() {
+			usdlc.cutOrCopySectionInFocus('cut')
 		},
 		copySectionSuccessful : function(title, href) {
 			var toCut = usdlc.sectionBeingCut

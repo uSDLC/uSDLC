@@ -15,8 +15,10 @@
  */
 package usdlc.dsl
 
-geb = session.instance usdlc.Geb
-browse = { pageClass -> 
+import usdlc.drivers.Geb
+
+geb = session.instance Geb
+browse = { pageClass ->
 	browser = geb.browse(pageClass, authority)
 	this.$ = geb.browser.&$
 }

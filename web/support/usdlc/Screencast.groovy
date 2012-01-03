@@ -18,6 +18,7 @@ package usdlc
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import usdlc.actor.Actor
+import usdlc.drivers.WebDriver
 import static usdlc.config.Config.config
 
 class Screencast {

@@ -11,6 +11,7 @@ $ ->
 		html : 'htmlmixed'
 		htm : 'htmlmixed'
 		js : 'javascript'
+		json : 'javascript'
 		coffeescript : 'coffeescript'
 		coffee : 'coffeescript'
 		lua : 'lua'
@@ -40,7 +41,7 @@ $ ->
 		markdown : 'markdown'
 		ntriples : 'ntriples'
 		tiddlywiki : 'tiddlywiki'
-		
+
 	usdlc.getSourceEditorModes = ->
 		set = []
 		included = {}
@@ -49,9 +50,9 @@ $ ->
 				included[value] = true
 				set.push "/lib/CodeMirror/mode/#{value}/#{value}.js"
 		set
-		
+
 	usdlc.activeSourceEditor = null
-	
+
 	usdlc.saveSource = (force = usdlc.activeSourceEditor?.contentChanged) ->
 		if usdlc.inEditor and force
 			usdlc.deleteOutput()
@@ -71,7 +72,7 @@ $ ->
 			theme = if inEditor then 'night' else 'elegant'
 			codemirror.setOption 'theme', theme
 			codemirror.setOption 'readOnly', !inEditor
-			
+
 		codemirror = CodeMirror wrapper.get(0),
 			value : data
 			mode : syntax
@@ -105,7 +106,7 @@ $ ->
 					if event.srcElement.usdlcKeyEvent
 						event.stop()
 				false
-				
+
 		codemirror.url = url
 		codemirror.ex = new usdlc.Ex codemirror
 		wrapper.data 'codemirror', codemirror

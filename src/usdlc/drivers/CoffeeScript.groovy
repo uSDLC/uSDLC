@@ -1,4 +1,6 @@
-package usdlc
+package usdlc.drivers
+
+import usdlc.Store
 
 class CoffeeScript {
 	def bare, session

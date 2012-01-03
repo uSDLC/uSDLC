@@ -64,7 +64,7 @@
 					<p class='newsHeadline'>
 						${usdlc.News.cache.headline}
 					</p>
-					                                    ${usdlc.News.cache.description}
+					${usdlc.News.cache.description}
 				</div>
 			</div>
 		</td>
@@ -78,6 +78,7 @@
      action="loadContextMenu"></div>
 <div id="menuSourceEditor" class="contextMenu" href="rt/menuSourceEditor.html"
      action="loadContextMenu"></div>
+<img id=menuIcon src="lib/circular-icons/arrow_down.png" alt="">
 
 <div id="pasteList" href="rt/pasteList.html.groovy"></div>
 <script type="text/javascript" src='/store/js/usdlcPre.js'></script>

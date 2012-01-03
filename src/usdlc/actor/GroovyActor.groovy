@@ -15,9 +15,9 @@
  */
 package usdlc.actor
 
-import usdlc.Groovy
 import usdlc.Log
 import usdlc.Store
+import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
 /**
@@ -29,11 +29,14 @@ import static usdlc.config.Config.config
  */
 class GroovyActor extends Actor {
 	void init() {
-		if (!context.gse) {
-			def gse = new GroovyScriptEngine(config.srcPath as URL[])
+		if (!context.initialised) {
+			def gse = context.session.gse {
+				new GroovyScriptEngine(config.srcPath as URL[])
+			}
 			UsdlcBinding usdlcBinding = new UsdlcBinding(context, dslContext)
 			def dsl = new DslInclusions(binding: usdlcBinding)
 			context << [
+					initialised: true,
 					script: script,
 					usdlcBinding: usdlcBinding,
 					log: { String message -> Log.err message },

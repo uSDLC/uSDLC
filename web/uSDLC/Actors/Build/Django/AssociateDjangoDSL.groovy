@@ -1,0 +1,1 @@
+usdlc.DSL.associate('django', 'groovy')

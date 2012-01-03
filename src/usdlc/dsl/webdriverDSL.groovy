@@ -15,7 +15,9 @@
  */
 package usdlc.dsl
 
-web = session.instance usdlc.WebDriver
+import usdlc.drivers.WebDriver
+
+web = session.instance WebDriver
 by = org.openqa.selenium.By
 find = { target -> web.waitFor(target) {it} }
 click = { target -> web.click(target) }

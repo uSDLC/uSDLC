@@ -10,7 +10,7 @@ prompt = (title, content) ->
 	note title, content
 	server.waitForResponse()
 	recover()
-   
+
 create = (target) -> target.create(target.args...)
 cut = (target) -> target.cut(target.args...)
 append = (target) -> target.append(target.args...)
@@ -34,11 +34,11 @@ top = 'top'
 
 screencast = ->
 	args: arguments
-	create: (title, subtitle, synopsis) -> 
+	create: (title, subtitle, synopsis) ->
 		server.createScreencast title, subtitle, synopsis
 page = ->
 	args: arguments
-	create: (title, subtitle, synopsis) -> 
+	create: (title, subtitle, synopsis) ->
 		server.createPage title, subtitle, synopsis
 title = ->
 	args: arguments

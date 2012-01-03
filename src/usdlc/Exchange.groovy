@@ -22,7 +22,7 @@ class Exchange {
 		Header header
 		Map query, cookies
 		User user
-		Map session
+		Session session
 
 		String body() { inputStream.text }
 	}

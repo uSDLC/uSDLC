@@ -2,8 +2,9 @@ package usdlc.actor
 
 import groovy.transform.AutoClone
 import usdlc.Exchange
-import usdlc.Groovy
+import usdlc.Session
 import usdlc.Store
+import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
 @AutoClone class Actor {
@@ -37,11 +38,22 @@ import static usdlc.config.Config.config
 		context = binding
 		exchange = context.exchange
 		out = exchange?.response?.out
-		context.session = exchange?.request?.session ?: [:]
+		context.session = exchange?.request?.session ?: new Session()
 		context.getters = [:]
 		context.setters = [:]
 		if (!dslContext.getters) dslContext.getters = [:]
 		if (!dslContext.setters) dslContext.setters = [:]
+		if (script) {
+			// we have script - reference project setup
+			def project = script.fromHome
+			if (project) {
+				project = project.split('\\/')
+				if (project.size()) {
+					project = project[0]
+				}
+				context.setup = Groovy.loadClass("${project}.Setup") ?: [:]
+			}
+		}
 		init()
 		backingScripts.each { Store backingScript -> run(backingScript) }
 		if (script && !dslContext.dataSource) run(script)
@@ -49,8 +61,7 @@ import static usdlc.config.Config.config
 
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
-	 * Called to see if a URL refers to an actor/dsl. It creates an
-	 * instance of
+	 * Called to see if a URL refers to an actor/dsl. It creates an instance of
 	 * the class. Null is returned if no actor class or dsl script exists.
 	 */
 	static Actor load(Store store) {

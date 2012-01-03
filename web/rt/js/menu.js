@@ -1,23 +1,4 @@
-/*
- Copyright 2011 the Authors for http://usdlc.net
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
-
-/**
- * User: Paul Date: 5/01/11 Time: 8:28 AM
- */
-$(function() {
+$(function () {
 	setContextMenus()
 	setButtonBars()
 
@@ -30,7 +11,7 @@ $(function() {
 		var contextMenus = {}
 
 		usdlc.contextMenu = null
-		usdlc.getContextMenu = function(target) {
+		usdlc.getContextMenu = function (target) {
 			var contextMenuName = target.attr('contextMenu')
 			if (usdlc.inEditor) {
 				contextMenuName = 'sourceeditor'
@@ -43,13 +24,13 @@ $(function() {
 			contextMenuName = 'menu' + contextMenuName
 			return contextMenus[contextMenuName]
 		}
-		usdlc.onContextMenu = function(target, top, left) {
+		usdlc.onContextMenu = function (target, position) {
 			var contextMenu = usdlc.getContextMenu(target)
 			if (contextMenu) {
-				var div = contextMenu.css({
-					top : top,
-					left : left
-				})
+				if (position.left < 0) {
+					position.left = contextMenu.width() - position.left
+				}
+				var div = contextMenu.css(position)
 				var menuData = div.contextMenuData.clone()
 
 				function hotkey(index) {
@@ -70,10 +51,10 @@ $(function() {
 						'<li/>'))
 
 				div.contextMenu = new Menu(div, {
-					content : menuData,
-					maxHeight : 400,
-					flyOut : false,
-					backLink : false
+					content:  menuData,
+					maxHeight:400,
+					flyOut:   false,
+					backLink: false
 				});
 				div.contextMenu.menuExists = false
 				div.contextMenu.currentTarget = target
@@ -83,7 +64,19 @@ $(function() {
 		}
 
 		function onContextMenu(ev) {
-			usdlc.onContextMenu($(ev.currentTarget), ev.clientY, ev.clientX)
+			usdlc.onContextMenu($(ev.currentTarget),
+					{top:ev.clientY, left:ev.clientX, right:'auto'})
+			return false
+		}
+
+		usdlc.contextMenuOverIcon = function () {
+			offset = usdlc.inFocus.offset()
+			iconWidth = usdlc.menuIcon.width()
+			position = {
+				top: offset.top - iconWidth / 2,
+				left:usdlc.menuIcon.offset().left
+			}
+			usdlc.onContextMenu(usdlc.inFocus, position)
 			return false
 		}
 
@@ -99,13 +92,13 @@ $(function() {
 
 		$('.editable').live('contextmenu', onContextMenu).live('dblclick', onDblclick)
 
-		usdlc.loadContextMenu = function(element, data) {
+		usdlc.loadContextMenu = function (element, data) {
 			element.contextMenuData = $(data)
 			var contextMenuName = element.attr('id').toLowerCase()
 			var forSourceEditor = (contextMenuName == 'menusourceeditor')
 			contextMenus[contextMenuName] = element
 			var doc = $(document)
-			$('a kbd', element.contextMenuData).each(function() {
+			$('a kbd', element.contextMenuData).each(function () {
 				var kbd = $(this)
 				var key = kbd.text()
 				key = key.substring(1, key.length - 1)
@@ -113,7 +106,7 @@ $(function() {
 					key = 'ctrl+' + key.substring(1)
 				}
 				var a = kbd.parents('a')
-				doc.bind('keydown', key, function(event) {
+				doc.bind('keydown', key, function (event) {
 					if (!usdlc.inEditor == !forSourceEditor) {
 						event.srcElement.usdlcKeyEvent = true
 						a.click()
@@ -125,9 +118,9 @@ $(function() {
 	}
 
 	function setButtonBars() {
-		$('span.toolbar').each(function() {
+		$('span.toolbar').each(function () {
 			var tb = $(this)
-			$.get(usdlc.urlBase + '/rt/' + tb.attr('id'), function(data) {
+			$.get(usdlc.urlBase + '/rt/' + tb.attr('id'), function (data) {
 				tb.html(data)
 			})
 		})

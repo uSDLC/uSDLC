@@ -1,8 +1,12 @@
-package usdlc
+package usdlc.drivers
 
 import groovy.xml.NamespaceBuilder
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
+import usdlc.Ant
+import usdlc.Dictionary
+import usdlc.Log
+import usdlc.Store
 
 class Ivy {
 	Ivy(consoleWriter) {

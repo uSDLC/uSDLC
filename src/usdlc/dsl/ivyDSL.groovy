@@ -1,6 +1,6 @@
 package usdlc.dsl
 
-import usdlc.Ivy
+import usdlc.drivers.Ivy
 
 //exchange.response.html(false)
 worker = new Ivy(exchange.response.&write)

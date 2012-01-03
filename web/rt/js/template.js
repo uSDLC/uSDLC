@@ -135,6 +135,7 @@ $(function () {
 			 * page title back into the body temporarily.
 			 */
 			var focus = usdlc.inFocus
+			usdlc.clearFocus()
 			usdlc.cleanSections($('div.editable'))
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)

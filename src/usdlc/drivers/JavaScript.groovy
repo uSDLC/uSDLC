@@ -1,7 +1,8 @@
-package usdlc
+package usdlc.drivers
 
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.Scriptable
+import usdlc.Store
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.config.Config.config
 

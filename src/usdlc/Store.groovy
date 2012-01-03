@@ -1,40 +1,41 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc
 
+import usdlc.config.Config
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
 
-/**
- * Not all platforms that will use uSDLC will have access to a traditional
- * file system.
- * Google Appengine, for example, only allows data to be stored in BigTable -
- * the database.
- * For this reason, all uSDLC uses Store for persistence.
- * The long-term plan is to more the base persistence calls the platform
- * specific code.
- */
 class Store {
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
 	static Store base(String path = '') {
-		new Store(camelCase(path.replaceFirst(~/.*~/, config.home as String)))
+		path = path.replaceAll('\\\\', '/')
+		def matcher = pathRE.matcher(path)
+		def project = ''
+		if (matcher.size()) {
+			def (all, core, home, rest) = matcher[0]
+			// core if linked from outside, rest if linked from menu on left
+			core = (core.size() > 1) ? core : rest
+			core = core.split('/')
+			for (i in 0..<core.size()) {
+				if (core[i].size()  && core[i] != '~') {
+					project = core[i]
+					break
+				}
+			}
+			if (!rest.endsWith('/Config.groovy')) {
+				def pd = Config.project(project)
+				home = pd.paths[home]
+				home = home ? "/$home" : ''
+			}
+			path = "$config.home$home$rest"
+		}
+		new Store(camelCase(path), project ?: 'uSDLC')
 	}
-	private Store(String pathFromWebBase) {
+
+	static pathRE = ~/^(.*)~(\w*)(.*)$/
+
+	private Store(String pathFromWebBase, String project) {
 		if (pathFromWebBase[0] == '/') {
 			if (pathFromWebBase.size() > 1) {
 			pathFromWebBase = pathFromWebBase[1..-1]
@@ -43,6 +44,7 @@ class Store {
 			}
 		}
 		this.pathFromWebBase = pathFromWebBase
+		this.project = project
 		file = new File(config.baseDirectory as String, pathFromWebBase)
 	}
 	/**
@@ -59,7 +61,7 @@ class Store {
 	 * Sometimes we get a new store based on an old location
 	 */
 	Store rebase(String more = '') {
-		new Store("$parent/${camelCase(more)}")
+		new Store("$parent/${camelCase(more)}", project)
 	}
 	/**
 	 * If we need to read a source as a stream...
@@ -100,6 +102,8 @@ class Store {
 	@Lazy URI uri = file.toURI()
 	@Lazy URL url = uri.toURL()
 	@Lazy parts = split(pathFromWebBase)
+	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
+		pathFromWebBase[config.home.size()] : ''
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
@@ -233,7 +237,7 @@ class Store {
 	 */
 	void dirs(mask, Closure closure) {
 		file.traverse(type: FILES, nameFilter: mask) { File file ->
-			closure(new Store(pathFromBase(file.path)))
+			closure(new Store(pathFromBase(file.path), project))
 		}
 	}
 	/**
@@ -256,6 +260,7 @@ class Store {
 
 	File file
 	String pathFromWebBase
+	String project
 
 	/**
 	 * Find a directory that doesn't exist - based on a timestamp (i.e.

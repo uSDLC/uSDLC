@@ -1,7 +1,7 @@
 package usdlc.actor
 
-import usdlc.JavaScript
 import usdlc.Store
+import usdlc.drivers.JavaScript
 
 class RhinoActor extends Actor {
 	JavaScript javascript

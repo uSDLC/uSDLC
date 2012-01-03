@@ -15,8 +15,8 @@
  */
 package usdlc.actor
 
-import usdlc.CoffeeScript
 import usdlc.Store
+import usdlc.drivers.CoffeeScript
 
 class CoffeeActor extends RhinoActor {
 	void init() {

@@ -63,3 +63,9 @@ a span.ui-icon {
 	font-weight: bold;
 	text-align: center;
 }
+img#menuIcon {
+	position:absolute;
+	top: -8px;
+	left: 4px;
+	cursor: pointer;
+}

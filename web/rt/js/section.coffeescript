@@ -1,0 +1,146 @@
+$ ->
+	usdlc.highlight = (colour, element) ->
+		section = usdlc.getSection(element)
+		if section
+			if colour
+				url = "url(#{usdlc.urlBase}/rt/gradients/#{colour}-right.png)"
+				section.css(
+					backgroundImage : url
+					backgroundPosition : -10
+				)
+			else
+				section.css(backgroundImage : 'none')
+	###
+	Given an element (null for current focus), retrieve the section
+	containing it.
+	###
+	usdlc.getSection = (element) ->
+		section = $(element or usdlc.inFocus)
+		if not section.hasClass('editable')
+			section = section.parents('div.editable')
+		section
+	###
+	Each paragraph is a focus element. Highlight it if clicked on or
+	otherwise referenced to.
+	###
+	usdlc.setFocus = (element) ->
+		section = usdlc.getSection(element)
+		if not section.hasClass("inFocus")
+			usdlc.clearFocus()
+			usdlc.inFocus = section.addClass('inFocus ui-widget-content')
+			usdlc.contentTree.jstree('disable_hotkeys')
+			usdlc.pageContentsSausages.sausage("setFocus", section)
+			usdlc.menuIcon.prependTo(section)
+		section
+
+	usdlc.clearFocus = ->
+		if not usdlc.inFocus then return
+		$('.inFocus').removeClass('inFocus ui-widget-content')
+		usdlc.lastFocus = usdlc.inFocus
+		usdlc.inFocus = null
+		usdlc.contentTree.jstree('enable_hotkeys')
+		usdlc.menuIcon.detach()
+
+	usdlc.menuIcon = $('img#menuIcon').detach().
+		bind('click', -> usdlc.contextMenuOverIcon())
+
+	usdlc.toggleFocus = ->
+			if usdlc.inFocus
+				usdlc.clearFocus()
+			else
+				usdlc.setFocus(usdlc.lastFocus || $('div.section:first'))
+
+	usdlc.inFocus = null
+	usdlc.lastFocus = null
+	usdlc.hasFocus = ->
+		if usdlc.contextMenu and usdlc.contextMenu.is(":visible")
+			false # doesn't have focus of context menu up
+		else
+			usdlc.inFocus
+
+	usdlc.nextSectionId = ->
+		id = $('.section').length + 1
+		id++ while ($('div#s' + id).length > 0)
+		"s#{id}"
+
+	usdlc.upFocus = ->
+		return true unless usdlc.hasFocus()
+		focus = usdlc.inFocus.prev()
+		focus = $('div.section:last') if focus.length == 0
+		usdlc.setFocus(focus)
+		return false
+
+	usdlc.downFocus = ->
+		return true unless usdlc.hasFocus()
+		focus = usdlc.inFocus.next()
+		focus = $('div.section:first') if focus.length == 0
+		usdlc.setFocus(focus)
+		return false
+	###
+	Parse section title, subtitle, content, id and name (camel-case)
+	###
+	usdlc.parseSection = (section) ->
+		header = section.children().first()
+		title = header.text()
+		section.data =
+			title : title
+			subtitle : '...'
+			content : header.nextAll()
+			id : section.attr('id')
+			name : usdlc.camelCase(title)
+			header : header
+		if section.data.title.length > 32
+			section.data.subtitle = section.data.title
+			section.data.title = section.data.title.substring(0, 32)
+			section.data.name = usdlc.camelCase(section.data.title)
+		return section.data
+	###
+	Process the HTML and save he section
+	###
+	usdlc.saveSection = ($section) ->
+		baseId = "#{$section.attr('id')}a"
+		# Process links to see what they should do
+		$('a', $section).removeAttr('action').each( (idx) ->
+			self = $(this)
+			targetId = baseId + idx
+			self.attr('id', targetId) if not self.attr('id')
+			href = self.attr('href')
+			self.removeClass() # removes all classes so we can re-add
+			if href and href.indexOf(':') == -1
+				self.addClass('usdlc')
+
+				href = usdlc.camelCase(href)
+				self.addClass('star') if self.text() == '*'
+				if href.charAt(href.length - 1) == '/'
+					href += "index.html"
+				else if href.indexOf('.') == -1
+					href += "/index.html"
+				self.attr('href', href)
+
+				if usdlc.mimeType(href).clientExt != 'html' ||
+				href.substring(0, 1) == '~'
+					self.attr('action', 'runnable')
+					self.addClass('sourceLink')
+				else
+					self.attr('action', 'page')
+		)
+		usdlc.checkForSynopsis($section)
+		usdlc.savePage()
+
+	# Anything that has focus can be edited.
+	$('.editable').css('background-image', "none").live('click', (ev) ->
+		usdlc.setFocus(ev.currentTarget)
+		return true
+	).live('contextmenu', (ev) ->
+		usdlc.setFocus(ev.currentTarget)
+	)
+	# Alt key press and release triggers section menu
+	$(document).bind('keydown', ->
+		usdlc.inAlt = (event.altKey and event.keyCode == 18 and usdlc.inFocus)
+		return true
+	).bind('keyup', ->
+		if event.keyCode == 18 and usdlc.inAlt and usdlc.inFocus
+			usdlc.contextMenuOverIcon()
+		usdlc.inAlt = false
+		return true
+	)

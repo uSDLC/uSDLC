@@ -1,19 +1,4 @@
-###
- Copyright 2011 the Authors for http://usdlc.net
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-  http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-###
-window.usdlc =  
+window.usdlc =
 	synopses : -> # we will provide one with teeth after
 	###
 	 Given a path (from a URL), return the parent path - being the complete
@@ -67,7 +52,7 @@ window.onload = ->
 			[ '/lib/jquery/js/jquery.cookie.js', '/lib/jquery/js/jquery.sausage.js'
 					'/lib/jquery/js/jquery.hotkeys.js', '/lib/jquery/js/jquery.url.js',
 					'/rt/js/base.js' ]
-			[ '/rt/js/init.js' ], [ '/rt/js/section.js', '/rt/js/template.js' ] ]
+			[ '/rt/js/init.js' ], [ '/rt/js/section.coffeescript', '/rt/js/template.js' ] ]
 	postload = [
 			[ '/lib/jquery/js/fg.menu.js', '/lib/jquery/js/fg.menu.js',
 				'/lib/ckeditor/ckeditor.js', '/lib/jquery/js/jquery.scrollTo.js',
@@ -77,7 +62,7 @@ window.onload = ->
 				'/usdlc/dsl/dslAssociationList_js.groovy' ]
 			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
 				'/rt/js/menu.js', '/rt/js/moveSection.js', '/rt/js/clipboard.js',
-				'/rt/js/run.js', '/rt/js/htmlEditor.js', 
+				'/rt/js/run.js', '/rt/js/htmlEditor.js',
 				'/rt/js/sourceEditor.coffeescript', '/rt/js/ex.coffeescript',
 				'/rt/js/screencast.coffeescript' ] ]
 
@@ -85,6 +70,6 @@ window.onload = ->
 		usdlc.init.pageLayout()
 		usdlc.init.decoratePage()
 		postLoader = ->
-			loader(postload, -> 
-				loadSetInParallel(usdlc.getSourceEditorModes(), usdlc.init.finalise))
+			loader postload, ->
+				loadSetInParallel usdlc.getSourceEditorModes(), usdlc.init.finalise
 		usdlc.init.loadPage -> setTimeout postLoader, 500

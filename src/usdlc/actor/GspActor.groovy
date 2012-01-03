@@ -16,13 +16,11 @@
 package usdlc.actor
 
 import groovy.text.SimpleTemplateEngine
-import usdlc.JavaScript
 import usdlc.Store
-
 
 class GspActor extends Actor {
 	SimpleTemplateEngine engine;
-	
+
 	void init() {
 		engine = exchange.request.session.instance SimpleTemplateEngine
 	}
