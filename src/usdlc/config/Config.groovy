@@ -23,6 +23,7 @@ class Config {
 		baseDir = baseDirectory
 		slurper = new ConfigSlurper(environment)
 		config = parseOptions('base')
+		config.projects = [:]
 		['webDriver', 'languages'].each { String scriptName ->
 			config.merge(parseOptions(scriptName))
 		}
@@ -36,7 +37,6 @@ class Config {
 		buildClassPath()
 		config.classPathString = config.srcPath.join(';')
 		config.tableVersions = loadTableVersions()
-		config.projects = [:]
 		runStartupScripts()
 		loaded = true
 	}
@@ -51,13 +51,41 @@ class Config {
 		def url = file.toURI().toURL()
 		return slurper.parse(url)
 	}
-
-
+	/**
+	 * Project specific data is collected the first time a
+	 * project is accessed - by saving the bindings from running a script
+	 * 'projectDir/usdlc/Config.groovy'. You can get the project data here
+	 * or from any Store object with 'pd = store.project'.
+	 *
+	 * pd.name  Project name
+	 * pd.path [:] Paths used with ~
+	 * pd.path.p or p.path.home Project path - use '~p/rest'
+	 */
 	static Map project(String name) {
+		def home, configScript
+		switch (name) {
+			case 'uSDLC':
+				home = '.'
+				configScript = './uSDLC/Config.groovy'
+				break
+			case '':
+				home = config.home;
+				configScript = './Config.groovy'
+				break
+			default:
+				home = "$config.home/$name"
+				configScript = "$home/usdlc/Config.groovy"
+				break
+		}
+		return project(name, home, configScript)
+	}
+
+	static Map project(String name, String home, String base) {
 		if (!config.projects[name]) {
-			Map pc = parse("$config.home/$name/usdlc/Config.groovy")
-			if (!pc.paths) pc.paths = [:]
-			if (!pc.paths.p) pc.paths.p = name
+			Map pc = parse(base)
+			pc.name = name
+			pc.path = pc.path ?: [:]
+			pc.path.home = pc.path.p = pc.path.p ?: home
 			config.projects[name] = pc
 		}
 		return config.projects[name]

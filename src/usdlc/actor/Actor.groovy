@@ -4,6 +4,7 @@ import groovy.transform.AutoClone
 import usdlc.Exchange
 import usdlc.Session
 import usdlc.Store
+import usdlc.config.Config
 import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
@@ -33,27 +34,20 @@ import static usdlc.config.Config.config
 	 */
 	void init() {
 	}
-	/** Actors run with a known binding use by all in the session      */
+	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {
 		context = binding
 		exchange = context.exchange
 		out = exchange?.response?.out
+
 		context.session = exchange?.request?.session ?: new Session()
-		context.getters = [:]
-		context.setters = [:]
-		if (!dslContext.getters) dslContext.getters = [:]
-		if (!dslContext.setters) dslContext.setters = [:]
-		if (script) {
-			// we have script - reference project setup
-			def project = script.fromHome
-			if (project) {
-				project = project.split('\\/')
-				if (project.size()) {
-					project = project[0]
-				}
-				context.setup = Groovy.loadClass("${project}.Setup") ?: [:]
-			}
-		}
+		context.config = config
+		context.getters = context.getters ?: [:]
+		context.setters = context.setters ?: [:]
+		context.project = script ? script.project : Config.project('')
+		dslContext.getters = dslContext.getters ?: [:]
+		dslContext.setters = dslContext.setters ?: [:]
+
 		init()
 		backingScripts.each { Store backingScript -> run(backingScript) }
 		if (script && !dslContext.dataSource) run(script)

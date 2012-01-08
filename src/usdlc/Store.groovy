@@ -12,33 +12,32 @@ class Store {
 		path = path.replaceAll('\\\\', '/')
 		def matcher = pathRE.matcher(path)
 		def project = ''
-		if (matcher.size()) {
+		if (matcher) {
 			def (all, core, home, rest) = matcher[0]
 			// core if linked from outside, rest if linked from menu on left
 			core = (core.size() > 1) ? core : rest
 			core = core.split('/')
 			for (i in 0..<core.size()) {
-				if (core[i].size()  && core[i] != '~') {
+				if (core[i].size() && core[i] != '~') {
 					project = core[i]
 					break
 				}
 			}
-			if (!rest.endsWith('/Config.groovy')) {
-				def pd = Config.project(project)
-				home = pd.paths[home]
-				home = home ? "/$home" : ''
-			}
-			path = "$config.home$home$rest"
+			project = Config.project(project)
+			home = project.path[home] ?: config.home
+			path = "$home$rest"
+		} else {
+			project = Config.project('uSDLC')
 		}
-		new Store(camelCase(path), project ?: 'uSDLC')
+		new Store(camelCase(path), project)
 	}
 
 	static pathRE = ~/^(.*)~(\w*)(.*)$/
 
-	private Store(String pathFromWebBase, String project) {
+	private Store(String pathFromWebBase, project) {
 		if (pathFromWebBase[0] == '/') {
 			if (pathFromWebBase.size() > 1) {
-			pathFromWebBase = pathFromWebBase[1..-1]
+				pathFromWebBase = pathFromWebBase[1..-1]
 			} else {
 				pathFromWebBase = ''
 			}
@@ -48,7 +47,7 @@ class Store {
 		file = new File(config.baseDirectory as String, pathFromWebBase)
 	}
 	/**
-	 * Return a Store for a new (non-existent) file. It will refer to a new file
+	 * Return a Store for a non-existent file. It will refer to a new file
 	 * in /tmp. Use the ID to provide a reference name and file extension. All
 	 * files here are deleted every time uSDLC is started.
 	 */
@@ -282,7 +281,8 @@ class Store {
 	 * Find a file that doesn't exist - based on a timestamp (i.e.
 	 * 2011-02-05_14-55-38-489_5).
 	 * This path will sort correctly for creation date.
-	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test.txt/
+	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test
+	 * .txt/
 	 */
 	Store unique(name) {
 		Store.base uniquePath(id)
