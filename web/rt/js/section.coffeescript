@@ -110,19 +110,17 @@ $ ->
 				self.addClass('usdlc')
 
 				href = usdlc.camelCase(href)
-				self.addClass('star') if self.text() == '*'
-				if href.charAt(href.length - 1) == '/'
-					href += "index.html"
-				else if href.indexOf('.') == -1
-					href += "/index.html"
 				self.attr('href', href)
 
-				if usdlc.mimeType(href).clientExt != 'html' ||
-				href.substring(0, 1) == '~'
+				endsInSlash = (href.charAt(href.length - 1) == '/')
+				isPage = endsInSlash or (/[^\/\\~\.]+/.test(href))
+				isHtml = isPage or (usdlc.mimeType(href).clientExt == 'html')
+
+				if isHtml
+					self.attr('action', 'page')
+				else
 					self.attr('action', 'runnable')
 					self.addClass('sourceLink')
-				else
-					self.attr('action', 'page')
 		)
 		usdlc.checkForSynopsis($section)
 		usdlc.savePage()
