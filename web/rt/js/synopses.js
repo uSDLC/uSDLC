@@ -43,7 +43,6 @@ $(function() {
 		function isInFooter() {
 			if (link.closest('.footer').size()) {
 				var ext = usdlc.splitUrl(path).ext
-				console.log(path+"="+ext)
 				return "html.gsp.htm".indexOf(ext) == -1
 			}
 			return false

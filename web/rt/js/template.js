@@ -129,7 +129,7 @@ $(function () {
 			}
 			return p
 		},
-		savePage:            function () {
+		savePage: function() {
 			/*
 			 * Give back to the usdlc.server.servletengine.server - after moving
 			 * page title back into the body temporarily.
