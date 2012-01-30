@@ -30,9 +30,7 @@ class DslActor extends GroovyActor {
 
 	void init() {
 		super.init()
-		context << [
-		        grab: { Map dependency -> Grape.grab(dependency) }
-		]
+		context << [grab: { Map dependency -> Grape.grab(dependency) }]
 		Groovy.run(languageScriptClass, new UsdlcBinding(dslContext, context))
 	}
 	/**

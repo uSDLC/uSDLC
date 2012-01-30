@@ -33,7 +33,7 @@ import static usdlc.config.Config.config
 			lastRunner = [
 					url: rq.header.with { "http://$host$uri?$query" },
 					page: rq.query.page,
-					sections: rq.query.sections
+					sections: rq.query.sections.split(',') as Set
 			]
 		}
 		rerun = rerun || exchange.request.query.rerun
@@ -52,67 +52,74 @@ import static usdlc.config.Config.config
 	 * process each section looking for sub-pages to run and actors to run
 	 * afterwards. If no sections are provided, all sections processed.
 	 */
-	void runSectionsOnPage(Store page, String sectionsToRunCsv = '') {
+	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
 		currentPage = page
 		Page html = new Page(page)
 		def sections = html.sections
-		if (sectionsToRunCsv) {
-			sections = sections.select(
-					'div#' + sectionsToRunCsv.replaceAll(/,/, ',div#'))
+		if (sectionsToRun) {
+			sections = sections.findAll { it.id in sectionsToRun }
 		}
-		def linkSelector = 'a[action=page],a[action=runnable]'
-		def links = sections.select(linkSelector)
-		if (links.size()) {
-			write """<html><head>
-					<link type='text/css' rel='stylesheet'
-						href='$config.urlBase/rt/outputFrame.css'>
-				</head><body>
-					<div id='output'>"""
-			def actors = []
-			def hrefs = [:]
-			// Walk through each section specified and run linked pages
-			links.each { link ->
-				String href = link.attr('href')
-				hrefs[href] = link
-				def linkStore = page.rebase(href)
-				switch (link.attr('action')) {
-					case 'page':
-						def clone = this.clone()
-						clone.onScreen = false
-						clone.runSectionsOnPage(linkStore)
-						break
-					case 'runnable':
-						actors.push(linkStore)
-						break
-					default:
-						break
+		sections.each { section ->
+			def empty = true
+
+			section.links('a[action=page],a[action=runnable]') { link ->
+				if (empty) { writeLinkHeader(); empty = false }
+				runLink(link, page)
+			}
+			if (!empty) {
+				wrapOutput(['<div class="gray">', '</div>']) {
+					write "Page $currentPage.parent"
 				}
-			}
-			wrapOutput([
-					'<div class="gray">',
-					'</div>'
-			]) { write "Page $currentPage.parent" }
-			// afterwards run any actors in the referenced sections
-			if (actors) runActorsOnPage(actors)
-			// modify source with results of the runs for this page
-			if (onScreen) {
-				linkStates.each { href, state ->
-					js("parent.usdlc.actorState('$href', '$state')")
-					if (href in hrefs) {
-						hrefs[href].attr('class', "usdlc sourceLink $state")
-					}
+				if (actors) { runActorsOnPage(actors) }
+				if (onScreen) { updateLinkStates() }
+
+				String text = html.select('body').html()
+				def path = exchange.store.pathFromWebBase
+				if (path.endsWith('.sectionRunner')) {
+					exchange.store = Store.base(path[0..-15])
 				}
+				exchange.save(text)
+				write '</div></body></html>'
 			}
-			String text = html.select('body').html()
-			def path = exchange.store.pathFromWebBase
-			if (path.endsWith('.sectionRunner')) {
-				exchange.store = Store.base(path[0..-15])
-			}
-			exchange.save(text)
-			write '</div></body></html>'
 		}
 	}
 
+	private updateLinkStates() {
+		linkStates.each { href, state ->
+			js("parent.usdlc.actorState('$href', '$state')")
+			if (href in hrefs) {
+				hrefs[href].attr('class', "usdlc sourceLink$state")
+			}
+		}
+	}
+
+	private writeLinkHeader() {
+		write """<html><head>
+							<link type='text/css' rel='stylesheet'
+								href='$config.urlBase/rt/outputFrame.css'>
+						</head><body>
+							<div id='output'>"""
+	}
+
+	private runLink(link, page) {
+		String href = link.attr('href')
+		hrefs[href] = link
+		def linkStore = page.rebase(href)
+		switch (link.attr('action')) {
+			case 'page':
+				def clone = this.clone()
+				clone.onScreen = false
+				clone.runSectionsOnPage(linkStore)
+				break
+			case 'runnable':
+				actors.push(linkStore)
+				break
+			default:
+				break
+		}
+	}
+
+	def hrefs = [:], actors = []
 	def onScreen = true
 	def currentPage
 	def linkStates = [:]
@@ -127,7 +134,7 @@ import static usdlc.config.Config.config
 			runFiles(~/^Cleanup\..*/, base)
 		} catch (AssertionError assertion) {
 			reportException(assertion)
-		} catch (Throwable throwable) {
+		} catch (throwable) {
 			reportException(throwable)
 			throwable.printStackTrace()
 		} finally {
@@ -164,7 +171,7 @@ import static usdlc.config.Config.config
 		actorState = 'running'
 		def actor = load(actorStore)
 		if (actor) {
-			wrapOutput(currentActor) {actor.run(context)}
+			wrapOutput(currentActor) { actor.run(context) }
 			actorState = 'succeeded'
 		}
 	}
@@ -207,7 +214,7 @@ import static usdlc.config.Config.config
 		}
 		reportError {
 			write throwable.message
-			if (trace) write "\n\n${trace.toString()}"
+			if (trace) { write "\n\n${trace.toString()}" }
 		}
 		actorState = 'failed'
 	}
@@ -217,7 +224,7 @@ import static usdlc.config.Config.config
 	 * it as something bad to tell the user.
 	 */
 	def reportError(String text) {
-		reportError({write text})
+		reportError {write text}
 	}
 
 	def reportError(Closure writeContent) {
@@ -261,6 +268,6 @@ import static usdlc.config.Config.config
 	 * Write text to response output stream
 	 */
 	def write(String text) {
-		if (!rerun) exchange.response.write text
+		if (!rerun) { exchange.response.write text }
 	}
 }

@@ -5,31 +5,28 @@ import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
 
 class Store {
+/**
+ * @return root html document in uSDLC project
+ */
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
 	static Store base(String path = '') {
 		path = path.replaceAll('\\\\', '/')
 		def matcher = pathRE.matcher(path)
-		def project = ''
+		path = camelCase(path)
 		if (matcher) {
+			//noinspection GroovyUnusedAssignment
 			def (all, core, home, rest) = matcher[0]
 			// core if linked from outside, rest if linked from menu on left
-			core = (core.size() > 1) ? core : rest
-			core = core.split('/')
-			for (i in 0..<core.size()) {
-				if (core[i].size() && core[i] != '~') {
-					project = core[i]
-					break
-				}
-			}
-			project = Config.project(project)
+			def projectName = ((core.size() > 1) ? core : rest).split('/').
+					find { it.size() && it != '~' } ?: ''
+			def project = Config.project(projectName)
 			home = project.path[home] ?: config.home
 			path = "$home$rest"
-		} else {
-			project = Config.project('uSDLC')
+			return new Store(path, project)
 		}
-		new Store(camelCase(path), project)
+		new Store(path, Config.project('uSDLC'))
 	}
 
 	static pathRE = ~/^(.*)~(\w*)(.*)$/
@@ -89,7 +86,7 @@ class Store {
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	public mkdirs() {
+	void mkdirs() {
 		new File(config.baseDirectory, parent).mkdirs()
 	}
 
@@ -102,15 +99,14 @@ class Store {
 	@Lazy URL url = uri.toURL()
 	@Lazy parts = split(pathFromWebBase)
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
-		pathFromWebBase[config.home.size()] : ''
+		pathFromWebBase[config.home.size()..-1] : ''
+	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
+
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
-		if (drop >= pathFromWebBase.size()) {
-			return ''
-		} else {
-			return pathFromWebBase[0..-drop]
-		}
+		if (drop >= pathFromWebBase.size()) return ''
+		pathFromWebBase[0..-drop]
 	}
 	/**
 	 * Return a string being the file path relative to the base directory.
@@ -119,7 +115,7 @@ class Store {
 		if (path.startsWith(config.baseDirectory)) {
 			path = path[config.baseDirectory.size()..-1]
 		}
-		return path
+		path
 	}
 	/**
 	 * Relative path from some base directory (store may be of file in
@@ -259,7 +255,7 @@ class Store {
 
 	File file
 	String pathFromWebBase
-	String project
+	Map project
 
 	/**
 	 * Find a directory that doesn't exist - based on a timestamp (i.e.
@@ -285,7 +281,7 @@ class Store {
 	 * .txt/
 	 */
 	Store unique(name) {
-		Store.base uniquePath(id)
+		Store.base uniquePath(name)
 	}
 	/**
 	 * Convert any sentence into a single camel-case word. It remove all
@@ -375,15 +371,35 @@ class Store {
 		ant.delete(file: file.path)
 	}
 
-	@Override
-	public int hashCode() {
-		return pathFromWebBase.hashCode()
-	}
+	@Override int hashCode() { pathFromWebBase.hashCode() }
 
-	@Override
-	public boolean equals(Object obj) {
-		return pathFromWebBase.equals(obj.pathFromWebBase)
-	}
+	boolean equals(Object obj) { pathFromWebBase == obj.pathFromWebBase }
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)
+	/**
+	 * Retrieve the root page file for each project (excluding uSDLC)
+	 */
+	static Store[] getProjectRoots() {
+		def roots = []
+		Store.base('~/').file.eachDir { File file ->
+			if (file.name.toLowerCase() != 'usdlc' &&
+			  new File("$file.absolutePath/usdlc").exists()) {
+				def href = "~/$file.name/usdlc/index.html"
+				def store = Store.base(href)
+				def exists = store.exists()
+				if (!exists) {
+					href = "~/$file.name/usdlc/index.gsp"
+					store = Store.base(href)
+					exists = store.exists()
+				}
+				if (exists) roots << store
+			}
+		}
+		roots
+	}
+	/**
+	 * @return Retrieve the root page of the uSDLC project
+	 */
+	static Store getUsdlcRoot() { Store.base('frontPage.html') }
+
 }

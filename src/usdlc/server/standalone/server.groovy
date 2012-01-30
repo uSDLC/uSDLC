@@ -24,8 +24,8 @@ Config.load('standalone', 'web', args)
 
 def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port/$config.urlBase"
-System.out.println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
-println """
+println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
+println '''
 Copyright 2011 the Authors for http://usdlc.net
 use http://github/usdlc/usdlc to confirm author contribution
 
@@ -38,7 +38,7 @@ software distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-"""
+'''
 
 HttpServer server
 def socket = new InetSocketAddress(config.port as Integer)
@@ -62,7 +62,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 				acceptEncoding: (requestHeaders?.'Accept-Encoding' ?: [''])[0],
 		)
 		Exchange exchange = new Exchange()
-		exchange.request(requestBody, header).loadResponse(responseBody) {
+		exchange.processRequest(requestBody, header).loadResponse(responseBody) {
 			exchange.response.header.each { key, value ->
 				httpExchange.responseHeaders.add(key, value)
 			}

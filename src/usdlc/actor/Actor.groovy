@@ -27,13 +27,11 @@ import static usdlc.config.Config.config
 	/**
 	 * Implement by concrete classes
 	 */
-	void run(Store script) {
-	}
+	void run(Store script) {}
 	/**
 	 * Initialisation before running backing or target scripts
 	 */
-	void init() {
-	}
+	void init() {}
 	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {
 		context = binding
@@ -49,9 +47,10 @@ import static usdlc.config.Config.config
 		dslContext.setters = dslContext.setters ?: [:]
 
 		init()
-		backingScripts.each { Store backingScript -> run(backingScript) }
-		if (script && !dslContext.dataSource) run(script)
+		backingScripts.each { Store backingScript -> activate(backingScript) }
+		if (script && !dslContext.dataSource) activate(script)
 	}
+	void activate(Store script) { run(currentlyRunningScript = script) }
 
 	static internalExceptions = ~/\.groovy\.|^groovy\.|\.java\.*/
 	/**
@@ -82,7 +81,7 @@ import static usdlc.config.Config.config
 	}
 
 	private static retrieveDefinitions(String language, Map data) {
-		def dsl = "${language.toLowerCase()}DSL"
+		def dsl = "${language.toLowerCase()}DSL", scripts = []
 		config.dslSourcePath.each { String path ->
 			def base = Store.base(path)
 			base.dirs(~/${dsl}\..*/) { Store store ->
@@ -90,24 +89,25 @@ import static usdlc.config.Config.config
 				def parentDSL = "${parentLanguage}DSL"
 				switch (parentLanguage) {
 					case language:
-						data.scripts << store
+						scripts << store
 						break
 					case 'groovy':
 						data.groovyDSL = new DslActor(parentDSL)
 						break
 					default:
 						retrieveDefinitions(parentLanguage, data)
-						data.scripts << store
+						scripts << store
 						break
 				}
 			}
 		}
+		data.scripts = scripts.unique()
 		if (!data.baseLanguage) data.baseLanguage = language
 	}
 	/**
 	 * The script we want to run
 	 */
-	Store script
+	Store script, currentlyRunningScript
 	/**
 	 * Keep a cache of previous instances - one per language - so we don't
 	 * have to recompile. The cache includes

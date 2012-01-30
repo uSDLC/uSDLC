@@ -1,7 +1,7 @@
 package usdlc.config
 
 dslClassPath = ['usdlc/dsl/']
-dslSourcePath = ['support/usdlc/']
+dslSourcePath = ['support/usdlc/dsl/', 'support/usdlc/', '../src/usdlc/dsl/']
 
 alwaysCheckForRecompile = true
 

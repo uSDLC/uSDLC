@@ -28,7 +28,7 @@ class Exchange {
 	}
 	Request request
 
-	Exchange request(InputStream inputStream, Header header) {
+	Exchange processRequest(InputStream inputStream, Header header) {
 		try {
 			request = new Request()
 			request.inputStream = inputStream
@@ -39,7 +39,7 @@ class Exchange {
 				user = new User(cookies['userId'] ?: 'anon')
 				session = Session.load(cookies['usdlc-session'] as String)
 				session.exchange = this
-				return
+				//return
 			}
 			setStore(header.uri)
 		} catch (problem) {
@@ -57,10 +57,7 @@ class Exchange {
 		def post = '', isStatic = false
 
 		void setSessionCookie(String session) {
-			header['Set-Cookie'] =
-				'usdlc-session=$session;' +
-						'Path=/;' +
-						'Expires=Sun, 17 Jan 2038 19:14:07 GMT'
+			header['Set-Cookie'] = "usdlc-session=$session;Path=/;$expiryDate"
 		}
 
 		void print(Object text) {
@@ -96,38 +93,34 @@ class Exchange {
 			isStatic
 		}
 	}
+	static expiryDate = 'Expires=Sun, 17 Jan 2038 19:14:07 GMT'
 
-	def loadResponse(OutputStream outputStream,
-			Closure sendResponseHeader) {
+	def loadResponse(OutputStream outputStream, Closure sendResponseHeader) {
 		this.sendResponseHeader = sendResponseHeader
 		try {
 			String action = request.query['action'] ?: 'read'
 			response = createResponse(outputStream)
 
-			if (request.user.authorised(store, action))
-				switch (action) {
-					case 'save':    // saves html and actor
-						save(request.body())
-						def after = request.query['after'] ?: ''
-						staticResponse "usdlc.highlight('sky');$after"
-						break
-					case 'raw':    // actors sent rather than run (editing)
+			if (request.user.authorised(store, action)) switch (action) {
+				case 'save':    // saves html and actor
+					save(request.body())
+					def after = request.query['after'] ?: ''
+					staticResponse "usdlc.highlight('sky');$after"
+					break
+				case 'raw':    // actors sent rather than run (editing)
+					staticResponse store.read()
+					break
+				default:
+					checkForStaticGzip()
+					Actor actor = Actor.load(store)
+					if (actor) {
+						dynamicResponse { actor.run([exchange: this]) }
+					} else {
 						staticResponse store.read()
-						break
-					default:
-						checkForStaticGzip()
-						Actor actor = Actor.load(store)
-						if (actor) {
-							dynamicResponse { actor.run([exchange: this]) }
-						} else {
-							staticResponse store.read()
-						}
-						break
-				}
-			else {
-				if (action == 'save') {
-					staticResponse "usdlc.highlight('red');"
-				}
+					}
+					break
+			} else if (action == 'save') {
+				staticResponse "usdlc.highlight('red');"
 			}
 		} catch (problem) {
 			problem.printStackTrace()
@@ -161,7 +154,7 @@ class Exchange {
 		response.out = new PrintStream(outputStream, true)
 		response.header['Content-Type'] =
 			request.query.mimeType ?: mimeType(store.pathFromWebBase)
-		return response
+		response
 	}
 	/**
 	 * Check to see if there is a gzip on disk before running actor or sending
@@ -185,7 +178,7 @@ class Exchange {
 	void setStore(String path) {
 		String urlBase = config.urlBase
 		if (path.startsWith(urlBase)) {
-			path = path.substring(urlBase.size())
+			path = path[urlBase.size()..-1]
 		}
 		store = Store.base(path)
 		inferredTarget = (store.pathFromWebBase.indexOf('.') == -1)
