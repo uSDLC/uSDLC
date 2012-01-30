@@ -10,8 +10,13 @@ class Screencast {
 	boolean client(cmd, params) {
 		sleep(stepDelay)
 		params = (params as List).flatten().collect {
-			it ? /'${it.toString().
-					replaceAll(/'/, /\\'/).replaceAll("\n", /\\n/)}'/ : "''"
+			if (it) {
+				def line = it as String
+				def item = line.replaceAll(/'/, /\\'/).replaceAll('\n', /\\n/)
+				"'$item'"
+			} else {
+				"''"
+			}
 		}.join(',')
 		script("usdlc.screencast.$cmd($params)")
 		true
@@ -57,7 +62,7 @@ class Screencast {
 		assert currentElement.text =~ regex
 	}
 
-	def web, currentElement, session, stepDelay = 1
+	def web = null, currentElement = null, session = null, stepDelay = 1
 
 	void page(store, title, subtitle, synopsis) {
 		session.screencastPage = store

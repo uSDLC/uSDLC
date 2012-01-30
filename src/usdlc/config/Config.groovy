@@ -13,7 +13,7 @@ import usdlc.actor.GroovyActor
  */
 
 class Config {
-	final public static Map config
+	public static Map config
 	static loaded
 	/**
 	 * Must be called early on by the server main program to initialise the
