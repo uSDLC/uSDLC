@@ -1,1 +1,2 @@
-usdlc.DSL.associate('django', 'groovy')
+package usdlc
+DSL.associate('django', 'coffee')

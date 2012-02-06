@@ -8,6 +8,10 @@ alwaysCheckForRecompile = true
 compilers = [
 		hs: [
 				compile: ['ghc -outputdir $outputDir ${source}'],
-				run: ['$outputDir/$name'],
+				run: ['$outputDir/$command'],
 		],
+		py: [
+				compile: [],
+				run: ['python $command'],
+		]
 ]

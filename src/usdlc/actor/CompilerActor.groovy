@@ -22,18 +22,20 @@ class CompilerActor extends Actor {
 
 			Compiler compiler = compilers[language] as Compiler
 			def binding = [
+					currentDir: '.',
+					outputStream: out,
 					outputDir: tmpDir.absolutePath,
-					name: full.parts.name,
+					command: full.parts.name,
 					Source: full.absolutePath,
 			]
 
 			fileProcessor(full.pathFromWebBase, context.compiles[language], {
 				Store source, Writer out -> out.write(source.text)
 			}, { Store source -> // only compile on change
-				compiler.compile.execute(binding, out)
+				compiler.compile.execute(binding)
 			})
 			// run every time
-			compiler.run.execute(binding, out)
+			compiler.run.execute(binding)
 		}
 	}
 

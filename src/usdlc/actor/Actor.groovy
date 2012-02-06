@@ -9,28 +9,20 @@ import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
 @AutoClone class Actor {
-	/** variables to pass between scripts as globals        */
+	/** variables to pass between scripts as globals */
 	def context = [:]
 	def dslContext = [:]
-	/** Http Exchange data - including request and response       */
+	/** Http Exchange data - including request and response */
 	Exchange exchange
-	/** Convenience to write to the response/browser       */
+	/** Convenience to write to the response/browser */
 	PrintStream out
-	/**
-	 * Set to false if you want the actor to be ignored
-	 */
+	/** Set to false if you want the actor to be ignored */
 	boolean exists = true
-	/**
-	 * A list of scripts used to build up the DSL
-	 */
+	/** A list of scripts used to build up the DSL */
 	def backingScripts = []
-	/**
-	 * Implement by concrete classes
-	 */
+	/** Implement by concrete classes */
 	void run(Store script) {}
-	/**
-	 * Initialisation before running backing or target scripts
-	 */
+	/** Initialisation before running backing or target scripts */
 	void init() {}
 	/** Actors run with a known binding use by all in the session */
 	void run(Map binding) {

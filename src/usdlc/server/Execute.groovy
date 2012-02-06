@@ -20,11 +20,17 @@ class Execute {
 	}
 	/**
 	 * Run a predefined list of commands - given options to fill in.
+	 * Predefined options:
+	 *
+	 * currentDir:      directory to run from (defaults to same as calling app)
+	 * outputStream:    steam to send stdout and stderr (defaults to console)
 	 */
-	public execute(Map options, OutputStream out) {
+	def execute(Map options) {
+		def currentDir = new File(options.currentDir ?: '.')
+		def out = options.outputStream ?: System.out
 		commands.each { Template template ->
 			String command = template.make(options)
-			Process proc = command.execute()
+			Process proc = command.execute(null, currentDir)
 			proc.consumeProcessOutput(out, out)
 		}
 	}

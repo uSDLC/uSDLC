@@ -1,34 +1,41 @@
-<div id="pageTitle" class="editable" uuid="ce27b8fc-860e-4659-95a6-fbfd9ac90689"> 
- <h1> CSV Data Files</h1> 
- <h2> The lowest common data denominator</h2> 
-</div> 
-<div id="s1" contextmenu="section" class="editable section"> 
- <p> CSV stands for Comma Separated Variables. All spreadsheets and most database clients can be asked to create CSV files. There is no standard. Comma is common, but so is tab and column alignment (COBOL). The data may contain the separator, so a mechanism to quote each variable is used. This is most commonly single or double-quotes, but percent is also used. Lastly, some mechanisms allow a quoted variable to include multiple lines.</p> 
-</div> 
-<div id="s2" contextmenu="section" class="editable section"> 
- <h1> Uploading a CSV File</h1> 
- <p> Select the upload menu option for a highlighted selection. As with all uploads, a copy will be placed in the current section. If the file is new a link will be added to the end of the section. If the file selected has a csv extension, it's contents will be displayed. The links at the end of this section was created with this process.</p> 
-</div> 
-<div id="s4" contextmenu="section" class="editable section"> 
- <h1> Displaying a CSV File</h1> 
- <p> As for all linked files, the CSV will display at the end of the section if not hidden on request. As a CSV is a representation of table data it is parsed and displayed as a table. If the data does not display correctly then it also will not process correctly, so scan the table when adding or changing data.</p> 
-</div> 
-<div id="s3" contextmenu="section" class="editable section code synopsis"> 
- <h1><a id="s3a0" action="runnable" class="usdlc sourceLink succeeded" href="EditingACSVFile.csv">Editing a CSV File</a></h1> 
- <p> Clicking the link or double-clicking the contents will enter edit mode using a text editor. A text editor provides more flexibility than a table editor.</p> 
-</div> 
-<div id="s5" contextmenu="section" class="editable section"> 
- <h1> CSV Format</h1> 
- <p> The default format consists of one title line, comma separators and single or double quotes. Multiple lines are allowed in quoted variables. Spaces outsided of quoted variables will be trimmed - left and right.&nbsp;</p> 
-</div> 
-<div id="s6" contextmenu="section" class="editable section"> 
- <h1> Other Formats</h1> 
- <p> Formatting expectations can be changed on page setup, section setup or for a specific data load.</p> 
-</div> 
-<div id="s7" contextmenu="section" class="editable section synopsis"> 
- <h1><a id="s7a0" action="runnable" class="usdlc sourceLink succeeded" href="CSVProcessing.groovy">CSV Processing</a></h1> 
- <p> All scripts have access to a csv processor. Just put <strong><em>dsl.csv</em></strong> in your page Setup script. Check the footer of this page for an example.</p> 
-</div> 
-<div id="s2" contextmenu="section" class="editable section footer synopsis"><div>
-	&nbsp; <a class="usdlc" href="../index.html" id="s2a3" action="page">Parent</a> - <a class="usdlc sourceLink" href="Setup.groovy" id="s2a1" action="runnable">Setup</a>&nbsp;-&nbsp; <a class="usdlc sourceLink" href="Cleanup.groovy" id="s2a0" action="runnable">Cleanup</a>&nbsp;-&nbsp; <a class="usdlc sourceLink" href="/~/uSDLC/src/usdlc/dsl/csvDSL.groovy" id="s16a0" action="runnable">csvDSL</a>&nbsp;-&nbsp; <a class="usdlc sourceLink" href="~/uSDLC/src/usdlc/CSV.groovy" id="s16a1" action="runnable">CSV</a></div>
+<div id="pageTitle" class="editable" uuid="ce27b8fc-860e-4659-95a6-fbfd9ac90689">
+ <h1> CSV Data Files</h1>
+ <h2> The lowest common data denominator</h2>
+</div>
+<div id="s1" contextmenu="section" class="editable section">
+ <p> CSV stands for Comma Separated Variables. All spreadsheets and most database clients can be asked to create CSV files. There is no standard. Comma is common, but so is tab and column alignment (COBOL). The data may contain the separator, so a mechanism to quote each variable is used. This is most commonly single or double-quotes, but percent is also used. Lastly, some mechanisms allow a quoted variable to include multiple lines.</p>
+</div>
+<div id="s2" contextmenu="section" class="editable section">
+ <h1> Uploading a CSV File</h1>
+ <p> Select the upload menu option for a highlighted selection. As with all uploads, a copy will be placed in the current section. If the file is new a link will be added to the end of the section. If the file selected has a csv extension, it's contents will be displayed. The links at the end of this section was created with this process.</p>
+</div>
+<div id="s4" contextmenu="section" class="editable section">
+ <h1> Displaying a CSV File</h1>
+ <p> As for all linked files, the CSV will display at the end of the section if not hidden on request. As a CSV is a representation of table data it is parsed and displayed as a table. If the data does not display correctly then it also will not process correctly, so scan the table when adding or changing data.</p>
+</div>
+<div id="s3" contextmenu="section" class="editable section code synopsis">
+ <h1><a id="s3a0" action="runnable" class="usdlc sourceLink succeeded" href="EditingACSVFile.csv">Editing a CSV File</a></h1>
+ <p> Clicking the link or double-clicking the contents will enter edit mode using a text editor. A text editor provides more flexibility than a table editor.</p>
+</div>
+<div id="s5" contextmenu="section" class="editable section">
+ <h1> CSV Format</h1>
+ <p> The default format consists of one title line, comma separators and single or double quotes. Multiple lines are allowed in quoted variables. Spaces outsided of quoted variables will be trimmed - left and right.&nbsp;</p>
+</div>
+<div id="s6" contextmenu="section" class="editable section">
+ <h1> Other Formats</h1>
+ <p> Formatting expectations can be changed on page setup, section setup or for a specific data load.</p>
+</div>
+<div id="s7" contextmenu="section" class="editable section synopsis">
+ <h1><a id="s7a0" action="runnable" class="usdlc sourceLink succeeded" href="CSVProcessing.groovy">CSV Processing</a></h1>
+ <p> All scripts have access to a csv processor. Just put <strong><em>dsl.csv</em></strong> in your page Setup script. Check the footer of this page for an example.</p>
+</div>
+<div id="s8" contextmenu="section" class="editable section footer synopsis">
+ <div>
+   &nbsp;
+  <a class="usdlc" href="../index.html" id="s2a3" action="page">Parent</a> -
+  <a class="usdlc sourceLink" href="Setup.groovy" id="s2a1" action="runnable">Setup</a>&nbsp;-&nbsp;
+  <a class="usdlc sourceLink" href="Cleanup.groovy" id="s2a0" action="runnable">Cleanup</a>&nbsp;-&nbsp;
+  <a class="usdlc sourceLink" href="/~/uSDLC/src/usdlc/dsl/csvDSL.groovy" id="s16a0" action="runnable">csvDSL</a>&nbsp;-&nbsp;
+  <a class="usdlc sourceLink" href="~/uSDLC/src/usdlc/CSV.groovy" id="s16a1" action="runnable">CSV</a>
+ </div>
 </div>
