@@ -36,7 +36,7 @@ class Page {
 		allSections = dom.select('div.section')
 		synopsis = new Section(allSections.first())
 		footer = new Section(allSections.last())
-		allSections = allSections.not('div.footer, div:lt(1)')
+		allSections = allSections.not('div.footer, div:lt(2)')
 		sections = allSections.collect { new Section(it) }
 
 		if (updated) {
@@ -60,7 +60,7 @@ class Page {
 	private static drill(Store store, Closure pageProcessor) {
 		Page page = new Page(store)
 		pageProcessor(page)
-		page.links('a[action=page]').each { link ->
+		page.select('a[action=page]').each { link ->
 			String href = link.attr('href')
 			pageProcessor(new Page(store.rebase(href)))
 		}
@@ -76,9 +76,9 @@ class Page {
 	}
 	static Page[] pages(parent) {
 		def pages = []
-		parent.links('a[action=page]') { link ->
+		parent.select('a[action=page]').each { link ->
 			String href = link.attr('href')
-			if (href.indexOf('..') == 0)
+			if (href.indexOf('..') == -1)
 				pages << new Page(parent.store.rebase(href))
 		}
 		return pages
@@ -125,18 +125,10 @@ class Page {
 	static template = Store.base('rt/template.html').text
 	def out = new StreamingMarkupBuilder(), titleDiv, updated
 	def store, title, subtitle, sections, allSections, synopsis, footer
-
-	void links(String selector, Closure processor) {
-		allSections.select(selector).each { processor(it) }
-	}
 	/** Wrap the dom section item to add functionality */
 	class Section {
 		@Delegate Element dom
 		Section(dom) {this.dom = dom}
-		/** Call a closure for each link that matches the CSS selector */
-		void links(String selector, Closure processor) {
-			dom?.select(selector)?.each { processor(it) }
-		}
 		/** Retrieve the unique section id */
 		String getId() { dom?.attr('id') ?: '' }
 	}

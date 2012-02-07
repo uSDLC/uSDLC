@@ -13,3 +13,6 @@ startTime = java.lang.System.currentTimeMillis()
 timer = ->
 	Math.floor((java.lang.System.currentTimeMillis() - startTime) / 1000)
 sleep = (seconds) -> support.$sleep(seconds)
+
+jsArray = (arrayList) ->
+	arrayList.get(index) for index in [0...arrayList.size()]

@@ -62,7 +62,7 @@ import static usdlc.config.Config.config
 		sections.each { section ->
 			def empty = true
 
-			section.links('a[action=page],a[action=runnable]') { link ->
+			section.select('a[action=page],a[action=runnable]').each { link ->
 				if (empty) { writeLinkHeader(); empty = false }
 				runLink(link, page)
 			}

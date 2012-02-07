@@ -144,7 +144,7 @@ class Store {
 	 * @return File contents as a string.
 	 */
 	String getText() {
-		file.text
+		try { file.text } catch (FileNotFoundException fne) { '' }
 	}
 	/**
 	 * Set the contents of the file as a string (use write for binary)
