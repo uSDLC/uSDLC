@@ -27,6 +27,8 @@ class Page {
 	 * Load a file if it exists - otherwise load the template.
 	 */
 	private load(Store from) {
+		// todo: change store.read() and store.text to Page method
+		// todo: page reads to change store to point to index.html/gsp if  needed
 		store = from
 		updated = !from.exists()
 		dom = Jsoup.parse(updated ? template : from.text)
@@ -36,7 +38,7 @@ class Page {
 		allSections = dom.select('div.section')
 		synopsis = new Section(allSections.first())
 		footer = new Section(allSections.last())
-		allSections = allSections.not('div.footer, div:lt(2)')
+		allSections = allSectionds.not('div.footer, div:lt(2)')
 		sections = allSections.collect { new Section(it) }
 
 		if (updated) {
@@ -47,6 +49,34 @@ class Page {
 			titleDiv.attr('uuid', UUID.randomUUID().toString())
 			updated = true
 		}
+	}
+	/**
+	 * Use Page.store() instead of Store.base() to open html pages. It is a
+	 * good samaritan and decides whether you want index.html or index.gsp
+	 * when you just give a directory.
+	 */
+	static Store store(String path) {
+		def store = Store.base(path)
+		if (store.file.isDirectory() ||
+				path.endsWith('/') || path.indexOf('.') == -1) {
+			store = store.rebase('index.gsp')
+			if (!store.exists()) store = store.rebase('index.html')
+		}
+		if (!store.exists()) {
+			def page = new Page('rt/template.html')
+			page.store = store
+			def title = Store.decamel(path.replaceFirst(~'.*/', ''))
+			page.select('div#pageTitle h1').html(title)
+			page.save()
+		}
+		return store
+	}
+	/**
+	 * Replace contents of elements with HTML from text provided.
+	 */
+	def html(String innerHTML) {
+		super.html(innerHTML)
+		updated = true
 	}
 	/**
 	 * Walk all pages in the uSDLC and connected projects, calling a closure

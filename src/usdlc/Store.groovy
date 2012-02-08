@@ -102,7 +102,6 @@ class Store {
 		pathFromWebBase[config.home.size()..-1] : ''
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
 
-
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
 		if (drop >= pathFromWebBase.size()) return ''
