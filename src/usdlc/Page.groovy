@@ -27,8 +27,6 @@ class Page {
 	 * Load a file if it exists - otherwise load the template.
 	 */
 	private load(Store from) {
-		// todo: change store.read() and store.text to Page method
-		// todo: page reads to change store to point to index.html/gsp if  needed
 		store = from
 		updated = false
 		dom = Jsoup.parse(from.text)
