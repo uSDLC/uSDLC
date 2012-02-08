@@ -15,7 +15,7 @@ class Page {
 	 * Load a file if it exists - otherwise load the template.
 	 */
 	Page(String fileName) {
-		load(Store.base(fileName))
+		load(store(fileName))
 	}
 	/**
 	 * Load a file if it exists - otherwise load the template.
@@ -30,8 +30,8 @@ class Page {
 		// todo: change store.read() and store.text to Page method
 		// todo: page reads to change store to point to index.html/gsp if  needed
 		store = from
-		updated = !from.exists()
-		dom = Jsoup.parse(updated ? template : from.text)
+		updated = false
+		dom = Jsoup.parse(from.text)
 		titleDiv = dom.select('#pageTitle')
 		title = titleDiv.select('h1').first()
 		subtitle = titleDiv.select('h2').first()
@@ -56,7 +56,9 @@ class Page {
 	 * when you just give a directory.
 	 */
 	static Store store(String path) {
-		def store = Store.base(path)
+		store(Store.base(path))
+	}
+	static Store store(Store store) {
 		if (store.file.isDirectory() ||
 				path.endsWith('/') || path.indexOf('.') == -1) {
 			store = store.rebase('index.gsp')
@@ -152,7 +154,6 @@ class Page {
 	}
 
 	static slurper = new XmlSlurper(new SAXParser())
-	static template = Store.base('rt/template.html').text
 	def out = new StreamingMarkupBuilder(), titleDiv, updated
 	def store, title, subtitle, sections, allSections, synopsis, footer
 	/** Wrap the dom section item to add functionality */

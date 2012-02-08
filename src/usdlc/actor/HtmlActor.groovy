@@ -28,8 +28,7 @@ class HtmlActor extends Actor {
 				paste()
 				break
 			default:
-				exchange.response.write exchange.store.read() ?:
-					Store.base('rt/template.html').read()
+				exchange.response.write exchange.store.read()
 				exchange.response.write bootstrapJs
 				break
 		}

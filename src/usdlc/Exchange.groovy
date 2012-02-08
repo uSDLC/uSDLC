@@ -180,12 +180,7 @@ class Exchange {
 		if (path.startsWith(urlBase)) {
 			path = path[urlBase.size()..-1]
 		}
-		store = Store.base(path)
-		inferredTarget = (store.pathFromWebBase.indexOf('.') == -1)
-		if (inferredTarget) {
-			store = store.rebase('index.gsp')
-			if (!store.exists()) store = store.rebase('index.html')
-		}
+		store = Page.store(path)
 	}
 
 	void save(String newContents) {
