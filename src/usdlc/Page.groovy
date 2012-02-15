@@ -36,7 +36,7 @@ class Page {
 		allSections = dom.select('div.section')
 		synopsis = new Section(allSections.first())
 		footer = new Section(allSections.last())
-		allSections = allSectionds.not('div.footer, div:lt(2)')
+		allSections = allSections.not('div.footer, div:lt(2)')
 		sections = allSections.collect { new Section(it) }
 
 		if (updated) {
@@ -53,23 +53,25 @@ class Page {
 	 * good samaritan and decides whether you want index.html or index.gsp
 	 * when you just give a directory.
 	 */
-	static Store store(String path) {
-		store(Store.base(path))
-	}
 	static Store store(Store store) {
 		if (store.file.isDirectory() ||
-				path.endsWith('/') || path.indexOf('.') == -1) {
+				store.pathFromWebBase.endsWith('/') ||
+				store.pathFromWebBase.indexOf('.') == -1) {
 			store = store.rebase('index.gsp')
 			if (!store.exists()) store = store.rebase('index.html')
 		}
-		if (!store.exists()) {
+		if (store.isHtml && !store.exists()) {
 			def page = new Page('rt/template.html')
 			page.store = store
-			def title = Store.decamel(path.replaceFirst(~'.*/', ''))
+			def title = Store.decamel(
+					store.parts.path.replaceFirst(~'.*/', ''))
 			page.select('div#pageTitle h1').html(title)
 			page.save()
 		}
 		return store
+	}
+	static Store store(String path) {
+		store(Store.base(path))
 	}
 	/**
 	 * Replace contents of elements with HTML from text provided.

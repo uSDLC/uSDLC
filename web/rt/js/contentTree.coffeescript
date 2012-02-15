@@ -10,7 +10,9 @@ $ ->
 						path = $('a', li).get(0).pathname
 						path = '/' + path if path[0] != '/'
 						path += '?action=raw'
-					this.contentRoot = jQuery.url.setUrl(path).attr("directory")
+					cr = jQuery.url.setUrl(path).attr("directory")
+					cr = "#{cr}/" if cr.charAt(cr.length - 1) != '/'
+					this.contentRoot = cr
 					path
 				success : (data) ->
 					tree = ' '

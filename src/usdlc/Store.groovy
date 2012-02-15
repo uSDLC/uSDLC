@@ -1,6 +1,7 @@
 package usdlc
 
 import usdlc.config.Config
+
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
 
@@ -101,6 +102,7 @@ class Store {
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
 		pathFromWebBase[config.home.size()..-1] : ''
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
+	@Lazy boolean isHtml = parts.ext == 'html'
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
