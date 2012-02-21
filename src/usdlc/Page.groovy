@@ -5,6 +5,7 @@ import org.cyberneko.html.parsers.SAXParser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import sun.jvm.hotspot.debugger.PageCache
 
 /**
  * Here we read in a uSDLC page and provide access to the internals:
@@ -21,7 +22,7 @@ class Page {
 	 * Load a file if it exists - otherwise load the template.
 	 */
 	Page(Store from) {
-		load(from)
+		load(store(from))
 	}
 	/**
 	 * Load a file if it exists - otherwise load the template.
@@ -102,19 +103,34 @@ class Page {
 	 * than closures.
 	 */
 	static Page[] pages() {
-		def pages = [new Page(Store.usdlcRoot)]
-		Store.projectRoots.each { page -> pages << new Page(page) }
-		return pages
+		pages = new PageCache()
+		pages.add Store.usdlcRoot
+		Store.projectRoots.each { page -> pages.add page }
+		return pages.list
 	}
 	static Page[] pages(parent) {
-		def pages = []
+		pages.reset()
 		parent.select('a[action=page]').each { link ->
 			String href = link.attr('href')
-			if (href.indexOf('..') == -1)
-				pages << new Page(parent.store.rebase(href))
+			if (href.indexOf('..') == -1) {
+				pages.add parent.store.rebase(href)
+			}
 		}
-		return pages
+		return pages.list
 	}
+	private static class PageCache {
+		def cache = [] as Set
+		def list = []
+		def reset() { list = [] }
+		def add(Store store) {
+			String path = store.pathFromWebBase
+			if (!cache.contains(path)) {
+				cache.add(path)
+				if (store.isHtml) list << new Page(store)
+			}
+		}
+	}
+	private static PageCache pages
 	/**
 	 * Get page title
 	 */
@@ -150,7 +166,11 @@ class Page {
 	 * Save the modified html file
 	 */
 	void save(to = store) {
-		if (updated) to.text = dom.outerHtml()
+		if (updated) to.text = (dom.select('body') ?: dom).html()
+	}
+
+	String toString() {
+		return store?.toString()
 	}
 
 	static slurper = new XmlSlurper(new SAXParser())

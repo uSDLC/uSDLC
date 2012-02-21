@@ -58,8 +58,12 @@ class Store {
 	 * Sometimes we get a new store based on an old location
 	 */
 	Store rebase(String more = '') {
-		new Store("$parent/${camelCase(more)}", project)
+		new Store(glue(parent, camelCase(more)), project)
 	}
+	/**
+	 * Glue strings together to make a path - with the correct number of /s
+	 */
+	def glue(Object[] parts) { parts.join('/').replaceAll('//', '/') }
 	/**
 	 * If we need to read a source as a stream...
 	 * <code>
