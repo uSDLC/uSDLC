@@ -39,7 +39,7 @@ $(function() {
 
 	function loadSynopsis(link, processor) {
 		var path = link.attr('href')
-		function isInHeader() { return link.closest('h3,h2,h1').size() > 0 }
+		function isInHeader() { return link.closest('h6,h5,h4,h3,h2,h1').size() > 0 }
 		function isInFooter() {
 			if (link.closest('.footer').size()) {
 				var ext = usdlc.splitUrl(path).ext

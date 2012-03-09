@@ -106,4 +106,6 @@ import static usdlc.config.Config.config
 	 * instances that failed to find a script.
 	 */
 	static cache = [:]
+
+	String toString() {return script.toString()}
 }

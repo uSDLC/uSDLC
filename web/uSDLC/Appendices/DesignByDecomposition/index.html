@@ -1,155 +1,104 @@
-<div id="pageTitle" class="editable"><h1>
-	Design by Decomposition</h1>
-<h2>
-	There are 3 kinds of people - those that can count and those that can't</h2>
-
+<div id="pageTitle" class="editable" uuid="9eb68942-57fe-4209-bc0e-227d95f03a77">
+ <h1> Design by Decomposition</h1> 
+ <h2> There are 3 kinds of people - those that can count and those that can't</h2> 
+</div> 
+<div id="s1" class="editable section" contextmenu="section">
+ <p> &quot;<em>Can't see the wood for the trees?</em>&quot; &quot;<em>Can't see the trees for the wood?</em>&quot; &quot;<em>You can't break a bundle of sticks.</em>&quot;&nbsp;We need to break down the problem, whether at project, component or item levels. I call this approach &quot;<em>Design by Decomposition</em>&quot;</p> 
 </div>
-
-<div id="s1" class="editable section" contextmenu="section"><p>
-	"<em>Can't see the wood for the trees?</em>" "<em>Can't see the trees for the wood?</em>" "<em>You can't break a bundle of sticks.</em>"&nbsp;We need to break down the problem, whether at project, component or item levels. I call this approach "<em>Design by Decomposition</em>"</p>
-
-</div><div id="s4" class="editable section" contextmenu="section"><p>
-	We all do it as part of the software development process. "<em>Design by Decomposition</em>" is an attempt to put process and structure around the technique. Like all processes in design, use it as a guideline, not a fixed rule.</p>
-
-</div><div id="s5" class="editable section" contextmenu="section"><p>
-	Search Google for "<strong><em>The Rule of Threes</em></strong>". You will find examples in painting, photography, design, drama, speech writing, presentations, comedy and problem solving. Don't get lost - it makes fascinating reading.</p>
-<p>
-	Why is&nbsp;"<em>The Rule of Threes</em>"so common in human communication? Decimal is for the fingers, binary for the computer and ternary for the mind.</p>
-<ul>
-	<li>
-		Give me a list of 10 choices and I have to re-read it over and over. Give me choices of three where the third is none of the above and I can quickly drill down.</li>
-	<li>
-		Tell me 10 benefits of your product and I won't remember any. Tell me three and I will remember them all.</li>
-	<li>
-		I can list my 3 favourite colours over and over consistently, but not 10. Same for food, actors or relatives :)</li>
-</ul>
-
-</div><div id="s11" class="editable section synopsis" contextmenu="section"><p>
-	Design by Decomposition works best when married to <a href="/uSDLC/Appendices/DocumentDrivenDesign/index.html" id="s11a0" class="usdlc" action="page">Document Driven Design</a>. Think it - write it - implement it - repeat.</p>
-</div><div id="s6" class="editable section" contextmenu="section"><p>
-	For a project, a sample decomposition could be:</p>
-<ol>
-	<li>
-		The Vision</li>
-	<li>
-		Design
-		<ol>
-			<li>
-				User Interfaces
-				<ol>
-					<li>
-						Web</li>
-					<li>
-						Mobile</li>
-					<li>
-						Integrations</li>
-				</ol>
-			</li>
-			<li>
-				Business Logic
-				<ol>
-					<li>
-						Domain Group 1</li>
-					<li>
-						Domain Group 2</li>
-					<li>
-						Domain Group 3</li>
-				</ol>
-			</li>
-			<li>
-				Data Access
-				<ol>
-					<li>
-						Database</li>
-					<li>
-						SOA</li>
-					<li>
-						Cloud</li>
-				</ol>
-			</li>
-		</ol>
-	</li>
-	<li>
-		Environment
-		<ol>
-			<li>
-				Architecture</li>
-			<li>
-				Frameworks
-				<ol>
-					<li>
-						Web</li>
-					<li>
-						Server</li>
-					<li>
-						Database</li>
-				</ol>
-			</li>
-			<li>
-				Hardware</li>
-		</ol>
-	</li>
-</ol>
-
-</div><div id="s7" class="editable section synopsis" contextmenu="section"><p>
-	For components and items, the groups of three are more likely to be domain specific. For an example, review "<a action="page" class="usdlc" href="/uSDLC/ACaseStudy/index.html" id="s7a0"><em>A Case Study</em></a>", but I will give an example of item decomposition.</p>
-
-</div><div id="s8" class="editable section" contextmenu="section"><h3>
-	Item Decomposition</h3>
-<p>
-	<strong>Task</strong>: Read in CSV files and make the data available by column name. Account for large files.</p>
-<p>
-	<strong>Decomposition</strong>:</p>
-<ol>
-	<li>
-		Read a CSV file
-		<ol>
-			<li>
-				Find and use Java library</li>
-			<li>
-				Access CSV as a list of maps</li>
-			<li>
-				Call closure for each row</li>
-		</ol>
-	</li>
-	<li>
-		Format Variations
-		<ol>
-			<li>
-				Header Lines</li>
-			<li>
-				Differing separator</li>
-			<li>
-				Different quote</li>
-		</ol>
-	</li>
-	<li>
-		Edge conditions
-		<ol>
-			<li>
-				Quoted items</li>
-			<li>
-				Multi-line items</li>
-			<li>
-				Empty file</li>
-		</ol>
-	</li>
-</ol>
-
-</div><div id="s9" class="editable section" contextmenu="section"><p>
-	I know it looks artificial to keep to "<em>The Rules of Three</em>", but there is a benefit apart from recognition. When a level has 2 items it forces you to think of a third. When a level grows it forces a refactor into groups. Thinking is good as it highlights problems and areas that need improvement. Don't make the rule a law, but give it a go.</p>
-
-</div><div id="s12" class="editable section synopsis" contextmenu="section"><h3>
-	<a href="TheTopLayer/index.html" id="s12a0" class="usdlc" action="page">The Top Layer</a></h3>
-</div><div id="s10" class="editable section synopsis" contextmenu="section"><h3>
-	<a href="OrderOfAttack/index.html" id="s10a0" class="usdlc" action="page">Order of Attack</a></h3>
+<div id="s4" class="editable section" contextmenu="section">
+ <p> We all do it as part of the software development process. &quot;<em>Design by Decomposition</em>&quot; is an attempt to put process and structure around the technique. Like all processes in design, use it as a guideline, not a fixed rule.</p> 
 </div>
-<div id="s2" class="editable section footer synopsis" contextmenu="section">
-	<div>
-		<a class="usdlc" href="../index.gsp" id="s2a3" action="page">Parent</a>
-		-
-		<a class="usdlc" href="Setup.groovy" id="s2a0" action="runnable">Setup</a>
-		-
-		<a class="usdlc" href="Cleanup.groovy" id="s2a0" action="runnable">Cleanup</a>
-	</div>
+<div id="s5" class="editable section" contextmenu="section">
+ <p> Search Google for &quot;<strong><em>The Rule of Threes</em></strong>&quot;. You will find examples in painting, photography, design, drama, speech writing, presentations, comedy and problem solving. Don't get lost - it makes fascinating reading.</p> 
+ <p> Why is&nbsp;&quot;<em>The Rule of Threes</em>&quot;so common in human communication? Decimal is for the fingers, binary for the computer and ternary for the mind.</p> 
+ <ul> 
+  <li> Give me a list of 10 choices and I have to re-read it over and over. Give me choices of three where the third is none of the above and I can quickly drill down.</li> 
+  <li> Tell me 10 benefits of your product and I won't remember any. Tell me three and I will remember them all.</li> 
+  <li> I can list my 3 favourite colours over and over consistently, but not 10. Same for food, actors or relatives :)</li> 
+ </ul> 
+</div>
+<div id="s11" class="editable section synopsis" contextmenu="section">
+ <p> Design by Decomposition works best when married to <a href="/uSDLC/Appendices/DocumentDrivenDesign" id="s11a0" class="usdlc" action="page">Document Driven Design</a>. Think it - write it - implement it - repeat.</p> 
+</div>
+<div id="s6" class="editable section" contextmenu="section">
+ <p> For a project, a sample decomposition could be:</p> 
+ <ol> 
+  <li> The Vision</li> 
+  <li> Design 
+   <ol> 
+    <li> User Interfaces 
+     <ol> 
+      <li> Web</li> 
+      <li> Mobile</li> 
+      <li> Integrations</li> 
+     </ol> </li> 
+    <li> Business Logic 
+     <ol> 
+      <li> Domain Group 1</li> 
+      <li> Domain Group 2</li> 
+      <li> Domain Group 3</li> 
+     </ol> </li> 
+    <li> Data Access 
+     <ol> 
+      <li> Database</li> 
+      <li> SOA</li> 
+      <li> Cloud</li> 
+     </ol> </li> 
+   </ol> </li> 
+  <li> Environment 
+   <ol> 
+    <li> Architecture</li> 
+    <li> Frameworks 
+     <ol> 
+      <li> Web</li> 
+      <li> Server</li> 
+      <li> Database</li> 
+     </ol> </li> 
+    <li> Hardware</li> 
+   </ol> </li> 
+ </ol> 
+</div>
+<div id="s7" class="editable section synopsis" contextmenu="section">
+ <p> For components and items, the groups of three are more likely to be domain specific. For an example, review &quot;<a action="page" class="usdlc" href="/uSDLC/ACaseStudy" id="s7a0"><em>A Case Study</em></a>&quot;, but I will give an example of item decomposition.</p> 
+</div>
+<div id="s8" class="editable section" contextmenu="section">
+ <h3> Item Decomposition</h3> 
+ <p> <strong>Task</strong>: Read in CSV files and make the data available by column name. Account for large files.</p> 
+ <p> <strong>Decomposition</strong>:</p> 
+ <ol> 
+  <li> Read a CSV file 
+   <ol> 
+    <li> Find and use Java library</li> 
+    <li> Access CSV as a list of maps</li> 
+    <li> Call closure for each row</li> 
+   </ol> </li> 
+  <li> Format Variations 
+   <ol> 
+    <li> Header Lines</li> 
+    <li> Differing separator</li> 
+    <li> Different quote</li> 
+   </ol> </li> 
+  <li> Edge conditions 
+   <ol> 
+    <li> Quoted items</li> 
+    <li> Multi-line items</li> 
+    <li> Empty file</li> 
+   </ol> </li> 
+ </ol> 
+</div>
+<div id="s9" class="editable section" contextmenu="section">
+ <p> I know it looks artificial to keep to &quot;<em>The Rules of Three</em>&quot;, but there is a benefit apart from recognition. When a level has 2 items it forces you to think of a third. When a level grows it forces a refactor into groups. Thinking is good as it highlights problems and areas that need improvement. Don't make the rule a law, but give it a go.</p> 
+</div>
+<div id="s12" class="editable section synopsis" contextmenu="section">
+ <h3> <a href="TheTopLayer" id="s12a0" class="usdlc" action="page">The Top Layer</a></h3> 
+</div>
+<div id="s10" class="editable section synopsis" contextmenu="section">
+ <h3> <a href="OrderOfAttack" id="s10a0" class="usdlc" action="page">Order of Attack</a></h3> 
+</div> 
+<div id="s2" class="editable section footer synopsis" contextmenu="section"> 
+ <div> 
+  <a class="usdlc" href=".." id="s2a3" action="page">Parent</a> - 
+  <a class="usdlc" href="Setup.groovy" id="s2a0" action="runnable">Setup</a> - 
+  <a class="usdlc" href="Cleanup.groovy" id="s2a0" action="runnable">Cleanup</a> 
+ </div> 
 </div>

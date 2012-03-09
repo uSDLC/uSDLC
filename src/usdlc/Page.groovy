@@ -106,6 +106,7 @@ class Page {
 		pages = new PageCache()
 		pages.add Store.usdlcRoot
 		Store.projectRoots.each { page -> pages.add page }
+println "Pages(): $pages.list"
 		return pages.list
 	}
 	static Page[] pages(parent) {
@@ -116,6 +117,7 @@ class Page {
 				pages.add parent.store.rebase(href)
 			}
 		}
+println "Pages: $pages.list"
 		return pages.list
 	}
 	private static class PageCache {
@@ -126,6 +128,7 @@ class Page {
 			String path = store.pathFromWebBase
 			if (!cache.contains(path)) {
 				cache.add(path)
+println "Store: $store"
 				if (store.isHtml) list << new Page(store)
 			}
 		}

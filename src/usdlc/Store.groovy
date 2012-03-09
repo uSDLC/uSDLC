@@ -106,7 +106,7 @@ class Store {
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
 		pathFromWebBase[config.home.size()..-1] : ''
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
-	@Lazy boolean isHtml = parts.ext == 'html'
+	@Lazy boolean isHtml = file.isDirectory() || parts.ext == 'html'
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
@@ -236,9 +236,11 @@ class Store {
 	 * Call a closure for the contents of a directory tree (as in dir /s)
 	 */
 	void dirs(mask, Closure closure) {
-		file.traverse(type: FILES, nameFilter: mask) { File file ->
-			closure(new Store(pathFromBase(file.path), project))
-		}
+		try {
+			file.traverse(type: FILES, nameFilter: mask) { File file ->
+				closure(new Store(pathFromBase(file.path), project))
+			}
+		} catch (e) {}
 	}
 	/**
 	 * Used to see if a compile/processing action is required because the

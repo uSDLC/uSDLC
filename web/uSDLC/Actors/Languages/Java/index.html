@@ -1,86 +1,37 @@
-<div id="pageTitle" class="editable"><h1>
-	Java Actor</h1>
-
-	<h2>
-		Classes as Scripts</h2>
-</div><!--
+<div id="pageTitle" class="editable" uuid="cf446f5d-da75-43cb-b8df-d3b3cb3cb2af">
+ <h1> Java Actor</h1> 
+ <h2> Classes as Scripts</h2> 
+</div>
+<!--
   ~ Copyright the page author
-  -->
-
-
-<div id="s1" class="editable section" contextmenu="section"><p>
-	Java is not a scripting language, but since uSDLC runs on the JVM, it is easily integrated. uSDLC will launch Java
-	classes that inherit from usdlc.actors.JavaActor or JUnit tests.</p>
-</div>
-<div id="s3" class="editable section" contextmenu="section"><p>
-	Classes inherited from JavaActor have env and doc instance variables set and call the run method. Use the
-	convenience methods:</p>
-	<ul>
-		<li>
-			alert(messageFile) Display an alert message.
-		</li>
-		<li>
-			end() close an outstanding tag()
-		</li>
-		<li>
-			escape("a &lt; 12") writes text to the browser. HTML characters are encoded so they will display instead of
-			processed.
-		</li>
-		<li>
-			highlight("blue") Highlight a section with a coloured string on the left
-		</li>
-		<li>
-			requestBody() returns post data from the browser.
-		</li>
-		<li>
-			script("window.location.href=window.location.href") - run a script from inside a browser
-		</li>
-		<li>
-			tag("div class='myClass'") is used to open any tag. You can optionally add attributes
-		</li>
-		<li>
-			text("&lt;div&gt;inside a div&lt;/div&gt;") writes text to the browser. HTML tags will be processed
-		</li>
-	</ul>
-</div>
-<div id="s4" class="editable section" contextmenu="section"><p>
-	If you have legacy junit tests, use the Groovy ant-builder to instrument them.</p>
-<pre>new AntBuilder().junit {
+  --> 
+<div id="s1" class="editable section" contextmenu="section">
+ <p> Java is not a scripting language, but since uSDLC runs on the JVM, it is easily integrated. uSDLC will launch Java classes that inherit from usdlc.actors.JavaActor or JUnit tests.</p> 
+</div> 
+<div id="s3" class="editable section" contextmenu="section">
+ <p> Classes inherited from JavaActor have env and doc instance variables set and call the run method. Use the convenience methods:</p> 
+ <ul> 
+  <li> alert(messageFile) Display an alert message. </li> 
+  <li> end() close an outstanding tag() </li> 
+  <li> escape(&quot;a &lt; 12&quot;) writes text to the browser. HTML characters are encoded so they will display instead of processed. </li> 
+  <li> highlight(&quot;blue&quot;) Highlight a section with a coloured string on the left </li> 
+  <li> requestBody() returns post data from the browser. </li> 
+  <li> script(&quot;window.location.href=window.location.href&quot;) - run a script from inside a browser </li> 
+  <li> tag(&quot;div class='myClass'&quot;) is used to open any tag. You can optionally add attributes </li> 
+  <li> text(&quot;&lt;div&gt;inside a div&lt;/div&gt;&quot;) writes text to the browser. HTML tags will be processed </li> 
+ </ul> 
+</div> 
+<div id="s4" class="editable section" contextmenu="section">
+ <p> If you have legacy junit tests, use the Groovy ant-builder to instrument them.</p> 
+ <pre>new AntBuilder().junit {
     test(name : 'mypathtojunittestfiles')
-}</pre>
-	<p>
-		&nbsp;</p>
+}</pre> 
+ <p> &nbsp;</p> 
+</div> 
+<div id="s2" class="editable section running" contextmenu="section">
+ <h1> Examples</h1> 
+ <ul> 
+  <li> <a class="usdlc sourceLink" href="StandAloneWithMarkup.htm.java" id="s2a1" action="runnable">Stand-alone with markup</a></li> 
+  <li> <a class="usdlc sourceLink" href="StandAloneSendingBackRawHtml.htm.groovy" id="s2a2" action="runnable">Stand-alone sending back raw html</a></li> 
+ </ul> 
 </div>
-<div id="s2" class="editable section running" contextmenu="section"><h1>
-	Examples</h1>
-	<ul>
-		<li>
-			<a class="usdlc sourceLink" href="StandAloneWithMarkup.htm.java" id="s2a1" action="runnable">Stand-alone
-				with
-				markup</a></li>
-		<li>
-			<a class="usdlc sourceLink" href="StandAloneSendingBackRawHtml.htm.groovy" id="s2a2" action="runnable">Stand-alone
-				sending back raw html</a></li>
-	</ul>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

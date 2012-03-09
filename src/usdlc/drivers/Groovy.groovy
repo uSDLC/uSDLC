@@ -6,7 +6,7 @@ import static usdlc.config.Config.config
 /**
  * Groovy script support
  */
-@SuppressWarnings("GroovyAccessibility")
+@SuppressWarnings('GroovyAccessibility')
 class Groovy {
 	static GroovyClassLoader gcl
 	static {

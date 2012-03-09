@@ -16,6 +16,7 @@ class News {
 	public load() {
 		parser = new XmlParser()
 		if (!items || timer.days)
+			items = []
 			try {
 				index = -1
 				def text = new URL(config.newsUrl).text

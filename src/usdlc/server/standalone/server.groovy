@@ -62,7 +62,8 @@ server.createContext '/', { HttpExchange httpExchange ->
 				acceptEncoding: (requestHeaders?.'Accept-Encoding' ?: [''])[0],
 		)
 		Exchange exchange = new Exchange()
-		exchange.processRequest(requestBody, header).loadResponse(responseBody) {
+		exchange.processRequest(requestBody, header).
+				loadResponse(responseBody) {
 			exchange.response.header.each { key, value ->
 				httpExchange.responseHeaders.add(key, value)
 			}

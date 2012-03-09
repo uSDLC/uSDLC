@@ -39,7 +39,6 @@ class Exchange {
 				user = new User(cookies['userId'] ?: 'anon')
 				session = Session.load(cookies['usdlc-session'] as String)
 				session.exchange = this
-				//return
 			}
 			setStore(header.uri)
 		} catch (problem) {

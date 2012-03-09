@@ -3,6 +3,8 @@ package usdlc.actor
 import usdlc.drivers.Grape
 import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
+import sun.tools.asm.CatchData
+import sun.tools.asm.TryData
 
 /**
  * Given a Groovy DSL (script), first try and load it using the class-loader
@@ -13,11 +15,11 @@ class DslActor extends GroovyActor {
 	DslActor(String dsl) {
 		languageScriptClass = config.dslClassPath.findResult { String path ->
 			try {
-				Groovy.loadClass(path, dsl) ?:
+				return Groovy.loadClass(path, dsl) ?:
 					gse.loadScriptByName("$path${dsl}.groovy")
 			} catch (ResourceException re) {
 				exists = false
-				null
+				return null
 			}
 		} as Class
 	}
@@ -40,4 +42,5 @@ class DslActor extends GroovyActor {
 	 * script.
 	 */
 	static gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
+	boolean asBoolean() {exists}
 }

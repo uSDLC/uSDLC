@@ -28,8 +28,7 @@ class Config {
 			config.merge(parseOptions(scriptName))
 		}
 		config.baseDirectory = baseDirectory
-		Dictionary.commandLine(argList).each { String k,
-				String v ->
+		Dictionary.commandLine(argList).each { String k, String v ->
 			config[k] = v
 		}
 		// add home to source path so we can go app.blah
@@ -63,8 +62,8 @@ class Config {
 	 */
 	static Map project(String name) {
 		def home, configScript
-		switch (name) {
-			case 'uSDLC':
+		switch (name.toLowerCase()) {
+			case 'usdlc':
 				home = '.'
 				configScript = './uSDLC/Config.groovy'
 				break
@@ -86,7 +85,7 @@ class Config {
 			Map pc = parse(base)
 			pc.name = name
 			pc.path = pc.path ?: [:]
-			pc.path.home = pc.path.p = pc.path.p ?: home
+			pc.path[name] = pc.path.p = pc.path.project = pc.path.p ?: home
 			config.projects[name] = pc
 		}
 		return config.projects[name]
