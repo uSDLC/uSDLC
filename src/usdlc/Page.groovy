@@ -5,7 +5,6 @@ import org.cyberneko.html.parsers.SAXParser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import sun.jvm.hotspot.debugger.PageCache
 
 /**
  * Here we read in a uSDLC page and provide access to the internals:
@@ -128,7 +127,6 @@ println "Pages: $pages.list"
 			String path = store.pathFromWebBase
 			if (!cache.contains(path)) {
 				cache.add(path)
-println "Store: $store"
 				if (store.isHtml) list << new Page(store)
 			}
 		}

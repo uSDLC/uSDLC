@@ -1,3 +1,5 @@
+package usdlc
+
 class HtmlEditorModule extends geb.Module {
 	static content = {
 		/**

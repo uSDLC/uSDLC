@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="usdlc" default="run">
+  <!--
+	If you have pulled the source from http://github.com/uSDLC/uSDLC/,
+	you can build or run it with uSDLC.sh or uSDLC.bat. If you use an
+	IDE it will include Apache Ant integration - so you can use the
+	targets (clean, build, run) directly. If you want better integration
+	with your IDE, you should be able to glean what you need from the
+	XML. In summary:
+
+		Install Groovy support in your IDE (not needed if using ant alone)
+		classpath is all jars in 'web/lib/jars'
+		source path is 'src' and 'web/support'
+		compiler output to 'bin' (optional to match ant)
+		run or debug 'src/usdlc/server/standalone/server.groovy'
+  -->
+  <property file="build.properties"/>
+
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="library.patterns">
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+  </patternset>
+
+  <dirname property="module.usdlc.basedir" file="${ant.file}"/>
+
+  <property name="compiler.args.usdlc" value="${compiler.args}"/>
+
+  <property name="usdlc.output.dir" value="${module.usdlc.basedir}/bin"/>
+
+  <path id="usdlc.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+
+  <path id="usdlc.module.classpath">
+    <fileset dir="${basedir}/web/lib/jars">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+
+  <path id="usdlc.module.sourcepath">
+    <dirset dir="${module.usdlc.basedir}">
+      <include name="src"/>
+      <include name="web/support"/>
+    </dirset>
+  </path>
+
+  <taskdef name="groovyc"
+	         classname="org.codehaus.groovy.ant.Groovyc"
+	         classpathref="usdlc.module.classpath"/>
+
+  <target name="build" description="Compile module uSDLC">
+    <mkdir dir="${usdlc.output.dir}"/>
+    <groovyc destdir="${usdlc.output.dir}" fork="yes">
+      <src refid="usdlc.module.sourcepath"/>
+      <classpath refid="usdlc.module.classpath"/>
+      <javac debug="${compiler.debug}">
+        <compilerarg line="${compiler.args.usdlc}"/>
+      </javac>
+    </groovyc>
+
+    <copy todir="${usdlc.output.dir}">
+      <fileset dir="${module.usdlc.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.usdlc.basedir}/web/support">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.usdlc.basedir}/web/WEB-INF">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean" description="cleanup module">
+    <delete dir="${usdlc.output.dir}"/>
+  </target>
+
+  <target name="run" depends="build" description="Run uSDLC">
+	  <java classname="usdlc.server.standalone.server"
+	        fork="true">
+	    <classpath>
+	      <pathelement location="${usdlc.output.dir}"/>
+		  <pathelement location="${basedir}/lib"/>
+		  <fileset dir="${java.home}/../lib" erroronmissingdir="false">
+			  <include name="tools.jar"/>
+          </fileset>
+	      <fileset dir="${basedir}/web/lib/jars">
+	        <patternset refid="library.patterns"/>
+	      </fileset>
+	    </classpath>
+	  </java>
+  </target>
+</project>
