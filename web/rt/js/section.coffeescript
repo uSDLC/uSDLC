@@ -114,7 +114,8 @@ $ ->
 
 				endsInSlash = (href.charAt(href.length - 1) == '/')
 				isPage = endsInSlash or /^\w+$/.test(href)
-				isHtml = isPage or (usdlc.mimeType(href).clientExt == 'html')
+				isHtml = isPage or
+					(usdlc.mimeType(href).clientExt in ['html', 'htm', 'gsp'])
 
 				if isHtml
 					self.attr('action', 'page')

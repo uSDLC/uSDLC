@@ -80,21 +80,26 @@ $(function () {
 	}
 
 	CKEDITOR.config.toolbar_Full = [
-		[ 'Source', '-', 'Save', /* 'NewPage','Preview','-', */'Templates' ],
-		[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Print', 'SpellChecker', 'Scayt' ],
-		[ 'Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat' ],
+		[ 'Save', /* 'NewPage','Preview','-', */'Templates', 'Print'],
+		[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+		[ 'Undo', 'Redo', '-', 'Find', 'Replace'],
+		[ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ],
 		[ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ],
 		'/',
-		[ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript' ],
-		[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv' ],
+		[ 'Styles', 'Format'],
+		['SelectAll', 'RemoveFormat', 'Source'],
+		[ 'NumberedList', 'BulletedList'],
+		['Outdent', 'Indent', 'Blockquote', 'CreateDiv' ],
 		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
 		[ 'BidiLtr', 'BidiRtl' ],
-		[ 'Link', 'Unlink', 'Anchor' ],
-		[ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ],
 		'/',
-		[ 'Styles', 'Format', 'Font', 'FontSize' ],
-		[ 'TextColor', 'BGColor' ],
-		[ 'Maximize', 'ShowBlocks', '-', 'About' ]
+		['Font', 'FontSize' ],
+		[ 'Bold', 'Italic', 'Underline', 'Strike'],
+		['Subscript', 'Superscript' ],
+		[ 'TextColor', 'BGColor'],
+		[ 'Link', 'Unlink', 'Anchor' ],
+		[ 'Maximize', 'ShowBlocks', 'SpellChecker', 'Scayt'],
+		['About']
 	]
 	/*
 	 * By default CKEDIT does not have a ready save button unless it is inside a

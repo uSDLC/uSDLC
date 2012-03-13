@@ -97,7 +97,7 @@ class Store {
 
 	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
 	/** Directory in which file/directory resides  */
-	@Lazy String parent = file.isDirectory() ? pathFromWebBase : calcParent()
+	@Lazy String parent = isDirectory ? pathFromWebBase : calcParent()
 	@Lazy String name = file.name
 	@Lazy String absolutePath = file.absolutePath
 	@Lazy URI uri = file.toURI()
@@ -106,7 +106,9 @@ class Store {
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
 		pathFromWebBase[config.home.size()..-1] : ''
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
-	@Lazy boolean isHtml = file.isDirectory() || parts.ext == 'html'
+	@Lazy boolean isDirectory = file.isDirectory() ||
+			(! file.exists() && !parts.ext)
+	@Lazy boolean isHtml = isDirectory || parts.ext == 'html'
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
@@ -127,8 +129,7 @@ class Store {
 	 * directory).
 	 */
 	String pathFrom(Store from) {
-		File fromFile = from.file.isDirectory() ?
-			from.file : from.file.parentFile
+		File fromFile = from.isDirectory ? from.file : from.file.parentFile
 		fromFile.toURI().relativize(uri).path
 	}
 	/**

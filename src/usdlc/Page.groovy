@@ -5,6 +5,7 @@ import org.cyberneko.html.parsers.SAXParser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import sun.jvm.hotspot.debugger.PageCache
 
 /**
  * Here we read in a uSDLC page and provide access to the internals:
@@ -54,7 +55,7 @@ class Page {
 	 * when you just give a directory.
 	 */
 	static Store store(Store store) {
-		if (store.file.isDirectory() ||
+		if (store.isDirectory ||
 				store.pathFromWebBase.endsWith('/') ||
 				store.pathFromWebBase.indexOf('.') == -1) {
 			store = store.rebase('index.gsp')
@@ -70,6 +71,7 @@ class Page {
 		}
 		return store
 	}
+
 	static Store store(String path) {
 		store(Store.base(path))
 	}
@@ -94,7 +96,9 @@ class Page {
 		pageProcessor(page)
 		page.select('a[action=page]').each { link ->
 			String href = link.attr('href')
-			pageProcessor(new Page(store.rebase(href)))
+			if (href.indexOf('..') == -1) {
+				drill(store.rebase(href), pageProcessor)
+			}
 		}
 	}
 	/**
@@ -105,9 +109,9 @@ class Page {
 		pages = new PageCache()
 		pages.add Store.usdlcRoot
 		Store.projectRoots.each { page -> pages.add page }
-println "Pages(): $pages.list"
 		return pages.list
 	}
+
 	static Page[] pages(parent) {
 		pages.reset()
 		parent.select('a[action=page]').each { link ->
@@ -116,13 +120,15 @@ println "Pages(): $pages.list"
 				pages.add parent.store.rebase(href)
 			}
 		}
-println "Pages: $pages.list"
 		return pages.list
 	}
+
 	private static class PageCache {
 		def cache = [] as Set
 		def list = []
+
 		def reset() { list = [] }
+
 		def add(Store store) {
 			String path = store.pathFromWebBase
 			if (!cache.contains(path)) {
@@ -166,8 +172,13 @@ println "Pages: $pages.list"
 	/**
 	 * Save the modified html file
 	 */
-	void save(to = store) {
-		if (updated) to.text = (dom.select('body') ?: dom).html()
+	boolean save(to = store) {
+		if (updated) {
+			to.text = (dom.select('body') ?: dom).html()
+			updated = false
+			return true
+		}
+		return false
 	}
 
 	String toString() {
@@ -180,6 +191,7 @@ println "Pages: $pages.list"
 	/** Wrap the dom section item to add functionality */
 	class Section {
 		@Delegate Element dom
+
 		Section(dom) {this.dom = dom}
 		/** Retrieve the unique section id */
 		String getId() { dom?.attr('id') ?: '' }
