@@ -95,6 +95,7 @@ $(function() {
 				})
 
 				usdlc.scrollBack = function() {
+console.log("scrollTop "+lastScrollTop)
 					usdlc.pageContents.scrollTop(lastScrollTop)
 				}
 			}

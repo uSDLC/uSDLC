@@ -57,15 +57,12 @@ $(function () {
 				// Get rid of the editor so that it does not show up in the
 				// saved content.
 				editor.destroy()
-				if (!updateContents) {
-					usdlc.setFocus($section)
-					usdlc.scrollBack()
-					usdlc.synopses()
-					return
-				}
-				usdlc.saveSection($section)
-				usdlc.scrollBack()
 				usdlc.setFocus($section)
+				if (updateContents) {
+					usdlc.saveSection($section)
+				} else {
+					usdlc.synopses()
+				}
 			},
 			on:          {
 				instanceReady:function (ev) {

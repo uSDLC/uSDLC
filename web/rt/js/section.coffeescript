@@ -30,7 +30,8 @@ $ ->
 			usdlc.inFocus = section.addClass('inFocus ui-widget-content')
 			usdlc.contentTree.jstree('disable_hotkeys')
 			usdlc.pageContentsSausages.sausage("setFocus", section)
-			usdlc.menuIcon.prependTo(section)
+			usdlc.menuIcon.prependTo section
+			usdlc.scrollTo section
 		section
 
 	usdlc.clearFocus = ->
