@@ -90,6 +90,7 @@ $ ->
 			onCursorActivity : (editor) ->
 			onGutterClick : (editor) ->
 			onFocus : (editor) ->
+				usdlc.saveSource()
 				usdlc.setFocus wrapper
 				editorMode editor, true
 			onBlur : (editor) ->
