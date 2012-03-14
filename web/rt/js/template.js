@@ -165,6 +165,7 @@ $(function () {
 						usdlc.relativePageContents(url)
 						break
 					case 'runnable':
+						usdlc.setFocus(a)
 						usdlc.runSectionInFocus()
 						break
 					default:
