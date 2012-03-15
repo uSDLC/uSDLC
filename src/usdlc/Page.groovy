@@ -122,7 +122,7 @@ class Page {
 		return pages.list
 	}
 
-	private static class PageCache {
+	static class PageCache {
 		def cache = [] as Set
 		def list = []
 
