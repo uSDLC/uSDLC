@@ -187,7 +187,7 @@ import static usdlc.config.Config.config
 				'<span class="gray" style="padding-left:2em;">',
 				'</span><br>'
 		]) { write "$currentActor: $to $elapsed" }
-		Log.csv("${currentPage}.timings")(
+		Log.csv("${currentPage.path}.timings",
 				"$currentActor,$to,$timer.elapsed,$elapsed")
 	}
 

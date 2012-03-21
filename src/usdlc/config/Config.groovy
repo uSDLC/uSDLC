@@ -57,35 +57,27 @@ class Config {
 	 * or from any Store object with 'pd = store.project'.
 	 *
 	 * pd.name  Project name
-	 * pd.path [:] Paths used with ~
-	 * pd.path.p or p.path.home Project path - use '~p/rest'
+	 * pd.home project home
 	 */
 	static Map project(String name) {
-		def home, configScript
-		switch (name.toLowerCase()) {
-			case 'usdlc':
-				home = '.'
-				configScript = './uSDLC/Config.groovy'
-				break
-			case '':
-				home = config.home;
-				configScript = './Config.groovy'
-				break
-			default:
-				name = Store.decamel(name.capitalize())
-				home = "$config.home/$name"
-				configScript = "$home/usdlc/Config.groovy"
-				break
-		}
-		return project(name, home, configScript)
-	}
-
-	static Map project(String name, String home, String base) {
 		if (!config.projects[name]) {
-			Map pc = parse(base)
-			pc.name = name
-			pc.path = pc.path ?: [:]
-			pc.path[name] = pc.path.p = pc.path.project = pc.path.p ?: home
+			Map pc
+			switch (name.toLowerCase()) {
+				case 'usdlc':
+					pc = parse './uSDLC/Config.groovy'
+					pc.home = '.'
+					break
+				case '':
+					pc = parse './Config.groovy'
+					pc.home = config.home;
+					break
+				default:
+					def home = "$config.home/$name"
+					pc = parse "$home/usdlc/Config.groovy"
+					pc.home = home
+					break
+			}
+			pc.name = Store.decamel(name.capitalize())
 			config.projects[name] = pc
 		}
 		return config.projects[name]

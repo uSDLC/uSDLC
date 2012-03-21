@@ -1,7 +1,6 @@
 package usdlc
 
 import usdlc.config.Config
-
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
 
@@ -19,18 +18,14 @@ class Store {
 		if (matcher) {
 			//noinspection GroovyUnusedAssignment
 			def (all, core, home, rest) = matcher[0]
-			// core if linked from outside, rest if linked from menu on left
-			def projectName = ((core.size() > 1) ? core : rest).split('/').
-					find { it.size() && it != '~' } ?: ''
-			def project = Config.project(projectName)
-			home = project.path[home] ?: config.home
-			path = "$home$rest"
+			def project = Config.project(home)
+			path = "$project.home$rest"
 			return new Store(path, project)
 		}
 		new Store(path, Config.project('uSDLC'))
 	}
 
-	static pathRE = ~/^(.*)~(\w*)(.*)$/
+	static pathRE = ~/^(.*)~\/?(\w*)(.*)$/
 
 	private Store(String pathFromWebBase, project) {
 		if (pathFromWebBase[0] == '/') {
@@ -105,6 +100,8 @@ class Store {
 	@Lazy parts = split(pathFromWebBase)
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
 		pathFromWebBase[config.home.size()..-1] : ''
+	@Lazy fromProjectHome = pathFromWebBase.startsWith(project.home) ?
+			pathFromWebBase[project.home.size()..-1] : ''
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
 	@Lazy boolean isDirectory = file.isDirectory() ||
 			(! file.exists() && !parts.ext)
