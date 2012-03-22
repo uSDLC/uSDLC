@@ -1,7 +1,3 @@
 path = [
-    p: '.',
-    home: '.',
-    web: '.',
-    src: '../src',
-    
+    src: '../src'
 ]

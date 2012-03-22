@@ -46,8 +46,9 @@ class RhinoActor extends Actor {
 	}
 
 	Store onDslSourcePath(String name) {
+		def project = currentlyRunningScript.project
 		config.dslSourcePath.findResult { String path ->
-			def store = Store.base("$path$name")
+			def store = Store.base("$path$name", project)
 			store.exists() ? store : null
 		}
 	}

@@ -59,30 +59,33 @@ class Config {
 	 * pd.name  Project name
 	 * pd.home project home
 	 */
-	static Map project(String name) {
+	static Map project(String name, parent = usdlcProject) {
 		if (!config.projects[name]) {
-			Map pc
-			switch (name.toLowerCase()) {
-				case 'usdlc':
-					pc = parse './uSDLC/Config.groovy'
-					pc.home = '.'
-					break
-				case '':
-					pc = parse './Config.groovy'
-					pc.home = config.home;
-					break
-				default:
-					def home = "$config.home/$name"
-					pc = parse "$home/usdlc/Config.groovy"
-					pc.home = home
-					break
+			parent = parent ?: usdlcProject
+			if (parent && parent.path[name]) {
+				return parent // so ~home points to project home
 			}
-			pc.name = Store.decamel(name.capitalize())
-			config.projects[name] = pc
+			if (name.toLowerCase() == 'usdlc') {
+				usdlcProject = project(name, '.', './uSDLC/Config.groovy')
+				return usdlcProject
+			}
+			def home = "$config.home/$name"
+			if (Store.base(home).exists()) {
+				return project(Store.decamel(name.capitalize()),
+							home, "$home/usdlc/Config.groovy")
+			}
+			return project('none', config.home, '')
 		}
 		return config.projects[name]
 	}
-
+	static project(String name, String home, String configFile) {
+		def pc = parse configFile
+		pc.path = pc.path ?: [:]
+		pc.path.home = pc.home = home
+		pc.name = name
+		return config.projects[name] = pc
+	}
+	static usdlcProject
 	static ConfigSlurper slurper
 	static String baseDir
 

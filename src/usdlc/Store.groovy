@@ -5,20 +5,17 @@ import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
 
 class Store {
-/**
- * @return root html document in uSDLC project
- */
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
-	static Store base(String path = '') {
+	static Store base(String path = '', project = null) {
 		path = path.replaceAll('\\\\', '/')
 		def matcher = pathRE.matcher(path)
 		path = camelCase(path)
 		if (matcher) {
 			//noinspection GroovyUnusedAssignment
 			def (all, core, home, rest) = matcher[0]
-			def project = Config.project(home)
+			project = Config.project(home, project)
 			path = "$project.home$rest"
 			return new Store(path, project)
 		}
