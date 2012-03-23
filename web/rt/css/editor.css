@@ -2,7 +2,9 @@
 	position: relative;
 	z-index: 9990;
 }
-
+.CodeMirror {
+	background-color: white;
+}
 .CodeMirror-scroll {
   overflow: visible;
   height: auto;
