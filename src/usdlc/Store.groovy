@@ -356,7 +356,7 @@ class Store {
 	 */
 	Store rmdir() {
 		ant.delete(dir: file.path, includeemptydirs: true)
-		this
+		return this
 	}
 	/**
 	 * Delete the named file that lives under the defined Store
