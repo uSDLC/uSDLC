@@ -72,7 +72,7 @@ $(function() {
 			return true
 		},
 		joinSectionAbove : function() {
-			if (usdlc.hasFocus()) {
+			if (usdlc.inFocus) {
 				var above = usdlc.inFocus.prev()
 				if (above.length) {
 					usdlc.inFocus.prepend(above.children())
@@ -84,7 +84,7 @@ $(function() {
 			return true
 		},
 		joinSectionBelow : function() {
-			if (usdlc.hasFocus()) {
+			if (usdlc.inFocus) {
 				var below = usdlc.inFocus.next()
 				if (below.length) {
 					usdlc.inFocus.append(below.children())

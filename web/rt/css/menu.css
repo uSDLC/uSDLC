@@ -7,6 +7,9 @@ div.contextMenu {
 	margin: 0;
 	padding: 0;
 }
+.fg-menu-container {
+	z-index: 100;
+}
 
 div#vakata-contextmenu {
 	display: none;

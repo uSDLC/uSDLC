@@ -55,7 +55,7 @@ $ ->
 	usdlc.lastFocus = null
 	usdlc.hasFocus = ->
 		if usdlc.contextMenu and usdlc.contextMenu.is(":visible")
-			false # doesn't have focus of context menu up
+			false # doesn't have focus if context menu up
 		else
 			usdlc.inFocus
 
