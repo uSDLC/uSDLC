@@ -95,7 +95,6 @@ $(function() {
 				})
 
 				usdlc.scrollBack = function() {
-console.log("scrollTop "+lastScrollTop)
 					usdlc.pageContents.scrollTop(lastScrollTop)
 				}
 			}
@@ -139,18 +138,25 @@ console.log("scrollTop "+lastScrollTop)
 			usdlc.absolutePageContents(path, callback)
 		},
 		finalise : function() {
-			$('div[href]').each(function() {
-				usdlc.elementLoader($(this))
-			})
-			// move from do-nothing to do-it-all and then generate for already
-			// loaded first page.
-			usdlc.synopses = usdlc.doSynopses
-			usdlc.synopses()
+			if (testScripts.length) {
+				usdlc.loadScriptAsync(testScripts.shift(), usdlc.init.finalise)
+			} else {
+				// Run through all elements asking for action
+				// todo: should be live()
+				$('div[href]').each(function() {
+					usdlc.elementLoader($(this))
+				})
+				// move from do-nothing to do-it-all and then generate
+				// for already loaded first page.
+				usdlc.synopses = usdlc.doSynopses
+				usdlc.synopses()
+			}
 		},
 		postLoader : function() {
-			usdlc.loadScriptAsync('/store/js/usdlcPost.js', usdlc.init.finalise)
-			usdlc.loadScriptAsync('/usdlc/dslAssociationList_js.groovy', function() {
-			})
+			usdlc.loadScriptAsync(
+					'/store/js/usdlcPost.js', usdlc.init.finalise)
+			usdlc.loadScriptAsync(
+					'/usdlc/dslAssociationList_js.groovy', function() {})
 		}
 	}
 })

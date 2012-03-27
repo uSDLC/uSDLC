@@ -54,15 +54,14 @@ window.onload = ->
 					'/rt/js/base.js' ]
 			[ '/rt/js/init.js' ], [ '/rt/js/section.coffeescript', '/rt/js/template.js' ] ]
 	postload = [
-			[ '/lib/jquery/js/fg.menu.js', '/lib/jquery/js/fg.menu.js',
-				'/lib/ckeditor/ckeditor.js', '/lib/jquery/js/jquery.scrollTo.js',
+			[ '/lib/ckeditor/ckeditor.js', '/lib/jquery/js/jquery.scrollTo.js',
 				'/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js'
 				'/lib/CodeMirror/lib/codemirror.js' ]
 			[ '/rt/js/contentTree.coffeescript',
 				'/usdlc/dsl/dslAssociationList_js.groovy' ]
 			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
-				'/rt/js/menu.js', '/rt/js/moveSection.js', '/rt/js/clipboard.js',
-				'/rt/js/run.js', '/rt/js/htmlEditor.js',
+				'/rt/js/menu.coffeescript', '/rt/js/moveSection.js',
+				'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js',
 				'/rt/js/sourceEditor.coffeescript', '/rt/js/ex.coffeescript',
 				'/rt/js/screencast.coffeescript' ] ]
 

@@ -30,20 +30,17 @@ $ ->
 			usdlc.inFocus = section.addClass('inFocus ui-widget-content')
 			usdlc.contentTree.jstree('disable_hotkeys')
 			usdlc.pageContentsSausages.sausage("setFocus", section)
-			usdlc.menuIcon.prependTo section
 			usdlc.scrollTo section
+			usdlc.resetMenu()
 		section
 
 	usdlc.clearFocus = ->
 		if not usdlc.inFocus then return
+		usdlc.menuToTop()
 		$('.inFocus').removeClass('inFocus ui-widget-content')
 		usdlc.lastFocus = usdlc.inFocus
 		usdlc.inFocus = null
 		usdlc.contentTree.jstree('enable_hotkeys')
-		usdlc.menuIcon.detach()
-
-	usdlc.menuIcon = $('img#menuIcon').detach().
-		bind('click', -> usdlc.contextMenuOverIcon())
 
 	usdlc.toggleFocus = ->
 			if usdlc.inFocus
@@ -53,11 +50,6 @@ $ ->
 
 	usdlc.inFocus = null
 	usdlc.lastFocus = null
-	usdlc.hasFocus = ->
-		if usdlc.contextMenu and usdlc.contextMenu.is(":visible")
-			false # doesn't have focus if context menu up
-		else
-			usdlc.inFocus
 
 	usdlc.nextSectionId = ->
 		id = $('.section').length + 1
@@ -65,17 +57,15 @@ $ ->
 		"s#{id}"
 
 	usdlc.upFocus = ->
-		return true unless usdlc.hasFocus()
-		focus = usdlc.inFocus.prev()
-		focus = $('div.section:last') if focus.length == 0
-		usdlc.setFocus(focus)
+		return true unless usdlc.inFocus
+		focus = usdlc.inFocus.prev('.section')
+		usdlc.setFocus(focus) if focus?.length
 		return false
 
 	usdlc.downFocus = ->
-		return true unless usdlc.hasFocus()
-		focus = usdlc.inFocus.next()
-		focus = $('div.section:first') if focus.length == 0
-		usdlc.setFocus(focus)
+		return true unless usdlc.inFocus
+		focus = usdlc.inFocus.next('.editable')
+		usdlc.setFocus(focus) if focus?.length
 		return false
 	###
 	Parse section title, subtitle, content, id and name (camel-case)
@@ -130,17 +120,5 @@ $ ->
 	# Anything that has focus can be edited.
 	$('.editable').css('background-image', "none").live('click', (ev) ->
 		usdlc.setFocus(ev.currentTarget)
-		return true
-	).live('contextmenu', (ev) ->
-		usdlc.setFocus(ev.currentTarget)
-	)
-	# Alt key press and release triggers section menu
-	$(document).bind('keydown', ->
-		usdlc.inAlt = (event.altKey and event.keyCode == 18 and usdlc.inFocus)
-		return true
-	).bind('keyup', ->
-		if event.keyCode == 18 and usdlc.inAlt and usdlc.inFocus
-			usdlc.contextMenuOverIcon()
-		usdlc.inAlt = false
 		return true
 	)

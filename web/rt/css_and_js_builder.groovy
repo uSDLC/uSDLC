@@ -5,22 +5,22 @@ import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.drivers.JavaScript.javascriptBuilder
 
 files = [
-		"lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css",
-		"lib/jquery/css/fg.menu.css",
-		"lib/CodeMirror/lib/codemirror.css",
-		"lib/CodeMirror/theme/default.css",
-		"lib/CodeMirror/theme/elegant.css",
-		"lib/CodeMirror/theme/neat.css",
-		"lib/CodeMirror/theme/night.css",
-		"rt/css/body.css",
-		"rt/css/title.css",
-		"rt/css/section.css",
-		"rt/css/paragraph.css",
-		"rt/css/ui.css",
-		"rt/css/menu.css",
-		"rt/css/borders.css",
-		"rt/css/sausage.css",
-		"rt/css/editor.css",
+		'lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css',
+		'lib/jquery/css/fg.menu.css',
+		'lib/CodeMirror/lib/codemirror.css',
+		'lib/CodeMirror/theme/default.css',
+		'lib/CodeMirror/theme/elegant.css',
+		'lib/CodeMirror/theme/neat.css',
+		'lib/CodeMirror/theme/night.css',
+		'rt/css/body.css',
+		'rt/css/title.css',
+		'rt/css/section.css',
+		'rt/css/paragraph.css',
+		'rt/css/ui.css',
+		'rt/css/menu.css',
+		'rt/css/borders.css',
+		'rt/css/sausage.css',
+		'rt/css/editor.css',
 ]
 
 fileProcessorWithGzip('store/css/usdlc.css', files) {
@@ -54,11 +54,9 @@ coffeeCompiler = new CoffeeScript()
 javascriptBuilder('store/js/usdlcPre.js', files, coffeeCompiler)
 
 files = [
-		'lib/jquery/js/fg.menu.js',
-		'lib/jquery/js/fg.menu.js',
 		'lib/ckeditor/ckeditor.js',
 		'lib/ckeditor/adapters/jquery.js',
-		'rt/js/menu.js',
+		'rt/js/menu.coffeescript',
 		'rt/js/moveSection.js',
 		'rt/js/clipboard.js',
 		'rt/js/htmlEditor.js',

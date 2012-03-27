@@ -45,6 +45,7 @@ $(function () {
 		var $section = $(section)
 		//usdlc.highlight(false) // remove highlighting so save will stand out
 		usdlc.clearSynopses()
+		usdlc.menuToTop()
 		usdlc.scrollTo($section)
 		usdlc.clearFocus()
 		$section.ckeditor(function () {
@@ -242,4 +243,15 @@ $(function () {
 			dialogDefinition.addContents(usdlc.reportsTabData);
 		}
 	})
+
+	function onDblclick(ev) {
+		if (!usdlc.inEditMode(ev)) {
+			usdlc.setFocus(ev.currentTarget)
+			usdlc.editSectionInFocus()
+			return false
+		} else {
+			return true
+		}
+	}
+	$('.editable').live('dblclick', onDblclick)
 })

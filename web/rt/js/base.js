@@ -122,6 +122,10 @@ $(function() {
 			$.get(usdlc.urlBase + '/' + href, function(data) {
 				usdlc[action](element, data)
 			})
+		},
+		inEditMode: function(event) {
+			var node = event.target.nodeName.toLowerCase()
+			return node == 'textarea' || node == 'input'
 		}
 	})
 })

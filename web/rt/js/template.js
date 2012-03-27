@@ -169,10 +169,12 @@ $(function () {
 						usdlc.runSectionInFocus()
 						break
 					default:
-						if (url) usdlc.window(a.attr('href'),'from-usdlc')
+						var href = a.attr('href')
+						if (href[0] == '#' || !url) return true
+						usdlc.window(href,'from-usdlc')
 						break
 				}
-				break;
+				break
 			default:
 				return true
 		}

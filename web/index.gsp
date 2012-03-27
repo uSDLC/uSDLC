@@ -1,4 +1,4 @@
-<html xmlns:g="">
+<html xmlns="">
 <head>
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
@@ -8,6 +8,11 @@
 		href="https://plus.google.com/116900499382012938759"
 		rel="publisher"/>
 	<% } %>
+	<!--link type="text/css" rel="stylesheet" href="/rt/css/menu.css"-->
+	<script>
+		testScripts = []//"/rt/js/menu.coffeescript"]
+	</script>
+	<link type="text/css" rel="stylesheet" href="/rt/css/menu.css">
 </head>
 <body>
 
@@ -26,7 +31,10 @@
 			<table width="98%">
 				<tr>
 					<td>
-						<div href="rt/toolbar.html" class="toolbar"></div>
+						<div id='topMenu'>
+							<div class='topMenu red-box rounded'
+								href="rt/top.menu" action="loadMainMenu"></div>
+						</div>
 					</td>
 					<td>
 						<div id='newsBar'></div>
@@ -72,25 +80,17 @@
 	</tr>
 </table>
 
-<div id="menuSection" class="contextMenu" href="rt/menuSection.html"
-     action="loadContextMenu"></div>
-<div id="menuTitle" class="contextMenu" href="rt/menuTitle.html"
-     action="loadContextMenu"></div>
-<div id="menuSourceEditor" class="contextMenu" href="rt/menuSourceEditor.html"
-     action="loadContextMenu"></div>
-<img id=menuIcon src="lib/circular-icons/arrow_down.png" alt="">
-
 <div id="pasteList" href="rt/pasteList.html.groovy"></div>
 <script type="text/javascript" src='/store/js/usdlcPre.js'></script>
 <% if (usdlc.config.Config.config.port == "80") { %>
-<div style="position:absolute; bottom:10; left:10;">
+<div style="position:absolute; bottom:10px; left:10px;">
 	<a href="https://plus.google.com/116900499382012938759?prsrc=3"
 	   style="text-decoration:none;" target="_blank"><img
 		src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt=""
 		style="border:0;width:32px;height:32px;"/></a>
 	<script type="text/javascript"
 	        src="https://apis.google.com/js/plusone.js"></script>
-	<g:plusone href="http://usdlc.net"></g:plusone>
+	<plusone href="http://usdlc.net"> </plusone>
 </div>
 <span class="hideOnHover" style="font-size: 24px; display: inline; "><img
 	alt="Fork me on GitHub"

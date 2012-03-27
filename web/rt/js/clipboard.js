@@ -112,14 +112,14 @@ $(function() {
 	})
 
 	// bind paste keys
-	var doc = $(document)
-	doc.bind('keydown', 'ctrl+V', function() {
-		usdlc.paste(0)
-	})
-	var digit
-	for (digit = 1; digit < 10; digit++) {
-		doc.bind('keydown', 'ctrl+' + digit, function() {
-			usdlc.paste(digit)
-		})
-	}
+//	var doc = $(document)
+//	doc.bind('keydown', 'ctrl+V', function() {
+//		usdlc.paste(0)
+//	})
+//	var digit
+//	for (digit = 1; digit < 10; digit++) {
+//		doc.bind('keydown', 'ctrl+' + digit, function() {
+//			usdlc.paste(digit)
+//		})
+//	}
 })

@@ -1,5 +1,5 @@
 .rounded, div.section:first-child {
-	padding: 2px 3px;
+	padding: 2px 3px !important;
 	border: solid 2px #DDD;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;

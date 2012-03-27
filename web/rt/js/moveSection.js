@@ -50,7 +50,7 @@ $(function() {
 			usdlc.screencast.close()
 		},
 		moveSectionUp : function() {
-			if (usdlc.hasFocus()) {
+			if (usdlc.inFocus) {
 				var swap = usdlc.inFocus.prev()
 				if (swap.length) {
 					usdlc.inFocus.insertBefore(swap)
@@ -61,7 +61,7 @@ $(function() {
 			return true
 		},
 		moveSectionDown : function() {
-			if (usdlc.hasFocus()) {
+			if (usdlc.inFocus) {
 				var swap = usdlc.inFocus.next()
 				if (swap.length) {
 					usdlc.inFocus.insertAfter(swap)

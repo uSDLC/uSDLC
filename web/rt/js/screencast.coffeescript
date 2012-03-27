@@ -51,6 +51,7 @@ $ ->
 		menu: (path...) ->
 			offset = usdlc.inFocus.offset()
 			[top, left] = [offset.top + 50, offset.left + 60]
+			# todo: no longer valid approach
 			usdlc.onContextMenu usdlc.inFocus, top, left
 			console.log usdlc.contextMenu.contextMenu
 
