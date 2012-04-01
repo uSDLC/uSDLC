@@ -125,7 +125,8 @@ $(function() {
 		},
 		inEditMode: function(event) {
 			var node = event.target.nodeName.toLowerCase()
-			return node == 'textarea' || node == 'input'
+			return node == 'textarea' || node == 'input' ||
+					$(event.target).children('.CodeMirror').size() > 0
 		}
 	})
 })

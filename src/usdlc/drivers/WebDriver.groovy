@@ -1,18 +1,3 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc.drivers
 
 import org.openqa.selenium.By
@@ -22,29 +7,27 @@ import static usdlc.config.Config.config
 
 class WebDriver {
 	String driverName = config.webDriver
-	org.openqa.selenium.WebDriver driver
+	org.openqa.selenium.WebDriver _driver
 	Capabilities capabilities
 	int timeout = 10
 
 	org.openqa.selenium.WebDriver getDriver() {
-		if (!driver) {
-			setDriver(driverName)
-		}
+		if (!_driver) { driver = driverName }
 		try {
-			capabilities = driver.capabilities
-		} catch (e) {
-			setDriver(driverName)
-		}
-		driver
+			capabilities = _driver.capabilities
+		} catch (e) { driver = driverName }
+		return _driver
 	}
 
 	void load(url) {
 		try {
-			getDriver().get(url)
+			driver.get(url)
+			baseElement = _driver
 		} catch (exception) {
 			exception.printStackTrace()
-			setDriver(driverName)
-			driver.get(url)
+			driver = driverName
+			_driver.get(url)
+			baseElement = _driver
 		}
 	}
 	/**
@@ -61,15 +44,16 @@ class WebDriver {
 		if (name in config.webDrivers) {
 			name = config.webDrivers[name]
 		}
-		driver = Class.forName(name).newInstance()
+		baseElement = _driver = WebDriver.classLoader.loadClass(name).
+				newInstance() as org.openqa.selenium.WebDriver
 	}
 	/**
 	 * Wait for something to become available - for a given patience.
 	 */
-	WebElement waitFor(Closure closure) {
+	WebElement waitFor(Closure elementFinder) {
 		def countdown = timeout * 2
 		WebElement result
-		while (!(result = closure()) && countdown) {
+		while (!(result = elementFinder()) && countdown) {
 			sleep(200)
 			countdown--
 		}
@@ -81,7 +65,7 @@ class WebDriver {
 	WebElement waitFor(By target, Closure action) {
 		def result = waitFor {
 			try {
-				return driver.findElement(target)
+				return baseElement.findElement(target)
 			} catch (nsee) {
 				return null
 			}
@@ -96,27 +80,45 @@ class WebDriver {
 	 * Link text is a path with links separated by ->.
 	 */
 	WebElement waitFor(String targets, Closure action) {
-		def result = null
+		def element = driver
 		targets.split(/\s+->\s+/).each { target ->
-			By id = By.id(target)
-			By name = By.name(target)
-			By linkText = By.linkText(target)
-			By cssSelector = By.cssSelector(target)
-			By xpath = By.xpath(target)
-			By className = By.className(target.replaceAll(/\s/, '-'))
-			By tagName = By.tagName(target)
-			By partialLinkText = By.partialLinkText(target)
-			result = waitFor {
-				findElement(id) ?: findElement(name) ?:
-					findElement(linkText) ?: findElement(cssSelector) ?:
-						findElement(xpath) ?: findElement(className) ?:
-							findElement(tagName) ?: findElement
-				(partialLinkText)
-			}
-			assert result, "No element $target"
-			result = action result
+			element = findElement(target) {null}
+			assert element, "No element $target"
 		}
-		result
+		return action(element[0])
+	}
+	/**
+	 * Wait for and return a specified element
+	 */
+	WebElement waitFor(String targets) {waitFor(targets){it}}
+
+	private WebElement findElement(String target, Closure moreChecks) {
+		By id = By.id(target)
+		By name = By.name(target)
+		By linkText = By.linkText(target)
+		By cssSelector = By.cssSelector(target)
+		By xpath = By.xpath(target)
+		By className = By.className(target.replaceAll(/\s/, '-'))
+		By tagName = By.tagName(target)
+		By plt = By.partialLinkText(target)
+		return waitFor {
+			baseElement.findElements(id) ?:
+				baseElement.findElements(name) ?:
+					baseElement.findElements(linkText) ?:
+						baseElement.findElements(cssSelector) ?:
+							baseElement.findElements(xpath) ?:
+								baseElement.findElements(className) ?:
+									baseElement.findElements(tagName) ?:
+										baseElement.findElements(plt) ?:
+											moreChecks(target)
+		}
+	}
+	private findElementByVisualClues(target) {
+		// start with the obvious - <label>
+		def element = baseElement.findElements(By.cssSelector('label'))
+	}
+	def findFormElement(target) {
+		findElement(target) {findElementByVisualClues(it)}
 	}
 	/**
 	 * Go from A to B by waiting and clicking links
@@ -124,12 +126,98 @@ class WebDriver {
 	WebElement click(String targets) {
 		waitFor(targets) { it.click() }
 	}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * the existence of all regex patterns in the list
+	 */
+	void checkAll(selector, Iterable regexList) {
+		check(selector) { element ->
+			for (regex in regexList) { assert element.html =~ regex }
+		}
+	}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * the existence of at least one of the regex patterns in the list
+	 */
+	void checkSome(selector, Iterable regexList) {
+		check(selector) { element ->
+			for (regex in regexList) { if (element.html =~ regex) return }
+			assert false, regexList
+		}
+	}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * to make sure none of the regex patterns in the list are found
+	 */
+	void checkNone(selector, Iterable regexList) {
+		check(selector) { element ->
+			for (regex in regexList) { assert !(element.html =~ regex) }
+		}
+	}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * to make sure none of the regex patterns in the list are found
+	 */
+	void checkSelected(selector, Iterable regexList) {
+		checkAll(selector, regexList.collect {
+			"<option [^>]*selected=.*?>$it</option>"
+		})
+	}
+	void checkSelected(selector, regex) {checkSelect(selector,[regex])}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * a regex pattern
+	 */
+	void check(selector, against, Closure action) {
+		web.waitFor(selector) { element ->
+			currentElement = element
+			action(element)
+		}
+	}
+	/**
+	 * Wait for a selector to become available and check the innerHTML for
+	 * a regex pattern
+	 */
+	void check(selector, regex) { checkAll(selector,[regex]) }
+	/**
+	 * Allows chaining of checks against the same element.
+	 */
+	void check(regex) { assert currentElement.text =~ regex }
+	def currentElement = null, _baseElement = null
+	def setBaseElement(to) { _baseElement = to }
+	def getBaseElement() {
+		if (! _baseElement) _baseElement = driver
+		return _baseElement
+	}
+	/**
+	 * It is not uncommon to be searching for elements within another
+	 * (as in input elements in a form). Any calls to a selector within
+	 * this closure are restricted to the outer element. Can be nested.
+	 */
+	void with(target, Closure actions) {
+		def before = baseElement
+		baseElement = waitFor(target)
+		try { actions() } finally { baseElement = before }
+	}
 
-	WebElement findElement(By by) {
-		try {
-			return driver.findElement(by)
-		} catch (nsee) {
-			return null
+	void enter(form, fields) {
+		with(form) {
+			fields.each { name, value ->
+				def field = findFormElement(name)
+				switch (field.tagName) {
+					case 'input':
+					case 'textarea':
+						field.clear()
+						field.sendKeys(value)
+						break
+					case 'select':
+						def options = value as Set
+						field.findElements(By.cssSelector('option')).each{
+							if (it.getAttribute('selected')) it.click()
+							if (it.text in options) it.click()
+						}
+				}
+			}
 		}
 	}
 }

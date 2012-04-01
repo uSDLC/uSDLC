@@ -14,7 +14,7 @@ class JavaScript {
 	/**
 	 * Run a javascript file
 	 */
-	public run(Store js, binding = [:]) {
+	def run(Store js, binding = [:]) {
 		Context context = Context.enter()
 		Reader reader
 		try {
@@ -23,7 +23,7 @@ class JavaScript {
 				context.optimizationLevel = -1
 			}
 			def inputStream = js.file.newInputStream()
-			reader = new InputStreamReader(inputStream, "UTF-8")
+			reader = new InputStreamReader(inputStream, 'UTF-8')
 			def scope = scope(context, binding)
 			return context.evaluateReader(
 					scope, reader, js.pathFromWebBase, 0, null)

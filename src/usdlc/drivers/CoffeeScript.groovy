@@ -29,7 +29,7 @@ class CoffeeScript {
 	 * Pass in a coffee-script file and the compiler will do it's magic
 	 */
 	String compile(String coffeeScriptSource) {
-		String options = bare ? "{bare: true}" : "{}"
+		String options = bare ? '{bare: true}' : '{}'
 		javascript.run("CoffeeScript.compile(coffeeScript, $options);",
 				[coffeeScript:coffeeScriptSource, newScope:true])
 	}
@@ -38,7 +38,7 @@ class CoffeeScript {
 	 * Retrieve a reference to the javascript file created from a cs compile
 	 */
 	Store javascript(Store coffeescript) {
-		Store javascript = Store.base("store/coffeescript/base").
+		Store javascript = Store.base('store/coffeescript/base').
 				rebase(coffeescript.pathFromWebBase + '.js')
 
 		if (coffeescript.newer(javascript)) {

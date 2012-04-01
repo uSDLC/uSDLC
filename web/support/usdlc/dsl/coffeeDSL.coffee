@@ -2,7 +2,8 @@ globals = (-> (-> this)())()
 usdlc = Packages.usdlc
 groovy = Packages.groovy
 
-print = (text) -> exchange.response.print text
+print = (text) -> exchange.response.print "#{text}\n"
+output = (text) -> exchange.response.print text
 $session = exchange.getRequest().session
 session = instance : (cls) -> $session.get('instance').call cls
 include = run = dsl = (script) -> support.include script

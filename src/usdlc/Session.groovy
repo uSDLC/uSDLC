@@ -17,7 +17,10 @@ class Session {
 			key = lastKey.toString()
 		}
 		if (!sessions.containsKey(key)) {
-			Closure entry = { String name, Closure creator ->
+			sessions[key] = new Session(key: key, isNewSession: isNewSession)
+			sessions[key].persist =
+				new PersistedSession(session: sessions[key])
+			sessions[key].entry = { String name, Closure creator ->
 				Map instances = sessions[key].instances
 				if (!instances.containsKey(name)) {
 					instances[name] = creator(name)
@@ -28,9 +31,6 @@ class Session {
 				}
 				instances[name]
 			}
-			sessions[key] = new Session(key: key, isNewSession: isNewSession)
-			sessions[key].persist = new PersistedSession(session:
-					sessions[key])
 		}
 		return sessions[key]
 	}
@@ -48,17 +48,17 @@ class Session {
 	 * Returns a property if it exists. If not call a method by that name to
 	 * set the property (first time only). Otherwise, null.
 	 */
-	public Object getProperty(String name) { return data[name] }
+	Object getProperty(String name) { return data[name] }
 	/** We can set the property explicitly */
-	public void setProperty(String name, value) { data[name] = value }
+	void setProperty(String name, value) { data[name] = value }
 	/** or as an instance of a defined class */
-	public instance(Class c, Object[] args) {
-		if (!data[c.name])
-			data[c.name] = c.newInstance(args)
+	def instance(Class c, Object[] args) {
+		if (!hasInstance(c)) { data[c.name] = c.newInstance(args) }
 		return data[c.name]
 	}
+	def hasInstance(Class c) { data[c.name] }
 	/** or from a closure (only called if property does not exist */
-	public Object invokeMethod(String name, Object args) {
+	Object invokeMethod(String name, Object args) {
 		if (data.containsKey(name)) return data[name]
 		def argv = (Object[]) args
 		if (argv.size()) {
@@ -88,7 +88,8 @@ class PersistedSession {
 			def sql = """update sessions set value=$value
 						where session=$key and key=$name"""
 			if (!db.sql.executeUpdate(sql)) {
-				sql = "insert into sessions values($key,$name,$value)"
+				db.sql.executeUpdate(
+						"insert into sessions values($key,$name,$value)")
 			}
 		}
 	}

@@ -77,8 +77,6 @@ $ ->
 		return false
 
 	$(document).keydown (event) ->
-		node = event.target.nodeName.toLowerCase()
-		return true if node is 'textarea' or node is 'input'
 		return true if usdlc.inEditMode(event)
 		return true if event.metaKey or event.altKey or event.ctrlKey
 		if event.which is 27

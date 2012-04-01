@@ -1,4 +1,4 @@
-<div id="pageTitle" class="editable ui-widget-content" uuid="ccd5b187-2f42-456f-8269-d61ef8634b9b">
+<div id="pageTitle" class="editable" uuid="ccd5b187-2f42-456f-8269-d61ef8634b9b">
  <h1> Domain Specific Languages</h1>
  <h2> Making the basics simple and the complex possible</h2>
 </div>
@@ -12,14 +12,30 @@
  <p> For internal DSLs (extensions of other scripting languages), the DSL description is in <em>(usdlc|web)/dsl/nameDSL.lang</em>. The script usdlc/dsl/webdriverDSL.groovy provides a simplified interface for controlling a browser from script.</p>
  <p> uSDLC uses groovy for technical DSLs and coffee-script for functional DSLs. Groovy provides a close interface to the Java and other JVM languages. For functional project members who are not software developers, coffee-script provides the cleanest and easiest DSL to understand.</p>
 </div>
-<div id="s4" contextmenu="section" class="editable section ui-widget-content synopsis">
+<div id="s4" contextmenu="section" class="editable section synopsis">
  <p> How to Associate with a DSL</p>
  <p> When creating a new DSL, it is necessary to tell uSDLC of the association. This is done with a static <a id="s4a0" action="runnable" class="usdlc sourceLink succeeded" href="creationMethod.groovy">creation method</a> in DSL producing an empty <em>web/dsl/nameDSL.lang</em> file. If the file already exists, it is not over-written and the method returns false.</p>
 </div>
+<div id="s6" class="editable section synopsis" contextmenu="section">
+ <h2> <a class="usdlc sourceLinksucceeded" href="TheFunctionalDSL.coffee" id="s6a6" action="runnable">The Functional DSL</a></h2>
+ <p> Functional DSLs are written in coffeescript. The provide a natural language-like interface for instrumenting designs. Any page that is using a DSL will reference it in the <u>Startup</u> script in the page footer. It contains a <strong><em>dsl</em></strong> command referencing the dsl as a string. Said DSL is loaded from one of the directories on the dsl source path - as defined in the language section of configuration.</p>
+ <p> By default, a DSL definition is in:</p>
+ <ul>
+  <li> /usdlc.support/dsl in the active project</li>
+  <li> /web/support/usdlc/dsl in the uSDLC project</li>
+  <li> /src/usdlc/dsl in the uSDLC project</li>
+ </ul>
+ <p> Apart from standard coffeescript definitions, including &quot;dsl 'dss'&quot; will active the ability to create domain specific statements.</p>
+ <p> A dss command takes a domain specific statement as a string and a method to call when this string is matched. See the instrumentation below for examples. In short, a dss statement is of the form:</p>
+ <pre>statement =&gt; adjectives action parameters | adjectives action!
+adjectives =&gt; adjective [adjectives]
+parameters =&gt; parameter[...][, statement]</pre>
+ <p> &nbsp;</p>
+</div>
 <div id="s2" contextmenu="section" class="editable section footer">
  <div style="text-align: center;">
-  <a id="s2a3" action="page" class="usdlc" href="..">Parent</a> - 
-  <a id="s2a0" action="runnable" class="usdlc" href="Startup.groovy">Startup</a> - 
-  <a id="s2a0" action="runnable" class="usdlc" href="Cleanup.groovy">Cleanup</a>
+  <a id="s2a3" action="page" class="usdlc" href="..">Parent</a> -
+  <a id="s2a0" action="runnable" class="usdlc" href="Startup.groovy">Startup</a> -
+  <a id="s2a1" action="runnable" class="usdlc" href="Cleanup.groovy">Cleanup</a>
  </div>
 </div>

@@ -5,6 +5,7 @@ import java.util.regex.Pattern
 import usdlc.Log
 import usdlc.Page
 import usdlc.Store
+import usdlc.drivers.JavaScript
 import static usdlc.MimeTypes.mimeType
 import static usdlc.config.Config.config
 
@@ -18,6 +19,9 @@ import static usdlc.config.Config.config
 			reportError "$user.id is not authorised to execute on this page"
 			return
 		}
+
+		// Make sure scripts have a clean slate
+		exchange.request.session.instance(JavaScript).globalScope = null
 
 		rerun = (script.pathFromWebBase == 'last.sectionRunner')
 		if (rerun) {

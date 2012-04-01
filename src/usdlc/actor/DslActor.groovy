@@ -3,8 +3,6 @@ package usdlc.actor
 import usdlc.drivers.Grape
 import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
-import sun.tools.asm.CatchData
-import sun.tools.asm.TryData
 
 /**
  * Given a Groovy DSL (script), first try and load it using the class-loader

@@ -51,18 +51,10 @@ class Screencast {
 		semaphore.timeout = seconds
 	}
 
-	void check(selector, regex) {
-		web.waitFor(selector) { element ->
-			currentElement = element
-			assert element.text =~ regex
-		}
-	}
+	void check(selector, regex) { web.check(selector, regex) }
+	void check(regex) { web.check(regex) }
 
-	void check(regex) {
-		assert currentElement.text =~ regex
-	}
-
-	def web = null, currentElement = null, session = null, stepDelay = 1
+	def web = null, session = null, stepDelay = 1
 
 	void page(store, title, subtitle, synopsis) {
 		session.screencastPage = store
@@ -83,7 +75,7 @@ class Screencast {
 	}
 
 	def checkElement(element, message) {
-		if (element) currentElement = element
+		if (element) web.currentElement = element
 		assert element, "No element with $message"
 		element
 	}
@@ -108,7 +100,7 @@ class Screencast {
 
 	def codeId(String text) {
 		findElement By.linkText(text), "a link '$text'"
-		def linkId = currentElement.getAttribute('id')
+		def linkId = web.currentElement.getAttribute('id')
 		"${linkId}_inclusion"
 	}
 
