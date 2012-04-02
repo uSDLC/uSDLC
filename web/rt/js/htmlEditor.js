@@ -156,7 +156,7 @@ $(function () {
 			// using the extension for existing
 			var actorItems = []
 			var linkRadioDefault = usdlc.cookie('linkRadioDefault') || ''
-			var actorTypes = (usdlc.cookie('actorTypes') || 'groovy').split(',')
+			var actorTypes = (usdlc.cookie('actorTypes') || 'coffee').split(',')
 			for (var actorType in actorTypes) {
 				actorItems.push([ actorTypes[actorType] ])
 			}
@@ -204,8 +204,9 @@ $(function () {
 						id:     'linkRadio',
 						label:  'Link Type',
 						items:  [
-							[ 'Child Page', '' ],
-							[ 'Sibling Page', 'htm' ],
+							[ 'Child', '' ],
+							[ 'Sibling', 'htm' ],
+							//[ 'Download' ],
 							[ 'Actor' ]
 						],
 						onClick:function () {

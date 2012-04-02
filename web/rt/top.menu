@@ -1,7 +1,7 @@
 Home,H,usdlc.absolutePageContents("/frontPage.html")
 Clipboard,C
 	Cut,C,usdlc.cutSectionInFocus(),ctrl+shift+X meta+shift+X
-	Copy,O,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C
+	Copy,o,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C
 	Paste,P,usdlc.pasteBelowSectionInFocus(),ctrl+shift+V meta+shift+V
 Section,S
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E

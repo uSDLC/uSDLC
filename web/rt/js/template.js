@@ -168,6 +168,11 @@ $(function () {
 						usdlc.setFocus(a)
 						usdlc.runSectionInFocus()
 						break
+					case 'download':
+						var href = a.attr('href')
+						href = href.substring(0, href.length-1) // drop bang
+						window.location.assign(href)
+						break
 					default:
 						var href = a.attr('href')
 						if (href[0] == '#' || !url) return true

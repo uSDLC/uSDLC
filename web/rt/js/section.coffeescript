@@ -97,13 +97,17 @@ $ ->
 			self.attr('id', targetId) if not self.attr('id')
 			href = self.attr('href')
 			self.removeClass() # removes all classes so we can re-add
-			if href and href.indexOf(':') == -1
+			return if not href
+			lastChar = href.charAt(href.length - 1)
+			endsInBang = (lastChar == '!')
+			if endsInBang
+				self.attr('action', 'download')
+			else if href.indexOf(':') == -1
 				self.addClass('usdlc')
 
 				href = usdlc.camelCase(href)
 				self.attr('href', href)
-
-				endsInSlash = (href.charAt(href.length - 1) == '/')
+				endsInSlash = (lastChar == '/')
 				isPage = endsInSlash or /^\w+$/.test(href)
 				isHtml = isPage or
 					(usdlc.mimeType(href).clientExt in ['html', 'htm', 'gsp'])
