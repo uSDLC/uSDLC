@@ -52,11 +52,12 @@ class Session {
 	/** We can set the property explicitly */
 	void setProperty(String name, value) { data[name] = value }
 	/** or as an instance of a defined class */
-	def instance(Class c, Object[] args) {
-		if (!hasInstance(c)) { data[c.name] = c.newInstance(args) }
-		return data[c.name]
+	def instance(cls) { instance(cls, [] as Object[]) }
+	def instance(cls, Object[] args) {
+		if (!hasInstance(cls)) { data[cls.name] = cls.newInstance(args) }
+		return data[cls.name]
 	}
-	def hasInstance(Class c) { data[c.name] }
+	def hasInstance(cls) { data[cls.name] }
 	/** or from a closure (only called if property does not exist */
 	Object invokeMethod(String name, Object args) {
 		if (data.containsKey(name)) return data[name]

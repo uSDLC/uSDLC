@@ -1,0 +1,9 @@
+
+20120402,2115,+1000,Snapshot.grant,running,136,136ms
+20120402,2115,+1000,Snapshot.grant,failed,0,in 1s
+20120402,2117,+1000,Snapshot.grant,running,1,in 1m 47s
+20120402,2117,+1000,Snapshot.grant,failed,343,343ms
+20120402,2121,+1000,Snapshot.grant,running,4,in 4m 47s
+20120402,2121,+1000,Snapshot.grant,succeeded,0,in 3s
+20120402,2158,+1000,Snapshot.grant,running,36,in 36m 43s
+20120402,2158,+1000,Snapshot.grant,succeeded,0,in 2s

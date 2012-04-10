@@ -1,5 +1,6 @@
-organisation('org.seleniumhq.selenium').
-    module('selenium-remote-control').optional().
-    module('selenium-server').optional().
+organisation('org.seleniumhq.selenium').source(true).
+    module('selenium-remote-control').
+    module('selenium-server').update()
     source('selenium-htmlunit-driver').
-    source('selenium-firefox-driver').
+    source('selenium-firefox-driver')
+organisation('net.sourceforge.htmlunit').module('webdriver')

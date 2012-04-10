@@ -1,7 +1,0 @@
-capabilities = web.driver.capabilities
-assert capabilities
-out capabilities.platform
-out capabilities.browserName
-out capabilities.version
-assert capabilities.isJavascriptEnabled()
-web.timeout = 10 // restore default timeout of 10 seconds

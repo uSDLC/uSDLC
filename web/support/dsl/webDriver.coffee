@@ -1,24 +1,23 @@
 dsl 'dss'
 
-client = ->
-	driver: session.instance usdlc.Webdriver
-	browse: (url) -> driver.load url
+client =
+	driver: session.instance usdlc.drivers.WebDriver
+	browse: (url) -> client.driver.load url
 
-click = (targets) -> client.client.click(targets)
+click = (targets) -> client.driver.click(targets)
 
-dss 'check target, contents...', (contents...) ->
+dss 'check target, contents...', (target, contents...) ->
 	client.driver.checkAll target, contents
-dss 'check all target, contents...', (contents...) ->
+dss 'check all target, contents...', (target, contents...) ->
 	client.driver.checkAll target, contents
-dss 'check some target, contents...', (contents...) ->
+dss 'check only target, contents...', (target, contents...) ->
+	client.driver.checkOnly target, contents
+dss 'check some target, contents...', (target, contents...) ->
 	client.driver.checkSome target, contents
-dss 'check none target, contents...', (contents...) ->
+dss 'check none target, contents...', (target, contents...) ->
 	client.driver.checkNone target, contents
-dss 'check empty target', (contents...) ->
+dss 'check empty target', (target) ->
 	client.driver.checkEmpty target
-dss 'check selected target, contents...', (contents...) ->
-	client.driver.checkSelected target, contents
 
-enter = (fields) ->
-	form = if fields.form then "form##{fields.form}" else "form"
-	client.driver.enter form, fields
+enter = (fields) -> client.driver.enter fields
+

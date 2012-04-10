@@ -2,7 +2,7 @@ package usdlc.config
 
 dslClassPath = ['usdlc/dsl/']
 dslSourcePath = [
-		'~home/usdlc/support/dsl/', 'support/usdlc/dsl/',
+		'~home/usdlc/support/dsl/', 'support/dsl/',
 		'support/usdlc/', '../src/usdlc/dsl/'
 ]
 
