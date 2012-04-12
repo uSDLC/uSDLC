@@ -195,3 +195,9 @@
 20120407,1658,+1000,TheFunctionalDSL.coffee,succeeded,175,175ms
 20120407,1658,+1000,TheFunctionalDSL.coffee,running,0,in 12s
 20120407,1658,+1000,TheFunctionalDSL.coffee,failed,779,779ms
+20120412,0749,+1000,TheFunctionalDSL.coffee,running,176,176ms
+20120412,0749,+1000,TheFunctionalDSL.coffee,succeeded,0,in 1s
+20120412,0750,+1000,TheFunctionalDSL.coffee,running,0,in 12s
+20120412,0750,+1000,TheFunctionalDSL.coffee,succeeded,48,
+20120412,0753,+1000,TheFunctionalDSL.coffee,running,3,in 3m 8s
+20120412,0753,+1000,TheFunctionalDSL.coffee,succeeded,37,

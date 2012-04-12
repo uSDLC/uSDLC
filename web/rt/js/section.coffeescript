@@ -71,7 +71,7 @@ $ ->
 	Parse section title, subtitle, content, id and name (camel-case)
 	###
 	usdlc.parseSection = (section) ->
-		header = section.children().first()
+		header = section.children().first('h1,h2,h3,h4,h5,h6')
 		title = header.text()
 		section.data =
 			title : title

@@ -79,9 +79,9 @@ class WebDriver {
 	 * Link text is a path with links separated by ->.
 	 */
 	def waitFor(String targets, Closure action) {
-		def elements =[driver]
+		def elements = [driver]
 		targets.split(/\s+->\s+/).each { target ->
-			elements = findElements(target){[]}
+			elements = findElements(target) {[]}
 			assert elements?.size(), "No element '$target'"
 		}
 //		if (elements.size() == 1) {
@@ -101,15 +101,16 @@ class WebDriver {
 	/**
 	 * Wait for and return a specified element
 	 */
-	def waitFor(String targets) {waitFor(targets){it}}
+	def waitFor(String targets) {waitFor(targets) {it}}
 
 	private findElements(By by) {
 		try {
 			return baseElement.findElements(by)
-		} catch(e) {
+		} catch (e) {
 			return []
 		}
 	}
+
 	private findElements(String target, Closure moreChecks) {
 		By id = By.id(target)
 		By name = By.name(target)
@@ -131,18 +132,20 @@ class WebDriver {
 											moreChecks(target)
 		}
 	}
+
 	private findElementsByVisualClues(target) {
 		// start with the obvious - <label>
 		def elements = findElements(By.cssSelector('label'))
 		return []
 	}
+
 	def findFormElements(target) {
 		findElements(target) {findElementsByVisualClues(it)}
 	}
 	/**
 	 * Go from A to B by waiting and clicking links
 	 */
-	void click(String selector) { waitFor (selector) {it.each {it.click()} } }
+	void click(String selector) { waitFor(selector) {it.each {it.click()} } }
 	/**
 	 * Look at a pattern and decide if it is a regex or just a string action
 	 * based on /regex/.
@@ -156,7 +159,7 @@ class WebDriver {
 		} else {
 			cmp = stringComparator
 		}
-		return { element -> values(element).find{cmp(it)} }
+		return { element -> values(element).find {cmp(it)} }
 	}
 	/**
 	 * Allows chaining of checks against the same element.
@@ -202,6 +205,7 @@ class WebDriver {
 	 * Go through a list of of web elements and
 	 * return a list of counts for each pattern
 	 */
+
 	def match(elements, patterns) {
 		def matches = []
 		patterns.flatten().each {
@@ -218,8 +222,8 @@ class WebDriver {
 		waitFor(selector) { elements ->
 			assert elements.size() == patterns.size(), selector
 			match(elements, patterns).each {
-				assert it == 1, \
-				 "check only '$selector' ($elements.text) is not $patterns\n"
+				assert it == 1,  \
+				  "check only '$selector' ($elements.text) is not $patterns\n"
 			}
 		}
 	}
@@ -230,8 +234,8 @@ class WebDriver {
 	void checkAll(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
 			match(elements, patterns).each {
-				assert it >= 1, \
-				 "check all: $selector ($elements.text) is not $patterns\n"
+				assert it >= 1,  \
+				  "check all: $selector ($elements.text) is not $patterns\n"
 			}
 		}
 	}
@@ -241,8 +245,8 @@ class WebDriver {
 	 */
 	void checkSome(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
-			assert match(elements, patterns).find { it >= 1}, \
-				 "check some: $selector ($elements.text) is not $patterns\n"
+			assert match(elements, patterns).find { it >= 1},  \
+				  "check some: $selector ($elements.text) is not $patterns\n"
 		}
 	}
 	/**
@@ -251,8 +255,8 @@ class WebDriver {
 	 */
 	void checkNone(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
-			assert !match(elements, patterns).count { it}, \
-				 "check none: $selector ($elements.text) is not $patterns\n"
+			assert !match(elements, patterns).count { it},  \
+				  "check none: $selector ($elements.text) is not $patterns\n"
 		}
 	}
 	/**
@@ -264,10 +268,13 @@ class WebDriver {
 			assert match(elements, ['']).size() == elements.size()
 		}
 	}
+
 	def currentElements = null, _baseElement = null
+
 	def setBaseElement(to) { _baseElement = to }
+
 	def getBaseElement() {
-		if (! _baseElement) _baseElement = driver
+		if (!_baseElement) _baseElement = driver
 		return _baseElement
 	}
 	/**
@@ -281,14 +288,14 @@ class WebDriver {
 		try { actions() } finally { baseElement = before }
 	}
 
-	def findClosest(tag, near) {
+	def findClosest(tags, near) {
 		assert near.size() > 0, "find closes '$tag' to what?"
 		near = near[0]
 		def result = null
 		with(near) {
-			def found = findElements(By.tagName(tag))
-			if (found.size() > 0) {
-				result = found[0]
+			tags.findResult {
+				def found = findElements(By.tagName(tag))
+				(found.size() > 0) ? found[0] : null
 			}
 		}
 		if (!result) {
@@ -307,46 +314,46 @@ class WebDriver {
 	@SuppressWarnings(["GroovyOverlyComplexMethod",
 	"GroovyMethodWithMoreThanThreeNegations"])
 	void enter(fields) {
-		with(findClosest('form', waitFor(fields?.form ?: 'form'))) {
+		with(findClosest(['form'], waitFor(fields?.form ?: 'form'))) {
 			fields.each { name, value ->
 				try {
-				if (name == 'form') return
-				def elements = findFormElements(name)
-				assert elements.size(), "No form field '$name'"
-				def field = elements[0]
-				switch (field.tagName) {
-					case 'input':
-					case 'textarea':
-						switch (field.getAttribute('type')) {
-							case 'button':
-							case 'image':
-							case 'reset':
-								field.click()
-								break;
-							case 'checkbox':
-								if (!field.isSelected() != !value) {
+					if (name == 'form') return
+					def elements = findFormElements(name)
+					assert elements.size(), "No form field '$name'"
+					def field = elements[0]
+					switch (field.tagName) {
+						case 'input':
+						case 'textarea':
+							switch (field.getAttribute('type')) {
+								case 'button':
+								case 'image':
+								case 'reset':
 									field.click()
-								}
-								break;
-							case 'radio':
-								field = elements.find {
-									it.getAttribute('value') == value
-								}
-								assert field, "No radio $name is $value"
-								field.click()
-								break;
-							default:
-								field.clear()
-								field.sendKeys(value)
-								break
-						}
-						break
-					case 'select':
-						select(field, value)
-						break
-					default:
-						assert false, "No entry for tag '$field.tagName'"
-				}
+									break;
+								case 'checkbox':
+									if (!field.isSelected() != !value) {
+										field.click()
+									}
+									break;
+								case 'radio':
+									field = elements.find {
+										it.getAttribute('value') == value
+									}
+									assert field, "No radio $name is $value"
+									field.click()
+									break;
+								default:
+									field.clear()
+									field.sendKeys(value)
+									break
+							}
+							break
+						case 'select':
+							select(field, value)
+							break
+						default:
+							assert false, "No entry for tag '$field.tagName'"
+					}
 				} catch (e) {
 					throw new RuntimeException(
 							"Error entering input field '$name'", e)
@@ -354,7 +361,9 @@ class WebDriver {
 			}
 		}
 	}
+
 	def select(field, String value) { select(field, [value]) }
+
 	def select(field, Iterable values) {
 		def select = new Select(field)
 		select.allSelectedOptions.each {
