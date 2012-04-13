@@ -27,7 +27,7 @@ class GroovyActor extends Actor {
 					log: { String message -> Log.err message },
 					gse: gse,
 					include: dsl.&include,
-					write: { String text -> out.print text },
+					write: { text -> out.print text },
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->

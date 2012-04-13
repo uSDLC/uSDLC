@@ -94,7 +94,9 @@ $(function () {
 			pageTitle.append($('div#pageTitle'))
 			document.title = $('h1', pageTitle).text()
 		},
+		menuToTop: function() {},
 		absolutePageContents:function (path, afterwards) {
+			usdlc.menuToTop()
 			if (path[0] != '/')
 				path = '/' + path
 			usdlc.pageContentsURL = usdlc.normalizeURL(path)
