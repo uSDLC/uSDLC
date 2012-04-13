@@ -178,7 +178,7 @@ $(function () {
 					default:
 						var href = a.attr('href')
 						if (href[0] == '#' || !url) return true
-						usdlc.window(href,'from-usdlc')
+						usdlc.window(href,href,'from-usdlc')
 						break
 				}
 				break
