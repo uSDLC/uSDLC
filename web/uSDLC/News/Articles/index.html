@@ -138,6 +138,30 @@ check audit log oper 'log out'</pre>
 <p>
 	Next blog I will discuss activating the instrumentation.</p>
 </div><div id="s10" class="editable section" contextmenu="section"><h1>
+	The argument for domain specific languages</h1>
+<p>
+	There is a gap between how we communicate with each other and how we tell a computer what to do. As software becomes more powerful this gap is, in some areas, larger, not smaller. It is far easier to ask Google a natural language question than the search engine rules of a decade ago, but when it comes to having a computer help with less common tasks we have to rely on software developers to write programs that tend to be 'one size fits all'. For example:</p>
+<ol>
+	<li>
+		My A/C allows me to set all the zones to specific temperature, or off. It does not change from vent to heating/cooling. So, I have to train the family to go to two separate menus to do a single function. Wasn't it repetitive tasks that computers were to help with?</li>
+	<li>
+		Oh, you want a computer example? Every time I create a new spreadsheet in Google docs and enter a dollar figure, it shows the result in pounds. An english/uk dictionary and a GMT of -10 does not mean that we use pounds in Australia.</li>
+</ol>
+<p>
+	Why do I say the gap is larger? Twenty years ago those in the more technical domains such as engineering and science would write their own software to help with their work. Today computers and computer languages are so much more complex that they need specialist to write their software. That's ok as the results are often better. The problem arises when the domain specialist needs something not foreseen. They have to get the specialist in again - if the original developers are available - if the source is up to date - if there is budget.</p>
+<p>
+	I blame the GUI and WYSIWYG :) I will use my a/c as an example - although the same problems exist for your accounts program or your bill paying web-site. I can set my a/c to vent, heat, cool or auto. Auto shuts everything down if the house is at temperature. What I really want is cool if the temperature is above 24 degrees, heating if below 18 degrees and venting otherwise.</p>
+<p>
+	In the modern world of the easy-to-use GUI I am out of luck. This is why many services like Google apps or Facebook provide an API. Unfortunately to use them you need to cross the line from domain specialist to software developer.</p>
+<p>
+	What is needed, along with the GUI, is a way of expressing more complex requirements in a language the domain specialist undertands. Enter the concept of a DSL or domain specific language. I suspect that one of the most common used DSLs is also one of the most difficult to grasp - the spreadsheet formula editor. Imagine a spreadsheet without a DSL - behaving like other GUI applications we use. We could highlight blocks of numbers and sum them, but would spreadsheets be as common if they were so limited?</p>
+<p>
+	Next week I will talk about what a DSL is and why they are not in common use.</p>
+</div><div id="s13" class="editable section" contextmenu="section"><h1>
+	What is a DSL?</h1>
+</div><div id="s12" class="editable section" contextmenu="section"><p>
+	&nbsp;</p>
+<h1>
 	uSDLC - Domain Language to Software Implementation Bridge</h1>
 </div><div id="s11" class="editable section" contextmenu="section"><h1>
 	Using uSDLC to provide better estimates</h1>
