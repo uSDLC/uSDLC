@@ -694,3 +694,333 @@
 20120410,1858,+1000,Setup.coffee,succeeded,32,
 20120410,1858,+1000,DataEntry.coffee,running,2,
 20120410,1858,+1000,DataEntry.coffee,succeeded,0,in 1s
+20120414,2006,+1000,Setup.coffee,running,157,157ms
+20120414,2006,+1000,Setup.coffee,succeeded,155,155ms
+20120414,2006,+1000,SettingTheDriver.coffee,running,3,
+20120414,2006,+1000,SettingTheDriver.coffee,succeeded,0,in 2s
+20120414,2007,+1000,Setup.coffee,running,158,158ms
+20120414,2007,+1000,Setup.coffee,succeeded,181,181ms
+20120414,2007,+1000,SettingTheDriver.coffee,running,4,
+20120414,2007,+1000,SettingTheDriver.coffee,succeeded,0,in 1s
+20120414,2007,+1000,Setup.coffee,running,0,in 2s
+20120414,2007,+1000,Setup.coffee,succeeded,38,
+20120414,2007,+1000,DriverCapabilities.coffee,running,1,
+20120414,2007,+1000,DriverCapabilities.coffee,succeeded,24,
+20120414,2007,+1000,Setup.coffee,running,0,in 4s
+20120414,2007,+1000,Setup.coffee,succeeded,41,
+20120414,2007,+1000,OpeningAWebPage.coffee,running,1,
+20120414,2007,+1000,OpeningAWebPage.coffee,succeeded,0,in 1s
+20120414,2007,+1000,Setup.coffee,running,0,in 12s
+20120414,2007,+1000,Setup.coffee,succeeded,31,
+20120414,2007,+1000,CheckingPageContents.coffee,running,1,
+20120414,2007,+1000,CheckingPageContents.coffee,succeeded,730,730ms
+20120414,2007,+1000,Setup.coffee,running,0,in 3s
+20120414,2007,+1000,Setup.coffee,succeeded,29,
+20120414,2007,+1000,MouseNavigation.coffee,running,1,
+20120414,2007,+1000,MouseNavigation.coffee,succeeded,555,555ms
+20120414,2007,+1000,Setup.coffee,running,0,in 5s
+20120414,2007,+1000,Setup.coffee,succeeded,29,
+20120414,2007,+1000,DataEntry.coffee,running,1,
+20120414,2008,+1000,DataEntry.coffee,failed,757,757ms
+20120414,2008,+1000,Setup.coffee,running,155,155ms
+20120414,2008,+1000,Setup.coffee,succeeded,226,226ms
+20120414,2008,+1000,DataEntry.coffee,running,6,
+20120414,2008,+1000,DataEntry.coffee,failed,0,in 2s
+20120414,2010,+1000,Setup.coffee,running,160,160ms
+20120414,2010,+1000,Setup.coffee,succeeded,193,193ms
+20120414,2010,+1000,DataEntry.coffee,running,4,
+20120414,2010,+1000,DataEntry.coffee,failed,0,in 3s
+20120415,0805,+1000,Setup.coffee,running,167,167ms
+20120415,0805,+1000,Setup.coffee,succeeded,178,178ms
+20120415,0805,+1000,DataEntry.coffee,running,3,
+20120415,0805,+1000,DataEntry.coffee,failed,0,in 3s
+20120415,0807,+1000,Setup.coffee,running,1,in 1m 29s
+20120415,0807,+1000,Setup.coffee,succeeded,39,
+20120415,0807,+1000,DataEntry.coffee,running,1,
+20120415,0809,+1000,DataEntry.coffee,failed,1,in 1m 40s
+20120415,0901,+1000,Setup.coffee,running,164,164ms
+20120415,0901,+1000,Setup.coffee,succeeded,177,177ms
+20120415,0901,+1000,DataEntry.coffee,running,4,
+20120415,0901,+1000,DataEntry.coffee,failed,0,in 3s
+20120415,0903,+1000,Setup.coffee,running,157,157ms
+20120415,0903,+1000,Setup.coffee,succeeded,171,171ms
+20120415,0903,+1000,DataEntry.coffee,running,4,
+20120415,0903,+1000,DataEntry.coffee,succeeded,0,in 4s
+20120415,0903,+1000,Setup.coffee,running,0,in 9s
+20120415,0903,+1000,Setup.coffee,succeeded,33,
+20120415,0903,+1000,FindByLabel.coffee,running,2,
+20120415,0903,+1000,FindByLabel.coffee,failed,0,in 6s
+20120415,0905,+1000,Setup.coffee,running,1,in 1m 31s
+20120415,0905,+1000,Setup.coffee,succeeded,38,
+20120415,0905,+1000,FindByLabel.coffee,running,1,
+20120415,0911,+1000,Setup.coffee,running,171,171ms
+20120415,0911,+1000,Setup.coffee,succeeded,218,218ms
+20120415,0911,+1000,FindByLabel.coffee,running,4,
+20120415,0945,+1000,Setup.coffee,running,167,167ms
+20120415,0945,+1000,Setup.coffee,succeeded,218,218ms
+20120415,0945,+1000,FindByLabel.coffee,running,3,
+20120415,0949,+1000,Setup.coffee,running,204,204ms
+20120415,0949,+1000,Setup.coffee,succeeded,212,212ms
+20120415,0949,+1000,FindByLabel.coffee,running,4,
+20120415,0956,+1000,Setup.coffee,running,153,153ms
+20120415,0956,+1000,Setup.coffee,succeeded,191,191ms
+20120415,0956,+1000,FindByLabel.coffee,running,4,
+20120415,0956,+1000,FindByLabel.coffee,failed,0,in 2s
+20120415,1017,+1000,Setup.coffee,running,165,165ms
+20120415,1017,+1000,Setup.coffee,succeeded,164,164ms
+20120415,1017,+1000,FindByLabel.coffee,running,3,
+20120415,1017,+1000,FindByLabel.coffee,failed,0,in 8s
+20120415,1029,+1000,Setup.coffee,running,151,151ms
+20120415,1029,+1000,Setup.coffee,succeeded,197,197ms
+20120415,1029,+1000,FindByLabel.coffee,running,2,
+20120415,1029,+1000,FindByLabel.coffee,failed,0,in 8s
+20120415,1032,+1000,Setup.coffee,running,2,in 2m 35s
+20120415,1032,+1000,Setup.coffee,succeeded,47,
+20120415,1032,+1000,FindByLabel.coffee,running,1,
+20120415,1100,+1000,Setup.coffee,running,170,170ms
+20120415,1100,+1000,Setup.coffee,succeeded,168,168ms
+20120415,1100,+1000,FindByLabel.coffee,running,4,
+20120415,1102,+1000,Setup.coffee,running,162,162ms
+20120415,1102,+1000,Setup.coffee,succeeded,173,173ms
+20120415,1102,+1000,FindByLabel.coffee,running,2,
+20120415,1103,+1000,FindByLabel.coffee,failed,0,in 17s
+20120415,1103,+1000,Setup.coffee,running,0,in 46s
+20120415,1103,+1000,Setup.coffee,succeeded,43,
+20120415,1103,+1000,FindByLabel.coffee,running,1,
+20120415,1105,+1000,FindByLabel.coffee,failed,1,in 1m 45s
+20120415,1107,+1000,Setup.coffee,running,165,165ms
+20120415,1107,+1000,Setup.coffee,succeeded,202,202ms
+20120415,1107,+1000,FindByLabel.coffee,running,5,
+20120415,1107,+1000,FindByLabel.coffee,failed,0,in 3s
+20120415,1108,+1000,Setup.coffee,running,1,in 1m 15s
+20120415,1108,+1000,Setup.coffee,succeeded,42,
+20120415,1108,+1000,FindByLabel.coffee,running,1,
+20120415,1112,+1000,Setup.coffee,running,192,192ms
+20120415,1112,+1000,Setup.coffee,succeeded,181,181ms
+20120415,1112,+1000,FindByLabel.coffee,running,3,
+20120415,1112,+1000,FindByLabel.coffee,failed,0,in 3s
+20120415,1112,+1000,Setup.coffee,running,0,in 36s
+20120415,1112,+1000,Setup.coffee,succeeded,36,
+20120415,1112,+1000,FindByLabel.coffee,running,1,
+20120415,1117,+1000,Setup.coffee,running,158,158ms
+20120415,1117,+1000,Setup.coffee,succeeded,192,192ms
+20120415,1117,+1000,FindByLabel.coffee,running,3,
+20120415,1117,+1000,Setup.coffee,running,157,157ms
+20120415,1117,+1000,Setup.coffee,succeeded,153,153ms
+20120415,1117,+1000,FindByLabel.coffee,running,4,
+20120415,1119,+1000,FindByLabel.coffee,failed,1,in 1m 37s
+20120415,1120,+1000,Setup.coffee,running,1,in 1m 5s
+20120415,1120,+1000,Setup.coffee,succeeded,36,
+20120415,1120,+1000,FindByLabel.coffee,running,1,
+20120415,1121,+1000,FindByLabel.coffee,failed,0,in 41s
+20120415,1229,+1000,Setup.coffee,running,67,in 1h 7m 36s
+20120415,1229,+1000,Setup.coffee,succeeded,50,
+20120415,1229,+1000,FindByLabel.coffee,running,1,
+20120415,1230,+1000,Setup.coffee,running,156,156ms
+20120415,1230,+1000,Setup.coffee,succeeded,163,163ms
+20120415,1230,+1000,FindByLabel.coffee,running,3,
+20120415,1230,+1000,FindByLabel.coffee,failed,0,in 14s
+20120415,1231,+1000,Setup.coffee,running,1,in 1m 5s
+20120415,1231,+1000,Setup.coffee,succeeded,38,
+20120415,1231,+1000,FindByLabel.coffee,running,1,
+20120415,1231,+1000,FindByLabel.coffee,failed,0,in 9s
+20120415,1232,+1000,Setup.coffee,running,0,in 24s
+20120415,1232,+1000,Setup.coffee,succeeded,34,
+20120415,1232,+1000,FindByLabel.coffee,running,1,
+20120415,1237,+1000,FindByLabel.coffee,failed,5,in 5m 6s
+20120415,1309,+1000,Setup.coffee,running,32,in 32m 24s
+20120415,1309,+1000,Setup.coffee,succeeded,31,
+20120415,1309,+1000,FindByLabel.coffee,running,1,
+20120415,1310,+1000,FindByLabel.coffee,failed,1,in 1m 16s
+20120415,1346,+1000,Setup.coffee,running,35,in 35m 41s
+20120415,1346,+1000,Setup.coffee,succeeded,47,
+20120415,1346,+1000,FindByLabel.coffee,running,1,
+20120415,1346,+1000,FindByLabel.coffee,failed,0,in 2s
+20120415,1356,+1000,Setup.coffee,running,9,in 9m 37s
+20120415,1356,+1000,Setup.coffee,succeeded,34,
+20120415,1356,+1000,FindByLabel.coffee,running,1,
+20120415,1649,+1000,Setup.coffee,running,165,165ms
+20120415,1649,+1000,Setup.coffee,succeeded,198,198ms
+20120415,1649,+1000,FindByLabel.coffee,running,3,
+20120415,1649,+1000,FindByLabel.coffee,failed,0,in 2s
+20120415,1650,+1000,Setup.coffee,running,164,164ms
+20120415,1650,+1000,Setup.coffee,succeeded,198,198ms
+20120415,1650,+1000,FindByLabel.coffee,running,4,
+20120415,1650,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1651,+1000,Setup.coffee,running,162,162ms
+20120415,1651,+1000,Setup.coffee,succeeded,155,155ms
+20120415,1651,+1000,FindByLabel.coffee,running,3,
+20120415,1652,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1653,+1000,Setup.coffee,running,166,166ms
+20120415,1653,+1000,Setup.coffee,succeeded,198,198ms
+20120415,1653,+1000,FindByLabel.coffee,running,5,
+20120415,1653,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1653,+1000,Setup.coffee,running,0,in 39s
+20120415,1653,+1000,Setup.coffee,succeeded,47,
+20120415,1653,+1000,FindByLabel.coffee,running,1,
+20120415,1654,+1000,FindByLabel.coffee,failed,0,in 3s
+20120415,1725,+1000,Setup.coffee,running,159,159ms
+20120415,1725,+1000,Setup.coffee,succeeded,157,157ms
+20120415,1725,+1000,FindByLabel.coffee,running,3,
+20120415,1725,+1000,FindByLabel.coffee,failed,0,in 2s
+20120415,1725,+1000,Setup.coffee,running,153,153ms
+20120415,1725,+1000,Setup.coffee,succeeded,239,239ms
+20120415,1725,+1000,FindByLabel.coffee,running,5,
+20120415,1725,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1729,+1000,Setup.coffee,running,156,156ms
+20120415,1729,+1000,Setup.coffee,succeeded,170,170ms
+20120415,1729,+1000,FindByLabel.coffee,running,3,
+20120415,1729,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1731,+1000,Setup.coffee,running,223,223ms
+20120415,1731,+1000,Setup.coffee,succeeded,187,187ms
+20120415,1731,+1000,FindByLabel.coffee,running,3,
+20120415,1731,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1740,+1000,Setup.coffee,running,9,in 9m 7s
+20120415,1740,+1000,Setup.coffee,succeeded,36,
+20120415,1740,+1000,FindByLabel.coffee,running,2,
+20120415,1746,+1000,Setup.coffee,running,173,173ms
+20120415,1746,+1000,Setup.coffee,succeeded,167,167ms
+20120415,1746,+1000,FindByLabel.coffee,running,4,
+20120415,1746,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1758,+1000,Setup.coffee,running,202,202ms
+20120415,1758,+1000,Setup.coffee,succeeded,178,178ms
+20120415,1758,+1000,FindByLabel.coffee,running,3,
+20120415,1758,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1800,+1000,Setup.coffee,running,1,in 1m 25s
+20120415,1800,+1000,Setup.coffee,succeeded,39,
+20120415,1800,+1000,FindByLabel.coffee,running,1,
+20120415,1802,+1000,Setup.coffee,running,166,166ms
+20120415,1802,+1000,Setup.coffee,succeeded,172,172ms
+20120415,1802,+1000,FindByLabel.coffee,running,5,
+20120415,1803,+1000,Setup.coffee,running,154,154ms
+20120415,1803,+1000,Setup.coffee,succeeded,186,186ms
+20120415,1803,+1000,FindByLabel.coffee,running,2,
+20120415,1804,+1000,FindByLabel.coffee,failed,0,in 32s
+20120415,1805,+1000,Setup.coffee,running,157,157ms
+20120415,1805,+1000,Setup.coffee,succeeded,177,177ms
+20120415,1805,+1000,FindByLabel.coffee,running,3,
+20120415,1809,+1000,FindByLabel.coffee,failed,4,in 4m 11s
+20120415,1815,+1000,Setup.coffee,running,169,169ms
+20120415,1815,+1000,Setup.coffee,succeeded,197,197ms
+20120415,1815,+1000,FindByLabel.coffee,running,3,
+20120415,1815,+1000,FindByLabel.coffee,failed,0,in 5s
+20120415,1816,+1000,Setup.coffee,running,0,in 54s
+20120415,1816,+1000,Setup.coffee,succeeded,45,
+20120415,1816,+1000,FindByLabel.coffee,running,1,
+20120415,1816,+1000,FindByLabel.coffee,succeeded,0,in 3s
+20120415,1817,+1000,Setup.coffee,running,0,in 58s
+20120415,1817,+1000,Setup.coffee,succeeded,42,
+20120415,1817,+1000,FindByLabel.coffee,running,1,
+20120415,1817,+1000,FindByLabel.coffee,succeeded,0,in 3s
+20120415,1817,+1000,Setup.coffee,running,0,in 39s
+20120415,1817,+1000,Setup.coffee,succeeded,30,
+20120415,1817,+1000,Tables.coffee,running,1,
+20120415,1817,+1000,Tables.coffee,failed,95,
+20120415,1903,+1000,Setup.coffee,running,45,in 45m 18s
+20120415,1903,+1000,Setup.coffee,succeeded,295,295ms
+20120415,1903,+1000,Tables.coffee,running,2,
+20120415,1903,+1000,Tables.coffee,failed,20,
+20120415,1903,+1000,Setup.coffee,running,0,in 27s
+20120415,1903,+1000,Setup.coffee,succeeded,264,264ms
+20120415,1903,+1000,Tables.coffee,running,1,
+20120415,1903,+1000,Tables.coffee,failed,0,in 4s
+20120415,1903,+1000,Setup.coffee,running,0,in 17s
+20120415,1903,+1000,Setup.coffee,succeeded,34,
+20120415,1903,+1000,Tables.coffee,running,1,
+20120415,1904,+1000,Tables.coffee,failed,0,in 4s
+20120415,1905,+1000,Setup.coffee,running,1,in 1m 48s
+20120415,1905,+1000,Setup.coffee,succeeded,123,123ms
+20120415,1905,+1000,Tables.coffee,running,2,
+20120415,1905,+1000,Tables.coffee,failed,0,in 4s
+20120415,1905,+1000,Setup.coffee,running,0,in 4s
+20120415,1905,+1000,Setup.coffee,succeeded,29,
+20120415,1905,+1000,Tables.coffee,running,1,
+20120415,1906,+1000,Tables.coffee,failed,0,in 4s
+20120415,1908,+1000,Setup.coffee,running,2,in 2m 8s
+20120415,1908,+1000,Setup.coffee,succeeded,38,
+20120415,1908,+1000,Tables.coffee,running,1,
+20120415,1912,+1000,Setup.coffee,running,158,158ms
+20120415,1912,+1000,Setup.coffee,succeeded,0,in 1s
+20120415,1912,+1000,Tables.coffee,running,8,
+20120415,1912,+1000,Tables.coffee,failed,0,in 7s
+20120415,1913,+1000,Setup.coffee,running,0,in 39s
+20120415,1913,+1000,Setup.coffee,succeeded,42,
+20120415,1913,+1000,Tables.coffee,running,2,
+20120415,1913,+1000,Tables.coffee,failed,0,in 15s
+20120415,1916,+1000,Setup.coffee,running,152,152ms
+20120415,1916,+1000,Setup.coffee,succeeded,0,in 1s
+20120415,1916,+1000,Tables.coffee,running,8,
+20120415,1916,+1000,Tables.coffee,failed,0,in 10s
+20120415,1918,+1000,Setup.coffee,running,168,168ms
+20120415,1918,+1000,Setup.coffee,succeeded,147,147ms
+20120415,1918,+1000,Tables.coffee,running,2,
+20120415,1918,+1000,Tables.coffee,failed,0,in 6s
+20120415,1921,+1000,Setup.coffee,running,158,158ms
+20120415,1921,+1000,Setup.coffee,succeeded,0,in 1s
+20120415,1921,+1000,Tables.coffee,running,12,
+20120415,1921,+1000,Tables.coffee,failed,0,in 7s
+20120415,1922,+1000,Setup.coffee,running,1,in 1m 3s
+20120415,1922,+1000,Setup.coffee,succeeded,38,
+20120415,1922,+1000,Tables.coffee,running,1,
+20120415,1922,+1000,Tables.coffee,failed,0,in 5s
+20120415,1923,+1000,Setup.coffee,running,0,in 40s
+20120415,1923,+1000,Setup.coffee,succeeded,33,
+20120415,1923,+1000,Tables.coffee,running,1,
+20120415,1923,+1000,Tables.coffee,failed,0,in 5s
+20120415,1923,+1000,Setup.coffee,running,0,in 16s
+20120415,1923,+1000,Setup.coffee,succeeded,39,
+20120415,1923,+1000,Tables.coffee,running,1,
+20120415,1923,+1000,Tables.coffee,failed,0,in 5s
+20120415,1924,+1000,Setup.coffee,running,160,160ms
+20120415,1924,+1000,Setup.coffee,succeeded,183,183ms
+20120415,1924,+1000,Tables.coffee,running,4,
+20120415,1924,+1000,Tables.coffee,failed,0,in 17s
+20120415,1924,+1000,Setup.coffee,running,164,164ms
+20120415,1924,+1000,Setup.coffee,succeeded,179,179ms
+20120415,1924,+1000,Tables.coffee,running,3,
+20120415,1924,+1000,Tables.coffee,failed,0,in 6s
+20120415,1925,+1000,Setup.coffee,running,159,159ms
+20120415,1925,+1000,Setup.coffee,succeeded,139,139ms
+20120415,1925,+1000,Tables.coffee,running,4,
+20120415,1926,+1000,Tables.coffee,failed,0,in 7s
+20120415,1926,+1000,Setup.coffee,running,0,in 11s
+20120415,1926,+1000,Setup.coffee,succeeded,38,
+20120415,1926,+1000,Tables.coffee,running,1,
+20120415,1930,+1000,Tables.coffee,failed,4,in 4m 25s
+20120415,1931,+1000,Setup.coffee,running,0,in 36s
+20120415,1931,+1000,Setup.coffee,succeeded,38,
+20120415,1931,+1000,Tables.coffee,running,1,
+20120415,1931,+1000,Tables.coffee,failed,0,in 8s
+20120415,1931,+1000,Setup.coffee,running,0,in 17s
+20120415,1931,+1000,Setup.coffee,succeeded,35,
+20120415,1931,+1000,Tables.coffee,running,2,
+20120415,1935,+1000,Setup.coffee,running,163,163ms
+20120415,1935,+1000,Setup.coffee,succeeded,158,158ms
+20120415,1935,+1000,Tables.coffee,running,3,
+20120415,1935,+1000,Tables.coffee,failed,0,in 2s
+20120415,1953,+1000,Setup.coffee,running,168,168ms
+20120415,1953,+1000,Setup.coffee,succeeded,179,179ms
+20120415,1953,+1000,Tables.coffee,running,4,
+20120415,1953,+1000,Tables.coffee,failed,0,in 3s
+20120415,2044,+1000,Setup.coffee,running,157,157ms
+20120415,2044,+1000,Setup.coffee,succeeded,204,204ms
+20120415,2044,+1000,Tables.coffee,running,4,
+20120415,2046,+1000,Tables.coffee,failed,2,in 2m 7s
+20120415,2047,+1000,Setup.coffee,running,0,in 42s
+20120415,2047,+1000,Setup.coffee,succeeded,37,
+20120415,2047,+1000,Tables.coffee,running,1,
+20120415,2047,+1000,Tables.coffee,failed,0,in 27s
+20120415,2047,+1000,Setup.coffee,running,0,in 4s
+20120415,2047,+1000,Setup.coffee,succeeded,37,
+20120415,2047,+1000,Tables.coffee,running,1,
+20120415,2049,+1000,Setup.coffee,running,163,163ms
+20120415,2049,+1000,Setup.coffee,succeeded,182,182ms
+20120415,2049,+1000,Tables.coffee,running,4,
+20120415,2055,+1000,Setup.coffee,running,152,152ms
+20120415,2055,+1000,Setup.coffee,succeeded,197,197ms
+20120415,2055,+1000,Tables.coffee,running,3,
+20120415,2055,+1000,Tables.coffee,failed,0,in 3s
+20120415,2057,+1000,Setup.coffee,running,168,168ms
+20120415,2057,+1000,Setup.coffee,succeeded,176,176ms
+20120415,2057,+1000,Tables.coffee,running,7,
+20120415,2057,+1000,Tables.coffee,failed,0,in 30s

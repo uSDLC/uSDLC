@@ -20,6 +20,8 @@ dss "test domain includes map", (map) ->
         "#{k}: #{v}"
     items.sort()
     result = "5: #{items.join(', ')}"
+dss 'test calling method!', ->
+    result = 'test calling method!'
 
 # Now as the domain specialist sees it...
 test 'nothing'
@@ -40,3 +42,5 @@ test domain includes
     them: 33
     us: 2
 check "5: me: 1, them: 33, us: 2, you: 1"
+test calling method
+check 'test calling method!'

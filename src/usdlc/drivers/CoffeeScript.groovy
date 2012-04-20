@@ -38,8 +38,9 @@ class CoffeeScript {
 	 * Retrieve a reference to the javascript file created from a cs compile
 	 */
 	Store javascript(Store coffeescript) {
-		Store javascript = Store.base('store/coffeescript/base').
-				rebase(coffeescript.pathFromWebBase + '.js')
+		Store javascript = Store.base('~home/.store/coffeescript/base',
+				coffeescript.project).rebase(
+					coffeescript.fromProjectHome + '.js')
 
 		if (coffeescript.newer(javascript)) {
 			javascript.write(compile(coffeescript).bytes)

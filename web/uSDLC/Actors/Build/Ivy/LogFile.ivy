@@ -1,4 +1,4 @@
-size = { usdlc.Store.base('store/log/ivy.log').size() }
+size = { usdlc.Store.base('.store/log/ivy.log').size() }
 before = size()
 organisation('org.apache.ivy').module('ivy').required()
 assert before < size()

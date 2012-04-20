@@ -37,12 +37,12 @@ class HtmlActor extends Actor {
 		"<script src='/rt/js/bootstrap.coffeescript'></script>".bytes
 
 	private void transfer(Closure transfer) {
-		Store clipboard = Store.base('store/clipboard')
+		Store clipboard = Store.base('.store/clipboard')
 		String targetName = clipboard.uniquePath(exchange.request.query['title'])
 		exchange.request.query['dependents'].tokenize(', ').each {
 			String dependent ->
 			transfer(exchange.store.rebase(dependent),
-					"store/clipboard/$targetName");
+					".store/clipboard/$targetName");
 		}
 		def contents = exchange.request.body().bytes
 		clipboard.base("$targetName/Section.html").write(contents)
@@ -53,7 +53,7 @@ class HtmlActor extends Actor {
 
 	private void paste() {
 		def target = exchange.store.parent
-		def from = Store.base("store/clipboard/${exchange.request.query['from']}")
+		def from = Store.base(".store/clipboard/${exchange.request.query['from']}")
 		from.dir(~/[^.]*/) { String dir -> from.rebase(dir).move(target) }
 		out.println new String(Store.base(
 				"${exchange.request.query['from']}/Section.html").read())

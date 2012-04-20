@@ -8,8 +8,12 @@ class Store {
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
-	static Store base(String path = '', project = null) {
-		path = path.replaceAll('\\\\', '/')
+	static Store base(path = '', project = null) {
+		path = path.toString().replaceAll('\\\\', '/')
+		def homeIndex = path.indexOf(config.home)
+		if (homeIndex == 0 || homeIndex == 1) {
+				path = '~' + path[config.home.size()+homeIndex..-1]
+		}
 		def matcher = pathRE.matcher(path)
 		path = camelCase(path)
 		if (matcher) {
@@ -19,10 +23,13 @@ class Store {
 			path = "$project.home$rest"
 			return new Store(path, project)
 		}
+		if (path.startsWith('./') && path.size() > 2) path = path[2..-1]
 		new Store(path, Config.project('uSDLC'))
 	}
 
 	static pathRE = ~/^(.*)~\/?(\w*)(.*)$/
+
+	static absolute(path) { return new Store(path, Config.project('uSDLC')) }
 
 	private Store(String pathFromWebBase, project) {
 		if (pathFromWebBase[0] == '/') {
@@ -96,9 +103,9 @@ class Store {
 	@Lazy URL url = uri.toURL()
 	@Lazy parts = split(pathFromWebBase)
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
-		pathFromWebBase[config.home.size()..-1] : ''
+		pathFromWebBase[config.home.size()..-1] : pathFromWebBase
 	@Lazy fromProjectHome = pathFromWebBase.startsWith(project.home) ?
-			pathFromWebBase[project.home.size()..-1] : ''
+			pathFromWebBase[project.home.size()..-1] : pathFromWebBase
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
 	@Lazy boolean isDirectory = file.isDirectory() ||
 			(! file.exists() && !parts.ext)

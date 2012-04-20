@@ -1,11 +1,10 @@
 out/
 .idea/
-web/store/
+web/.store/
 /bin/
 /*.DS_Store
 /.settings
 /.externalToolBuilders
-/store
 /.db
 /chromedriver.log
 /release

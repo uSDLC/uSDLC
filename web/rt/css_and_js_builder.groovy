@@ -23,7 +23,7 @@ files = [
 		'rt/css/editor.css',
 ]
 
-fileProcessorWithGzip('store/css/usdlc.css', files) {
+fileProcessorWithGzip('.store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
 }
 
@@ -51,7 +51,7 @@ files = [
 ]
 
 coffeeCompiler = new CoffeeScript()
-javascriptBuilder('store/js/usdlcPre.js', files, coffeeCompiler)
+javascriptBuilder('.store/js/usdlcPre.js', files, coffeeCompiler)
 
 files = [
 		'lib/ckeditor/ckeditor.js',
@@ -69,4 +69,4 @@ Store.base('lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
 	return
 }
 
-javascriptBuilder('store/js/usdlcPost.js', files, coffeeCompiler)
+javascriptBuilder('.store/js/usdlcPost.js', files, coffeeCompiler)

@@ -99,10 +99,10 @@ import static usdlc.config.Config.config
 
 	private writeLinkHeader() {
 		write """<html><head>
-							<link type='text/css' rel='stylesheet'
-								href='$config.urlBase/rt/outputFrame.css'>
-						</head><body>
-							<div id='output'>"""
+				<link type='text/css' rel='stylesheet'
+					href='$config.urlBase/rt/outputFrame.css'>
+					</head><body>
+					<div id='output'>"""
 	}
 
 	private runLink(link, page) {

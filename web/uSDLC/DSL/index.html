@@ -17,7 +17,7 @@
  <p> When creating a new DSL, it is necessary to tell uSDLC of the association. This is done with a static <a id="s4a0" action="runnable" class="usdlc sourceLink succeeded" href="creationMethod.groovy">creation method</a> in DSL producing an empty <em>web/dsl/nameDSL.lang</em> file. If the file already exists, it is not over-written and the method returns false.</p> 
 </div> 
 <div id="s6" class="editable section synopsis" contextmenu="section"> 
- <h2> <a class="usdlc sourceLinksucceeded" href="TheFunctionalDSL.coffee" id="s6a6" action="runnable">The Functional DSL</a></h2> 
+ <h2> <a class="usdlc sourceLinkfailed succeeded" href="TheFunctionalDSL.coffee" id="s6a6" action="runnable">The Functional DSL</a></h2> 
  <p> Functional DSLs are written in coffeescript. The provide a natural language-like interface for instrumenting designs. Any page that is using a DSL will reference it in the <u>Startup</u> script in the page footer. It contains a <strong><em>dsl</em></strong> command referencing the dsl as a string. Said DSL is loaded from one of the directories on the dsl source path - as defined in the language section of configuration.</p> 
  <p> By default, a DSL definition is in:</p> 
  <ul> 
@@ -25,7 +25,7 @@
   <li> /web/support/usdlc/dsl in the uSDLC project</li> 
   <li> /src/usdlc/dsl in the uSDLC project</li> 
  </ul> 
- <p> Apart from standard coffeescript definitions, including &quot;dsl 'dss'&quot; will active the ability to create domain specific statements.</p> 
+ <p> Apart from standard coffeescript definitions, including "dsl 'dss'" will active the ability to create domain specific statements.</p> 
  <p> A dss command takes a domain specific statement as a string and a method to call when this string is matched. See the instrumentation below for examples. In short, a dss statement is of the form:</p> 
  <pre>statement =&gt; adjectives action parameters | adjectives action!
 adjectives =&gt; adjective [adjectives]

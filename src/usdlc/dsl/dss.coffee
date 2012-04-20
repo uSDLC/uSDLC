@@ -13,8 +13,14 @@ dss = (line, action) ->
 			# last word has _defaultActor set as it has no following context
 			arguments.callee._defaultActor arguments...
 		else # word order not specified in a dss definition
-			nw = nextWord?.name ? nextWord
-			throw "No preposition '#{preposition}' for '#{nw}'"
+			if typeof arguments[0] is 'function'
+				func = arguments[0]()
+				func = func?.action?[preposition]
+				if func
+					func()
+				else
+					nw = nextWord?.name ? nextWord
+					throw "No preposition '#{preposition}' for '#{nw}'"
 	# Inner words return a function that when executed will provide a map
 	# or action and arguments.
 	dsw = (word) -> ->
@@ -28,7 +34,7 @@ dss = (line, action) ->
 		if not globals[word]
 			globals[word] = methodCreator word
 			globals[word].isFirst = isFirst
-		else if globals[word].isFirst != isFirst
+		else if globals[word].isFirst is not isFirst
 			throw "'#{word}' cannot be both left and middle of a command"
 	# We have put a word in the dictionary - now set the action against
 	# the next word expected.
@@ -45,10 +51,10 @@ dss = (line, action) ->
 	inParameters = false
 	# Domain statement is made of of comma separated parts
 	part = ->
-		return rest if ! rest # all done
+		return rest if not rest # all done
 		[all, left, right] = /(?:(.*?),)?\s*(.*)/.exec rest
 		if left
-			[statement, rest] = [left, right]
+			[ statement, rest] = [left, right]
 		else # no left, so finish off the last part
 			[statement, rest] = [right, left]
 		return statement

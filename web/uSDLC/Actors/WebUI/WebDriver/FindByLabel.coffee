@@ -6,8 +6,7 @@ enter
     'Check Box': true
     'Radio 2': true
     'Select List': 'Two'
-check 'Text Field', 'test field entry'
+check 'Text Field', 'test field - 2nd time'
 check 'Check Box:', true
 check 'Radio 2', true
-check /R.* 1/, 'Radio 2'
 check only 'Select List', 'Two'

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select
 import java.util.regex.Pattern
 
 import static usdlc.config.Config.config
+import org.mozilla.javascript.regexp.NativeRegExp
 
 class WebDriver {
 	String driverName = config.webDriver
@@ -81,22 +82,28 @@ class WebDriver {
 	def waitFor(String targets, Closure action) {
 		def elements = [driver]
 		targets.split(/\s+->\s+/).each { target ->
-			elements = findElements(target) {[]}
+			elements = findElements(target)
 			assert elements?.size(), "No element '$target'"
+			elements = infer(elements)
 		}
-//		if (elements.size() == 1) {
-//			switch (elements[0].tagName) {
-//				case 'select':
-//					elements = elements[0].findElement(By.tagName('option'))
-//					break;
-//				// todo: case 'label': return the inner form entry field
-//				// todo: case 'th': return list of elements in row or column
-//				// todo: case 'td': return list of elements in row if first
-//				// todo: case 'tr': return list of elements in column if first
-//				// todo: case 'input', type='radio', same behavior as select
-//			}
-//		}
 		return action(elements)
+	}
+	def infer(elements) {
+		return elements.collect { element ->
+			switch (element.tagName) {
+				case 'label':
+					return with(element) {
+						findElements(By.xpath(
+							'following-sibling::*')).find {
+						(it.tagName in inputElementNameSet) ? it : null
+					} } ?: element
+				case 'caption':
+					return findOutside(['table'], element)
+//				case 'td':
+//				case 'th':
+				default: return element
+			}
+		}
 	}
 	/**
 	 * Wait for and return a specified element
@@ -111,7 +118,7 @@ class WebDriver {
 		}
 	}
 
-	private findElements(String target, Closure moreChecks) {
+	private findElements(String target) {
 		By id = By.id(target)
 		By name = By.name(target)
 		By linkText = By.linkText(target)
@@ -129,18 +136,18 @@ class WebDriver {
 								findElements(className) ?:
 									findElements(tagName) ?:
 										findElements(plt) ?:
-											moreChecks(target)
+											findElementByContent(target) ?: []
 		}
 	}
 
-	private findElementsByVisualClues(target) {
-		// start with the obvious - <label>
-		def elements = findElements(By.cssSelector('label'))
-		return []
+	def findElementByContent(content) {
+		return findByXpath("descendant::*[text()='$content']") ?:
+			findByXpath("descendant::*[starts-with(text(),'$content')]") ?:
+				findByXpath("descendant::*[contains(text(),'$content')]")
 	}
 
-	def findFormElements(target) {
-		findElements(target) {findElementsByVisualClues(it)}
+	def findByXpath(xpath) {
+		return findElements(By.xpath(xpath))
 	}
 	/**
 	 * Go from A to B by waiting and clicking links
@@ -150,16 +157,26 @@ class WebDriver {
 	 * Look at a pattern and decide if it is a regex or just a string action
 	 * based on /regex/.
 	 */
-	Closure comparator(pattern, stringComparator = {it == pattern}) {
-		pattern = pattern.toString()
+	Closure comparator(pattern, compare = {defaultCompare(it, pattern)}) {
+		if (pattern instanceof Boolean) {
+			return {it.isSelected()}
+		}
 		def cmp
-		if (pattern.startsWith('/') && pattern.endsWith('/')) {
-			def regex = Pattern.compile(pattern[1..-2])
+		if (pattern instanceof NativeRegExp) {
+			// doesn't handle /srch/gim
+			def regex = Pattern.compile(pattern.toString()[1..-2])
 			cmp = { text -> regex.matcher(text).matches() }
 		} else {
-			cmp = stringComparator
+			cmp = compare
 		}
-		return { element -> values(element).find {cmp(it)} }
+		return { element -> values(element).find {cmp(it)}}
+	}
+	private defaultCompare(left, right) {
+		if (left == right) return true
+		// for radio where true means we found the right value
+		if (left && right instanceof Boolean && right) return true
+		if (left.toString() == right.toString()) return true
+		return false
 	}
 	/**
 	 * Allows chaining of checks against the same element.
@@ -197,9 +214,56 @@ class WebDriver {
 					[it.text, it.getAttribute('value')]
 				}.flatten()
 				return [element.text]
+			case 'table':
+				return tableContents(element).flatten()
+			case 'th':
+			case 'td':
+				def loc = cellLocation(element)
+				if (loc.x == 0) {
+					return tableContents(element)[loc.y][1..-1].text
+				} else if (loc.y == 0) {
+					return tableContents(element).collect {
+						it[loc.x]
+					}[1..-1].text
+				} else {
+					return [element.text]
+				}
+			case 'ul':
+			case 'ol':
+				return with(element) {findElements(By.tagName('li'))}
 			default:
 				return [element.text]
 		}
+	}
+
+	private tableContents(element) {
+		def result = []
+		def table = findOutside(['table'], element)
+		def rows = with(table) { findElements(By.tagName('tr')) }
+		rows.each {
+			result << with(it) {
+				findElements(By.cssSelector('*')).findAll {
+					(it.tagName in ['td','th']) ? it.text : null
+				}
+			}
+		}
+		return result
+	}
+
+	private cellLocation(element) {
+		def x = with(element) {
+			findElements(By.xpath('preceding-sibling::td')).size() +
+					findElements(By.xpath('preceding-sibling::th')).size()
+		}
+		def y = with(findClosest(['tr'], [element])) {
+			def y = findElements(By.xpath('preceding-sibling::tr')).size()
+			if (findElements(By.xpath(
+					'parent::tbody/preceding-sibling::thead')).size()) {
+				y++ // count the header
+			}
+			return y
+		}
+		return [x: x, y: y]
 	}
 	/*
 	 * Go through a list of of web elements and
@@ -208,8 +272,9 @@ class WebDriver {
 
 	def match(elements, patterns) {
 		def matches = []
-		patterns.flatten().each {
-			def cp = comparator(it)
+		patterns.flatten().each { pattern ->
+			if (pattern instanceof Double && pattern == 1.0) pattern = 1
+			def cp = comparator(pattern)
 			matches.push(elements.count {cp(it)})
 		}
 		return matches
@@ -222,8 +287,7 @@ class WebDriver {
 		waitFor(selector) { elements ->
 			assert elements.size() == patterns.size(), selector
 			match(elements, patterns).each {
-				assert it == 1,  \
-				  "check only '$selector' ($elements.text) is not $patterns\n"
+				assert it == 1, "check only '$selector' ($elements.text) is not $patterns"
 			}
 		}
 	}
@@ -234,8 +298,7 @@ class WebDriver {
 	void checkAll(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
 			match(elements, patterns).each {
-				assert it >= 1,  \
-				  "check all: $selector ($elements.text) is not $patterns\n"
+				assert it >= 1, "check all: $selector ($elements.text) is not $patterns"
 			}
 		}
 	}
@@ -245,8 +308,7 @@ class WebDriver {
 	 */
 	void checkSome(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
-			assert match(elements, patterns).find { it >= 1},  \
-				  "check some: $selector ($elements.text) is not $patterns\n"
+			assert match(elements, patterns).find {it >= 1}, "check some: $selector ($elements.text) is not $patterns"
 		}
 	}
 	/**
@@ -255,8 +317,7 @@ class WebDriver {
 	 */
 	void checkNone(selector, Iterable patterns) {
 		waitFor(selector) { elements ->
-			assert !match(elements, patterns).count { it},  \
-				  "check none: $selector ($elements.text) is not $patterns\n"
+			assert !match(elements, patterns).count { it}, "check none: $selector ($elements.text) is not $patterns"
 		}
 	}
 	/**
@@ -272,6 +333,14 @@ class WebDriver {
 	def currentElements = null, _baseElement = null
 
 	def setBaseElement(to) { _baseElement = to }
+	/**
+	 * Called by DSL to set an element that future calls use instead of
+	 * document
+	 */
+	def resetBaseElement(String target) {
+		_baseElement = driver
+		baseElement = waitFor(target)[0]
+	}
 
 	def getBaseElement() {
 		if (!_baseElement) _baseElement = driver
@@ -282,34 +351,55 @@ class WebDriver {
 	 * (as in input elements in a form). Any calls to a selector within
 	 * this closure are restricted to the outer element. Can be nested.
 	 */
-	void with(element, Closure actions) {
+	def with(element, Closure actions) {
 		def before = baseElement
 		baseElement = element
-		try { actions() } finally { baseElement = before }
+		try { return actions() } finally { baseElement = before }
 	}
 
 	def findClosest(tags, near) {
-		assert near.size() > 0, "find closes '$tag' to what?"
 		near = near[0]
-		def result = null
-		with(near) {
-			tags.findResult {
+		tags = tags as Set
+		if (near.tagName in tags) return near
+		def element = findInside(tags, near) ?: findOutside(tags, near) ?:
+			findInXpath(tags, near, 'following-sibling::*') ?:
+				findInXpath(tags, near, 'preceding-sibling::*')
+		assert element, "failed to find $tags near $near.tagName"
+		return element
+	}
+
+	def findInside(tags, near) {
+		return with(near) {
+			tags.findResult { tag ->
 				def found = findElements(By.tagName(tag))
 				(found.size() > 0) ? found[0] : null
 			}
 		}
-		if (!result) {
-			while (near) {
-				if (near.tagName == tag) {
-					result = near
-					break
-				}
-				near = near.findElement(By.xpath('..'))
-				if (near.tagName == 'body') break
-			}
-		}
-		return result ?: near
 	}
+
+	def findOutside(tags, near) {
+		def result = null
+		while (near && !result) {
+			if (near.tagName in tags) {
+				result = near
+				break
+			}
+			near = near.findElement(By.xpath('..'))
+			if (near.tagName == 'body') break
+		}
+		return result
+	}
+
+	def findInXpath(tags, near, xpath) {
+		return near.findElements(By.xpath(xpath)).find {it.tagName in tags}
+	}
+
+	def findFormElement(target) {
+		def elements = findElements(target)
+		assert elements, "No form element for label '$target'"
+		return findClosest(inputElementNameSet, elements)
+	}
+	def inputElementNameSet = ['input', 'textarea', 'select'] as Set
 
 	@SuppressWarnings(["GroovyOverlyComplexMethod",
 	"GroovyMethodWithMoreThanThreeNegations"])
@@ -318,9 +408,8 @@ class WebDriver {
 			fields.each { name, value ->
 				try {
 					if (name == 'form') return
-					def elements = findFormElements(name)
-					assert elements.size(), "No form field '$name'"
-					def field = elements[0]
+					def field = findFormElement(name)
+					assert field, "No form field '$name'"
 					switch (field.tagName) {
 						case 'input':
 						case 'textarea':
@@ -336,10 +425,15 @@ class WebDriver {
 									}
 									break;
 								case 'radio':
-									field = elements.find {
-										it.getAttribute('value') == value
+									if (!(value instanceof Boolean)) {
+										def rn = field.getAttribute('name')
+										def rs = findElements(By.name(rn))
+										field = rs.find {
+											it.getAttribute('value') == value
+										}
+										assert field, """
+											No radio $name is $value"""
 									}
-									assert field, "No radio $name is $value"
 									field.click()
 									break;
 								default:

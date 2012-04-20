@@ -39,16 +39,20 @@
  <p> Specify what you want to click on. Use -&gt; between selectors to drill through pages to the one required.</p> 
 </div> 
 <div id="s9" class="editable section synopsis" contextmenu="section"> 
- <h2> <a action="runnable" class="usdlc sourceLinksucceeded" href="DataEntry.coffee" id="s9a6">Data Entry</a></h2> 
+ <h2> <a class="usdlc sourceLinksucceeded" href="DataEntry.coffee" id="s9a6" action="runnable">Data Entry</a></h2> 
  <p> The primary form of data entry is to send keys to the browser - just as if they were typed. Special routines handle lists, check boxes and radio buttons. All are driven by <em>enter</em>. Fields are changed with name/value pairs - where the name can be any of the options described above. If the page contains more than one form, include a form entrie with the value being the form id.</p> 
  <fieldset> 
   <legend>Test Form</legend> 
-  <form id="TestForm" method="post" name="TestForm">
-    Text Field:&nbsp; 
-   <input name="TextField" type="text" />, Check Box:&nbsp; 
-   <input name="CheckBoxName" type="checkbox" value="CheckBox" />, Radio 1:&nbsp; 
-   <input name="Radio1" type="radio" value="Radio1" />, Radio 2:&nbsp; 
-   <input name="Radio1" type="radio" value="Radio2" />, Select List:&nbsp; 
+  <form id="TestForm" method="post" name="TestForm"> 
+   <label>Text Field:</label>&nbsp; 
+   <input name="TextField" type="text" />, 
+   <label>Check Box:</label>&nbsp; 
+   <input name="CheckBoxName" type="checkbox" value="CheckBox" />, 
+   <label>Radio 1:</label>&nbsp; 
+   <input name="Radio1" type="radio" value="Radio1" />, 
+   <label>Radio 2</label>:&nbsp; 
+   <input name="Radio1" type="radio" value="Radio2" />, 
+   <label>Select List:</label>&nbsp; 
    <select name="SelectField"><option selected="selected" value=""></option><option value="One">One</option><option value="Two">Two</option><option value="Three">Three</option></select> 
   </form> 
  </fieldset> 
@@ -59,7 +63,7 @@
  <p> &nbsp;</p> 
 </div> 
 <div id="s12" class="editable section synopsis" contextmenu="section"> 
- <h2> <a class="usdlc sourceLinkfailed" href="FindByLabel.coffee" id="s12a6" action="runnable">Find by Label</a></h2> 
+ <h2> <a class="usdlc sourceLinksucceeded" href="FindByLabel.coffee" id="s12a6" action="runnable">Find by Label</a></h2> 
  <p> Previous checks, clicks or data entry have used investigation of the html source to clearly specify the element to be found. In practice while presenting pages to domain experts it would be clearer to use visible elements on the page. Potential matches can be found by:</p> 
  <ul> 
   <li> Label text</li> 
@@ -70,7 +74,7 @@
  <p> The label comparison is a reasonable sub-set of the visible text. It can also be a regular expression. The form name is equally flexible - being any text (or regular expression match) inside or wrapping the form. So you can specify a form by choosing a unique element in it.</p> 
 </div> 
 <div id="s11" class="editable section synopsis" contextmenu="section"> 
- <h2> <a href="Tables.coffee" id="s11a6" class="usdlc sourceLink" action="runnable">Tables</a></h2> 
+ <h2> <a class="usdlc sourceLinksucceeded" href="Tables.coffee" id="s11a6" action="runnable">Tables</a></h2> 
  <p> Data if often displayed in tables. Use the check command to see if a row or column contains, or does not contain, data.</p> 
  <table border="1" cellpadding="1" cellspacing="1"> 
   <caption>

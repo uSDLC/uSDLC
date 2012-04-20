@@ -97,7 +97,10 @@ class Exchange {
 	def loadResponse(OutputStream outputStream, Closure sendResponseHeader) {
 		this.sendResponseHeader = sendResponseHeader
 		try {
-			String action = request.query['action'] ?: 'read'
+			String action = request.query['action']
+			if (!action) {
+				action = 'read'
+			}
 			response = createResponse(outputStream)
 
 			if (request.user.authorised(store, action)) switch (action) {

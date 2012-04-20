@@ -25,12 +25,10 @@ class Config {
 		config = parseOptions('base')
 		config.projects = [:]
 		['webDriver', 'languages'].each { String scriptName ->
-			config.merge(parseOptions(scriptName))
+			config.putAll(parseOptions(scriptName))
 		}
 		config.baseDirectory = baseDirectory
-		Dictionary.commandLine(argList).each { String k, String v ->
-			config[k] = v
-		}
+		config.putAll(Dictionary.commandLine(argList))
 		// add home to source path so we can go app.blah
 		config.srcPath << new File(config.home).absolutePath
 		buildClassPath()
@@ -70,7 +68,7 @@ class Config {
 				return usdlcProject
 			}
 			def home = "$config.home/$name"
-			if (Store.base(home).exists()) {
+			if (Store.absolute(home).exists()) {
 				return project(Store.decamel(name.capitalize()),
 							home, "$home/usdlc/Config.groovy")
 			}
