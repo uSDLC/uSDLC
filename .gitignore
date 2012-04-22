@@ -8,3 +8,11 @@ web/.store/
 /.db
 /chromedriver.log
 /release
+
+uSDLC.ipr
+
+uSDLC.iws
+
+nohup.out
+
+USDLC.iml
