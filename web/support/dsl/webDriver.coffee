@@ -5,6 +5,7 @@ client =
 	browse: (url) -> client.driver.load url
 
 click = (targets) -> client.driver.click(targets)
+find = (target) -> client.driver.resetBaseElement(target)
 
 dss 'check target, contents...', (target, contents...) ->
 	client.driver.checkAll target, contents
@@ -20,4 +21,3 @@ dss 'check empty target', (target) ->
 	client.driver.checkEmpty target
 
 enter = (fields) -> client.driver.enter fields
-

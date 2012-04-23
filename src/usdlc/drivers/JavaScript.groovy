@@ -16,7 +16,7 @@ class JavaScript {
 	 */
 	def run(Store js, binding = [:]) {
 		Context context = Context.enter()
-		Reader reader
+		Reader reader = null
 		try {
 			if (!optimise) {
 				// Without this, Rhino hits a 64K byte-code limit and fails

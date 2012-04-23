@@ -39,7 +39,7 @@ class Config {
 	}
 
 	private static Map parseOptions(String scriptName) {
-		parse("/Options/Configuration/${scriptName}.groovy")
+		parse("/uSDLC/Configuration/Scripts/${scriptName}.groovy")
 	}
 
 	private static Map parse(String scriptPath) {

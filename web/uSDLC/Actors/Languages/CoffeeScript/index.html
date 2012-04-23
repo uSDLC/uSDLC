@@ -1,526 +1,530 @@
-<div id="pageTitle" class="editable" uuid="833c14a5-fc41-4622-bb5f-63ba080cd523">
- <h1> Coffee-Script</h1>
- <h2> JavaScript on Steroids</h2>
-</div>
-<div id="s1" contextmenu="section" class="editable section">
- <p><b>CoffeeScript is a little language that compiles into JavaScript.</b>&nbsp;Underneath all of those embarrassing braces and semicolons, JavaScript has always had a gorgeous object model at its heart. CoffeeScript is an attempt to expose the good parts of JavaScript in a simple way.</p>
-</div>
-<div id="s2" contextmenu="section" class="editable section synopsis">
- <p> Basic coffee-script example just displays <a id="s2a0" action="runnable" class="usdlc sourceLink succeeded" href="helloWorld.coffee">hello world</a>&nbsp;- twice, once using the exchange object and once using print (as defined in dsl/coffeeDSL.coffee.</p>
-</div>
-<div id="s3" class="editable section" contextmenu="section">
+<div id="pageTitle" class="editable" uuid="833c14a5-fc41-4622-bb5f-63ba080cd523"> 
+ <h1> Coffee-Script</h1> 
+ <h2> JavaScript on Steroids</h2> 
+</div> 
+<div id="s1" contextmenu="section" class="editable section"> 
+ <p><b>CoffeeScript is a little language that compiles into JavaScript.</b>&nbsp;Underneath all of those embarrassing braces and semicolons, JavaScript has always had a gorgeous object model at its heart. CoffeeScript is an attempt to expose the good parts of JavaScript in a simple way.</p> 
+</div> 
+<div id="s2" contextmenu="section" class="editable section synopsis"> 
+ <h2> <a class="usdlc sourceLinksucceeded" href="helloWorld.coffee" id="s2a0" action="runnable">Hello world</a></h2> 
+ <p> Basic coffee-script example just displays hello world&nbsp;- twice, once using the exchange object and once using print (as defined in dsl/coffeeDSL.coffee.</p> 
+</div> 
+<div id="s3" class="editable section" contextmenu="section"> 
  <p> &nbsp;</p> 
  <div>
-   number = 42
+   number = 42 
  </div> 
  <div>
-   opposite = true
+   opposite = true 
  </div> 
  <div>
-   number = -42 if opposite
+   number = -42 if opposite 
  </div> 
  <div>
-   assert number == -42
+   assert number == -42 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; 
  </div> 
  <div>
-   square = (x) -&gt; x * x
+   square = (x) -&gt; x * x 
  </div> 
  <div>
-   assert square(9) == 81
+   assert square(9) == 81 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; 
  </div> 
  <div>
-   list = [1,2,3,4,5]
+   list = [1,2,3,4,5] 
  </div> 
  <div>
-   assert list[2] == 3
+   assert list[2] == 3 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; 
  </div> 
  <div>
-   math =
+   math = 
  </div> 
  <div>
-   &nbsp; root: &nbsp; Math.sqrt
+   &nbsp; root: &nbsp; Math.sqrt 
  </div> 
  <div>
-   &nbsp; square: square
+   &nbsp; square: square 
  </div> 
  <div>
-   &nbsp; cube: &nbsp; (x) -&gt; x * square x
+   &nbsp; cube: &nbsp; (x) -&gt; x * square x 
  </div> 
  <div>
-   assert math.cube(2) == 8
+   assert math.cube(2) == 8 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; 
  </div> 
  <div>
-   race = (winner, runners...) -&gt;
+   race = (winner, runners...) -&gt; 
  </div> 
  <div>
-   &nbsp; &quot;winner is #{winner} with #{runners.length} losers&quot;
+   &nbsp; &quot;winner is #{winner} with #{runners.length} losers&quot; 
  </div> 
  <div>
-   assert race('one', 'two', three') == 'winner is one with 2 losers'
+   assert race('one', 'two', three') == 'winner is one with 2 losers' 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; 
  </div> 
  <div>
-   assert not elvis?
+   assert not elvis? 
  </div> 
  <div>
-   elvis or= 'here'
+   elvis or= 'here' 
  </div> 
  <div>
-   assert elvis?
+   assert elvis? 
  </div> 
  <div>
-   assert elvis == 'here'
+   assert elvis == 'here' 
  </div> 
  <div>
-   elvis or= 'there'
+   elvis or= 'there' 
  </div> 
  <div>
-   assert elvis == 'here'
+   assert elvis is 'here' 
  </div> 
  <div>
-   &nbsp;
+   assert elvis isnt 'there' 
  </div> 
  <div>
-   square = (x) -&gt; x * x
+   &nbsp; 
  </div> 
  <div>
-   assert (square num for num in [1,2,3,4,5] by 2) == [2,9,25]
+   square = (x) -&gt; x * x 
  </div> 
  <div>
-   &nbsp;
+   assert (square num for num in [1,2,3,4,5] by 2) == [2,9,25] 
  </div> 
  <div>
-   friday = true
+   &nbsp; 
  </div> 
  <div>
-   assert (if friday then 'sue' else 'jill') == 'sue'
+   friday = true 
  </div> 
  <div>
-   &nbsp;
+   assert (if friday then 'sue' else 'jill') == 'sue' 
  </div> 
  <div>
-   winners = (first, rest...) -&gt; &quot;winner #{first}, #{rest.length} losers&quot;
+   &nbsp; 
  </div> 
  <div>
-   assert winners('a', 'b', 'c') == &quot;winner a, 2 losers&quot;
+   winners = (first, rest...) -&gt; &quot;winner #{first}, #{rest.length} losers&quot; 
  </div> 
  <div>
-   &nbsp;
+   assert winners('a', 'b', 'c') == &quot;winner a, 2 losers&quot; 
  </div> 
  <div>
-   yearsOld = max: 10, ida: 9, tim: 11
+   &nbsp; 
  </div> 
  <div>
-   ages = for child, age of yearsOld
+   yearsOld = max: 10, ida: 9, tim: 11 
  </div> 
  <div>
-   &nbsp; &quot;#{child} is #{age}&quot;
+   ages = for child, age of yearsOld 
  </div> 
  <div>
-   assert ages == ['max is 10', 'ida is 9', 'tim is 11']
+   &nbsp; &quot;#{child} is #{age}&quot; 
  </div> 
  <div>
-   &nbsp;
+   assert ages == ['max is 10', 'ida is 9', 'tim is 11'] 
  </div> 
  <div>
-   number = 3
+   &nbsp; 
  </div> 
  <div>
-   last = 3
+   number = 3 
  </div> 
  <div>
-   while num -= 1
+   last = 3 
  </div> 
  <div>
-   &nbsp; assert number &lt; last
+   while num -= 1 
  </div> 
  <div>
-   &nbsp; last = number
+   &nbsp; assert number &lt; last 
  </div> 
  <div>
-   number += 1 until number &gt; 9
+   &nbsp; last = number 
  </div> 
  <div>
-   assert number == 10
+   number += 1 until number &gt; 9 
  </div> 
  <div>
-   &nbsp;
+   assert number == 10 
  </div> 
  <div>
-   for number in [20,30,40]
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; do -&gt; assert not (number % 10)
+   for number in [20,30,40] 
  </div> 
  <div>
-   &nbsp;
+   &nbsp; do -&gt; assert not (number % 10) 
  </div> 
  <div>
-   numbers = [1,2,3,4,5,6,7,8,9]
+   &nbsp; 
  </div> 
  <div>
-   assert numbers[3..6] == [4,5,6,7]
+   numbers = [1,2,3,4,5,6,7,8,9] 
  </div> 
  <div>
-   numbers[3,6] = [-3]
+   assert numbers[3..6] == [4,5,6,7] 
  </div> 
  <div>
-   assert numbers == [1,2,3,-3,8,9]
+   numbers[3,6] = [-3] 
  </div> 
  <div>
-   &nbsp;
+   assert numbers == [1,2,3,-3,8,9] 
  </div> 
  <div>
-   result = try
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; nonexistent / undefined
+   result = try 
  </div> 
  <div>
-   catch
+   &nbsp; nonexistent / undefined 
  </div> 
  <div>
-   &nbsp; &quot;failed&quot;
+   catch 
  </div> 
  <div>
-   assert result == 'failed'
+   &nbsp; &quot;failed&quot; 
  </div> 
  <div>
-   &nbsp;
+   assert result == 'failed' 
  </div> 
  <div>
-   assert 1 is 1
+   &nbsp; 
  </div> 
  <div>
-   assert 1 isnt 2
+   assert 1 is 1 
  </div> 
  <div>
-   assert yes and on
+   assert 1 isnt 2 
  </div> 
  <div>
-   assert on or off
+   assert yes and on 
  </div> 
  <div>
-   &nbsp;
+   assert on or off 
  </div> 
  <div>
-   number = 1
+   &nbsp; 
  </div> 
  <div>
-   number = 2 unless number is 1
+   number = 1 
  </div> 
  <div>
-   assert number == 1
+   number = 2 unless number is 1 
  </div> 
  <div>
-   &nbsp;
+   assert number == 1 
  </div> 
  <div>
-   assert 3 in [1,2,3]
+   &nbsp; 
  </div> 
  <div>
-   assert 'dick' of {tom:1, dick:2, harry:3}
+   assert 3 in [1,2,3] 
  </div> 
  <div>
-   &nbsp;
+   assert 'dick' of {tom:1, dick:2, harry:3} 
  </div> 
  <div>
-   mind = 'here'
+   &nbsp; 
  </div> 
  <div>
-   solipsism = true if mind? and not world?
+   mind = 'here' 
  </div> 
  <div>
-   assert solipism
+   solipsism = true if mind? and not world? 
  </div> 
  <div>
-   &nbsp;
+   assert solipism 
  </div> 
  <div>
-   assert not speed
+   &nbsp; 
  </div> 
  <div>
-   speed ?= 75
+   assert not speed 
  </div> 
  <div>
-   assert speed is 75
+   speed ?= 75 
  </div> 
  <div>
-   footprints = yeti ? 'bear'
+   assert speed is 75 
  </div> 
  <div>
-   assert footprints == 'bear'
+   footprints = yeti ? 'bear' 
  </div> 
  <div>
-   assert not a?().b?.c
+   assert footprints == 'bear' 
  </div> 
  <div>
-   &nbsp;
+   assert not a?().b?.c 
  </div> 
  <div>
-   class Animal
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; constructor: (@name) -&gt;
+   class Animal 
  </div> 
  <div>
-   &nbsp; move: (meters) -&gt;
+   &nbsp; constructor: (@name) -&gt; 
  </div> 
  <div>
-   &nbsp; &nbsp; @name + &quot; moved #{meters}m.&quot;
+   &nbsp; move: (meters) -&gt; 
  </div> 
  <div>
-   class Snake extends Animal
+   &nbsp; &nbsp; @name + &quot; moved #{meters}m.&quot; 
  </div> 
  <div>
-   &nbsp; move: -&gt; super 5
+   class Snake extends Animal 
  </div> 
  <div>
-   class Horse extends Animal
+   &nbsp; move: -&gt; super 5 
  </div> 
  <div>
-   &nbsp; move: -&gt; super 45
+   class Horse extends Animal 
  </div> 
  <div>
-   sam = new Snake &quot;Sam&quot;
+   &nbsp; move: -&gt; super 45 
  </div> 
  <div>
-   tom = new Horse &quot;Tom&quot;
+   sam = new Snake &quot;Sam&quot; 
  </div> 
  <div>
-   assert sam.move() == 'Sam moved 5 meters'
+   tom = new Horse &quot;Tom&quot; 
  </div> 
  <div>
-   assert tom.move() == 'Tom moved 45 meters'
+   assert sam.move() == 'Sam moved 5 meters' 
  </div> 
  <div>
-   &nbsp;
+   assert tom.move() == 'Tom moved 45 meters' 
  </div> 
  <div>
-   String::dasherize = -&gt; this.replace /_/g, &quot;-&quot;
+   &nbsp; 
  </div> 
  <div>
-   &nbsp;
+   String::dasherize = -&gt; this.replace /_/g, &quot;-&quot; 
  </div> 
  <div>
-   one = 1
+   &nbsp; 
  </div> 
  <div>
-   two = 2
+   one = 1 
  </div> 
  <div>
-   [two,one] = [one,two]
+   two = 2 
  </div> 
  <div>
-   assert one == 2
+   [two,one] = [one,two] 
  </div> 
  <div>
-   assert two == 1
+   assert one == 2 
  </div> 
  <div>
-   &nbsp;
+   assert two == 1 
  </div> 
  <div>
-   struct =&nbsp;
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; a: 'a'
+   struct =&nbsp; 
  </div> 
  <div>
-   &nbsp; c: 'c'
+   &nbsp; a: 'a' 
  </div> 
  <div>
-   &nbsp; &nbsp; ca: 'ca'
+   &nbsp; c: 'c' 
  </div> 
  <div>
-   &nbsp; &nbsp; cb: ['cb1','cb2']
+   &nbsp; &nbsp; ca: 'ca' 
  </div> 
  <div>
-   {c: {ca, cb: [cb1, cb2] = struct
+   &nbsp; &nbsp; cb: ['cb1','cb2'] 
  </div> 
  <div>
-   assert ca is 'ca'
+   {c: {ca, cb: [cb1, cb2] = struct 
  </div> 
  <div>
-   assert cb1 is 'cb1'
+   assert ca is 'ca' 
  </div> 
  <div>
-   assert cb2 is 'cb2'
+   assert cb1 is 'cb1' 
  </div> 
  <div>
-   &nbsp;
+   assert cb2 is 'cb2' 
  </div> 
  <div>
-   tag = &quot;&lt;impossible&gt;&quot;
+   &nbsp; 
  </div> 
  <div>
-   [open, contents..., close] = tag.split(&quot;&quot;)
+   tag = &quot;&lt;impossible&gt;&quot; 
  </div> 
  <div>
-   assert open is '&lt;' and close is '&gt;'
+   [open, contents..., close] = tag.split(&quot;&quot;) 
  </div> 
  <div>
-   assert contents = 'impossible'
+   assert open is '&lt;' and close is '&gt;' 
  </div> 
  <div>
-   &nbsp;
+   assert contents = 'impossible' 
  </div> 
  <div>
-   func = (a, b) -&gt;
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; @a = a
+   func = (a, b) -&gt; 
  </div> 
  <div>
-   &nbsp; @b = b
+   &nbsp; @a = a 
  </div> 
  <div>
-   &nbsp; -&gt; @a + @b
+   &nbsp; @b = b 
  </div> 
  <div>
-   f = func(3, 4)
+   &nbsp; -&gt; @a + @b 
  </div> 
  <div>
-   assert f() == 7
+   f = func(3, 4) 
  </div> 
  <div>
-   &nbsp;
+   assert f() == 7 
  </div> 
  <div>
-   result = (number) -&gt; switch number
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; when 1 then 'first'
+   result = (number) -&gt; switch number 
  </div> 
  <div>
-   &nbsp; when 2, 3 then 'second'
+   &nbsp; when 1 then 'first' 
  </div> 
  <div>
-   &nbsp; when 4 then 'third'
+   &nbsp; when 2, 3 then 'second' 
  </div> 
  <div>
-   &nbsp; else 'fourth'
+   &nbsp; when 4 then 'third' 
  </div> 
  <div>
-   assert result(2) is 'second'
+   &nbsp; else 'fourth' 
  </div> 
  <div>
-   assert result('a') is 'fourth'
+   assert result(2) is 'second' 
  </div> 
  <div>
-   &nbsp;
+   assert result('a') is 'fourth' 
  </div> 
  <div>
-   number = 1
+   &nbsp; 
  </div> 
  <div>
-   try
+   number = 1 
  </div> 
  <div>
-   &nbsp; number = 2
+   try 
  </div> 
  <div>
-   catch error
+   &nbsp; number = 2 
  </div> 
  <div>
-   &nbsp; number = error
+   catch error 
  </div> 
  <div>
-   finally
+   &nbsp; number = error 
  </div> 
  <div>
-   &nbsp; number = 3
+   finally 
  </div> 
  <div>
-   assert number is 3
+   &nbsp; number = 3 
  </div> 
  <div>
-   &nbsp;
+   assert number is 3 
  </div> 
  <div>
-   number = 33
+   &nbsp; 
  </div> 
  <div>
-   assert 50 &gt; number &gt; 20
+   number = 33 
  </div> 
  <div>
-   assert not (30 &gt; number &gt; 10)
+   assert 50 &gt; number &gt; 20 
  </div> 
  <div>
-   &nbsp;
+   assert not (30 &gt; number &gt; 10) 
  </div> 
  <div>
-   string = &quot;can be
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; multi
+   string = &quot;can be 
  </div> 
  <div>
-   &nbsp; line&quot;
+   &nbsp; multi 
  </div> 
  <div>
-   assert string == 'can be multi line'
+   &nbsp; line&quot; 
  </div> 
  <div>
-   &nbsp;
+   assert string == 'can be multi line' 
  </div> 
  <div>
-   string = &quot;&quot;&quot;
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; formatted
+   string = &quot;&quot;&quot; 
  </div> 
  <div>
-   &nbsp; &nbsp; string
+   &nbsp; formatted 
  </div> 
  <div>
-   &quot;&quot;&quot;
+   &nbsp; &nbsp; string 
  </div> 
  <div>
-   assert string is 'formatted\n &nbsp;string'
+   &quot;&quot;&quot; 
  </div> 
  <div>
-   &nbsp;
+   assert string is 'formatted\n &nbsp;string' 
  </div> 
  <div>
-   re = ///(?i)
+   &nbsp; 
  </div> 
  <div>
-   &nbsp; ( cat
+   re = ///(?i) 
  </div> 
  <div>
-   &nbsp; | mat
+   &nbsp; ( cat 
  </div> 
  <div>
-   &nbsp; | hat
+   &nbsp; | mat 
  </div> 
  <div>
-   &nbsp; ).*///
+   &nbsp; | hat 
  </div> 
  <div>
-   assert re.test('cat fur')
+   &nbsp; ).*/// 
  </div> 
  <div>
-   assert re.test('mat bur')
+   assert re.test('cat fur') 
  </div> 
  <div>
-   assert not re.test('felt hat')
+   assert re.test('mat bur') 
  </div> 
  <div>
-   &nbsp;
+   assert not re.test('felt hat') 
+ </div> 
+ <div>
+   &nbsp; 
  </div> 
 </div>

@@ -68,5 +68,5 @@ class Ivy {
 	String group
 	Ant ant
 	Map args = [:]
-	boolean fetchSource
+	boolean fetchSource = true
 }

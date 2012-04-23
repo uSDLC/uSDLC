@@ -19,24 +19,21 @@ class HttpClient {
 		}
 		def poster = new HttpPost(url)
 		poster.entity = new UrlEncodedFormEntity(entries, 'UTF-8')
-		def semaphore = new Semaphore(30)
+		def semaphore = new Semaphore(30, 0)
 		def response = null
 		def responder = {
-			response = it
+			def sl = it.statusLine
+			def entity = it.entity
+			response = [
+					retcode: sl.statusCode,
+					status: sl.reasonPhrase,
+					header: it.allHeaders.collectEntries{[it.name, it.value]},
+					body: entity ? EntityUtils.toString(entity) : '',
+			]
 			semaphore.release()
 		} as ResponseHandler
 		client.execute(poster, responder)
-		semaphore.wait {}
-		if (!response) { return [retcode: 403, status: 'no response'] }
-		def sl = response.statusLine
-		def headers = response.allHeaders.collectEntries {[it.name, it.value]}
-		def entity = response.entity
-		def body = entity ? EntityUtils.toString(entity) : ''
-		return [
-				retcode: sl.statusCode,
-				status: sl.reasonPhrase,
-				header: headers,
-				body: body,
-		]
+		semaphore.waitForRelease()
+		return response ?: [retcode: 403, status: 'no response']
 	}
 }
