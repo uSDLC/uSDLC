@@ -8,7 +8,7 @@ session = exchange.getRequest().session
 #session = instance : (cls) -> $session.get('instance').call cls
 include = run = dsl = (script) -> support.include script
 
-assert = (test, msg) -> throw msg if not test
+assert = (test, msg) -> throw msg or 'assert failed' if not test
 
 startTime = java.lang.System.currentTimeMillis()
 timer = ->

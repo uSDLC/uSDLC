@@ -11,16 +11,6 @@ prompt = (title, content) ->
 	server.waitForResponse()
 	recover()
 
-create = (target) -> target.create(target.args...)
-cut = (target) -> target.cut(target.args...)
-append = (target) -> target.append(target.args...)
-insert = (target) -> target.insert(target.args...)
-select = (target) -> target.select(target.args...)
-check = (target) -> target.check(target.args...)
-next = (target) -> target.next(target.args...)
-edit = (target) -> target.edit(target.args...)
-run = (target) -> target.run(target.args...)
-
 timeout = (seconds) -> server.timeout seconds
 click = (targets) -> server.click targets
 keys = (keys) -> client 'keys', keys
@@ -32,33 +22,27 @@ fast = 0.001
 left = 'left'
 top = 'top'
 
-screencast = ->
-	args: arguments
-	create: (title, subtitle, synopsis) ->
+dsl 'dss'
+dss 'create screencast', (title, subtitle, synopsis) ->
 		server.createScreencast title, subtitle, synopsis
-page = ->
-	args: arguments
-	create: (title, subtitle, synopsis) ->
+dss 'create page', (title, subtitle, synopsis) ->
 		server.createPage title, subtitle, synopsis
-title = ->
-	args: arguments
-	check: (contents) -> server.check 'div#pageTitle h1', contents
-element = ->
-	args: arguments
-	check: (selector, contents) -> server.check selector, contents
+dss 'check title', (contents) ->
+		server.check 'div#pageTitle h1', contents
+dss 'check element', (selector, contents) ->
+		server.check selector, contents
+
 $setFocus = (regex) -> client 'setFocus', server.findSection regex
-section = ->
-	args: arguments
-	insert: (title, paragraphs...) -> client 'insertSection', title, paragraphs
-	append: (title, paragraphs...) -> client 'appendSection', title, paragraphs
-	select: (regex) -> $setFocus regex
-	cut: (regex) -> $setFocus regex; client 'deleteSection'
-	check: (regex) -> server.findSection regex
-	next: -> client 'setFocus', server.nextSection()
-	run: (regex) -> $setFocus regex; client 'runSection'
-code = ->
-	args: arguments
-	select: (linkText) -> server.code(linkText).click()
-	check: (regex) -> server.check(regex)
-	edit: (linkText, command) ->
+dss 'insert section', (title, paragraphs...) ->
+		client 'insertSection', title, paragraphs
+dss 'append section', (title, paragraphs...) ->
+		client 'appendSection', title, paragraphs
+dss 'select section', (regex) -> $setFocus regex
+dss 'cut section', (regex) -> $setFocus regex; client 'deleteSection'
+dss 'check section', (regex) -> server.findSection regex
+dss 'next section', -> client 'setFocus', server.nextSection()
+dss 'run section', (regex) -> $setFocus regex; client 'runSection'
+dss 'select code', (linkText) -> server.code(linkText).click()
+dss 'check code', (regex) -> server.check(regex)
+dss 'edit code', (linkText, command) ->
 		client 'editCode', server.codeId(linkText), command.split /\r*\n/g

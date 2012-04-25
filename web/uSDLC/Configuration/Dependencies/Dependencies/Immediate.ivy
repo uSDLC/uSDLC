@@ -1,0 +1,2 @@
+organisation('org.seleniumhq.selenium').
+    module('selenium-remote-control').optional()

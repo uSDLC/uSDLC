@@ -36,7 +36,7 @@ class Exchange {
 			request.with {
 				query = Dictionary.query(header.query)
 				cookies = Dictionary.cookies(header.cookie)
-				user = new User(cookies['userId'] ?: 'anon')
+				user = new User(cookies['userId'])
 				session = Session.load(cookies['usdlc-session'] as String)
 				session.exchange = this
 			}

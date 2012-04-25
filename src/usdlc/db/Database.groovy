@@ -1,18 +1,3 @@
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package usdlc.db
 
 import groovy.sql.GroovyResultSet
@@ -35,10 +20,11 @@ class Database {
 	 */
 	static connection(String database, Closure actions) {
 		Database connection = null
-		def result
+		def result = null
 		try {
 			while (!connection?.active()) {
-				connection?.sql?.close()  // close off out-of-date one if exists
+				// close off out-of-date one if exists
+				connection?.sql?.close()
 				synchronized (pool) {
 					if (!pool[database]) {
 						pool[database] = [new Database(database)]
@@ -47,7 +33,7 @@ class Database {
 				}
 			}
 			// This magic allows actions to call database methods implicitly.
-			actions.setDelegate(connection)
+			actions.delegate = connection
 			result = actions()
 			connection.sql.commit()
 		} catch (exception) {
@@ -56,7 +42,7 @@ class Database {
 		} finally {
 			synchronized (pool) { pool[database] << connection }
 		}
-		result
+		return result
 	}
 	/** List of unused connections keyed on database they belong to  */
 	final static Map<String, List<Database>> pool = [:]
@@ -96,24 +82,22 @@ class Database {
 	def first(String sql) { firstRow("select $sql") }
 	/**
 	 * The first time in a static run that we access a group of related tables
-	 * we check the code generated version against that in the current database.
-	 * If they differ, ask caller to migrate the data.
+	 * we check the code generated version against that in the current
+	 * database. If they differ, ask caller to migrate the data.
 	 *
 	 * static version = db.version("classpath:usdlc/db/Core")
 	 *
-	 * @param tableGroup group of related tables that use the same version
+	 * @param group group of related tables that use the same version
+	 * @param version version expected for this code to work
 	 * @param migrate Call to create tables or migrate old to new form. One
 	 * parameter is the old version. If it is zero, the tables do not exist and
-	 * have to be created but no migration needed. Must return true if migration
-	 * was successful so that the new version can be recorded. This parameter is
-	 * optional and the code will migrate using scripts of the form
-	 * $tableGroup.$version.sql to move up migration steps
-	 * one at a time.
+	 * have to be created but no migration needed. Must return true if
+	 * migration was successful so that the new version can be recorded. This
+	 * parameter is optional and the code will migrate using scripts of the
+	 * form $tableGroup.$version.sql to move up migration steps one at a time.
 	 */
-	static String version(String key, Closure migrate = migrateByScript) {
-		String[] group = (config.tableVersions[key] as String)?.split(',')
+	static String version(group, version, Closure migrate = migrateByScript) {
 		def dbVersion = 0
-		if (group) {
 			String url = config.databases[group[0]], tableGroup = group[1]
 			int targetVersion = group[2].toInteger()
 			connection(url) { Database db ->
@@ -134,7 +118,6 @@ class Database {
 				def toVersion = targetVersion ?: 1
 				while (dbVersion != toVersion) {
 					dbVersion += 1
-					migrationNeeded = true
 					if (!migrate(url, tableGroup, dbVersion)) {
 						return /* failure */
 					}
@@ -143,8 +126,7 @@ class Database {
 									"where tableGroup = $tableGroup")
 				}
 			}
-		}
-		key
+		return group
 	}
 	/**
 	 * Can be called by migration closures to find a script of the form

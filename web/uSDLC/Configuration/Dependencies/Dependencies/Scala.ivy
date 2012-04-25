@@ -1,0 +1,9 @@
+organisation('org.scala-lang').
+    module('scala-actors').optional().
+    module('scala-compiler').optional().
+    module('scala-db').optional().
+    module('scala-dbc').optional().
+    module('scala-decoder').optional().
+    module('scala-library').optional().
+    module('scala-parent').optional().
+    module('scalap').optional()

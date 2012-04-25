@@ -3,6 +3,7 @@ package usdlc
 import usdlc.config.Config
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
+import java.security.MessageDigest
 
 class Store {
 	/**
@@ -410,5 +411,13 @@ class Store {
 	 * @return Retrieve the root page of the uSDLC project
 	 */
 	static Store getUsdlcRoot() { Store.base('frontPage.html') }
-
+	/**
+	 * Calculate a SHA-256 digest for the file referenced here
+	 */
+	def sha256() {
+		MessageDigest md = MessageDigest.getInstance("SHA-256")
+		md.update(read())
+		def integer = new BigInteger(1, md.digest())
+		return integer.toString(16)
+	}
 }

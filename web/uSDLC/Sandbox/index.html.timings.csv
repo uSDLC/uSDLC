@@ -1,0 +1,67 @@
+
+20120412,2024,+1000,Runnable.groovy,running,180,180ms
+20120412,2024,+1000,Runnable.groovy,succeeded,52,
+20120412,2024,+1000,Runnable.groovy,running,0,in 16s
+20120412,2024,+1000,Runnable.groovy,succeeded,25,
+20120412,2028,+1000,Runnable.groovy,running,4,in 4m 17s
+20120412,2028,+1000,Runnable.groovy,failed,56,
+20120412,2031,+1000,Setup.groovy,running,2,in 2m 59s
+20120412,2031,+1000,Setup.groovy,succeeded,17,
+20120412,2031,+1000,Runnable.groovy,running,2,
+20120412,2031,+1000,Runnable.groovy,failed,23,
+20120412,2032,+1000,Setup.groovy,running,0,in 27s
+20120412,2032,+1000,Setup.groovy,succeeded,5,
+20120412,2032,+1000,Runnable.groovy,running,1,
+20120412,2032,+1000,Runnable.groovy,succeeded,16,
+20120412,2032,+1000,Setup.groovy,running,0,in 10s
+20120412,2032,+1000,Setup.groovy,succeeded,6,
+20120412,2032,+1000,Runnable.groovy,running,3,
+20120412,2032,+1000,Runnable.groovy,succeeded,16,
+20120412,2032,+1000,Setup.groovy,running,0,in 8s
+20120412,2032,+1000,Setup.groovy,succeeded,5,
+20120412,2032,+1000,Runnable.groovy,running,1,
+20120412,2032,+1000,Runnable.groovy,succeeded,14,
+20120412,2033,+1000,Setup.groovy,running,0,in 33s
+20120412,2033,+1000,Setup.groovy,succeeded,6,
+20120412,2033,+1000,Runnable.groovy,running,2,
+20120412,2033,+1000,Runnable.groovy,failed,17,
+20120412,2033,+1000,Setup.groovy,running,0,in 8s
+20120412,2033,+1000,Setup.groovy,succeeded,6,
+20120412,2033,+1000,Runnable.groovy,running,1,
+20120412,2033,+1000,Runnable.groovy,succeeded,14,
+20120412,2033,+1000,Setup.groovy,running,0,in 8s
+20120412,2033,+1000,Setup.groovy,succeeded,6,
+20120412,2033,+1000,Runnable.groovy,running,1,
+20120412,2033,+1000,Runnable.groovy,succeeded,18,
+20120412,2034,+1000,Setup.groovy,running,166,166ms
+20120412,2034,+1000,Setup.groovy,succeeded,104,104ms
+20120412,2034,+1000,Runnable.groovy,running,3,
+20120412,2034,+1000,Runnable.groovy,succeeded,26,
+20120412,2034,+1000,Setup.groovy,running,0,in 31s
+20120412,2034,+1000,Setup.groovy,succeeded,12,
+20120412,2034,+1000,Runnable.groovy,running,1,
+20120412,2034,+1000,Runnable.groovy,succeeded,19,
+20120412,2035,+1000,Setup.groovy,running,0,in 5s
+20120412,2035,+1000,Setup.groovy,succeeded,7,
+20120412,2035,+1000,Runnable.groovy,running,2,
+20120412,2035,+1000,Runnable.groovy,succeeded,18,
+20120412,2036,+1000,Setup.groovy,running,1,in 1m 4s
+20120412,2036,+1000,Setup.groovy,succeeded,6,
+20120412,2036,+1000,Runnable.groovy,running,1,
+20120412,2036,+1000,Runnable.groovy,succeeded,16,
+20120412,2036,+1000,Setup.groovy,running,0,in 6s
+20120412,2036,+1000,Setup.groovy,succeeded,4,
+20120412,2036,+1000,Runnable.groovy,running,1,
+20120412,2036,+1000,Runnable.groovy,succeeded,19,
+20120412,2036,+1000,Setup.groovy,running,0,in 32s
+20120412,2036,+1000,Setup.groovy,succeeded,5,
+20120412,2036,+1000,Runnable.groovy,running,1,
+20120412,2036,+1000,Runnable.groovy,succeeded,14,
+20120412,2037,+1000,Setup.groovy,running,0,in 12s
+20120412,2037,+1000,Setup.groovy,succeeded,5,
+20120412,2037,+1000,Runnable.groovy,running,1,
+20120412,2037,+1000,Runnable.groovy,failed,40,
+20120412,2037,+1000,Setup.groovy,running,0,in 39s
+20120412,2037,+1000,Setup.groovy,succeeded,5,
+20120412,2037,+1000,Runnable.groovy,running,2,
+20120412,2037,+1000,Runnable.groovy,failed,66,
