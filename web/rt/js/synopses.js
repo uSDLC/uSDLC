@@ -38,16 +38,16 @@ $(function() {
 	})
 
 	function loadSynopsis(link, processor) {
-		var path = link.attr('href')
-		function isInHeader() { return link.closest('h6,h5,h4,h3,h2,h1').size() > 0 }
-		function isInFooter() {
-			if (link.closest('.footer').size()) {
-				var ext = usdlc.splitUrl(path).ext
-				return "html.gsp.htm".indexOf(ext) == -1
-			}
-			return false
-		}
-		if (isInHeader() || isInFooter()) {
+//		var path = link.attr('href')
+//		function isInHeader() { return link.closest('h6,h5,h4,h3,h2,h1').size() > 0 }
+//		function isInFooter() {
+//			if (link.closest('.footer').size()) {
+//				var ext = usdlc.splitUrl(path).ext
+//				return "html.gsp.htm".indexOf(ext) == -1
+//			}
+//			return false
+//		}
+//		if (isInHeader() || isInFooter()) {
 			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
 			var iid = link.attr('id') + '_inclusion'
@@ -60,6 +60,6 @@ $(function() {
 				processor(inclusion, data, path)
 			})
 		}
-	}
+//	}
 	// usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)
 })
