@@ -1,0 +1,5 @@
+new Database(name:'usdlc-database-test', url:'test').connection { db ->
+    def value = db.firstRow('select * from usdlcdatabasetest')?.VALUE
+    value *= 2
+    db.script("update usdlcdatabasetest set value=$value")
+}
