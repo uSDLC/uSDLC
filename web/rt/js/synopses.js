@@ -38,7 +38,7 @@ $(function() {
 	})
 
 	function loadSynopsis(link, processor) {
-//		var path = link.attr('href')
+		var path = link.attr('href')
 //		function isInHeader() { return link.closest('h6,h5,h4,h3,h2,h1').size() > 0 }
 //		function isInFooter() {
 //			if (link.closest('.footer').size()) {
@@ -47,7 +47,15 @@ $(function() {
 //			}
 //			return false
 //		}
+		function subPage() {
+			if (path[0] == '/') return false
+			if (path.length < 3) return false
+			if (path.substring(0,1) == '..') return false
+			if (path.indexOf(':') != -1) return false
+			return true
+		}
 //		if (isInHeader() || isInFooter()) {
+		if (subPage()) {
 			path = usdlc.normalizeURL(link.get(0).pathname)
 			var section = link.parents('div.synopsis')
 			var iid = link.attr('id') + '_inclusion'
@@ -60,6 +68,6 @@ $(function() {
 				processor(inclusion, data, path)
 			})
 		}
-//	}
+	}
 	// usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)
 })
