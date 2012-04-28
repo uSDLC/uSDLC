@@ -29,4 +29,5 @@ Run,R
 User,U
 	Log in,i,usdlc.logIn()
 	Log out,o,usdlc.logOut()
+	Change password,c,usdlc.changePassword()
 Help,l,usdlc.popWindow("/uSDLC/Help/Menu"),F1
