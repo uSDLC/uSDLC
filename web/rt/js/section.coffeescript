@@ -108,7 +108,8 @@ $ ->
 				href = usdlc.camelCase(href)
 				self.attr('href', href)
 				endsInSlash = (lastChar == '/')
-				isPage = endsInSlash or /^\w+$/.test(href)
+				isParent = (href is '..')
+				isPage = endsInSlash or isParent or /^\w+$/.test(href)
 				isHtml = isPage or
 					(usdlc.mimeType(href).clientExt in ['html', 'htm', 'gsp'])
 
