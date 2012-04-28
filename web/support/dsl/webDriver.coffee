@@ -4,8 +4,9 @@ client =
 	driver: session.instance usdlc.drivers.WebDriver
 	browse: (url) -> client.driver.load url
 
-click = (targets) -> client.driver.click(targets)
-find = (target) -> client.driver.resetBaseElement(target)
+click = (targets) -> client.driver.click targets
+find = (target) -> client.driver.resetBaseElement target
+list = (target) -> strings jsArray client.driver.listValues target
 
 dss 'check target, contents...', (target, contents...) ->
 	client.driver.checkAll target, contents

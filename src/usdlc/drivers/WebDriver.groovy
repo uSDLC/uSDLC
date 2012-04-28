@@ -179,6 +179,13 @@ class WebDriver {
 		return false
 	}
 	/**
+	 * List values associated with an element. For ul, ol, select and radio it
+	 * may contain more than one element
+	 */
+	def listValues(target) {
+		return waitFor(target) { it.collect{values(it)} }.flatten()
+	}
+	/**
 	 * Allows chaining of checks against the same element.
 	 */
 	void check(pattern) {
@@ -230,7 +237,7 @@ class WebDriver {
 				}
 			case 'ul':
 			case 'ol':
-				return with(element) {findElements(By.tagName('li'))}
+				return with(element) {findElements(By.tagName('li')).text}
 			default:
 				return [element.text]
 		}

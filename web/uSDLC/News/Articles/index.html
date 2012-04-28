@@ -159,6 +159,30 @@ check audit log oper 'log out'</pre>
 	Next week I will talk about what a DSL is and why they are not in common use.</p>
 </div><div id="s13" class="editable section" contextmenu="section"><h1>
 	What is a DSL?</h1>
+<p>
+	Firstly, I believe that all computer languages are domain specific. For most modern languages the domain is <em>'Computer Science'</em>. This is good because it gives software designers and developers better tools to cope with the complexities of modern requirements. It is also bad because the code we produce is incomprehensible to specialists in another domain.</p>
+<p>
+	So, what do I think is a DSL?</p>
+<ol>
+	<li>
+		A DSL must be clearly readable by the domain expert.</li>
+	<li>
+		It does not have to be natural language, although for many domains that helps.</li>
+	<li>
+		The only scaffolding visible is domain scaffolding, not computer science.</li>
+	<li>
+		It must be complete enough to meet the domain needs - and no more complex than that.</li>
+	<li>
+		It is easy to create and edit.</li>
+	<li>
+		Version control and change auditing must be implicit but available for stability to be acceptable.</li>
+</ol>
+<p>
+	There are many good examples that meet the first four requirements, but the last two are less understood. Without these, DSL penetration will be limited. Unless a domain expert can use a DSL as easily as a point-and-click interface, they will not take the time. If changes are not monitored so we can see effects we would want the resulting DSLs in production.</p>
+<p>
+	I am working on both of these problems for uSDLC this year.</p>
+<p>
+	So, what is a DSL? It is a language that can be read by the domain specialist and also by the computer so that the domain specialist gets the response they anticipate.</p>
 </div><div id="s12" class="editable section" contextmenu="section"><p>
 	&nbsp;</p>
 <h1>

@@ -17,3 +17,6 @@ sleep = (seconds) -> support.$sleep(seconds)
 
 jsArray = (arrayList) ->
 	arrayList.get(index) for index in [0...arrayList.size()]
+
+strings = (array) ->
+	String(string) for string in array

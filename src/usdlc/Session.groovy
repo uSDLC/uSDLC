@@ -74,6 +74,7 @@ class Session {
 }
 
 class PersistedSession {
+	static database = new Database(name:'usdlc-session', version:1)
 	def session
 
 	def propertyMissing(String name) {
@@ -85,11 +86,11 @@ class PersistedSession {
 	}
 
 	def propertyMissing(String name, value) {
-		Database.connection { db ->
+		database.connection { db ->
 			def sql = """update sessions set value=$value
 						where session=$key and key=$name"""
-			if (!db.sql.executeUpdate(sql)) {
-				db.sql.executeUpdate(
+			if (!db.executeUpdate(sql)) {
+				db.executeUpdate(
 						"insert into sessions values($key,$name,$value)")
 			}
 		}
