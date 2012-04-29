@@ -259,9 +259,7 @@ class Store {
 	 * Store.toString(), implicit or explicit will return the full path to the
 	 * file or directory
 	 */
-	String toString() {
-		pathFromWebBase
-	}
+	String toString() { pathFromWebBase }
 
 	File file
 	String pathFromWebBase

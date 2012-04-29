@@ -48,7 +48,7 @@ $(function() {
 //			return false
 //		}
 		function subPage() {
-			if (path[0] == '/') return false
+			//if (path[0] == '/') return false
 			if (path.length < 3) return false
 			if (path.substring(0,1) == '..') return false
 			if (path.indexOf(':') != -1) return false
