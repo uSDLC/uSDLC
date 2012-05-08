@@ -1,3 +1,0 @@
-reportsTab()
-assert htmlEditor.reportNameSelect.children().size() > 1
-htmlEditor.close()

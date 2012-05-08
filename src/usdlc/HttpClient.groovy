@@ -6,9 +6,14 @@ import org.apache.http.message.BasicNameValuePair
 import org.apache.http.HttpResponse
 import org.apache.http.util.EntityUtils
 import org.apache.http.client.ResponseHandler
+import org.apache.http.client.methods.HttpGet
 
 class HttpClient {
 	def client = new org.apache.http.impl.client.DefaultHttpClient()
+
+	def get(url) {
+		return execute(new HttpGet(url))
+	}
 
 	def post(url, args) {
 		def entries = []
@@ -17,8 +22,12 @@ class HttpClient {
 				entries << new BasicNameValuePair(it.key, it.value)
 			}
 		}
-		def poster = new HttpPost(url)
-		poster.entity = new UrlEncodedFormEntity(entries, 'UTF-8')
+		def request = new HttpPost(url)
+		request.entity = new UrlEncodedFormEntity(entries, 'UTF-8')
+		return execute(request)
+	}
+
+	def execute(request) {
 		def semaphore = new Semaphore(30, 0)
 		def response = null
 		def responder = {
@@ -32,7 +41,7 @@ class HttpClient {
 			]
 			semaphore.release()
 		} as ResponseHandler
-		client.execute(poster, responder)
+		client.execute(request, responder)
 		semaphore.waitForRelease()
 		return response ?: [retcode: 403, status: 'no response']
 	}

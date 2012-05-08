@@ -27,7 +27,7 @@ Run,R
 	From error,e,usdlc.runPage({continuation:true}),^L alt+L
 	From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
 User,U
-	Log in,i,usdlc.logIn()
+	Log in,i,usdlc.absolutePageContents("/uSDLC/Design/Users/LoginForm")
 	Log out,o,usdlc.logOut()
-	Change password,c,usdlc.changePassword()
-Help,l,usdlc.popWindow("/uSDLC/Help/Menu"),F1
+	Change password,c,usdlc.absolutePageContents("/uSDLC/Design/Users/ChangePassword")
+Help,l,usdlc.popWindow("?uSDLC/Guide"),F1

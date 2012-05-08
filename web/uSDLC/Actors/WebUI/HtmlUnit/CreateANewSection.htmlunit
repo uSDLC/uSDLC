@@ -1,2 +1,0 @@
-Sandbox.page().newSection()
-client["table.cke_editor"].size() == 1

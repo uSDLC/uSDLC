@@ -53,18 +53,12 @@ class RhinoActor extends Actor {
 		}
 	}
 	/**
-	 *
-	 * @param name
-	 * @return
+	 * Return first matching file searching up parent tree.
 	 */
 	Store onParentPath(name) {
 		if (name.indexOf('/') == -1) {
-			def home = currentlyRunningScript.project.home
-			def path = currentlyRunningScript.parent
-			while (path && path != home) {
-				def store = Store.base("$path/$name")
-				if (store) return store
-				path = Store.base(path).parent
+			return currentlyRunningScript.onParentPath {
+				it.rebase(name).ifExists()
 			}
 		}
 		return null

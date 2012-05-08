@@ -15,6 +15,7 @@
  */
 
 $(function () {
+	var pageHistory = []
 	var pageTitle = $('td#pageTitleTd')
 	$.extend(true, window.usdlc, {
 		log:function (message) {
@@ -26,11 +27,8 @@ $(function () {
 			}
 		},
 		          /**
-		           * Give notice to an error by highlighting the page selection and
-		           * displaying a message.
-		           *
-		           * @param messageFile
-		           *            File/script to produce message to display
+		           * Give notice to an error by highlighting the page
+		           * selection and displaying a message.
 		           */
 		          alert:function (messageFile, parent) {
 			          usdlc.highlight('red')
@@ -75,8 +73,15 @@ $(function () {
 		                * response in javaScript.
 		                */
 		               save:function (where, what, more) {
-			               $.post(usdlc.serverActionUrl(where, 'save' + (more || '')), what, function (code) {
-				               $.globalEval(code)
+			               var url = usdlc.serverActionUrl(
+					               where, 'save' + (more || ''))
+			               $.ajax({
+			                 type: 'POST',
+			                 url: url,
+			                 data: what,
+				             contentType: 'text/html',
+				             dataType: 'script'
+			                 //success: function (code) {$.globalEval(code)}
 			               })
 		               },
 
@@ -95,23 +100,56 @@ $(function () {
 			document.title = $('h1', pageTitle).text()
 		},
 		menuToTop: function() {},
+		pageIsLocked: function(data) {return data=='~locked~'},
+		pageBack: function() {
+			while (pageHistory.length) {
+				var to = pageHistory.pop()
+				if (to != usdlc.pageContentsURL) {
+					usdlc.absolutePageContents(to)
+					return
+				}
+			}
+		},
 		absolutePageContents:function (path, afterwards) {
 			usdlc.menuToTop()
-			if (path[0] != '/')
-				path = '/' + path
-			usdlc.pageContentsURL = usdlc.normalizeURL(path)
-			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
-			$('base').attr('href', base)
-			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
-			$.get(usdlc.pageContentsURL, function (data) {
-				usdlc.pageContents.html(data)
+			if (path[0] != '/') path = '/' + path
+			var to = usdlc.normalizeURL(path)
+			$.get(to, function (data) {
+				if (usdlc.pageIsLocked(data)) {
+					usdlc.highlight('pink')
+				} else {
+					usdlc.pageContentsURL = to
+					pageHistory.push(to)
+					if (pageHistory.length > 100) {
+						pageHistory = pageHistory.slice(50)
+					}
+					var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
+					$('base').attr('href', base)
+					usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 
-				usdlc.setPageTitle()
-				usdlc.synopses()
-				usdlc.pageContentsSausages.sausage()
-				usdlc.scrollTop()
-				afterwards && afterwards()
+					usdlc.pageContents.html(data)
+
+					usdlc.setPageTitle()
+					usdlc.synopses()
+					usdlc.pageContentsSausages.sausage()
+					usdlc.scrollTop()
+					if (afterwards) afterwards()
+				}
 			})
+
+//			usdlc.pageContentsURL = usdlc.normalizeURL(path)
+//			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
+//			$('base').attr('href', base)
+//			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
+//			$.get(usdlc.pageContentsURL, function (data) {
+//				usdlc.pageContents.html(data)
+//
+//				usdlc.setPageTitle()
+//				usdlc.synopses()
+//				usdlc.pageContentsSausages.sausage()
+//				usdlc.scrollTop()
+//				afterwards && afterwards()
+//			})
 		},
 		relativePageContents:function (path) {
 			usdlc.absolutePageContents(usdlc.normalizeURL(path || '/'))

@@ -14,6 +14,7 @@ class Exchange {
 
 	static class Header {
 		String host, method, query, uri, fragment, cookie, acceptEncoding
+		String contentType
 	}
 	Header header
 
@@ -36,9 +37,12 @@ class Exchange {
 			request.with {
 				query = Dictionary.query(header.query)
 				cookies = Dictionary.cookies(header.cookie)
-				user = new User(cookies['userId'])
 				session = Session.load(cookies['usdlc-session'] as String)
 				session.exchange = this
+				user = User.set(session)
+			}
+			if (header.contentType == 'application/x-www-form-urlencoded') {
+				request.query += Dictionary.query(request.body())
 			}
 			setStore(header.uri)
 		} catch (problem) {
@@ -123,6 +127,8 @@ class Exchange {
 					break
 			} else if (action == 'save') {
 				staticResponse "usdlc.highlight('red');"
+			} else {
+				staticResponse '~locked~'
 			}
 		} catch (problem) {
 			problem.printStackTrace()

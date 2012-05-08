@@ -1,0 +1,2 @@
+database(db)
+assert firstRow("select * from priorities where priority = 'low'") != null

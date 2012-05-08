@@ -17,7 +17,7 @@ then
 	rm nohup.out 2>/dev/null
 
 	echo 'Running uSDLC in stand-alone mode...'
-	nohup java -jar uSDLC-full.jar userId=anon port=80&
+	nohup java -jar uSDLC-full.jar userId=Guest port=80&
 
 	# Uncomment if you want to see the output. Remember that ^C will not
 	# stop the uSDLC process, only displaying the output.

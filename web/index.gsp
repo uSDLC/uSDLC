@@ -18,7 +18,7 @@
 
 <table id="pageTitleTable">
 	<tr>
-		<td id="pageTitleTd" class="section editable" contextmenu="title"></td>
+		<td id="pageTitleTd" class="section editable"></td>
 		<td rowspan="2">
 			<img id="pageTitleImage" src="rt/base.logo.small.png" alt="Unifying the Software Development
 				Lifecycle using Document Driven Development">

@@ -1,0 +1,16 @@
+class UsdlcHomePage extends UsdlcPage {
+	static url = "/root"
+	static at = { title.endsWith("Life-cycle") }
+	static content = {
+		synopsis { $("div#pageTitle h1") }
+	}
+}
+class ThisPageWithContent extends ThisPage {
+	static at = { title == "Pages" }
+	static content = {
+		uSDLCHomeButton(to: UsdlcHomePage) { $("img#pageTitle") }
+	}
+}
+browse ThisPageWithContent
+uSDLCHomeButton().click()
+assert synopsis.text() =~ /Unifying/

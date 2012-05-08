@@ -3,13 +3,12 @@ $ ->
 		html_data :
 			ajax :
 				url : (li) ->
-					path = ''
+					path = usdlc.urlBase
 					if li is -1
-						path = usdlc.urlBase + '/contentTree_html.groovy'
+						path = "#{path}/contentTreeBase_html.groovy"
 					else
-						path = $('a', li).get(0).pathname
-						path = '/' + path if path[0] != '/'
-						path += '?action=raw'
+						from = $('a', li).get(0).pathname
+						path = "#{path}/contentTree_html.groovy?from=#{from}"
 					cr = jQuery.url.setUrl(path).attr("directory")
 					cr = "#{cr}/" if cr.charAt(cr.length - 1) != '/'
 					this.contentRoot = cr
@@ -23,7 +22,9 @@ $ ->
 						if href.substring(0, 2) != '..' and href[0] != '/'
 							href = root + href if href.charAt(0) != '/'
 							id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
-							tree += "<li id='#{id}' class='jstree-closed'><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
+							rel = a.attr('rel') ? ''
+							rel = "rel='#{rel}'" if rel
+							tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
 					tree
 		hotkeys :
 			del : -> # Don't delete a node from here (yet)
@@ -34,5 +35,10 @@ $ ->
 		themes :
 			theme : 'classic'	# apple classic default
 			url : '/lib/jquery/js/themes/classic/style.css'
-		plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys' ]
+		types :
+			user :
+				max_children : 0
+				select_node : false
+				open_node: false
+		plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys', 'types' ]
 	usdlc.contentTree.removeClass('hidden')

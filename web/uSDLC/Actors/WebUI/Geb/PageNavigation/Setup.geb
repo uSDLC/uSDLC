@@ -1,8 +1,0 @@
-'Basic web pages used for this activation'
-
-class GebPage extends UsdlcPage {
-	static url = "/uSDLC/Actors/Geb"
-}
-class ThisPage extends UsdlcPage {
-	static url = "/uSDLC/Actors/Geb/PageNavigation"
-}

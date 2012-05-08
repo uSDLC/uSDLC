@@ -1,8 +1,13 @@
 package usdlc
 
-Store.projectRoots.each {
-	def href = it.path
-	def project = it.project.name
-	write "<a href='$href' class='usdlc' action='page'>$project</a>\n"
+from = exchange.request.query.from
+if (from[0] != '/') from = "/$from"
+page = new Page(from)
+user = exchange.request.user
+page.children().each {
+	def store = it.store, name = it.displayName
+	if (user.authorised(store)) {
+		def href = store.path
+		write "<a href='$href' class='usdlc' action='page'>$name</a>\n"
+	}
 }
-write Store.usdlcRoot.text

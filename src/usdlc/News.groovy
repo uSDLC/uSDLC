@@ -33,7 +33,7 @@ class News {
 	XmlParser parser
 	/**
 	 * If done the first time returns the first item - otherwise goes for the
-	 * next, wrapping when we run out of news.
+	 * next, wrapping when we runClass out of news.
 	 * @return
 	 */
 	News getNext() {

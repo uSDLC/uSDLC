@@ -24,7 +24,7 @@ class CSV {
 							if (! reader.readNext()) return
 						}
 					}
-				process = { row -> 
+				process = { row ->
 					[header, row].transpose().collectEntries{it}
 				}
 			} else {

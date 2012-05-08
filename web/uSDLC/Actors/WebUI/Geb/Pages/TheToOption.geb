@@ -1,8 +1,0 @@
-class ExamplePage7 extends ThisPage {
-	static content = {
-		rootLink(to: UsdlcPage) { $("img#pageTitle") }
-	}
-}
-browse ExamplePage7
-rootLink.click()
-assert at(UsdlcPage)

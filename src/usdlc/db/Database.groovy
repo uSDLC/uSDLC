@@ -18,22 +18,21 @@ class Database {
 		tableGroup = conf.name ?: conf.url
 		if (conf.version) {
 			version = conf.version
-			connection { db ->
+			connection {
 				def dbVersion = 0
 				try {
-					dbVersion = (db.firstRow("""select version from versions
-						where tableGroup=$tableGroup""")
-					as GroovyResultSet)['version']
+					dbVersion = firstRow("""select version from versions
+						where tableGroup=$tableGroup""").version
 				} catch (e) { }
 				if (!dbVersion) {
 					try {
-						db.executeUpdate(
+						executeUpdate(
 								"insert into versions values($tableGroup,0)")
 					} catch (e) { e.printStackTrace() }
 				}
 				while (dbVersion != version) {
 					runScript dbVersion += 1
-					db.executeUpdate("""update versions
+					executeUpdate("""update versions
 						set version = $dbVersion where tableGroup =
 						$tableGroup""")
 				}
@@ -81,7 +80,8 @@ class Database {
 
 	private runScript(toVersion) {
 		toVersion = String.format('%03d', toVersion)
-		name = "database_update_${tableGroup}_${toVersion}.groovy"
+		def name = "database_update_${tableGroup}_${toVersion}.groovy"
+		// todo: search projects for update script
 	}
 
 	class Connection {

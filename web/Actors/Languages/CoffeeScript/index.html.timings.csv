@@ -1,0 +1,13 @@
+
+20120429,0948,+1000,helloWorld.coffee,running,56,
+20120429,0948,+1000,helloWorld.coffee,succeeded,576,576ms
+20120429,0949,+1000,helloWorld.coffee,running,0,in 38s
+20120429,0949,+1000,helloWorld.coffee,succeeded,524,524ms
+20120429,0954,+1000,helloWorld.coffee,running,5,in 5m 10s
+20120429,0954,+1000,helloWorld.coffee,succeeded,520,520ms
+20120429,0955,+1000,helloWorld.coffee,running,1,in 1m 4s
+20120429,0955,+1000,helloWorld.coffee,succeeded,525,525ms
+20120429,0957,+1000,helloWorld.coffee,running,1,in 1m 52s
+20120429,0957,+1000,helloWorld.coffee,succeeded,517,517ms
+20120429,1000,+1000,helloWorld.coffee,running,2,in 2m 57s
+20120429,1000,+1000,helloWorld.coffee,succeeded,518,518ms

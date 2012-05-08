@@ -3,7 +3,7 @@ if not exist "uSDLC-full.jar" goto developerMode
 
 # Stand-alone mode
 
-	java -jar uSDLC-full.jar userId=anon port=80
+	java -jar uSDLC-full.jar userId=Guest port=80
 
 goto end
 

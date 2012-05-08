@@ -1,0 +1,51 @@
+<div id="pageTitle" class="editable" uuid="014bde22-03a7-4711-b625-c86c0af57375">
+ <h1> Migration DSL</h1>
+ <h2> To move is a necessity - to do it easily requires preparation</h2>
+</div>
+<div id="s2" class="editable section">
+ <p> Because migration is a short-term or on-shot process it is often left manual. Automation provides a repeatable more reliable process. With it migration can be run in UAT with full certaintly that repetition on release will be identical. Migration includes database updates, configuration changes, software installs and checks and balances to ensure all is working as expected.</p>
+</div>
+<div id="s1" class="editable section">
+ <p> Scripts ending in <em><strong>.migrate</strong>&nbsp;contain migration specific syntax. Alternatively use <strong>dsl.migrate</strong>&nbsp;</em>in setup or directly in a script. The CSV and gSQL DSL syntax are automatically included.</p>
+</div>
+<div id="s3" class="editable section">
+ <h1> Loading the Database from CSV Files</h1>
+</div>
+<div id="s4" class="editable section synopsis">
+ <h2> <a class="usdlc sourceLink" href="SampleCSVFile.csv" id="s4a0" action="runnable">Sample CSV File</a></h2>
+ <p> Philosopher's Drinking Song (with thanks to Monty Python).</p>
+ <p> It tests some CSV standard variations - quoted entries, empty entries and multi-line entries.</p>
+ <p> A special rule for fun: A philosopher without a verse will reference the verse in the line above.</p>
+</div>
+<div id="s5" class="editable section synopsis">
+ <h2> <a href="FirstLoad.migrate" id="s5a0" class="usdlc sourceLink" action="runnable">First Load</a></h2>
+ <p> For our first load we will take the simplistic approach. It would fail (and all entries roll back to leave the database untouched) if we did not instruct the system to overwrite duplicates. Socrates is mentioned twice.</p>
+</div>
+<div id="s7" class="editable section synopsis">
+ <h2> <a class="usdlc sourceLink" href="SpecialProcessing.migrate" id="s7a0" action="runnable">Special Processing</a></h2>
+ <p> Hegel is empty. What we really want in this situation is to reference the same verse. In a production version we would probably use a many-to-one relationship, but for simplicity here I will just duplicate the verse. Also, we have two entries for Socrates. Here a one-to-many would be best, but this code just concatenates the verses.</p>
+</div>
+<div id="s9" class="editable section synopsis">
+ <h2> <a href="IntegrityChecking.migrate" id="s9a0" class="usdlc sourceLink" action="runnable">Integrity Checking</a></h2>
+ <p> By default, integrity checking is enabled. After each update the database table is checked against the expected results. Any discrepencies are reported and the micration rolled back. If the update included processing, the results are held in memory or written to a temporary file if there are many of them.</p>
+</div>
+<div id="s8" class="editable section synopsis">
+ <h2> <a href="Failures.migrate" id="s8a0" class="usdlc sourceLink" action="runnable">Failures</a></h2>
+ <p> A file injection will fail if any record already exists - unless we indicate that overwriting is acceptable. All work done this run will roll back. So, if you are running the page and the last script fails, all changes on all scripts will disappear.</p>
+</div>
+<div id="s10" class="editable section">
+ <h1> Configuration File Updates</h1>
+ <p> Most server side and non-windows applications use text files for configuration. These are typically XML or some format of property file. Migration can include the merging of site specific properties with the new properties required for new functionality.</p>
+</div>
+<div id="s11" class="editable section">
+ <h2> XML Configuration</h2>
+</div>
+<div id="s12" class="editable section">
+ <h2> Name/Value Property Configuration</h2>
+</div>
+<div id="s13" class="editable section" style="background-image: url(http://127.0.0.1:9000/rt/gradients/sky-right.png); background-position: -10px 50%; ">
+ <h2> Other Text Configurations</h2>
+</div>
+<div id="s6" class="editable section synopsis">
+ <p> <a href="Setup.migrate" id="s6a0" class="usdlc sourceLink" action="runnable">Setup</a></p>
+</div>

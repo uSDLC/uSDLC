@@ -1,0 +1,5 @@
+'Basic web pages used for this activation'
+
+class ThisPage extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Modules"
+}

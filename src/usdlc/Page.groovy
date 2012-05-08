@@ -14,19 +14,20 @@ class Page {
 	/**
 	 * Load a file if it exists - otherwise load the template.
 	 */
-	Page(String fileName) {
-		load(store(fileName))
+	Page(String fileName, displayName='') {
+		load(store(fileName), displayName)
 	}
 	/**
 	 * Load a file if it exists - otherwise load the template.
 	 */
-	Page(Store from) {
-		load(store(from))
+	Page(Store from, displayName='') {
+		load(store(from), displayName)
 	}
 	/**
 	 * Load a file if it exists - otherwise load the template.
 	 */
-	private load(Store from) {
+	private load(Store from, displayName) {
+		this.displayName = displayName
 		store = from
 		updated = false
 		dom = Jsoup.parse(from.text)
@@ -87,7 +88,7 @@ class Page {
 	 */
 	static Page walk(Closure pageProcessor) {
 		drill(Store.usdlcRoot, pageProcessor)
-		Store.projectRoots.each { drill(it, pageProcessor) }
+		Store.projectIndexes.each { drill(it, pageProcessor) }
 	}
 
 	private static drill(Store store, Closure pageProcessor) {
@@ -107,19 +108,29 @@ class Page {
 	static Page[] pages() {
 		pages = new PageCache()
 		pages.add Store.usdlcRoot
-		Store.projectRoots.each { page -> pages.add page }
+		Store.projectIndexes.each { page -> pages.add page }
 		return pages.list
 	}
-
+	/**
+	 * Always called after pages() to walk the tree
+	 */
 	static Page[] pages(parent) {
 		pages.reset()
 		parent.select('a[action=page]').each { link ->
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1) {
-				pages.add parent.store.rebase(href)
+				def child = parent.store.rebase(href)
+				pages.add child, link.text()
 			}
 		}
 		return pages.list
+	}
+	/**
+	 * Return all child pages of this one.
+	 */
+	def children() {
+		pages = new PageCache()
+		pages(this)
 	}
 
 	static class PageCache {
@@ -128,11 +139,11 @@ class Page {
 
 		def reset() { list = [] }
 
-		def add(Store store) {
+		def add(Store store, displayName) {
 			String path = store.pathFromWebBase
 			if (!cache.contains(path)) {
 				cache.add(path)
-				if (store.isHtml) list << new Page(store)
+				if (store.isHtml) list << new Page(store, displayName)
 			}
 		}
 	}
@@ -185,7 +196,7 @@ class Page {
 	}
 
 	static slurper = new XmlSlurper(new SAXParser())
-	def out = new StreamingMarkupBuilder(), titleDiv, updated
+	def out = new StreamingMarkupBuilder(), titleDiv, updated, displayName
 	def store, title, subtitle, sections, allSections, synopsis, footer
 	/** Wrap the dom section item to add functionality */
 	class Section {

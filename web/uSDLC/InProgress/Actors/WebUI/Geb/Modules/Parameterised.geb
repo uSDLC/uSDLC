@@ -1,0 +1,15 @@
+class ModuleExample2 extends geb.Module {
+	def imageId
+	static content = {
+		uSDLCImage { $("img", id: imageId) }
+	}
+}
+class ModuleTestPage2 extends ThisPage {
+	static content = {
+		imageTest { id -> module ModuleExample2, imageId: id }
+	}
+}
+browse ModuleTestPage2
+assert title == "Modules"
+imageTest("pageTitle").uSDLCImage.click()
+assert title ==~ /Unifying.*cycle/

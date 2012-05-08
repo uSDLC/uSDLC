@@ -53,13 +53,16 @@ try {
 }
 server.createContext '/', { HttpExchange httpExchange ->
 	httpExchange.with {
+		def rh = requestHeaders, ru = requestURI
 		def header = new Header(
-				host: requestHeaders.Host[0],
-				method: requestMethod, query: requestURI.query,
-				uri: requestURI.path,
-				fragment: requestURI.fragment,
-				cookie: (requestHeaders?.Cookie ?: [''])[0],
-				acceptEncoding: (requestHeaders?.'Accept-Encoding' ?: [''])[0],
+				host: rh.Host[0],
+				method: requestMethod,
+				query: ru.query,
+				uri: ru.path,
+				fragment: ru.fragment,
+				cookie: (rh.Cookie ?: [''])[0],
+				acceptEncoding: (rh?.'Accept-Encoding' ?: [''])[0],
+				contentType: (rh.'Content-type' ?: [''])[0],
 		)
 		Exchange exchange = new Exchange()
 		exchange.processRequest(requestBody, header).

@@ -38,6 +38,6 @@ class DslInclusions {
 	}
 
 	def include(String inclusion) {
-		gse.run binding.script.rebase(inclusion).pathFromWebBase, usdlcBinding
+		gse.run binding.script.rebase(inclusion).pathFromWebBase, binding
 	}
 }

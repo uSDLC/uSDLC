@@ -17,6 +17,10 @@ div.inclusion {
 	color: #191970;
 }
 
+div.hidden {
+	display:none
+}
+
 div.editable {
 	min-height: 1em;
 	margin: 0;

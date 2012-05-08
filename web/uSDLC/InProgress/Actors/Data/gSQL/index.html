@@ -1,0 +1,37 @@
+<div id="pageTitle" class="editable" uuid="290bfaf8-1ae7-4ade-9d33-bad887e3a214">
+ <h1> SQL Actor</h1>
+ <h2> Data is data is data</h2>
+</div>
+<div id="s1" class="editable section">
+ <p> Core database systems are more commonly SQL access based than any other. While the overheads of yet another interpreter and ridiculously complicated queries cause massive performance problems, SQL provide unrivalled flexibility. uSDLC has H2 embedded. It is used internally for task processing. It is also of use to uSDLC clients for anything from application testing to data migration.</p>
+</div>
+<div id="s2" class="editable section synopsis running">
+ <h3> <a href="UsingDatabase.gsql" id="s2a0" class="usdlc sourceLink" action="runnable">Database Command</a></h3>
+ <p> Primary access to SQL is through a Groovy DSL - chosen by using a gql extension. The entire Groovy DSL interface is available from the script without preface. In addition there is a basic connection system using database(). It is not necessary to close database connections as by default they are closed at the end of the exchange before the results are returned to the browser.&nbsp;</p>
+</div>
+<div id="s4" class="editable section synopsis">
+ <h3> <a href="Data.csv" id="s4a0" class="usdlc sourceLink" action="runnable">Sample data</a></h3>
+</div>
+<div id="s5" class="editable section synopsis running">
+ <h3> <a href="SimpleQuery.gsql" id="s5a0" class="usdlc sourceLink" action="runnable">Performing a simple query</a></h3>
+ <p> The following examples come from the groovy codehaus tutorial, with examples modified to provide a working activity. This simple query will list each actor with comments - one per line.&nbsp;</p>
+</div>
+<div id="s6" class="editable section synopsis">
+ <h3> Retrieving a <a href="SingleRow.gsql" id="s6a0" class="usdlc sourceLink" action="runnable">single row</a> from DB</h3>
+</div>
+<div id="s7" class="editable section synopsis">
+ <h3> <a class="usdlc sourceLink" href="Inserts.gsql" id="s7a0" action="runnable">Inserts, Updates and Deletes</a></h3>
+ <p> Inserts&nbsp;and deletes use prepared statements whether explicitly, by named method or by the use of Groovy GStrings.&nbsp;</p>
+</div>
+<div id="s8" class="editable section synopsis">
+ <h3> <a href="RowResults.gsql" id="s8a0" class="usdlc sourceLink" action="runnable">Query Results</a></h3>
+ <p> You can return row results directly or transfer them to a simple data transfer object.&nbsp;</p>
+</div>
+<div id="s9" class="editable section synopsis">
+ <h3> <a href="RunScript.gsql" id="s9a0" class="usdlc sourceLink" action="runnable">Running Scripts</a></h3>
+ <p> Creation, maintenance and migration tasks are often better performed by having SQL scripts in their own files for execution. GSQL provides a runScript() method where all you need to supply is the script name. The script can reside on the classpath, in a zip file or on the file system.&nbsp;</p>
+</div>
+<div id="s3" class="editable section synopsis">
+ <h3> <a class="usdlc sourceLink" href="Setup.gsql" id="s3a0" action="runnable">Setup</a></h3>
+ <p> The setup creates a simple database to query with the names of actors with fields for first name, last name and comments. As we keep the database in memory, all we need do is close it and it will go away.&nbsp;</p>
+</div>

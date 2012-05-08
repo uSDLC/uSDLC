@@ -1,4 +1,0 @@
-browse UsdlcPage
-$("#USDLC").click()
-waitFor { $("a[href*=Sandbox]").present }
-assert $("a[href*=Sandbox]").text == "Sandbox"

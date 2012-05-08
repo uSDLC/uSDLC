@@ -1,5 +1,0 @@
-browse ThisPage
-
-assert withConfirm(true) { $("input", name: "showConfirm").click() } == "Do you like Geb?"
-// Uncommenting the next line will raise an assertion when the confirm box opens
-//withNoConfirm { $("input", name : "showConfirm").click() }

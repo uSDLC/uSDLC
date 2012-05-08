@@ -38,7 +38,7 @@ class Config {
 	}
 
 	private static Map parseOptions(String scriptName) {
-		parse("/uSDLC/Configuration/Scripts/${scriptName}.groovy")
+		parse("/support/usdlc/config/${scriptName}.groovy")
 	}
 
 	private static Map parse(String scriptPath) {
@@ -76,7 +76,7 @@ class Config {
 		return config.projects[name]
 	}
 	static project(String name, String home, String configFile) {
-		def pc = parse configFile
+		def pc = configFile ? parse(configFile) : [:]
 		pc.path = pc.path ?: [:]
 		pc.path.home = pc.home = home
 		pc.name = name

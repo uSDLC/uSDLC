@@ -1,0 +1,2 @@
+browse ThisPage
+assert driver.executeScript("return arguments[0];", 1) == 1

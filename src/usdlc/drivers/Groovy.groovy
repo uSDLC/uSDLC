@@ -2,11 +2,11 @@ package usdlc.drivers
 
 import org.codehaus.groovy.runtime.InvokerHelper
 import static usdlc.config.Config.config
+import usdlc.Store
 
 /**
  * Groovy script support
  */
-@SuppressWarnings('GroovyAccessibility')
 class Groovy {
 	static GroovyClassLoader gcl
 	static {
@@ -40,7 +40,40 @@ class Groovy {
 	/**
 	 * Run a previously loaded script.
 	 */
-	static void run(Class scriptClass, Binding binding = new Binding()) {
+	static void runClass(Class scriptClass, Binding binding = new Binding()) {
 		InvokerHelper.createScript(scriptClass, binding).run()
 	}
+	/**
+	 * Instantiate if you want to run Groovy scripts with a common binding.
+	 */
+	Groovy(Object[] binding) { baseBinding = binding }
+	/**
+	 * Run a groovy script or DSL. Provides methods for additional delegation,
+	 * logging and script includes
+	 */
+	def run(Store script, binding = baseBinding) {
+		def scriptClass = loadClass(script.parent, script.name) ?:
+			loadScriptByName(script)
+		if (scriptClass) {
+			runClass(scriptClass, binding)
+			return true
+		}
+		return false
+	}
+
+	def loadScriptByName(Store script) {
+		try {return gse.loadScriptByName(script.pathFromWebBase)}
+		catch(e) {return null}
+	}
+	/**
+	 * Run a list of scripts
+	 */
+	def scripts(Object[] list) {
+		def ran = 0
+		list.flatten().each { if (run(Store.base(it))) ran++ }
+		return ran
+	}
+
+	def gse = new GroovyScriptEngine(config.srcPath as URL[])
+	Binding baseBinding
 }

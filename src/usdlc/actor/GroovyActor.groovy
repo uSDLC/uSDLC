@@ -15,9 +15,7 @@ import static usdlc.config.Config.config
 class GroovyActor extends Actor {
 	void init() {
 		if (!context.initialised) {
-			def gse = context.session.gse {
-				new GroovyScriptEngine(config.srcPath as URL[])
-			}
+			def groovy = context.session.groovy Groovy
 			UsdlcBinding usdlcBinding = new UsdlcBinding(context, dslContext)
 			def dsl = new DslInclusions(binding: usdlcBinding)
 			context << [
@@ -25,13 +23,14 @@ class GroovyActor extends Actor {
 					script: script,
 					usdlcBinding: usdlcBinding,
 					log: { String message -> Log.err message },
-					gse: gse,
+					gse: groovy.gse,
+					groovy: groovy,
 					include: dsl.&include,
 					write: { text -> out.print text },
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->
-						gse.loadScriptByName script.
+						groovy.gse.loadScriptByName script.
 								rebase(scriptName).pathFromWebBase
 					},
 			]
@@ -42,8 +41,6 @@ class GroovyActor extends Actor {
 	 * logging and script includes
 	 */
 	void run(Store script) {
-		def scriptClass = Groovy.loadClass(script.parent, script.name) ?:
-			context.gse.loadScriptByName(script.pathFromWebBase)
-		Groovy.run(scriptClass, context.usdlcBinding)
+		context.groovy.run(script, context.usdlcBinding)
 	}
 }

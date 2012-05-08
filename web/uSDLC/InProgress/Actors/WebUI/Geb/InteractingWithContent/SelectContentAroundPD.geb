@@ -1,0 +1,4 @@
+assert $("p.d").previous().text() == "p.c"
+assert $("p.d").next().text() == "p.e"
+assert $("p.d").parent().text() ==~ /p.c\s+p.d\s+p.e/
+assert $("div.a").children().size() == 2

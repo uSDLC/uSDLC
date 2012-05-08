@@ -1,0 +1,5 @@
+'We define the base page an a commonly used (non-existent) scratch page'
+
+class ThisPage extends UsdlcPage {
+	static url = "/uSDLC/Actors/Geb/Pages"
+}

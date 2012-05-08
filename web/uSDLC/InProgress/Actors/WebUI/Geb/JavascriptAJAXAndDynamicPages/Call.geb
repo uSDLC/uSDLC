@@ -1,0 +1,4 @@
+browse ThisPage
+
+assert js.addThem(1, 2) == 3
+assert js."jQuery.isArray"([1, 2, 3]) == true

@@ -13,7 +13,7 @@ class Store {
 		path = path.toString().replaceAll('\\\\', '/')
 		def homeIndex = path.indexOf(config.home)
 		if (homeIndex == 0 || homeIndex == 1) {
-				path = '~' + path[config.home.size()+homeIndex..-1]
+			path = '~' + path[config.home.size() + homeIndex..-1]
 		}
 		def matcher = pathRE.matcher(path)
 		path = camelCase(path)
@@ -104,12 +104,12 @@ class Store {
 	@Lazy URL url = uri.toURL()
 	@Lazy parts = split(pathFromWebBase)
 	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
-		pathFromWebBase[config.home.size()..-1] : pathFromWebBase
+		pathFromWebBase[config.home.size()..-1] : null
 	@Lazy fromProjectHome = pathFromWebBase.startsWith(project.home) ?
-			pathFromWebBase[project.home.size()..-1] : pathFromWebBase
+		pathFromWebBase[project.home.size()..-1] : pathFromWebBase
 	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
 	@Lazy boolean isDirectory = file.isDirectory() ||
-			(! file.exists() && !parts.ext)
+			(!file.exists() && !parts.ext)
 	@Lazy boolean isHtml = isDirectory || parts.ext == 'html'
 
 	private String calcParent() {
@@ -178,28 +178,22 @@ class Store {
 		file << contents
 		this
 	}
-
-	Store append(String contents) {
-		append contents.bytes
-	}
-
-	Store append(long contents) {
-		append contents.toString()
-	}
+	Store append(String contents) { append contents.bytes }
+	Store append(long contents) { append contents.toString() }
 	/**
 	 * Check the size of the file.
 	 * @return bytes in file.
 	 */
-	long size() {
-		file.size()
-	}
+	long size() { file.size() }
 	/**
 	 * See if the file exists
 	 */
-	boolean exists() {
-		file.exists()
-	}
+	boolean exists() { file.exists() }
 	/**
+	 * Return store if exists on disk - otherwise null
+	 */
+	def ifExists() { file.exists() ? this : null }
+ 	/**
 	 * Fetch a list of matching contents of a directory - names only, no path
 	 * @param mask - anything with isCase - typically a regular expression
 	 * (~/re/)
@@ -346,6 +340,7 @@ class Store {
 	 * Copy a file or directory to a target directory.
 	 */
 	def copy(to) {
+		to = Store.base(to).absolutePath
 		def includes = (file.directory) ? "$file.name/*" : file.name
 		ant.copy(toDir: to) { fileset(dir: file.parent, includes: includes) }
 	}
@@ -387,28 +382,41 @@ class Store {
 	/**
 	 * Retrieve the root page file for each project (excluding uSDLC)
 	 */
-	static Store[] getProjectRoots() {
+	static getProjectIndexes() {
+		return projectRoots.findAll() {
+			it.rebase('index.html').ifExists() ?:
+				it.rebase('index.gsp').ifExists()
+		}
+	}
+	static getProjectRoots() {
 		def roots = []
 		Store.base('~/').file.eachDir { File file ->
-			if (file.name.toLowerCase() != 'usdlc' &&
-			  new File("$file.absolutePath/usdlc").exists()) {
-				def href = "~/$file.name/usdlc/index.html"
-				def store = Store.base(href)
-				def exists = store.exists()
-				if (!exists) {
-					href = "~/$file.name/usdlc/index.gsp"
-					store = Store.base(href)
-					exists = store.exists()
-				}
-				if (exists) roots << store
+			if (file.name != 'uSDLC') {
+				def store = Store.base("~/$file.name/usdlc")
+				if (store.exists()) roots << store
 			}
 		}
-		roots
+		return roots
 	}
+	static Store[] getAllProjectRoots() {projectRoots + Store.base('/uSDLC')}
 	/**
 	 * @return Retrieve the root page of the uSDLC project
 	 */
 	static Store getUsdlcRoot() { Store.base('frontPage.html') }
+	/**
+	 * Return first matching file searching up parent tree.
+	 */
+	Store onParentPath(Closure test) {
+		def home = project.home
+		def path = parent
+		while (path && path != home) {
+			def store = Store.base(path)
+			def result = test(store)
+			if (result) return result
+			path = store.calcParent()
+		}
+		return null
+	}
 	/**
 	 * Calculate a SHA-256 digest for the file referenced here
 	 */

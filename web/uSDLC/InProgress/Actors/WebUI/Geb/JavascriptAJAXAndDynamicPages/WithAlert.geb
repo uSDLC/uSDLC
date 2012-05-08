@@ -1,0 +1,5 @@
+browse ThisPage
+
+assert withAlert { $("input", name: "showAlert").click() } == "Bang!"
+// if the following line was uncommented, an assertion is raised.
+//withNoAlert { $("input", name : "showAlert").click() }

@@ -1,3 +1,0 @@
-reportsTab()
-assert htmlEditor.editor.present
-htmlEditor.close()

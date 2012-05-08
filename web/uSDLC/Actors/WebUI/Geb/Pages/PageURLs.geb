@@ -1,3 +1,0 @@
-browse UsdlcPage
-to ThisPage
-assert $("h1").text() == "Pages"

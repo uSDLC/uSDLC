@@ -4,8 +4,9 @@ import usdlc.drivers.CoffeeScript
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.drivers.JavaScript.javascriptBuilder
 
+jqueryUIbase = 'lib/jquery/css/redmond'
 files = [
-		'lib/jquery/css/redmond/jquery-ui-1.8.16.custom.css',
+		"$jqueryUIbase/jquery-ui-1.8.16.custom.css",
 		'lib/jquery/css/fg.menu.css',
 		'lib/CodeMirror/lib/codemirror.css',
 		'lib/CodeMirror/theme/default.css',
@@ -26,6 +27,8 @@ files = [
 fileProcessorWithGzip('.store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
 }
+// copy jQueryUI images as they are expected to be below the css
+Store.base("$jqueryUIbase/images").copy('.store/css')
 
 files = [
 		'lib/jquery/js/jquery.js',

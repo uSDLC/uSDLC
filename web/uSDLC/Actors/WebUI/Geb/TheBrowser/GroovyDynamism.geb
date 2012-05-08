@@ -1,3 +1,0 @@
-browse ScratchPage
-assert $("h1").text() == "Title"
-assert page.$("h1").text() == "Title"

@@ -16,7 +16,7 @@ $(function() {
 			if (path.substring(0, b.length) == b)
 				path = path.substring(b.length)
 			return path
-		},
+		}
 	}
 	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
 	window.CKEDITOR_BASEPATH = '/lib/ckeditor/'
@@ -59,7 +59,7 @@ $(function() {
 		dialog : function(contents, options) {
 			contents = $(contents)
 			options = options || {}
-			var match = percentRE(options.height)
+			var match = options.height.match(percentRE)
 			if (match) {
 				var percent = parseInt(match[1])
 				options.height = $(window).height() * percent / 10.0
@@ -68,7 +68,8 @@ $(function() {
 				show : "blind",
 				hide : "explode"
 			}, options))
-			// dialog sets iframe width to auto - which does not fill the parent
+			// dialog sets iframe width to auto -
+			// which does not fill the parent
 			contents.css('width', '98%')
 			return contents
 		},
@@ -127,6 +128,48 @@ $(function() {
 			var node = event.target.nodeName.toLowerCase()
 			return node == 'textarea' || node == 'input' ||
 					$(event.target).children('.CodeMirror').size() > 0
+		},
+		logOut: function() {
+			$.get(usdlc.urlBase + '/support/usdlc/logOut.groovy',
+				function(data) {
+					$('#pageTitleImage').attr('title', '')
+					usdlc.goHome()
+				})
+		},
+		logIn: function() {
+			var url = usdlc.urlBase + '/support/usdlc/logIn.groovy'
+			var userName = $('#loginform input[name="user"]')[0].value
+			var password = $('#loginform input[name="password"]')[0].value
+			$.post(url, {name:userName,password:password}, function(data) {
+				if (data == 'ok') {
+					$('#pageTitleImage').attr('title', userName)
+					usdlc.goHome()
+				} else {
+					$('#pageTitleImage').attr('title', '')
+					usdlc.alert('logInFailed.htm')
+				}
+			})
+		},
+		changePassword: function() {
+			var url = usdlc.urlBase + '/support/usdlc/changePassword.groovy'
+			var oldpwd = $('#loginform input[name="oldpwd"]')[0].value
+			var pwd1 = $('#loginform input[name="pwd1"]')[0].value
+			var pwd2 = $('#loginform input[name="pwd1"]')[0].value
+			if (pwd1 != pwd2) {
+				usdlc.alert('passwordMismatch.htm')
+			} else {
+				$.post(url, {was:oldpwd,to:pwd1}, function(data) {
+					if (data == 'ok') {
+						usdlc.pageBack()
+					} else {
+						usdlc.alert('passwordChangeFailure.htm')
+					}
+				})
+			}
+		},
+		goHome: function() {
+			usdlc.absolutePageContents("/frontPage.html",
+					function() { usdlc.contentTree.jstree('refresh') })
 		}
 	})
 })

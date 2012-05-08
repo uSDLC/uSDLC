@@ -1,0 +1,19 @@
+browse ThisPage
+
+// straight jQuery...
+js.exec 'jQuery("div#a").mouseover();'
+
+// geb integration...
+$("div#a").jquery.mouseover()
+
+// with pages...
+class JqueryPage extends ThisPage {
+	static content = {
+		divA { $("#a") }
+		divB { $("#b") }
+		gebLink { divB.find("a") }
+	}
+}
+browse JqueryPage
+divA.jquery.mouseover()
+gebLink.click()
