@@ -1,0 +1,11 @@
+
+20120508,1929,+1000,UpdateRequiredLibraries.ivy,running,70,in 1h 10m 6s
+20120508,1929,+1000,UpdateRequiredLibraries.ivy,failed,0,in 26s
+20120508,1957,+1000,UpdateRequiredLibraries.ivy,running,0,in 47s
+20120508,2000,+1000,UpdateRequiredLibraries.ivy,failed,3,in 3m 7s
+20120508,2004,+1000,UpdateRequiredLibraries.ivy,running,3,in 3m 23s
+20120508,2004,+1000,UpdateRequiredLibraries.ivy,failed,15,
+20120508,2005,+1000,UpdateRequiredLibraries.ivy,running,1,in 1m 48s
+20120508,2005,+1000,UpdateRequiredLibraries.ivy,failed,10,
+20120508,2007,+1000,UpdateRequiredLibraries.ivy,running,22,
+20120508,2011,+1000,UpdateRequiredLibraries.ivy,succeeded,4,in 4m 3s

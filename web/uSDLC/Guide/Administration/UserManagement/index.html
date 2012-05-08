@@ -1,0 +1,66 @@
+<div id="pageTitle" class="editable" uuid="a5dc8142-2177-4b30-8e3f-e6b44e63777e"> 
+ <h1>User Management</h1> 
+ <h2></h2> 
+</div> 
+<div id="s1" class="editable section" contextmenu="section"><p>
+	For all except singular use, <em><strong>uSDLC</strong></em> provides user management to control page access and provide page history.</p>
+</div><div id="s4" class="editable section" contextmenu="section"><h1>
+	Authentication</h1>
+<p>
+	Once an account has been created, a user can log in from the main menu item <em>User/Log in</em>.</p>
+<p>
+	Logging out will reset the system to the default user for the current installation. In most cases, this is <em>Guest</em>.</p>
+<p>
+	Because <em><strong>uSDLC</strong></em> is designed to be used on individual machines for development and test groups, it is possible to set the default use at launch time. Modify uSDLC.sh or uSDLC.bat and change the launch line to include</p>
+<blockquote>
+	<p>
+		... 'userId=My Name' ...</p>
+</blockquote>
+<p>
+	where the quotes ensure that spaces in the user name do not effect the launch. For unix based systems, a \ in front of the space will work.</p>
+</div><div id="s5" class="editable section" contextmenu="section"><h2>
+	Administrator</h2>
+<p>
+	On a default installation, neither <em>Guest</em> nor <em>Administrator</em> have a password. Log in as <em>Administrator</em> to create your own user. You can change the Administrator password at the same time. An administrator has full access to all pages regardless of group membership.</p>
+</div><div id="s6" class="editable section" contextmenu="section"><h2>
+	Guest</h2>
+<p>
+	The default user, or logging out, make the current user <em>Guest</em>. A <em>Guest</em> can only see the public pages - and can not change anything.</p>
+</div><div id="s7" class="editable section" contextmenu="section"><h2>
+	Creating a new user</h2>
+<p>
+	Go to the primary project for this user and create a new page under <em>Environment / Users</em>&nbsp;with the same name as the user. In the new page, create at least two sections referencing the instrumentation files <em>Login.groovy</em> and <em>Password.txt</em>.</p>
+<p>
+	Leave&nbsp;<em>Password.txt</em>&nbsp;empty. When you first log in you do not need to provide a password. If this is a shared copy, change the password. As you will see, the contents saved are encrypted.</p>
+</div><div id="s8" class="editable section" contextmenu="section"><h3>
+	Login.groovy</h3>
+<p>
+	This is a simple DSL providing basic user information (name and email), what groups the user has access to and at what level.</p>
+<blockquote>
+	<p>
+		name 'Fred Flinstone'<br>
+		email 'fred@boulder.com'<br>
+		<br>
+		read access<br>
+		groups 'public'<br>
+		<br>
+		write access<br>
+		groups 'projectA-design projectB-dev'<br>
+		<br>
+		execute access<br>
+		groups 'projectC-dev'</p>
+</blockquote>
+</div><div id="s9" class="editable section" contextmenu="section"><h2>
+	Groups</h2>
+<p>
+	Any page can have a reference to a <em>Groups.csv</em> file - usually in the footer. Access restriction for that page and all children (until the next <em>Groups.csv</em>) is based on the groups and access type for the currently logged in user.</p>
+<p>
+	Look at the main <strong><em>uSDLC</em></strong> page in the list at the left. Groups are defined at the bottom of the page - <em>public</em> and <em>usdlc-developers</em>. As <em><strong>Guest</strong></em> belongs to the <em>public</em> group with read access, even a logged out user can see this page. A user with write access to <em>usdlc-developers</em> can make change as well as gain access to other pages of that group that do not have <em>public</em>.</p>
+</div> 
+<div id="s2" class="editable section footer synopsis" contextmenu="section"> 
+ <div> 
+  <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> - 
+  <a class="usdlc" href="Setup.coffee" id="s2a1" action="runnable"> Setup</a> - 
+  <a class="usdlc" href="Cleanup.coffee" id="s2a2" action="runnable"> Cleanup</a> 
+ </div> 
+</div>
