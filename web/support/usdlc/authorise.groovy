@@ -15,7 +15,7 @@ name = {name -> user.name = name}
 email = {email -> user.email = email}
 
 access = 'none'
-no = {accessibility = 'none'}
+no = {access = 'none'}
 read = {access = 'read raw'}
 write = {access = 'read raw write'}
 execute = {access = 'read raw write run'}
