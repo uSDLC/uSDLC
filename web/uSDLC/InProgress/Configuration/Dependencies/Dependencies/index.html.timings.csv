@@ -35,3 +35,21 @@
 20120403,1224,+1000,Web.ivy,succeeded,0,in 17s
 20120403,1242,+1000,Web.ivy,running,17,in 17m 18s
 20120403,1244,+1000,Web.ivy,succeeded,2,in 2m 41s
+20120508,1931,+1000,ID3.ivy,running,1,in 1m 46s
+20120508,1931,+1000,ID3.ivy,failed,0,in 2s
+20120508,1932,+1000,ID3.ivy,running,1,in 1m 22s
+20120508,1932,+1000,ID3.ivy,failed,0,in 2s
+20120508,1949,+1000,ID3.ivy,running,20,
+20120508,1949,+1000,ID3.ivy,failed,0,in 4s
+20120508,1956,+1000,ID3.ivy,running,27,
+20120508,1956,+1000,ID3.ivy,succeeded,0,in 30s
+20120508,2017,+1000,ID3.ivy,running,24,
+20120508,2017,+1000,ID3.ivy,failed,0,in 1s
+20120508,2019,+1000,ID3.ivy,running,25,
+20120508,2019,+1000,ID3.ivy,failed,0,in 1s
+20120508,2022,+1000,ID3.ivy,running,25,
+20120508,2022,+1000,ID3.ivy,failed,0,in 2s
+20120508,2109,+1000,ID3.ivy,running,40,
+20120508,2110,+1000,ID3.ivy,failed,0,in 2s
+20120508,2114,+1000,ID3.ivy,running,20,
+20120508,2114,+1000,ID3.ivy,succeeded,0,in 1s

@@ -56,6 +56,7 @@ $(function() {
 								+ jqXHR.responseText)
 						usdlc.alert('postError.htm')
 					},
+					contentType: 'text/html',
 					dataType : 'script'
 				})
 				usdlc.sectionBeingCut = toCut
