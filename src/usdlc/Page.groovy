@@ -106,7 +106,7 @@ class Page {
 	 * than closures.
 	 */
 	static Page[] pages() {
-		pages = new PageCache()
+		def pages = new PageCache()
 		pages.add Store.usdlcRoot
 		Store.projectIndexes.each { page -> pages.add page }
 		return pages.list
@@ -115,7 +115,7 @@ class Page {
 	 * Always called after pages() to walk the tree
 	 */
 	static Page[] pages(parent) {
-		pages.reset()
+		def pages = new PageCache()
 		parent.select('a[action=page]').each { link ->
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1) {
@@ -128,10 +128,7 @@ class Page {
 	/**
 	 * Return all child pages of this one.
 	 */
-	def children() {
-		pages = new PageCache()
-		pages(this)
-	}
+	def children() { pages(this) }
 
 	static class PageCache {
 		def cache = [] as Set
@@ -147,7 +144,6 @@ class Page {
 			}
 		}
 	}
-	private static PageCache pages
 	/**
 	 * Get page title
 	 */
