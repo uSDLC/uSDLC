@@ -1,8 +1,9 @@
 package usdlc
 
-import static usdlc.config.Config.config
 import org.jasypt.util.password.BasicPasswordEncryptor
 import usdlc.drivers.Groovy
+
+import static usdlc.config.Config.config
 
 class User {
 	def data, password, session, userPath
@@ -72,7 +73,12 @@ class User {
 	}
 	def checkPassword(against) {
 		if (!against && !password) return true
-		return new BasicPasswordEncryptor().checkPassword(against, password)
+		try {
+			return new BasicPasswordEncryptor().
+					checkPassword(against, password)
+		} catch (ee) {
+			return false
+		}
 	}
 	/**
 	 * When we change a password we will need to encrypt it

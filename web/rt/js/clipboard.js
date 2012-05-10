@@ -54,7 +54,7 @@ $(function() {
 					error : function(jqXHR, textStatus, errorThrown) {
 						usdlc.log(textStatus + ": " + errorThrown + " for\n"
 								+ jqXHR.responseText)
-						usdlc.alert('postError.htm')
+						usdlc.alert('Post Error')
 					},
 					contentType: 'text/html',
 					dataType : 'script'

@@ -1,4 +1,8 @@
 Home,H,usdlc.absolutePageContents("/frontPage.html")
+New,N
+	Project,r,usdlc.absolutePageContents('/uSDLC/Design/Projects/NewProject')
+	Page,P,usdlc.newPageSection()
+	Instrument,I,usdlc.newInstrumentSection()
 Clipboard,C
 	Cut,C,usdlc.cutSectionInFocus(),ctrl+shift+X meta+shift+X
 	Copy,o,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C
@@ -29,5 +33,5 @@ Run,R
 User,U
 	Log in,i,usdlc.absolutePageContents("/uSDLC/Design/Users/LoginForm")
 	Log out,o,usdlc.logOut()
-	Change password,c,usdlc.absolutePageContents("/uSDLC/Design/Users/ChangePassword")
+	Change password,C,usdlc.absolutePageContents("/uSDLC/Design/Users/ChangePassword")
 Help,l,usdlc.popWindow("?uSDLC/Guide"),F1

@@ -1,0 +1,65 @@
+$ ->
+  ###
+  Create a dialog box to wrap an existing item. Options are those for
+  jquery dialog, but height can be a percentage as well as a pixel
+  count
+  ###
+  alertPath = '/uSDLC/Environment/Configuration/DialogBoxes/Alerts'
+  percentRE = /^(\d+)%$/
+
+  usdlc.dialog = (contents, options) ->
+    contents = $(contents)
+    options ?= {}
+    match = options.height?.match percentRE
+    if match
+        percent = parseInt(match[1])
+        options.height = $(window).height() * percent / 10.0
+
+    options.show ?= 'blind'
+    options.hide ?= 'explode'
+    contents.dialog options
+    # dialog sets iframe width to auto -
+    # which does not fill the parent
+    contents.css 'width', '98%'
+    return contents
+
+  usdlc.alert = (name, page = alertPath) ->
+    usdlc.highlight('red')
+    showDialog name, page, (box) ->
+      box.dialog 'option', 'dialogClass', 'ui-state-error ui-corner-all'
+
+  usdlc.form = (name, page) ->
+    box = showDialog name, page, ->
+
+  showDialog = (name, page, after) ->
+    $.get usdlc.serverActionUrl(page, 'raw'), (data) ->
+      html = $("<div/>").html(data)
+      h1 = $("div.section h1:contains('Password Change Failure')", html)
+      html = h1.nextAll()
+
+      options =
+          dialogClass: 'ui-corner-all'
+          modal:      true
+          minHeight:  100
+          height:     'auto'
+          close:      -> alertBox.dialog("destroy").detach()
+
+      alertBox = usdlc.dialog("<div/>", options).append(html)
+
+      h1 = $("h1", alertBox)
+      title = ''
+      if h1.length
+          title = h1.text()
+          h1.detach()
+      else
+          title = name
+      alertBox.dialog("option", "title", title)
+
+      alertBox.dialog("widget").position(
+          of: usdlc.inFocus or usdlc.pageContents
+          my:       'top'
+          at:       'bottom'
+          collision:'flip'
+      )
+      $('.editable', alertBox).removeClass('editable')
+      after alertBox

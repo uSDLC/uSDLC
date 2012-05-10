@@ -27,7 +27,6 @@ $(function() {
 	base.setAttribute('href', usdlc.urlBase)
 	head.appendChild(base)
 
-	var percentRE = /^(\d+)%$/
 	$.extend(true, window.usdlc, {
 		loadScriptAsync : function(path, onScriptLoaded) {
 			script = document.createElement("script")
@@ -50,28 +49,6 @@ $(function() {
 
 			script.src = usdlc.urlBase + path
 			head.appendChild(script)
-		},
-		/**
-		 * Create a dialog box to wrap an existing item. Options are those for
-		 * jquery dialog, but height can be a percentage as well as a pixel
-		 * count
-		 */
-		dialog : function(contents, options) {
-			contents = $(contents)
-			options = options || {}
-			var match = options.height.match(percentRE)
-			if (match) {
-				var percent = parseInt(match[1])
-				options.height = $(window).height() * percent / 10.0
-			}
-			contents.dialog($.extend({
-				show : "blind",
-				hide : "explode"
-			}, options))
-			// dialog sets iframe width to auto -
-			// which does not fill the parent
-			contents.css('width', '98%')
-			return contents
 		},
 		/*
 		 * Modalise for editors
@@ -146,7 +123,7 @@ $(function() {
 					usdlc.goHome()
 				} else {
 					$('#pageTitleImage').attr('title', '')
-					usdlc.alert('logInFailed.htm')
+					usdlc.alert('Login Failed')
 				}
 			})
 		},
@@ -156,13 +133,13 @@ $(function() {
 			var pwd1 = $('#loginform input[name="pwd1"]')[0].value
 			var pwd2 = $('#loginform input[name="pwd1"]')[0].value
 			if (pwd1 != pwd2) {
-				usdlc.alert('passwordMismatch.htm')
+				usdlc.alert('Password Mismatch')
 			} else {
 				$.post(url, {was:oldpwd,to:pwd1}, function(data) {
 					if (data == 'ok') {
 						usdlc.pageBack()
 					} else {
-						usdlc.alert('passwordChangeFailure.htm')
+						usdlc.alert('Password Change Failure')
 					}
 				})
 			}

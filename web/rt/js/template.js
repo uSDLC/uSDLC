@@ -26,64 +26,22 @@ $(function () {
 				$("body").append("<div class='logMessage'>" + message + "</div>");
 			}
 		},
-		          /**
-		           * Give notice to an error by highlighting the page
-		           * selection and displaying a message.
-		           */
-		          alert:function (messageFile, parent) {
-			          usdlc.highlight('red')
-			          var path = messageFile
-			          if (path.match(/.*\.htm$/)) {
-				          path = '/rt/alerts/' + path
-			          }
-			          if (path.indexOf('.') == -1) {
-				          path += ".html"
-			          }
-			          $.get(path, function (data) {
-				          var alertBox = null
-				          alertBox = usdlc.dialog("<div/>", {
-					          dialogClass:'ui-state-error ui-corner-all',
-					          modal:      true,
-					          minHeight:  100,
-					          height:     'auto',
-					          close:      function () {
-						          alertBox.dialog("destroy").detach()
-					          }
-				          }).append(data)
-				          var h1 = $("h1", alertBox)
-				          var title
-				          if (h1.length) {
-					          title = h1.text()
-					          h1.detach()
-				          } else {
-					          title = alertBox.text()
-				          }
-				          alertBox.dialog("option", "title", title)
-				          alertBox.dialog("widget").position({
-					          of:       parent || usdlc.inFocus || usdlc.pageContents,
-					          my:       'top',
-					          at:       'bottom',
-					          collision:'flip'
-				          })
-				          $('.editable', alertBox).removeClass('editable')
-			          })
-		          },
-		               /**
-		                * Save a file to the usdlc.server.servletengine.server and expect a
-		                * response in javaScript.
-		                */
-		               save:function (where, what, more) {
-			               var url = usdlc.serverActionUrl(
-					               where, 'save' + (more || ''))
-			               $.ajax({
-			                 type: 'POST',
-			                 url: url,
-			                 data: what,
-				             contentType: 'text/html',
-				             dataType: 'script'
-			                 //success: function (code) {$.globalEval(code)}
-			               })
-		               },
+       /**
+        * Save a file to the usdlc.server.servletengine.server and expect a
+        * response in javaScript.
+        */
+       save:function (where, what, more) {
+           var url = usdlc.serverActionUrl(
+	               where, 'save' + (more || ''))
+           $.ajax({
+             type: 'POST',
+             url: url,
+             data: what,
+             contentType: 'text/html',
+             dataType: 'script'
+             //success: function (code) {$.globalEval(code)}
+           })
+       },
 
 		maskEverything:      function (dim) {
 			$('#modalMask').css({

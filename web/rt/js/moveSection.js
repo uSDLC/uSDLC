@@ -159,7 +159,6 @@ $(function() {
 		return $("<div/>", {
 			id : id || usdlc.nextSectionId(),
 			'class' : 'editable section',
-			contextMenu : 'section'
 		})
 	}
 })

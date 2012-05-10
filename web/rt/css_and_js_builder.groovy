@@ -1,6 +1,7 @@
 package usdlc
 
 import usdlc.drivers.CoffeeScript
+
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.drivers.JavaScript.javascriptBuilder
 
@@ -59,6 +60,7 @@ javascriptBuilder('.store/js/usdlcPre.js', files, coffeeCompiler)
 files = [
 		'lib/ckeditor/ckeditor.js',
 		'lib/ckeditor/adapters/jquery.js',
+		'rt/js/dialog.coffeescript',
 		'rt/js/menu.coffeescript',
 		'rt/js/moveSection.js',
 		'rt/js/clipboard.js',

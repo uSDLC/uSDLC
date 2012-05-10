@@ -20,7 +20,7 @@ $(function() {
 			if (usdlc.inFocus)
 				runSections(usdlc.inFocus)
 			else
-				usdlc.alert('selectSectionFirst.htm')
+				usdlc.alert('Select Section First')
 		},
 		/**
 		 * Command to run a section of the page or from the page section to the
@@ -30,7 +30,7 @@ $(function() {
 			if (usdlc.inFocus)
 				runSections(usdlc.inFocus.nextAll('.section').andSelf())
 			else
-				usdlc.alert('selectSectionFirst.htm')
+				usdlc.alert('Select Section First')
 		},
 		deleteOutput : function() {
 			$('iframe.output').remove()
