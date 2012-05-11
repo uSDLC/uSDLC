@@ -1,0 +1,185 @@
+<div id="pageTitle" class="editable" uuid="8438b067-e233-4174-9c03-5a8b45809753">
+ <h1>Design By Decomposition</h1>
+ <h2></h2>
+</div>
+<div id="s1" class="editable section"><p>
+	We need to break down the problem, whether at project, component or item levels. I call this approach “Design by Decomposition”</p>
+</div><div id="s4" class="editable section" contextmenu="section"><p style="text-align: center; ">
+	“Can’t see the wood for the trees?”<br>
+	“Can’t see the trees for the wood?”<br>
+	“You can’t break a bundle of sticks.”</p>
+<p>
+	We all do it as part of the&nbsp;software development process. “Design by Decomposition” places process and structure around the technique. Like all processes in design, use it as a guideline, not a fixed rule.</p>
+<p>
+	Search&nbsp;Google&nbsp;for “The Rule of Threes“. You will find examples in painting, photography, design, drama, speech writing, presentations, comedy and problem solving. Don’t get lost – it makes fascinating reading.</p>
+<p>
+	Why is “The Rule of Threes”so common in human communication? Decimal is for the fingers, binary for the computer and ternary for the mind.</p>
+<ul>
+	<li>
+		Give me a list of 10 choices and I have to re-read it over and over. Give me choices of three where the third is none of the above and I can quickly drill down.</li>
+	<li>
+		Tell me 10 benefits of your product and I won’t remember any. Tell me three and I will remember them all.</li>
+	<li>
+		I can list my 3 favourite colours over and over consistently, but not 10. Same for food, actors or relatives&nbsp;<img alt=":)" src="http://s0.wp.com/wp-includes/images/smilies/icon_smile.gif?m=1129645325g"></li>
+</ul>
+<p>
+	For a project, a sample decomposition could be:</p>
+<ol>
+	<li>
+		The Vision
+		<ol>
+			<li>
+				Vision details</li>
+			<li>
+				Clarifications</li>
+			<li>
+				Correspondence</li>
+		</ol>
+	</li>
+	<li>
+		Design
+		<ol>
+			<li>
+				User Interfaces
+				<ol>
+					<li>
+						Web</li>
+					<li>
+						Mobile</li>
+					<li>
+						Integrations</li>
+				</ol>
+			</li>
+			<li>
+				Business Logic
+				<ol>
+					<li>
+						Domain Group 1</li>
+					<li>
+						Domain Group 2</li>
+					<li>
+						Domain Group 3</li>
+				</ol>
+			</li>
+			<li>
+				Data Access
+				<ol>
+					<li>
+						Database</li>
+					<li>
+						SOA</li>
+					<li>
+						Cloud</li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+	<li>
+		Environment
+		<ol>
+			<li>
+				Architecture</li>
+			<li>
+				Frameworks
+				<ol>
+					<li>
+						Web</li>
+					<li>
+						Server</li>
+					<li>
+						Database</li>
+				</ol>
+			</li>
+			<li>
+				Hardware</li>
+		</ol>
+	</li>
+</ol>
+<p>
+	For components and items, the groups of three are more likely domain specific.</p>
+<p>
+	Here is a sample item decomposition.</p>
+<p>
+	Task: Read in CSV files and make the data available by column name. Account for large files.</p>
+<p>
+	Decomposition:</p>
+<ol>
+	<li>
+		Read a&nbsp;CSV file
+		<ol>
+			<li>
+				Find and use Java library</li>
+			<li>
+				Access CSV as a list of maps</li>
+			<li>
+				Call closure for each row</li>
+		</ol>
+	</li>
+	<li>
+		Format Variations
+		<ol>
+			<li>
+				Header Lines</li>
+			<li>
+				Differing separator</li>
+			<li>
+				Different quote</li>
+		</ol>
+	</li>
+	<li>
+		Edge conditions
+		<ol>
+			<li>
+				Quoted items</li>
+			<li>
+				Multi-line items</li>
+			<li>
+				Empty file</li>
+		</ol>
+	</li>
+</ol>
+<p>
+	I know it looks artificial to keep to “The Rules of Three“, but there is a benefit apart from recognition. When a level has 2 items it forces you to think of a third. When a level grows it forces a refactor into groups. Thinking is good as it highlights problems and areas that need improvement. Don’t make the rule a law, but give it a go.</p>
+<div id="jp-post-flair">
+	<div>
+		&nbsp;</div>
+</div>
+</div><div id="s5" class="editable section" contextmenu="section"><h1>
+	Project Level Design</h1>
+<p>
+	Whether green-field or retro-fitting uSDLC, the top layer can consistently be – Vision – Design – Environment.</p>
+<h3>
+	Vision</h3>
+<p>
+	There is no way to start a project but with a single paragraph describing the overall vision. Once you have created your project uSDLC document, drop this paragraph into the top of the Vision section.</p>
+<p>
+	Next, split all your great ideas into Benefits, Features and&nbsp;<a href="http://en.wikipedia.org/wiki/Requirement" id="s5a7" rel="wikipedia" title="Requirement">Requirements</a>. Stick with the “Rule of Threes” where you can – but the main thing is to move from mind to the written word before the mind moves on to new horizons.</p>
+<p>
+	Design is about how. Vision is about what and why. They cut across the project from different perspectives. So, when you feel the need to repeat a design definition or don’t know where a section goes in the design, it is probably better suited to the vision.</p>
+<p>
+	Perhaps this will be clearer with an example. “There is a countdown timer” is a benefit or a feature. If we put it into the web design, we would need to repeat ourselves in the mobile application design – and the two may not match.</p>
+<p>
+	Every paragraph in the vision will refer to one or more sections in Design or Environment. uSDLC creates tasks to make sure that these references exist.</p>
+<h3>
+	Design</h3>
+<p>
+	The&nbsp;<a href="http://en.wikipedia.org/wiki/Application_software" id="s5a8" rel="wikipedia" title="Application software">software application</a>&nbsp;is, implemented and verified in this section. Pages in the design will be the day-to-day home of the analysts, software designers, developers and testers.</p>
+<p>
+	You will notice no implementation section. This is because design and implementation hold a one-to-one relationship. All implementation and test code is reference by and contained within the design. To generalise, the structure will look like:</p>
+<pre>design (doc) -&gt; verification (dsl) -&gt; implementation (code)</pre>
+<p>
+	Of course this is over simplified&nbsp;- and only part of an&nbsp;<a href="http://en.wikipedia.org/wiki/Agile_software_development" id="s5a9" rel="wikipedia" title="Agile software development">agile development</a>&nbsp;loop. In practice discoveries during implementation will cause a loop back to design to create a new or extend an existing component.</p>
+<p>
+	Every design page will reference to either the parent design or to a section in the vision. uSDLC check for and raises tasks if this referential integrity cannot be found.</p>
+<h3>
+	Environment</h3>
+<p>
+	A software application does not run in the ether (although it can run in a cloud). The environment is all the supporting ‘stuff’ – architecture, frameworks, hardware, communication…</p>
+<p>
+	A lot of this ‘stuff’ is defined very early in the project. It is difficult to create spikes during early design phases without knowing the platform.</p>
+<p>
+	It is common for architecture and environment documentation to atrophy in later stages of a project – to become (shock, horror) artifacts. This is not to be. Things change as we learn more and as time passes. Updates to a framework are much easier to maintain if earlier work is documented. Changes to the network may not reach production if done on-the-fly. uSDLC helps keep environment documentation alive by creating review tasks.</p>
+</div>
+<div id="s2" class="editable section footer synopsis"><div>
+	<a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> - <a class="usdlc sourceLink" href="Setup.groovy" id="s2a1" action="runnable"> Setup</a> - <a class="usdlc sourceLink" href="Cleanup.groovy" id="s2a2" action="runnable"> Cleanup</a></div>
+</div>

@@ -61,7 +61,7 @@ $(function() {
 					menubar : 0,
 					resizable : 1,
 					scrollbars : 1,
-					width : 600,
+					width : 1024,
 					height : 600
 				}, options)
 		var os = 'directories=0'
