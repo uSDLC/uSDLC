@@ -48,15 +48,15 @@ $(function () {
 //			return false
 //		}
 		function subPage() {
-			//if (path[0] == '/') return false
-			if (path.length < 3) return false
-			if (path.substring(0, 1) == '..') return false
+			if (path[0] == '/') return false
+			if (path.length < 2) return false
+			if (path.substring(0, 2) == '..') return false
 			if (path.indexOf(':') != -1) return false
 			return true
 		}
 
 //		if (isInHeader() || isInFooter()) {
-		if (subPage()) {
+		if (subPage() && !link.hasClass('nosynopsis')) {
 			var href = link.get(0).pathname
 			path = usdlc.normalizeURL(href)
 			var section = link.parents('div.synopsis')

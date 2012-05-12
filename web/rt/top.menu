@@ -1,8 +1,8 @@
 Home,H,usdlc.absolutePageContents("/frontPage.html")
 New,N
 	Project,r,usdlc.absolutePageContents('/uSDLC/Design/Projects/NewProject')
-	Page,P,usdlc.newPageSection()
-	Instrument,I,usdlc.newInstrumentSection()
+	Page,P,usdlc.form('New Section: Page')
+	Instrument,I,usdlc.form('New Section: Instrumentation')
 Clipboard,C
 	Cut,C,usdlc.cutSectionInFocus(),ctrl+shift+X meta+shift+X
 	Copy,o,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C
@@ -10,8 +10,8 @@ Clipboard,C
 Section,S
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E
 	Insert,I
-		Above,A,usdlc.insertSectionAboveFocus(),^I meta+I
-		Below,B,usdlc.insertSectionBelowFocus(),^A meta+A
+		Above,A,usdlc.upFocus();usdlc.form('New Section:'),^I meta+I
+		Below,B,usdlc.form('New Section:'),^A meta+A
 	Join,J
 		Above,A,usdlc.joinSectionAbove()
 		Below,B,usdlc.joinSectionBelow()
@@ -31,7 +31,7 @@ Run,R
 	From error,e,usdlc.runPage({continuation:true}),^L alt+L
 	From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
 User,U
-	Log in,i,usdlc.absolutePageContents("/uSDLC/Design/Users/LoginForm")
+	Log in,i,usdlc.form('Log In')
 	Log out,o,usdlc.logOut()
-	Change password,C,usdlc.absolutePageContents("/uSDLC/Design/Users/ChangePassword")
+	Change password,C,usdlc.form('Change Password')
 Help,l,usdlc.popWindow("?uSDLC/Guide"),F1

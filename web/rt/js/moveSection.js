@@ -125,8 +125,8 @@ $(function() {
 			var section = usdlc.parseSection(usdlc.inFocus)
 			var newPageName = section.name + '/index.html'
 			header = usdlc.createPageTitle(section.title, section.subtitle).replaceAll(section.header).after(
-					$('<div/>').attr('id', 's1').addClass('editable section').attr('contextmenu', "section").append(
-							section.content))
+					$('<div/>').attr('id', 's1').addClass('editable section')
+							.append(section.content))
 			usdlc.save(newPageName, usdlc.inFocus.html())
 			usdlc.inFocus.addClass('synopsis').empty().append(
 					$('<h1/>').append(
@@ -158,7 +158,7 @@ $(function() {
 	function newSection(id) {
 		return $("<div/>", {
 			id : id || usdlc.nextSectionId(),
-			'class' : 'editable section',
+			'class' : 'editable section'
 		})
 	}
 })

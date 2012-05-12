@@ -54,9 +54,10 @@ class User {
 	 * continue.
 	 */
 	def login(userName, passwordEntered) {
-		if (! load(userName)) return false
 		try {
-			if (checkPassword(passwordEntered)) { return true }
+			if (load(userName) && checkPassword(passwordEntered)) {
+				return true
+			}
 		} catch (e) { /* drop through to return to guest */ }
 		logout()
 		return false

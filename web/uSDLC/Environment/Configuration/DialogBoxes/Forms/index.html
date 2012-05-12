@@ -2,10 +2,10 @@
  <h1>Forms</h1>
  <h2></h2>
 </div>
-<div id="s1" class="editable section" contextmenu="section"><p>
+<div id="s1" class="editable section"><p>
 	A page for the standard forms used by <em><strong>uSDLC</strong></em>.</p>
 </div>
-<div id="s4" class="editable section" contextmenu="section">	<h1>
+<div id="s4" class="editable section">	<h1>
 		Log In</h1>
 <form action="javascript:usdlc.logIn()" id="loginform" method="post" name="User authentication">
 	<table align="center" border="0" cellpadding="1" cellspacing="1">
@@ -21,6 +21,10 @@
 					<strong>Password</strong>:</td>
 				<td>
 					<input name="password" size="32" type="password"></td>
+			</tr><tr>
+				<td></td><td align="right">
+				<input type="submit" value="Log In">
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -28,7 +32,8 @@
 <p>
 </p>
 </div>
-<div id="s5" class="editable section" contextmenu="section"><h1>Change Password</h1>
+<div id="s5" class="editable section"><h1>
+	Change Password</h1>
 <form action="javascript:usdlc.changePassword()" id="changepassword" method="post" name="User authentication">
 	<table align="center" border="0" cellpadding="1" cellspacing="1">
 		<tbody>
@@ -50,13 +55,79 @@
 				<td>
 					<input name="pwd2" size="32" type="password"></td>
 			</tr>
+			<tr>
+				<td>
+					&nbsp;</td>
+				<td align="right">
+					<input type="submit" value="Change Password"></td>
+			</tr>
 		</tbody>
 	</table>
 </form>
 <p>
+	&nbsp;</p>
+<div id="hiddenlpsubmitdiv" style="display: none; ">
+	&nbsp;</div>
+<p>
+	<script>
+try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ d.innerText=i; } } d.dispatchEvent(customEvent); form.lpsubmitorig2(); } } }}catch(e){}	</script>
 </p>
+</div><div id="s6" class="editable section"><h1>
+	New Section: Page</h1>
+<form action="javascript:usdlc.newPageSection()" id="newPageSection" method="post" name="New Page Section">
+	<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
+		<tbody>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Title:&nbsp;</strong></td>
+				<td>
+					<input name="Title" size="32" type="text">&nbsp;<input name="newPage" type="button" value="New Page"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Notes:&nbsp;</strong></td>
+				<td>
+					<textarea cols="36" name="Notes" rows="4"></textarea></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<div id="hiddenlpsubmitdiv" style="display: none; ">
+	&nbsp;</div>
+<p>
+	<script>
+try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ d.innerText=i; } } d.dispatchEvent(customEvent); form.lpsubmitorig2(); } } }}catch(e){}	</script>
+</p>
+</div><div id="s7" class="editable section"><h1>
+	New Section: Instrumentation</h1>
+<form action="javascript:usdlc.newInstrumentationSection()" id="newInstrumentationSection" method="post" name="New Instrumentation Section">
+	<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
+		<tbody>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Title:&nbsp;</strong></td>
+				<td>
+					<input name="Title" size="32" type="text">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input name="New Instrumentation" type="button" value="New Instrumentation"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Url:&nbsp;</strong></td>
+				<td>
+					<input name="Url" size="48" type="text"><select name="type" size="1"></select></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Notes:&nbsp;</strong></td>
+				<td>
+					<textarea cols="48" name="Notes" rows="8"></textarea></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<p>
+	&nbsp;</p>
 </div>
-<div id="s2" class="editable section footer synopsis" contextmenu="section">
+<div id="s2" class="editable section footer synopsis">
  <div>
   <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> -
   <a class="usdlc" href="Setup.coffee" id="s2a1" action="runnable"> Setup</a> -

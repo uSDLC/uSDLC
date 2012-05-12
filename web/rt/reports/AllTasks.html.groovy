@@ -30,6 +30,6 @@ doc.div(id: "pageTitle", 'class': "editable") {
 			sections << section
 		}
 	}
-	doc.div(id: "s1", 'class': "editable section", contextmenu: "section") {
+	doc.div(id: "s1", 'class': "editable section") {
 	}
 }

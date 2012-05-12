@@ -4,8 +4,27 @@ $ ->
   jquery dialog, but height can be a percentage as well as a pixel
   count
   ###
-  alertPath = '/uSDLC/Environment/Configuration/DialogBoxes/Alerts'
+  dialogPath = '/uSDLC/Environment/Configuration/DialogBoxes'
   percentRE = /^(\d+)%$/
+
+  openDialogs = []
+
+  pageRelativeDialog = (box) ->
+    box.dialog("widget").position(
+        of: $('body')
+        my: 'center bottom'
+        at: 'center center'
+    )
+  sectionRelativeDialog = (box) ->
+    if usdlc.inFocus and not openDialogs.length
+      box.dialog("widget").position(
+          of: usdlc.inFocus
+          my: 'top'
+          at: 'bottom'
+          collision:'flip'
+      )
+    else
+      pageRelativeDialog(box)
 
   usdlc.dialog = (contents, options) ->
     contents = $(contents)
@@ -18,23 +37,38 @@ $ ->
     options.show ?= 'blind'
     options.hide ?= 'explode'
     contents.dialog options
-    # dialog sets iframe width to auto -
-    # which does not fill the parent
+    # dialog sets iframe width to auto - which does not fill the parent
     contents.css 'width', '98%'
     return contents
 
-  usdlc.alert = (name, page = alertPath) ->
+  usdlc.alert = (name) ->
     usdlc.highlight('red')
-    showDialog name, page, (box) ->
+    showDialog name, 'Alerts', (box) ->
       box.dialog 'option', 'dialogClass', 'ui-state-error ui-corner-all'
+      sectionRelativeDialog(box)
 
-  usdlc.form = (name, page) ->
-    box = showDialog name, page, ->
+  usdlc.form = (name) ->
+    showDialog name, 'Forms', (box) ->
+      pageRelativeDialog(box)
+      # jqueryui dialog does not render properly if focus set too early
+      setFocus = -> $('input', box).first().focus()
+      setTimeout setFocus, 500
+
+  usdlc.closeDialog = ->
+    if openDialogs.length
+      box = openDialogs.pop()
+      box.dialog("destroy").detach()
 
   showDialog = (name, page, after) ->
+    split = name.split('#')
+    if split.length > 1 then [page,name] = split
+    first = page[0]
+    if first isnt '~' and first isnt '/'
+      page = "#{dialogPath}/#{page}"
+
     $.get usdlc.serverActionUrl(page, 'raw'), (data) ->
       html = $("<div/>").html(data)
-      h1 = $("div.section h1:contains('Password Change Failure')", html)
+      h1 = $("div.section h1:contains('#{name}')", html)
       html = h1.nextAll()
 
       options =
@@ -42,24 +76,19 @@ $ ->
           modal:      true
           minHeight:  100
           height:     'auto'
-          close:      -> alertBox.dialog("destroy").detach()
+          width: 'auto'
+          close:      -> usdlc.closeDialog()
 
-      alertBox = usdlc.dialog("<div/>", options).append(html)
+      box = usdlc.dialog("<div/>", options).append(html)
+      openDialogs.push box
 
-      h1 = $("h1", alertBox)
+      h1 = $("h1", box)
       title = ''
       if h1.length
           title = h1.text()
           h1.detach()
       else
           title = name
-      alertBox.dialog("option", "title", title)
-
-      alertBox.dialog("widget").position(
-          of: usdlc.inFocus or usdlc.pageContents
-          my:       'top'
-          at:       'bottom'
-          collision:'flip'
-      )
-      $('.editable', alertBox).removeClass('editable')
-      after alertBox
+      box.dialog("option", "title", title)
+      $('.editable', box).removeClass('editable')
+      after box

@@ -120,6 +120,7 @@ $(function() {
 			$.post(url, {name:userName,password:password}, function(data) {
 				if (data == 'ok') {
 					$('#pageTitleImage').attr('title', userName)
+					usdlc.closeDialog()
 					usdlc.goHome()
 				} else {
 					$('#pageTitleImage').attr('title', '')
@@ -129,15 +130,15 @@ $(function() {
 		},
 		changePassword: function() {
 			var url = usdlc.urlBase + '/support/usdlc/changePassword.groovy'
-			var oldpwd = $('#loginform input[name="oldpwd"]')[0].value
-			var pwd1 = $('#loginform input[name="pwd1"]')[0].value
-			var pwd2 = $('#loginform input[name="pwd1"]')[0].value
+			var oldpwd = $('#changepassword input[name="oldpwd"]')[0].value
+			var pwd1 = $('#changepassword input[name="pwd1"]')[0].value
+			var pwd2 = $('#changepassword input[name="pwd1"]')[0].value
 			if (pwd1 != pwd2) {
 				usdlc.alert('Password Mismatch')
 			} else {
 				$.post(url, {was:oldpwd,to:pwd1}, function(data) {
 					if (data == 'ok') {
-						usdlc.pageBack()
+						usdlc.closeDialog()
 					} else {
 						usdlc.alert('Password Change Failure')
 					}
