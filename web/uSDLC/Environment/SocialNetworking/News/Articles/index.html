@@ -4,6 +4,16 @@
 </div>
 <div id="s1" class="editable section"></div><div id="s6" class="editable section"><h3>
 	Explicit Is Better Than Implicit</h3>
+<p>
+	This is part of <a href="http://www.python.org/dev/peps/pep-0020/" id="s6a7">PEP 20 - The Zen of Python</a>.</p>
+<p>
+	Think on a good mystery novel or show. When the murderer is revealed at the end them you should be able to look back and see the line of evidence. If any detail was omitted only to be pulled out during the final show-down, then it was a poor whodunnit. All the facts required must be explicitly spelled out. Only those things the audience knows about can be implicit.</p>
+<p>
+	The same goes for software. Explicit does not mean that the logic must be obfuscated with lots of scaffolding. It does mean that when the code references something, a reader of said code can follow that something back to it's source and/or documentation.</p>
+<p>
+	This is why I am not comfortable with dependency injection. I am reading some code that all of a sudden refers to an instance of an object that has not been defined or instantiated anywhere I can find.</p>
+<p>
+	DRY is a fine principle. I continually refactor my code so that I do not have the same algorithms in more than one place. But, I am happy to explicitly check authorisation at the start of each servlet where I can see it. I do not consider this scaffolding or breaking the DRY principles - I am just explicitly telling the servlet what I expect.</p>
 </div><div id="s5" class="editable section"><h3>
 	How to make a DSL usable</h3>
 </div><div id="s4" class="editable section"><h3>
