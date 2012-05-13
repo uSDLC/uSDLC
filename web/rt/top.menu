@@ -3,6 +3,7 @@ New,N
 	Project,r,usdlc.absolutePageContents('/uSDLC/Design/Projects/NewProject')
 	Page,P,usdlc.form('New Section: Page')
 	Instrument,I,usdlc.form('New Section: Instrumentation')
+	Section,S,usdlc.form('New Section: Section')
 Clipboard,C
 	Cut,C,usdlc.cutSectionInFocus(),ctrl+shift+X meta+shift+X
 	Copy,o,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C

@@ -126,15 +126,11 @@ $(function() {
 			if (testScripts.length) {
 				usdlc.loadScriptAsync(testScripts.shift(), usdlc.init.finalise)
 			} else {
-				// Run through all elements asking for action
-				// todo: should be live()
-				$('div[href]').each(function() {
-					usdlc.elementLoader($(this))
-				})
 				// move from do-nothing to do-it-all and then generate
 				// for already loaded first page.
 				usdlc.synopses = usdlc.doSynopses
 				usdlc.synopses()
+				usdlc.activateHtml($('body'))
 			}
 		},
 		postLoader : function() {

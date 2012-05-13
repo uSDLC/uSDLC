@@ -63,16 +63,21 @@ $(function () {
 			var iid = link.attr('id') + '_inclusion'
 			var inclusion = $('<div/>').addClass('inclusion').attr('id', iid)
 			section.append(inclusion)
-			$.get(usdlc.serverActionUrl(path, 'raw'), function (data) {
-				if (usdlc.pageIsLocked(data)) {
-					section.addClass('hidden')
-					$('div#contentTree a[href="'+href+'"]').
-							parent().remove()
-				} else {
-					if (data.length < 3) data = ''
-					processor(inclusion, data, path)
+			$.ajax({
+				url: usdlc.serverActionUrl(path, 'raw'),
+				data: {},
+				dataType: 'text',   // so jquery won't process it
+				success: function (data) {
+					if (usdlc.pageIsLocked(data)) {
+						section.addClass('hidden')
+						$('div#contentTree a[href="'+href+'"]').
+								parent().remove()
+					} else {
+						if (data.length < 3) data = ''
+						processor(inclusion, data, path)
+					}
 				}
-			})
+			});
 		}
 	}
 

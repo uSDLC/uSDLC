@@ -58,10 +58,12 @@ coffeeCompiler = new CoffeeScript()
 javascriptBuilder('.store/js/usdlcPre.js', files, coffeeCompiler)
 
 files = [
+		'lib/jquery/js/jquery.easytabs.js',
 		'lib/ckeditor/ckeditor.js',
 		'lib/ckeditor/adapters/jquery.js',
 		'rt/js/dialog.coffeescript',
 		'rt/js/menu.coffeescript',
+		'rt/js/new.coffeescript',
 		'rt/js/moveSection.js',
 		'rt/js/clipboard.js',
 		'rt/js/htmlEditor.js',

@@ -1,19 +1,3 @@
-/*
- Copyright 2011 the Authors for http://usdlc.net
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
-
 $(function () {
 	var pageHistory = []
 	var pageTitle = $('td#pageTitleTd')
@@ -87,6 +71,7 @@ $(function () {
 
 					usdlc.pageContents.html(data)
 
+					usdlc.activateHtml(usdlc.pageContents)
 					usdlc.setPageTitle()
 					usdlc.synopses()
 					usdlc.pageContentsSausages.sausage()
@@ -139,6 +124,7 @@ $(function () {
 			usdlc.scrollFiller(false)
 			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')
 			usdlc.setPageTitle()
+			usdlc.activateHtml(usdlc.pageContents)
 			usdlc.scrollFiller(true)
 			usdlc.pageContentsSausages.sausage()
 			usdlc.setFocus(focus)
@@ -151,7 +137,8 @@ $(function () {
 
 	$('a').live('click', function (ev) {
 		var a = $(ev.currentTarget)
-		if (a.attr('target')) {
+		var href = a.attr('href')
+		if (a.attr('target') || href[0] == '#') {
 			return true
 		}
 		var url = ev.currentTarget.pathname
@@ -167,12 +154,10 @@ $(function () {
 						usdlc.runSectionInFocus()
 						break
 					case 'download':
-						var href = a.attr('href')
 						href = href.substring(0, href.length-1) // drop bang
 						window.location.assign(href)
 						break
 					default:
-						var href = a.attr('href')
 						if (href[0] == '#' || !url) return true
 						usdlc.window(href,href,'from-usdlc')
 						break

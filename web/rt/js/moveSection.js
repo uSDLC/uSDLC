@@ -16,35 +16,13 @@
 
 $(function() {
 	$.extend(true, window.usdlc, {
-		/**
-		 * Insert a new paragraph above or below the one in focus.
-		 */
-		insertSection : function(beforeOrAfter) {
-			ne = newSection()
-			ne[beforeOrAfter]($('.inFocus'))
-			return usdlc.setFocus(ne)
-		},
-		/**
-		 * Used in a menu to insert a section above the page selection then edit
-		 * it.
-		 */
-		insertSectionAboveFocus : function() {
-			usdlc.insertSection("insertBefore")
-			usdlc.editSectionInFocus()
-		},
-		/**
-		 * Used in a menu to insert a section below the page selection then edit
-		 * it.
-		 */
-		insertSectionBelowFocus : function() {
-			usdlc.insertSection("insertAfter")
-			usdlc.editSectionInFocus()
-		},
 		cleanSections : function(sections) {
 			// clean up html of crap that builds up
 			sections.removeAttr('style')
 			.removeClass('inFocus hidden ui-state-highlight ui-widget-content')
 			.filter('.synopsis').children().removeAttr('style')
+			$('div[href]', sections).html('')
+			$('*[activate]', sections).html('')
 			$('div#myEventWatcherDiv').remove()
 			usdlc.clearSynopses(sections)
 			usdlc.screencast.close()
@@ -108,7 +86,7 @@ $(function() {
 			}
 			var id = parseInt(usdlc.nextSectionId().substring(1))
 			pieces.wrapInner(function() {
-				return newSection('s' + (id++))
+				return usdlc.newSection('s' + (id++))
 			}).children().insertAfter(usdlc.inFocus)
 			pieces.remove()
 			usdlc.savePage()
@@ -154,11 +132,4 @@ $(function() {
 	// usdlc.savePage()
 	// }
 	// })
-
-	function newSection(id) {
-		return $("<div/>", {
-			id : id || usdlc.nextSectionId(),
-			'class' : 'editable section'
-		})
-	}
 })

@@ -1,0 +1,59 @@
+<div id="pageTitle" class="editable" uuid="a5f0393d-b47d-468f-9b4d-b8e863efd372">
+ <h1>Dynamic Client Pages</h1>
+ <h2></h2>
+</div>
+<div id="s1" class="editable section"><p>
+	Whenever a page is loaded into the uSDLC framework, elements are scanned for attributes. This can be used to load html content, run server-side scripts and/or run pre-loaded script methods.</p>
+</div><div id="s4" class="editable section synopsis"><h1>
+	<a class="usdlc sourceLink" href="DynamicHTMLLoading.htm" id="s4a7" action="runnable">Dynamic HTML Loading</a></h1>
+<p>
+	If a <strong>&lt;div&gt;</strong> element has a <strong>href</strong> attribute and no <strong>action</strong> attribute, or one called <em>setInnerHtml</em>, the the page requestes is loaded from the server to within the <strong>&lt;div&gt;</strong>.</p>
+<p>
+	Use an extension of <b>htm</b> to avoid the <b><i>uSDLC</i></b> parsing of html.</p>
+<p>
+	e.g.</p>
+<p>
+	&lt;div href='DynamicHTMLLoading.htm'&gt;&lt;/div&gt;</p>
+<p>
+	and again as HTML code...</p>
+<div href="DynamicHTMLLoading.htm"></div>
+</div><div id="s5" class="editable section synopsis"><h1>
+	<a class="usdlc sourceLink" href="DynamicScriptLoading.coffeescript" id="s5a7" action="runnable">Dynamic Script Loading</a></h1>
+<p>
+	<em><strong>uSDLC</strong></em> supports client side scripts in Javascript or Coffeescript. Use a <strong>&lt;div&gt;</strong> element with a <strong>href</strong> attribute pointing to the script and an <strong>action</strong> attribute of <em>globalEval</em>.</p>
+<p>
+	e.g.</p>
+<p>
+	&lt;div href='DynamicScriptLoading.coffeescript' action='globalEval'&gt;&lt;/div&gt;</p>
+<p>
+	and again as HTML code...</p>
+<div action="globalEval" href="DynamicScriptLoading.coffeescript"></div>
+</div><div id="s6" class="editable section synopsis"><h1>
+	<a class="usdlc sourceLink" href="~/uSDLC/rt/top.menu" id="s6a7" action="runnable">Dynamic Content Loading</a></h1>
+<p>
+	The <strong>action</strong> attribute is a reference to a function in the <strong>usdlc</strong> name-space. When the &lt;div&gt; element is parsed, the method is called passing the element and the data retrieved. The menu is a structured text file. It is loaded with</p>
+<blockquote>
+	<address>
+		&lt;div href='/rt/top.menu' action='loadMainMenu'&gt;&lt;/div&gt;</address>
+</blockquote>
+<p>
+	triggering a call to the code in <a href="~/uSDLC/rt/js/menu.coffeescript" id="s6a8" class="usdlc sourceLink" action="runnable">menu.coffeescript</a>.</p>
+</div><div id="s7" class="editable section"><h1>
+	Element Activation</h1>
+<p>
+	Finally any element can have an attribute called <strong>activate</strong>, the value of which is expected to be a method in the usdlc name-space. It is run when the page is loaded - and passed the enclosing element.</p>
+<p>
+	e.g.</p>
+<p>
+	&lt;div activate="green"&gt;Make this section green&lt;/div&gt;</p>
+<p>
+	and again as HTML code...</p>
+<div activate="green">Make this section green</div>
+</div>
+<div id="s2" class="editable section footer synopsis">
+ <div>
+  <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> -
+  <a class="usdlc" href="Setup.coffee" id="s2a1" action="runnable"> Setup</a> -
+  <a class="usdlc" href="Cleanup.coffee" id="s2a2" action="runnable"> Cleanup</a>
+ </div>
+</div>

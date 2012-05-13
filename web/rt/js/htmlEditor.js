@@ -5,7 +5,7 @@ $(function () {
 		})
 	}
 	$.extend(true, window.usdlc, {
-		actorDefault:  usdlc.cookie("actorDefault") || 'groovy',
+		actorDefault:  usdlc.cookie("actorDefault") || 'coffee',
 		reportsTabData:{
 			id:       'reportsTab',
 			label:    'Reports',

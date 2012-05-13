@@ -1,6 +1,7 @@
 $(function() {
 	window.usdlc = {
 		synopses : function(){}, //# we will provide one with teeth after
+		loadActorTypes : function() {},
 		/*
 		 Given a path (from a URL), return the parent path - being the complete
 		 directory structure without file name.
@@ -86,20 +87,10 @@ $(function() {
 			})
 			$(arguments[0]).css('display', 'inherit')
 		},
-		setInnerHtml : function(element, data) {
-			element.html(data)
-		},
 		camelCase : function(text) {
-			return text.replace(/([\s:\?\*%\|"<>]+)(\w)/g, function(a, s, c) {
-				return c.toUpperCase()
-			})
-		},
-		elementLoader : function(element) {
-			var href = element.attr('href')
-			var action = element.attr('action') || "setInnerHtml"
-			$.get(usdlc.urlBase + '/' + href, function(data) {
-				usdlc[action](element, data)
-			})
+
+			return text.replace(/([\s:\?\*%\|"<>\-]+)(\w)/g,
+					function(a, s, c) { return c.toUpperCase() })
 		},
 		inEditMode: function(event) {
 			var node = event.target.nodeName.toLowerCase()
@@ -148,6 +139,32 @@ $(function() {
 		goHome: function() {
 			usdlc.absolutePageContents("/frontPage.html",
 					function() { usdlc.contentTree.jstree('refresh') })
+		},
+		setInnerHtml : function(element, data) { element.html(data) },
+		globalEval: function(element, script) { $.globalEval(script) },
+		/**
+		 * Run through all elements asking for action
+		 * div[href] actions can be setInnerHTML, globalEval or loadMainMenu
+		 * div[activate=xxx] calls usdlc.activation.xxx(element)
+		 */
+		activateHtml : function(html) {
+			$('div[href]', html).each(function() {
+				var element = $(this)
+				var href = element.attr('href')
+				var action = element.attr('action') || "setInnerHtml"
+				$.get(href, function(data) {
+					usdlc[action](element, data)
+				})
+			})
+			$('*[activate]', html).each(function() {
+				var element = $(this)
+				var action = element.attr('activate')
+				try {
+					usdlc[action](element)
+				} catch(e) {
+					usdlc.log("No action '"+action+"' when activating "+element.tagName())
+				}
+			})
 		}
 	})
 })

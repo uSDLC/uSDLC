@@ -10,6 +10,8 @@ $ ->
 				)
 			else
 				section.css(backgroundImage : 'none')
+
+  usdlc.green = (element) -> usdlc.highlight('green', element)
 	###
 	Given an element (null for current focus), retrieve the section
 	containing it.
@@ -111,7 +113,7 @@ $ ->
 				isParent = (href is '..')
 				isPage = endsInSlash or isParent or /^\w+$/.test(href)
 				isHtml = isPage or
-					(usdlc.mimeType(href).clientExt in ['html', 'htm', 'gsp'])
+					(usdlc.mimeType(href).clientExt in ['html', 'gsp'])
 
 				if isHtml
 					self.attr('action', 'page')
