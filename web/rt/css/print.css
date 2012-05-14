@@ -1,0 +1,8 @@
+#topMenu, #newsBar, #contentTreeTd, #pageContentsSausages, .footer {
+	display: none;
+}
+
+div#pageContents {
+	height: auto ! important;
+	width: 95% ! important;
+}

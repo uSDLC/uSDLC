@@ -3,6 +3,7 @@
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
 	<link type="text/css" rel="stylesheet" href="/.store/css/usdlc.css">
+	<link rel="stylesheet" href="/rt/css/print.css" type="text/css" media="print" />
 	<% if (usdlc.config.Config.config.port == "80") { %>
 	<link
 		href="https://plus.google.com/116900499382012938759"
