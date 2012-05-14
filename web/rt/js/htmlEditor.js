@@ -72,8 +72,8 @@ $(function () {
 					ev.editor.focus()
 				}
 			},
-			extraPlugins:'autogrow'
-			// autoGrow_maxHeight : 800
+			extraPlugins:'autogrow',
+			autoGrow_maxHeight : usdlc.pageContents.height() / 2 - 32
 		})
 	}
 
@@ -189,7 +189,6 @@ $(function () {
 					urlField.setValue(usdlc.camelCase(highlightedText))
 					linkRadioDefault = ''
 				}
-				initialising = true
 				linkRadio.setValue(linkRadioDefault)
 				linkSelect.setValue(actorDefault)
 				initialising = false
