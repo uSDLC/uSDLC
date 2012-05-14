@@ -81,12 +81,12 @@ $(function() {
 				expires : 1000
 			})
 		},
-		toggleShow : function() {
-			$.each(arguments, function(index, value) {
-				$(value).css('display', 'none')
-			})
-			$(arguments[0]).css('display', 'inherit')
-		},
+//		toggleShow : function() {
+//			$.each(arguments, function(index, value) {
+//				$(value).css('display', 'none')
+//			})
+//			$(arguments[0]).css('display', 'inherit')
+//		},
 		camelCase : function(text) {
 
 			return text.replace(/([\s:\?\*%\|"<>\-]+)(\w)/g,
@@ -97,14 +97,14 @@ $(function() {
 			return node == 'textarea' || node == 'input' ||
 					$(event.target).children('.CodeMirror').size() > 0
 		},
-		logOut: function() {
+		logOut: function() {    // used in top.menu
 			$.get(usdlc.urlBase + '/support/usdlc/logOut.groovy',
-				function(data) {
+				function() {
 					$('#pageTitleImage').attr('title', '')
 					usdlc.goHome()
 				})
 		},
-		logIn: function() {
+		logIn: function() {    // used in top.menu
 			var url = usdlc.urlBase + '/support/usdlc/logIn.groovy'
 			var userName = $('#loginform input[name="user"]')[0].value
 			var password = $('#loginform input[name="password"]')[0].value
@@ -119,7 +119,7 @@ $(function() {
 				}
 			})
 		},
-		changePassword: function() {
+		changePassword: function() {    // used in top.menu
 			var url = usdlc.urlBase + '/support/usdlc/changePassword.groovy'
 			var oldpwd = $('#changepassword input[name="oldpwd"]')[0].value
 			var pwd1 = $('#changepassword input[name="pwd1"]')[0].value
@@ -138,7 +138,7 @@ $(function() {
 		},
 		goHome: function() {
 			usdlc.absolutePageContents("/frontPage.html",
-					function() { usdlc.contentTree.jstree('refresh') })
+					function() { usdlc.contentTree.refresh() })
 		},
 		setInnerHtml : function(element, data) { element.html(data) },
 		globalEval: function(element, script) { $.globalEval(script) },

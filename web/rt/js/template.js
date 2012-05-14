@@ -76,6 +76,7 @@ $(function () {
 					usdlc.synopses()
 					usdlc.pageContentsSausages.sausage()
 					usdlc.scrollTop()
+					usdlc.contentTree.setFocus(to)
 					if (afterwards) afterwards()
 				}
 			})
@@ -126,6 +127,7 @@ $(function () {
 			usdlc.setPageTitle()
 			usdlc.activateHtml(usdlc.pageContents)
 			usdlc.scrollFiller(true)
+			usdlc.contentTree.refresh()
 			usdlc.pageContentsSausages.sausage()
 			usdlc.setFocus(focus)
 		},

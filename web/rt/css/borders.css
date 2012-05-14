@@ -25,6 +25,7 @@
 }
 
 div.section:first-child {
+	padding: 6px 9px 0 9px !important;
 	margin: 10px;
 	color: #2f4f4f;
 	font-size: 1.1em;
