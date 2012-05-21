@@ -89,7 +89,7 @@ $(function() {
 //		},
 		camelCase : function(text) {
 
-			return text.replace(/([\s:\?\*%\|"<>\-]+)(\w)/g,
+			return text.replace(/([\s:\?\*%\|"<>\-~]+)(\w)/g,
 					function(a, s, c) { return c.toUpperCase() })
 		},
 		inEditMode: function(event) {

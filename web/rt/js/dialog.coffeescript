@@ -91,7 +91,8 @@ $ ->
       after box
 
   single = (box, heading) ->
-    box.append heading.nextAll()
+    html = heading.nextAll()
+    box.append html
     return getTitle(html, heading)[0]
 
   tabno = 0

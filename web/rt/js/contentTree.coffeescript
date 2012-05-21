@@ -47,15 +47,18 @@ $ ->
   usdlc.contentTree.refresh = ->
     usdlc.contentTree.jstree 'refresh', 'a.jstree-clicked'
   usdlc.contentTree.setFocus = (to) ->
-    steps = to.split('/')
-    last = steps.length - 2
+    steps = to.replace(/\/index\.html$/, '').split('/')
+    last = steps.length - 1
     id = '#'
     open_node = (index) ->
-      id += usdlc.camelCase steps[index]
-      if index < last
-        callback = -> open_node(index + 1)
-        usdlc.contentTree.jstree 'open_node', id, callback, true
+      if steps[index] == '~'
+        id += usdlc.camelCase " #{steps[index + 1]}"
+        open_node(index + 2)
       else
-        usdlc.contentTree.jstree 'select_node', id, true
+        id += usdlc.camelCase " #{steps[index]}" # leading space = upper first
+        if index < last
+          callback = -> open_node(index + 1)
+          usdlc.contentTree.jstree 'open_node', id, callback, true
+        else
+          usdlc.contentTree.jstree 'select_node', id, true
     open_node(1)
-
