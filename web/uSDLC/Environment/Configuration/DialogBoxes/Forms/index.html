@@ -3,7 +3,9 @@
  <h2></h2>
 </div>
 <div id="s1" class="editable section"><p>
-	A page for the standard forms used by <em><strong>uSDLC</strong></em>.</p>
+	<b class="blue">As a</b>&nbsp;uSDLC administrator<br>
+	<b class="blue">I want</b>&nbsp;to be able to modify forms<br>
+	<b class="blue">so that</b>&nbsp;so that I can optimise user experience in my environment</p>
 </div>
 <div id="s4" class="editable section">	<h1>
 		Log In</h1>
@@ -107,8 +109,7 @@
 <div id="hiddenlpsubmitdiv" style="display: none; ">
 	&nbsp;</div>
 <p>
-	<script>
-try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ d.innerText=i; } } d.dispatchEvent(customEvent); form.lpsubmitorig2(); } } }}catch(e){}	</script>
+	
 </p>
 </div><div id="s8" class="editable section"><h1>
 	New Section: Section</h1>
@@ -130,6 +131,35 @@ try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_ite
 		</tbody>
 	</table>
 </form>
+</div><div id="s9" class="editable section"><h1>
+	Synopsis</h1>
+<form action="javascript:usdlc.newSynopsis()" id="NewSynopsis" method="post" name="NewSynopsis">
+	<fieldset>
+		<legend>Feature</legend>
+		<p>
+			<strong id="asa">As a</strong>&nbsp;<input name="asa" size="83" type="text"></p>
+		<p>
+			<strong id="iwant">I want</strong>&nbsp;<input name="iwant" size="80" type="text"></p>
+		<p>
+			<strong id="sothat">so that</strong>&nbsp;<input name="sothat" size="80" type="text"></p>
+	</fieldset>
+	<div>
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+					<td valign="bottom">
+						<input name="newSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<p>
+	&nbsp;</p>
 </div>
 <div id="s2" class="editable section footer synopsis">
  <div>

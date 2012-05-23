@@ -1,5 +1,32 @@
 $(function () {
 	$.extend(true, window.usdlc, {
+		newSynopsis: function() {
+			var synopsisSection = $('div.section:first')
+			usdlc.setFocus(synopsisSection)
+			var asaText = $('#asa').html()
+			var asa = $('#NewSynopsis input[name="asa"]')[0].value
+			var iwantText = $('#iwant').html()
+			var iwant = $('#NewSynopsis input[name="iwant"]')[0].value
+			var sothatText = $('#sothat').html()
+			var sothat = $('#NewSynopsis input[name="sothat"]')[0].value
+			var notes = $('#NewSynopsis textarea[name="notes"]')[0].value
+			usdlc.closeDialog()
+			html = []
+			if (asa.length)
+				html.push('<b class="blue">'+asaText+'</b> '+asa)
+			if (iwant.length)
+				html.push('<b class="blue">'+iwantText+'</b> '+iwant)
+			if (sothat.length)
+				html.push('<b class="blue">'+sothatText+'</b> '+sothat)
+			if (notes.length)
+				html.push('<br>'+notes)
+			if (html.length) {
+				synopsisSection.html('<p>'+html.join('<br/>')+'</p>')
+				usdlc.savePage()
+			} else {
+				usdlc.editSectionInFocus()
+			}
+		},
 		clearSynopses:   function (sections) {
 			$("div.inclusion", sections || usdlc.pageContents).remove()
 			usdlc.deleteOutput()
