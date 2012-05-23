@@ -51,6 +51,7 @@ $(function () {
 		$section.ckeditor(function () {
 			usdlc.modalOn()
 		}, {
+			skin: 'v2',
 			bodyClass:   "wayOnTop",
 			saveFunction:function (editor) {
 				var updateContents = editor.checkDirty()
@@ -73,15 +74,19 @@ $(function () {
 				}
 			},
 			extraPlugins:'autogrow',
-			autoGrow_maxHeight : usdlc.pageContents.height() / 2 - 32
+			autoGrow_maxHeight : usdlc.pageContents.height() / 2 - 32,
+
+			keystrokes: [
+				[ CKEDITOR.CTRL + 83 /*S*/, 'save' ]
+			]
 		})
 	}
 
 	CKEDITOR.config.toolbar_Full = [
-		[ 'Save', /* 'NewPage','Preview','-', */'Templates', 'Print'],
-		[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+		[ 'Save', /* 'NewPage','Preview','-', 'Templates', 'Print'],
+		[*/ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
 		[ 'Undo', 'Redo', '-', 'Find', 'Replace'],
-		[ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ],
+		[ 'Image', /*'Flash',*/ 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'/*, 'Iframe'*/ ],
 		[ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ],
 		'/',
 		[ 'Styles', 'Format'],
@@ -89,15 +94,15 @@ $(function () {
 		[ 'NumberedList', 'BulletedList'],
 		['Outdent', 'Indent', 'Blockquote', 'CreateDiv' ],
 		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
-		[ 'BidiLtr', 'BidiRtl' ],
+		/*[ 'BidiLtr', 'BidiRtl' ],*/
 		'/',
 		['Font', 'FontSize' ],
 		[ 'Bold', 'Italic', 'Underline', 'Strike'],
 		['Subscript', 'Superscript' ],
 		[ 'TextColor', 'BGColor'],
 		[ 'Link', 'Unlink', 'Anchor' ],
-		[ 'Maximize', 'ShowBlocks', 'SpellChecker', 'Scayt'],
-		['About']
+		[ 'Maximize', 'ShowBlocks', 'SpellChecker', 'Scayt']/*,
+		['About']*/
 	]
 	/*
 	 * By default CKEDIT does not have a ready save button unless it is inside a

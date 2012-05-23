@@ -15,9 +15,9 @@ screencast = [keys: "` F12"]
 
 environments {
 	standalone {
-		binding.webDriver = 'chrome'
+		webDriver = 'chrome'
 	}
 	servlet {
-		binding.webDriver = 'htmlunit'
+		webDriver = 'htmlunit'
 	}
 }

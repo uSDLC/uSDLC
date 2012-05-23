@@ -1,10 +1,11 @@
 package usdlc.config
 
-import java.lang.reflect.Method
-import java.util.jar.Manifest
 import usdlc.Dictionary
 import usdlc.Store
 import usdlc.actor.GroovyActor
+
+import java.lang.reflect.Method
+import java.util.jar.Manifest
 
 /**
  * Wrapper for configSlurper so we can access multiple configuration files
@@ -24,7 +25,7 @@ class Config {
 		slurper = new ConfigSlurper(environment)
 		config = parseOptions('base')
 		config.projects = [:]
-		['webDriver', 'languages'].each { String scriptName ->
+		['webDriverConfig', 'languageConfig'].each { String scriptName ->
 			config.putAll(parseOptions(scriptName))
 		}
 		config.baseDirectory = baseDirectory
