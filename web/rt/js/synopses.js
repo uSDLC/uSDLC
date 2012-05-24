@@ -1,15 +1,15 @@
 $(function () {
 	$.extend(true, window.usdlc, {
-		newSynopsis: function() {
+		newFeatureSynopsis: function() {
 			var synopsisSection = $('div.section:first')
 			usdlc.setFocus(synopsisSection)
 			var asaText = $('#asa').html()
-			var asa = $('#NewSynopsis input[name="asa"]')[0].value
+			var asa = $('#NewFeatureSynopsis input[name="asa"]')[0].value
 			var iwantText = $('#iwant').html()
-			var iwant = $('#NewSynopsis input[name="iwant"]')[0].value
+			var iwant = $('#NewFeatureSynopsis input[name="iwant"]')[0].value
 			var sothatText = $('#sothat').html()
-			var sothat = $('#NewSynopsis input[name="sothat"]')[0].value
-			var notes = $('#NewSynopsis textarea[name="notes"]')[0].value
+			var sothat = $('#NewFeatureSynopsis input[name="sothat"]')[0].value
+			var notes = $('#NewFeatureSynopsis textarea[name="notes"]')[0].value
 			usdlc.closeDialog()
 			html = []
 			if (asa.length)
@@ -22,6 +22,18 @@ $(function () {
 				html.push('<br>'+notes)
 			if (html.length) {
 				synopsisSection.html('<p>'+html.join('<br/>')+'</p>')
+				usdlc.savePage()
+			} else {
+				usdlc.editSectionInFocus()
+			}
+		},
+		newGeneralSynopsis: function() {
+			var synopsisSection = $('div.section:first')
+			usdlc.setFocus(synopsisSection)
+			var notes = $('#NewGeneralSynopsis textarea[name="notes"]')[0].value
+			usdlc.closeDialog()
+			if (notes.length) {
+				synopsisSection.html('<p>'+notes+'</p>')
 				usdlc.savePage()
 			} else {
 				usdlc.editSectionInFocus()
