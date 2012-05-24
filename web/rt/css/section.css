@@ -57,3 +57,9 @@ a.succeeded {
 	border-color: #339933;
 	background-color: #ccffcc;
 	}
+
+div.givenWhenThen {
+	float: right;
+	font-size: 0.3em;
+	color: #808080;
+}

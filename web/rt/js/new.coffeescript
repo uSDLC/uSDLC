@@ -8,14 +8,19 @@ $ ->
     title = $('input[name="title"]', form)[0].value
     href = usdlc.camelCase(title)
     id = usdlc.nextSectionId()
-    a = createLink href, 'page', id, title
+    a = createLink href, 'page', "#{id}a0", title
     insertNewSection form, a, 1
   ###
   Called by form to create a new section below the current one. It will create
   a new header link referencing an instrumentation script based on the title.
   ###
+  usdlc.newScenarioSection = ->
+    newCodeSection 'Scenario', createBddLink
   usdlc.newInstrumentationSection = ->
-    form = $ '#newInstrumentationSection'
+    newCodeSection 'Instrumentation', createLink
+
+  newCodeSection = (name, codeLinkCreator) ->
+    form = $ "#new#{name}Section"
     title = $('input[name="title"]', form)[0].value
     split = /^(.*)\.(\w+)$/.exec(title)
     if split
@@ -28,13 +33,23 @@ $ ->
 
     href = "#{usdlc.camelCase(title)}.#{ext}"
     id = usdlc.nextSectionId()
-    a = createLink href, 'runnable', id, title
+    a = codeLinkCreator href, 'runnable', "#{id}a0", title
     insertNewSection form, a, 2, id
+
+  createBddLink = (href, action, id, title) ->
+    heading = $ '<span/>'
+    heading.html title
+    div = $ '<div/>', class: 'givenWhenThen'
+    div.append createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
+    div.append createLink "When_#{href}", 'runnable', "#{id}w", 'W'
+    div.append createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
+    heading.append div
+    return heading
   ###
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
   ###
-  usdlc.newSectionSection = ->
+  usdlc.newGuideSection = ->
     form = $ '#newSectionSection'
     title = $('input[name="title"]', form)[0].value
     id = usdlc.nextSectionId()
@@ -48,9 +63,11 @@ $ ->
     a = $ '<a/>',
       href: href
       action: action
-      id: "#{id}a0"
-      'class': 'usdlc'
+      id: id
+      class: 'usdlc'
     a.html title
+    return a
+
   insertNewSection = (form, heading, level, id) ->
     if usdlc.inFocus
       notes = $('textarea[name="notes"]', form)[0].value

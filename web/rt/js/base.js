@@ -88,9 +88,12 @@ $(function() {
 //			$(arguments[0]).css('display', 'inherit')
 //		},
 		camelCase : function(text) {
-
 			return text.replace(/([\s:\?\*%\|"<>\-~]+)(\w)/g,
 					function(a, s, c) { return c.toUpperCase() })
+		},
+		decamel : function(text) {
+			return text.replace(/\B([A-Z])/g,
+					function(a, c) { return ' ' + c })
 		},
 		inEditMode: function(event) {
 			var node = event.target.nodeName.toLowerCase()

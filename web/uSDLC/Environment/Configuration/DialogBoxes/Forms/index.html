@@ -86,7 +86,31 @@
 			</tr>
 		</tbody>
 	</table>
-</form></div><div id="s7" class="editable section"><h1>
+</form></div><div id="s11" class="editable section"><h1>
+	New Section: Scenario</h1>
+<form action="javascript:usdlc.newScenarioSection()" id="newScenarioSection" method="post" name="New Scenario Section">
+	<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 600px; ">
+		<tbody>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Title:&nbsp;</strong></td>
+				<td>
+					<input name="title" size="32" type="text">&nbsp; <select activate="loadActorTypes" id="actorType" name="type" size="1"></select>&nbsp; <input name="New Scenario" type="submit" value="New Scenario"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Notes:&nbsp;</strong></td>
+				<td>
+					<textarea cols="58" name="notes" rows="8"></textarea></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<div id="hiddenlpsubmitdiv" style="display: none; ">
+	&nbsp;</div>
+<p>
+	&nbsp;</p>
+</div><div id="s7" class="editable section"><h1>
 	New Section: Instrumentation</h1>
 <form action="javascript:usdlc.newInstrumentationSection()" id="newInstrumentationSection" method="post" name="New Instrumentation Section">
 	<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 600px; ">
@@ -112,15 +136,15 @@
 	
 </p>
 </div><div id="s8" class="editable section"><h1>
-	New Section: Section</h1>
-<form action="javascript:usdlc.newSectionSection()" id="newSectionSection" method="post" name="New Page Section">
+	New Section: Guide</h1>
+<form action="javascript:usdlc.newGuideSection()" id="newSectionSection" method="post" name="New Page Section">
 	<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 		<tbody>
 			<tr>
 				<td style="text-align: right; ">
 					<strong>Title:&nbsp;</strong></td>
 				<td>
-					<input name="title" size="32" type="text">&nbsp;<input name="newSection" type="submit" value="New Section"></td>
+					<input name="title" size="32" type="text">&nbsp;<input name="newGuide" type="submit" value="New Guide"></td>
 			</tr>
 			<tr>
 				<td style="text-align: right; ">
@@ -131,6 +155,8 @@
 		</tbody>
 	</table>
 </form>
+<p>
+	&nbsp;</p>
 </div><div id="s9" class="editable section"><h1>
 	Synopsis: Feature</h1>
 <form action="javascript:usdlc.newFeatureSynopsis()" id="NewFeatureSynopsis" method="post" name="NewFeatureSynopsis">
