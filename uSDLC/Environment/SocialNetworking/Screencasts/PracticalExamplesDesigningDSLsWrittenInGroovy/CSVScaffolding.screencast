@@ -1,0 +1,21 @@
+prompt 'CSV Scaffolding', 'Both calls instantiate a new object.'
+edit code 'csvDSL', '''$a
+def newCsv(String name) {
+	new usdlc.CSV(store: exchange.store.rebase("${name}.csv"))
+}
+.'''
+prompt 'and can be implemented by an overloaded method.'
+edit code 'csvDSL', '''$a
+def csvLoad(String name) {
+	newCsv(name).load()
+}
+def csvLoad(String name, Closure perRow) {
+	def csv = newCsv(name)
+	csv.perRow = perRow
+	csv.load()
+}
+
+csv = this.&csvLoad
+.'''
+prompt '''All this is scaffolding. The single visible command uses groovy magic
+    to generate closures for each overloaded method.'''

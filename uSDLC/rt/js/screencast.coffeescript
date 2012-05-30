@@ -1,0 +1,95 @@
+$ ->
+	pageContentsURL = ''
+	focus = null
+
+	usdlc.screencast =
+		close: -> sc().remove()
+		note: (title, content) ->
+			scd = sc()
+			if content
+				scd.dialog('option', 'title', title)
+			else
+				content = title
+			scd.html(content).dialog('open')
+
+		keys: (keys) ->
+			doc = $(document)
+			doc.unbind 'keydown', respond
+			doc.bind 'keydown', keys, respond
+
+		snap: ->
+			pageContentsURL = usdlc.pageContentsURL
+			focus = usdlc.focus
+
+		recover: ->
+			if pageContentsURL != usdlc.pageContentsURL and pageContentsURL
+				usdlc.absolutePageContents pageContentsURL
+			usdlc.setFocus focus
+
+		insertSection: (title, paragraphs...) ->
+			insertSection(title, paragraphs)
+
+		appendSection: (title, paragraphs...) ->
+			usdlc.setFocus $ 'div.section:last'
+			insertSection(title, paragraphs)
+
+		deleteSection: -> usdlc.copySectionInFocus 'cut'
+
+		runSection: -> usdlc.runSectionInFocus()
+
+		setFocus: (id) ->
+			section = $ 'div#'+id
+			usdlc.setFocus section
+
+		editCode: (editorId, cmds...) ->
+			$('div#'+editorId).data('codemirror').focus()
+			usdlc.activeSourceEditor.ex.command cmd for cmd in cmds
+			usdlc.activeSourceEditor.ex.command 'w'
+			usdlc.setFocus usdlc.inFocus
+			usdlc.scrollTo usdlc.inFocus
+
+		menu: (path...) ->
+			offset = usdlc.inFocus.offset()
+			[top, left] = [offset.top + 50, offset.left + 60]
+			# todo: no longer valid approach
+			usdlc.onContextMenu usdlc.inFocus, top, left
+			console.log usdlc.contextMenu.contextMenu
+
+		zoomContents: (zoom) ->
+			switch zoom
+				when 'left'
+					usdlc.toggleHideTree() if usdlc.treeVisible()
+				when 'top'
+					usdlc.toggleHideTitle() if usdlc.titleVisible()
+				else
+					usdlc.toggleHideTitle() if !usdlc.titleVisible() == !zoom
+					usdlc.toggleHideTree() if !usdlc.treeVisible() == !zoom
+
+	sc = ->
+		if not (screencast = $ 'div.screencast').length
+			$('body').append screencast = $('<div/>').addClass('screencast')
+			screencast.dialog
+				autoOpen: false
+				show: 'blind'
+				hide: 'drop'
+				position: 'bottom'
+				width: 500
+				height: 'auto'
+				minHeight: 10
+			setTimeout( "usdlc.screencast.keys('Esc')", 1000)
+		screencast
+
+	sc()
+
+	respond = ->
+		sc().dialog 'close'
+		$.get 'usdlc.screencastResponse'
+
+	insertSection = (title, paragraphs) ->
+		if paragraphs
+			paragraphs = for paragraph in paragraphs
+				"<p>#{paragraph}</p>"
+			paragraphs = "<h1>#{title}</h1>#{paragraphs.join('')}"
+		else
+			paragraphs = title
+		usdlc.saveSection usdlc.insertSection('insertBefore').html(paragraphs)

@@ -1,0 +1,172 @@
+$ ->
+  usdlc.contentTree = $('#contentTree').jstree
+    animation : 0
+    html_data :
+      ajax :
+        url : (li) ->
+          path = usdlc.urlBase
+          if li is -1
+            path = "#{path}/contentTreeBase_html.groovy"
+          else
+            from = $('a', li).get(0).pathname
+            path = "#{path}/contentTree_html.groovy?from=#{from}"
+          cr = jQuery.url.setUrl(path).attr("directory")
+          cr = "#{cr}/" if cr.charAt(cr.length - 1) != '/'
+          this.contentRoot = cr
+          path
+        success : (data) ->
+          tree = ' '
+          root = this.contentRoot
+          $('<ins/>').html(data).find('a.usdlc[action=page]').each ->
+            a = $(this)
+            href = usdlc.removeDomain(a.attr('href'))
+            if href.substring(0, 2) != '..' and href[0] != '/'
+              href = root + href if href.charAt(0) != '/'
+              id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
+              rel = a.attr('rel') ? ''
+              rel = "rel='#{rel}'" if rel
+              tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
+          return tree
+    hotkeys :
+      'c': -> usdlc.contentTree.jstree 'create', null, "last"
+      'r': -> usdlc.contentTree.jstree 'rename', null
+      'shift+up': -> mover 'prev', 'before'
+      'shift+down': -> mover 'next', 'after'
+      'shift+left': -> moveout 'parents', 'after'
+      'shift+right': -> movein 'prev', 'last'
+    cookies :
+      cookie_options :
+        expires : 1000
+    themes :
+      theme : 'classic'  # apple classic default
+      url : '/lib/jquery/js/themes/classic/style.css'
+    ui:
+      select_limit: 1
+    types :
+      user :
+        max_children : 0
+        select_node : false
+        open_node: false
+    plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys',
+      'types', 'crrm', 'dnd', 'contextmenu' ]
+  usdlc.contentTree.removeClass('hidden')
+
+  cutPage = ''
+  selectedNode = null
+
+  usdlc.contentTree.refresh = ->
+    li = $('a.jstree-clicked').parent('li')
+    parent = li.parent().closest('li')
+    li = parent if parent.size() > 0
+    usdlc.contentTree.jstree 'refresh', li
+
+  usdlc.contentTree.setFocus = (to) ->
+    steps = to.replace(/\/index\.html$/, '').split('/')
+    last = steps.length - 1
+    id = '#'
+    open_node = (index) ->
+      if steps[index] == '~'
+        id += usdlc.camelCase " #{steps[index + 1]}"
+        open_node(index + 2)
+      else
+        id += usdlc.camelCase " #{steps[index]}" # leading space = upper first
+        if index < last
+          callback = -> open_node(index + 1)
+          usdlc.contentTree.jstree 'open_node', id, callback, true
+        else
+          usdlc.contentTree.jstree 'select_node', id, true
+    open_node(1)
+
+  reloadAfterRefresh = null
+
+  usdlc.contentTree.bind(
+    'rename.jstree': (event, data) ->
+      renameTo = data.rslt.new_name
+      if renameTo isnt data.rslt.old_name
+        li = data.rslt.obj
+        page = pageFromLi data.rslt.obj
+        href = page.split('/')
+        href[href.length - 1] = usdlc.camelCase renameTo
+        updateContentTree parent(page), href.join('/'),
+          command: 'rename'
+          newName: renameTo
+          page: page
+    'select_node.jstree': (event, data) ->
+      selectedNode = data.rslt.obj
+    'create.jstree': (event, data) ->
+      href = pageFromLi data.rslt.parent
+      updateContentTree data.rslt.parent, href,
+        command: 'create'
+        name: data.rslt.name
+        parent: parent
+        id: usdlc.nextSectionId()
+    'remove.jstree': (event, data) ->
+      page = pageFromLi data.rslt.prev
+      updateContentTree parent(data.rslt.prev), page,
+        command: 'delete'
+        page: pageFromLi data.rslt.obj
+    'move_node.jstree': (event, data) ->
+      move pageFromLi -1, data.rslt.np, data.rslt.o, data.rslt.r, data.rslt.p
+    'cut.jstree': (event, data) ->
+      cutPage = pageFromLi data.rslt.prev
+    'copy.jstree': (event, data) ->
+    'paste.jstree': (event, data) ->
+      target = pageFromLi data.rslt.obj
+      nodes = pageFromLi data.rslt.nodes
+      updateContentTree -1, target,
+        command: 'paste'
+        target: target
+        toPaste: nodes
+        cut: cutPage is nodes
+    'refresh.jstree': (event, data) ->
+      if reloadAfterRefresh
+        usdlc.absolutePageContents reloadAfterRefresh
+        reloadAfterRefresh = null
+  )
+  pageFromLi = (li) -> $('a', li).attr('href').replace(/\/index\.html$/, '')
+
+  parent = (li) -> li.parent().closest('li')
+
+  move = (needingRefresh, newParent, moving, reference, position) ->
+    updateContentTree needingRefresh, newParent,
+      command: 'move'
+      moving: pageFromLi moving
+      reference: pageFromLi reference
+      position: position
+
+  mover = (referenceDir, position) ->
+    reference = selectedNode[referenceDir] 'li'
+    reference = reference.first()
+    href = pageFromLi selectedNode
+    if reference.size()
+      move parent(reference), href, selectedNode, reference, position
+
+  moveout = (referenceDir, position) ->
+    reference = selectedNode[referenceDir] 'li'
+    reference = reference.first()
+    href = pageFromLi selectedNode
+    href = href.split('/')
+    end = href.length - 1
+    href[end - 1] = href[end]
+    href.pop()
+    href = href.join('/')
+    if reference.size()
+      move parent(reference), href, selectedNode, reference, position
+
+  movein = (referenceDir, position) ->
+    reference = selectedNode[referenceDir] 'li'
+    reference = reference.first()
+    href = pageFromLi selectedNode
+    reference_name = pageFromLi(reference).split('/')
+    reference_name = reference_name[reference_name.length - 1]
+    href = href.split('/')
+    end = href.length - 1
+    [href[end],href[end+1]] = [reference_name,href[end]]
+    href = href.join('/')
+    if reference.size()
+      move parent(reference), href, selectedNode, reference, position
+
+  updateContentTree = (needingRefresh, href, data) ->
+    $.get "#{usdlc.urlBase}/support/usdlc/contentTree.groovy", data, (rslt) ->
+      reloadAfterRefresh = href
+      usdlc.contentTree.jstree 'refresh', needingRefresh

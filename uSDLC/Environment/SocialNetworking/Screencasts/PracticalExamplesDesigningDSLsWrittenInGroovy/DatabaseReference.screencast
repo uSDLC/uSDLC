@@ -1,0 +1,19 @@
+edit code 'gsqlDSL', '''$a
+defaultDatabase = 'jdbc:h2:.db/usdlc'
+
+def connection(String dbName) {
+	connection(dbName) {}
+}
+def connection(Closure sqlCommands) {
+	connection defaultDatabase, sqlCommands	
+}
+def connection(String dbName, Closure sqlCommands) {
+	defaultDatabase = dbName
+	usdlc.db.Database.connection dbName, sqlCommands 
+}
+
+database = this.&connection
+.'''
+prompt 'A New Database Reference',
+   '''SQL Database requests are always executed in a database closure. The database only
+    needs be reference by name if more than one are in play.'''

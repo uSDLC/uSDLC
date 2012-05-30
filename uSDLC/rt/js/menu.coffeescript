@@ -1,0 +1,87 @@
+$ ->
+	usdlc.loadMainMenu = (div, content) ->
+		doc = $(document)
+		submenu = (depth, menu) ->
+			menu.children = []
+			menu.children.depth = depth
+			menu.dom = $('<span>')
+			menu.keys = {}
+			menu.div = div
+			return menu
+		usdlc.rootMainMenu = menu = submenu 0, depth : 0
+		usdlc.resetMenu = -> usdlc.showMainMenu usdlc.rootMainMenu
+
+		usdlc.showMainMenu = (menu) ->
+			usdlc.currentMainMenu = menu
+			menu.div.children('span').detach()
+			menu.div.append menu.dom
+			if usdlc.inFocus?.parents('#pageContents').size()
+				div.detach()
+				usdlc.inFocus.prepend(div)
+
+		usdlc.menuToTop = ->
+			div.detach()
+			$('#topMenu').append(div)
+
+		processRow = (row) ->
+			return if not row
+			item = new Object()
+			item.parent = menu
+
+			[text,key,action,shortcut] = row.split /,\s*/
+			item.key = key
+			[all,spaces,item.text] = text.match(/(\s*)(.*)/)
+			item.depth = spaces.length
+
+			if action
+				try
+					item.action = new Function(
+						"#{action};usdlc.resetMenu()")
+				catch error
+					throw "error in menu action :: #{action} :: #{error}"
+			else
+				item.action = (item) -> usdlc.showMainMenu item
+
+			menu = menu.parent while item.depth < menu.children.depth
+			if item.depth > menu.children.depth
+				parent = menu.children[menu.children.length - 1]
+				menu = submenu item.depth, parent
+
+			text = text.replace(key, "<u>#{key}</u>")
+			a = $('<a>').attr('href', 'javascript:').append(text)
+			a.click (event) ->
+				event.preventDefault()
+				item.action(item)
+				return false
+			menu.dom.append a
+
+			if shortcut
+				shortcut = 'ctrl+' + shortcut.substring(1) if shortcut[0] is '^'
+				doc.bind 'keydown', shortcut, (event) ->
+					if !usdlc.inEditMode(event)
+						event.srcElement.usdlcKeyEvent = true
+						item.action(item)
+						event.preventDefault()
+				a.attr('title', shortcut)
+
+			menu.children.push menu.keys[item.key.toUpperCase()] = item
+
+		processRow row for row in content.split(/\r?\n/)
+		usdlc.resetMenu()
+
+	usdlc.menuKeystroke = (key) ->
+		item = usdlc.currentMainMenu.keys[key.toUpperCase()]
+		if item
+			item.action(item)
+			return true
+		return false
+
+	$(document).keydown (event) ->
+		return true if usdlc.inEditMode(event)
+		return true if event.metaKey or event.altKey or event.ctrlKey
+		if event.which is 27
+			usdlc.resetMenu()
+		else if not usdlc.menuKeystroke(String.fromCharCode(event.which))
+			return true
+		event.preventDefault()
+		return false

@@ -1,0 +1,16 @@
+zoom on
+append section '<a href="csvDSL.groovy">csvDSL</a>'
+append section '<a href="CSVImplementation.groovy">CSV Implementation</a>'
+
+edit code 'csvDSL', '''i
+    package usdlc.dsl
+
+    .'''
+edit code 'CSV Implementation', '''i
+    package usdlc
+
+    class CSV {
+    .'''
+
+prompt 'DSL Support',
+    'A DSL has hidden scaffolding. For Groovy it passes information in the binding'

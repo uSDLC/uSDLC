@@ -1,0 +1,33 @@
+#pageTitleTable {
+	width: 100%;
+}
+
+#pageTitleImage {
+	border: none;
+	overflow: visible;
+}
+
+#pageTitleVersion {
+	margin-top: -22px;
+	text-align: center;
+	color: #ccc;
+}
+
+#pageTitleTd {
+	vertical-align: middle;
+	width: 100%;
+}
+
+#pageTitleTd h1, #pageTitleTd h2, div.inclusion h1, div.inclusion h2 {
+	text-align: center;
+}
+
+#pageTitleTd h1 {
+	font-size: 1.4em;
+	margin: 0;
+}
+
+#pageTitleTd h2, div.inclusion h2 {
+	margin: 0;
+	font-size: 0.9em;
+}

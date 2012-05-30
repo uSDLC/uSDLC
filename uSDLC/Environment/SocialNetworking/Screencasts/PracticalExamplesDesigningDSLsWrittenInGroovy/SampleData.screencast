@@ -1,0 +1,12 @@
+append section '<a href="SampleData.csv">Sample Data</a>',
+    '''The default format consists of one title line, comma separators with optional single 
+    or double quotes. Multiple lines must be quoted. Spaces outsided of quoted variables
+    will be trimmed - left and right.'''
+edit code 'Sample Data', '''i
+    First Name, Last Name, Company,                Comments,       Rate
+    Fred,       Flinstone, Boulder Constructions,  "Time Watcher", 10 pebbles per week
+    Barney,     Rubble,    "Accent Accounting,Inc","Hard Worker,
+    See manager for more information
+    Recommend continuing employment",                              3 pebbles/day
+    .'''
+prompt 'Sample Data', 'To work with data we need data.'

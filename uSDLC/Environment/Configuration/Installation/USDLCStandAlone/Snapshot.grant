@@ -1,0 +1,42 @@
+// uSDLC loader requires this file
+// but does not have access to the jar until after unpacking.
+ant.unzip(src: 'usdlc/lib/jars/groovy.jar', dest: 'lib') {
+	patternset { include(name: '**/RootLoader.class') }
+    }
+// By creating a manifest, local uSDLC can display a version
+// that matches the last build
+ant.manifest(file: 'META-INF/MANIFEST.MF') {
+	attribute(name: 'Specification-Version', value: version)
+}
+
+requiredJars = []
+usdlc.Store.base('lib/jars/required.txt').file.eachLine { String jar ->
+    requiredJars << "usdlc/lib/jars/${jar}.jar"
+}
+requiredJars = requiredJars.join(' ')
+// Enough buggerising around - lets build the main jar
+ant.jar(destfile: 'release/uSDLC-full.jar', compress: true, index: true) {
+	fileset(dir: '.') {
+	    patternset(
+		includes: 'bin/**/*.class,lib/**/*,src/**/*,usdlc/**/*,' +
+		    'uSDLC.sh,uSDLC.bat',
+                excludes:
+                    'usdlc/.store/**/*,usdlc/tmp/**/*,**/.*,' +
+		            'usdlc/lib/javadoc/**/*,' +
+                    'usdlc/lib/source/**/*,usdlc/lib/jars/*'
+	    )
+	    patternset(includes: requiredJars)
+	}
+    fileset(dir: '.', includes: requiredJars)
+    fileset(dir: 'bin', includes: '**/UsdlcJarLauncher*.class')
+    fileset(dir: 'lib', includes: '**/RootLoader*.class')
+    manifest {
+	attribute(name: 'Specification-Version', value: version)
+	attribute(name: 'Main-Class',
+		  value: 'usdlc.server.standalone.UsdlcJarLauncher')
+    }
+}
+/*ant.zip(destfile: 'release/uSDLC-optional-jars.zip', compress: true) {
+    fileset(dir:'.', includes: 'usdlc/lib/jars/*', excludes: requiredJars)
+}*/
+ant.touch(file: 'release/uSDLC-optional-jars.zip')

@@ -1,0 +1,8 @@
+$ ->
+	newsBar = $('#newsBar')
+	changeNews = ->
+			newsBar.fadeOut 5000, ->
+				newsBar.load "/support/usdlc/news_html.groovy", (content) ->
+					newsBar.fadeIn 5000
+					setTimeout changeNews, 600000
+	changeNews()

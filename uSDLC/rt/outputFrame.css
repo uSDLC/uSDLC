@@ -1,0 +1,15 @@
+.error {
+	padding: 2px 3px;
+	background-color: #ffcccc;
+	border: solid 2px #990066;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	}
+pre {
+	margin: 0;
+}
+.gray {
+	color: gray;
+}

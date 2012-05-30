@@ -1,0 +1,121 @@
+$ ->
+  ###
+  Called by form to create a new section below the current one. It will create
+  a new header link pointing to a child page based on the title.
+  ###
+  usdlc.newPageSection = ->
+    form = $ '#newPageSection'
+    title = $('input[name="title"]', form)[0].value
+    href = usdlc.camelCase(title)
+    id = usdlc.nextSectionId()
+    a = createLink href, 'page', "#{id}a0", title
+    insertNewSection form, a, 1
+  ###
+  Called by form to create a new section below the current one. It will create
+  a new header link referencing an instrumentation script based on the title.
+  ###
+  usdlc.newScenarioSection = ->
+    newCodeSection 'Scenario', createBddLink
+  usdlc.newInstrumentationSection = ->
+    newCodeSection 'Instrumentation', createLink
+
+  newCodeSection = (name, codeLinkCreator) ->
+    form = $ "#new#{name}Section"
+    title = $('input[name="title"]', form)[0].value
+    split = /^(.*)\.(\w+)$/.exec(title)
+    if split
+      title = split[1]
+      ext = split[2]
+      addActorType(ext)
+    else
+      ext = $('select[name="type"]', form)[0].value
+    usdlc.setCookie('actorDefault', ext)
+
+    href = "#{usdlc.camelCase(title)}.#{ext}"
+    id = usdlc.nextSectionId()
+    a = codeLinkCreator href, 'runnable', "#{id}a0", title
+    insertNewSection form, a, 2, id
+
+  createBddLink = (href, action, id, title) ->
+    heading = $ '<span/>'
+    heading.html title
+    div = $ '<div/>', class: 'givenWhenThen'
+    div.append createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
+    div.append createLink "When_#{href}", 'runnable', "#{id}w", 'W'
+    div.append createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
+    heading.append div
+    return heading
+  ###
+  Called by form to create a new section below the current one. It will create
+  a new header link pointing to a child page based on the title.
+  ###
+  usdlc.newGuideSection = ->
+    form = $ '#newSectionSection'
+    title = $('input[name="title"]', form)[0].value
+    id = usdlc.nextSectionId()
+    heading = $ '<span/>'
+    heading.html title
+    insertNewSection form, heading, 2, id
+    usdlc.editSectionInFocus()
+  ###
+  This is where the work is done...
+  ###
+  createLink = (href, action, id, title) ->
+    a = $ '<a/>',
+      href: href
+      action: action
+      id: id
+      class: 'usdlc'
+    a.html title
+    return a
+  ###
+  Create a new section given a template
+  ###
+  usdlc.sectionTemplate = (name, page = 'Sections') ->
+    usdlc.loadSection name, page, (h1) ->
+      section = usdlc.newSection()
+      section.append h1.nextAll()
+      section.insertAfter(usdlc.inFocus)
+      usdlc.setFocus(section)
+      usdlc.editSectionInFocus()
+
+  insertNewSection = (form, heading, level, id) ->
+    if usdlc.inFocus
+      notes = $('textarea[name="notes"]', form)[0].value
+
+      section = usdlc.newSection id
+      h1 = $ "<h#{level}/>"
+      h1.append heading
+
+      section.append h1
+      if notes then section.append $ "<p>#{notes}</p>"
+      section.insertAfter(usdlc.inFocus)
+      usdlc.setFocus(section)
+      usdlc.savePage()
+    else
+      usdlc.alert "Select Section First"
+    usdlc.closeDialog()
+  ###
+  Creates basic new section code.
+  ###
+  usdlc.newSection = (id = usdlc.nextSectionId()) ->
+    return $ "<div/>",
+      id : id
+      'class' : 'editable section synopsis'
+
+  usdlc.loadActorTypes = (select) ->
+    actorTypes = (usdlc.cookie('actorTypes') || 'coffee').split(',')
+    $.each actorTypes, (index, value) ->
+      option = $ '<option/>',
+        value: value
+      option.text value
+      select.append option
+    select.val usdlc.cookie("actorDefault") || 'coffee'
+
+  addActorType = (ext) ->
+    actorTypes = (usdlc.cookie('actorTypes') || 'coffee').split(',')
+    dups = (type for type in actorTypes when type == ext)
+    if dups.length == 0
+      actorTypes.push(ext)
+      actorTypes.sort()
+      usdlc.setCookie('actorTypes', actorTypes.toString())

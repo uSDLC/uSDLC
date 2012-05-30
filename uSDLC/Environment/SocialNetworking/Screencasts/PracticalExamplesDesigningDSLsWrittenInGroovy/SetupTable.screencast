@@ -1,0 +1,8 @@
+edit code 'Setup', '''$a
+database("jdbc:h2:mem:test:test") {
+    drop "table actors"
+    insert 'actors', csv('Sample Data')
+}
+.'''
+prompt 'Initialise Table', 
+    '''We need a section to run - whether alone or with the complete page.'''

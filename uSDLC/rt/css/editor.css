@@ -1,0 +1,37 @@
+.cke_editor, #editAreaContainer {
+	position: relative;
+	z-index: 9990;
+}
+
+.cke_skin_v2 .cke_resizer {
+	margin-top: 10px !important;
+}
+
+.CodeMirror {
+	background-color: white;
+}
+.CodeMirror-scroll {
+  overflow: visible;
+  height: auto;
+  /* This is needed to prevent an IE[67] bug where the scrolled content
+     is visible outside of the scrolling box. */
+  position: relative;
+}
+
+div.bddTitle, div.codeTitle, div.codeType {
+	color: #888;
+	font-size: 0.8em;
+	margin-bottom: -0.6em;
+	margin-left: 1em;
+}
+div.codeType {
+	font-size: 0.3em;
+	float: right;
+	margin-right: 1em;
+	margin-top: 0.4em;
+}
+div.bddTitle {
+	color: #444;
+	margin-bottom: -0.6em;
+	margin-left: 2.5em;
+}

@@ -1,0 +1,32 @@
+.rounded, div.section:first-child {
+	padding: 2px 3px !important;
+	border: solid 2px #DDD;
+	background-color: white;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.section .rounded, div.section:first-child {
+	padding: 9px 9px 2px 9px;
+}
+
+.red-box {
+	border-color: #990066;
+}
+
+.gray-box {
+	border-color: #444;
+}
+
+.pale-gray-box, div.section:first-child {
+	border-color: #EEE;
+}
+
+div.section:first-child {
+	padding: 6px 9px 0 9px !important;
+	margin: 10px;
+	color: #2f4f4f;
+	font-size: 1.1em;
+}

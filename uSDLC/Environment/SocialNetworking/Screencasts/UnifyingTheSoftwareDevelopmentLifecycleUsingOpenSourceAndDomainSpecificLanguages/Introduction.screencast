@@ -1,0 +1,9 @@
+create screencast 'Unifying the SDLC', 'The power of one',
+    '''The uSDLC project is the core of an interactive manual for  implement 
+    Lean and Agile methodology across the software development life-cycle.'''
+timeout 10000
+click 'Home'
+prompt 'Unifying the SDLC', 
+    '''My name is Paul Marrington and I am the vision holder for uSDLC -
+    an open source project to help unify the Software Development Lifecycle'''
+zoom left

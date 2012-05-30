@@ -1,0 +1,9 @@
+edit code 'Setup', '''i
+    include 'csvImplementation.groovy'
+    include 'csvDSL.groovy'
+    //dsl.csv
+    .'''
+prompt 'Referencing a DSL', '''
+    The CSV DSL will be used in conjunctions with a primary DSL. uSDLC allows the
+    DSL scaffolding file (csvDSL.groovy) to be run in the same binding with a command.
+    We add that command to the Setup code.'''
