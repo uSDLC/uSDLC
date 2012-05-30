@@ -1,4 +1,0 @@
-open "/root"
-waitForPageToLoad
-click "css=#s31 > p"
-assertElementPresent "css=#s31.inFocus"

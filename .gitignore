@@ -1,6 +1,4 @@
 out/
-web/.*/
-/.*/
 /bin/
 /chromedriver.log
 /release
@@ -9,3 +7,4 @@ uSDLC.iws
 nohup.out
 USDLC.iml
 *.html.timings.csv
+.*

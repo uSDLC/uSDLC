@@ -1,9 +1,11 @@
 package usdlc
 
 import usdlc.config.Config
+
+import java.security.MessageDigest
+
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
-import java.security.MessageDigest
 
 class Store {
 	/**
@@ -339,18 +341,25 @@ class Store {
 	/**
 	 * Copy a file or directory to a target directory.
 	 */
-	def copy(to) {
+	def copyTo(to) {
 		to = Store.base(to).absolutePath
 		def includes = (file.directory) ? "$file.name/*" : file.name
-		ant.copy(toDir: to) { fileset(dir: file.parent, includes: includes) }
+		ant.copy(todir: to) { fileset(dir: file.parent, includes: includes) }
 	}
 	/**
-	 * move a file or directory to a target directory.
+	 * moveTo a file or directory to a target directory.
 	 */
-	def move(to) {
-		ant.move(toDir: to) {
+	def moveTo(to) {
+		ant.move(todir: Store.base(to).absolutePath) {
 			fileset(dir: file.parent, includes: "$file.name/*")
 		}
+	}
+	/**
+	 * Rename a file or directory
+	 */
+	def renameTo(to) {
+		def dir = file.parent
+		ant.move(file:"$dir/$file.name", tofile:"$dir/$to")
 	}
 	/**
 	 * Remove the path created for this store - if it is a directory
@@ -391,10 +400,8 @@ class Store {
 	static getProjectRoots() {
 		def roots = []
 		Store.base('~/').file.eachDir { File file ->
-			if (file.name != 'uSDLC') {
-				def store = Store.base("~/$file.name/usdlc")
-				if (store.exists()) roots << store
-			}
+			def store = Store.base("~/$file.name/usdlc")
+			if (store.exists()) roots << store
 		}
 		return roots
 	}

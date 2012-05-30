@@ -1,8 +1,0 @@
-step 0.7
-append section 'First Section', 'with nothing to say'
-append section 'Section Two', 'ditto'
-step slow
-note 'First note'
-note 'Note two'
-step fast
-assert timer() >= 5, 'Expecting delays to exceed 10 seconds'

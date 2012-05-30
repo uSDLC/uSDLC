@@ -19,10 +19,10 @@ class HtmlActor extends Actor {
 		Map query = exchange.request.query
 		switch (query.action) {
 			case 'cut':
-				transfer { Store store, String to -> store.move(to) }
+				transfer { Store store, String to -> store.moveTo(to) }
 				break
 			case 'copy':
-				transfer { Store store, String to -> store.copy(to) }
+				transfer { Store store, String to -> store.copyTo(to) }
 				break
 			case 'paste':
 				paste()
@@ -54,7 +54,7 @@ class HtmlActor extends Actor {
 	private void paste() {
 		def target = exchange.store.parent
 		def from = Store.base(".store/clipboard/${exchange.request.query['from']}")
-		from.dir(~/[^.]*/) { String dir -> from.rebase(dir).move(target) }
+		from.dir(~/[^.]*/) { String dir -> from.rebase(dir).moveTo(target) }
 		out.println new String(Store.base(
 				"${exchange.request.query['from']}/Section.html").read())
 		from.rmdir()

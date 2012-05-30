@@ -1,2 +1,0 @@
-assert $('div', id: 'pageTitle').text() =~ /Interacting with content\s*Find it,.*/
-assert $('div h1', 0).text() == 'Interacting with content'

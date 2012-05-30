@@ -1,1 +1,0 @@
-exists = (path) -> usdlc.Store.base(path).exists()

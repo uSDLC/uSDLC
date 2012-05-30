@@ -1,5 +1,0 @@
-prompt 'DSL Support',
-    '''The clearest difference between a library and an internal DSL written in Groovy is the
-    lack of scaffolding in the latter. Functionality for a DSL can all reside in script code
-    that runs in the same binding as the target DSL script. In practice I prefer to separate
-    DSL support by having scaffolding in the supporting code and logic in underlying classes.

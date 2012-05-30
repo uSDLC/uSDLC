@@ -1,6 +1,0 @@
-browse ScratchPage
-assert $("h1").text() == "Title"
-waitFor { $('a#Home').size() }
-$('a#Home').click()
-waitFor { title == "Unifying the Software Development Life-cycle" }
-assert $("h1").text() == "Unifying the Software Development Life-cycle"

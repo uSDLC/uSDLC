@@ -1,5 +1,0 @@
-click 'uSDLC -> Home Pages -> Paul Marrington'
-prompt 'And so ends this introduction','''
-Contact me if you have any questions. You can get all this information from
-<a href=http://usdlc.net>usdlc.net</a>'''
-click 'Home'

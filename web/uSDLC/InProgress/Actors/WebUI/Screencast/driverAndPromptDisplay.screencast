@@ -1,4 +1,0 @@
-note 'Screencast Definition', 'Any first command will open driver/display window'
-    
-check element 'span.ui-dialog-title', 'Screencast Definition'
-check element 'div.ui-dialog-content', 'Any first command.*window'

@@ -1,15 +1,15 @@
 package usdlc
 
-import org.apache.http.client.methods.HttpPost
-import org.apache.http.client.entity.UrlEncodedFormEntity
-import org.apache.http.message.BasicNameValuePair
-import org.apache.http.HttpResponse
-import org.apache.http.util.EntityUtils
 import org.apache.http.client.ResponseHandler
+import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpGet
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.message.BasicNameValuePair
+import org.apache.http.util.EntityUtils
 
 class HttpClient {
 	def client = new org.apache.http.impl.client.DefaultHttpClient()
+	def secondsTimeout = 30
 
 	def get(url) {
 		return execute(new HttpGet(url))
@@ -28,7 +28,7 @@ class HttpClient {
 	}
 
 	def execute(request) {
-		def semaphore = new Semaphore(30, 0)
+		def semaphore = new Semaphore(secondsTimeout, 0)
 		def response = null
 		def responder = {
 			def sl = it.statusLine

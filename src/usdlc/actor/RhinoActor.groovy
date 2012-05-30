@@ -2,6 +2,7 @@ package usdlc.actor
 
 import usdlc.Store
 import usdlc.drivers.JavaScript
+
 import static usdlc.config.Config.config
 
 class RhinoActor extends Actor {
@@ -31,17 +32,33 @@ class RhinoActor extends Actor {
 	 * eventually parse down to JavaScript. All incarnations
 	 * search on the DSL path as well as given the raw name.
 	 */
+//	public include(name) {
+//		name = Store.camelCase(name)
+//		def key = "$name#$currentlyRunningScript.pathFromWebBase"
+//		if (name.indexOf('.') == -1) {
+//			name += ".$currentlyRunningScript.parts.ext"
+//		}
+//		if (!dsls.containsKey(key)) {
+//			dsls[key] = onParentPath(name) ?: onDslSourcePath(name)
+//		}
+//		if (!dsls[key]) {
+//			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
+//		}
+//		try {
+//			run dsls[key]
+//		} catch (e) { throw new Exception("including '$name'", e) }
+//	}
 	public include(name) {
 		name = Store.camelCase(name)
 		if (name.indexOf('.') == -1) {
 			name += ".$currentlyRunningScript.parts.ext"
 		}
-		if (!dsls.containsKey(name)) {
-			dsls[name] = onParentPath(name) ?: onDslSourcePath(name)
+		def found = onParentPath(name) ?: onDslSourcePath(name)
+		if (!found) {
+			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
 		}
-		if (!dsls[name]) throw new Exception("No include script $name")
 		try {
-			run dsls[name]
+			run found
 		} catch (e) { throw new Exception("including '$name'", e) }
 	}
 
@@ -58,7 +75,10 @@ class RhinoActor extends Actor {
 	Store onParentPath(name) {
 		if (name.indexOf('/') == -1) {
 			return currentlyRunningScript.onParentPath {
-				it.rebase(name).ifExists()
+				def possible = it.rebase(name)
+				// Allow script to include same name and find in parent path
+				if (possible == currentlyRunningScript) return null
+				return possible.ifExists()
 			}
 		}
 		return null

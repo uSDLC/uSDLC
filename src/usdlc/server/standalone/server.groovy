@@ -3,19 +3,21 @@ package usdlc.server.standalone
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import java.util.concurrent.Executors
 import usdlc.Desktop
 import usdlc.Exchange
 import usdlc.Exchange.Header
 import usdlc.config.Config
+
+import java.util.concurrent.Executors
+
 import static usdlc.config.Config.config
 
 /**
  * This is a Groovy script that starts up a web server to serve uSDLC content.
  * Configuration is take from a configuration DSL combined with parameters
  * from the command line.
- * By default the configuration file is ./web/WEB-INF/web.groovy.
- * You can move to a new base directory (and WEB-INF file) by setting
+ * By default the configuration file is ./usdlc/WEB-INF/web.groovy.
+ * You can moveTo to a new base directory (and WEB-INF file) by setting
  * baseDirectory on the command line:
  *
  * uSDLC baseDirectory=~/uSDLC

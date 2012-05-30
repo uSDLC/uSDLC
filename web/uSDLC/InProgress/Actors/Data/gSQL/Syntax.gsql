@@ -1,6 +1,0 @@
-table "Actors"
-assert select(surname: 'Wayne').firstName == 'John'
-
-ms = select(comment: "like 'M%'", "order by surname")
-assert ms.size() == 2
-assert ms[1].surname == 'Chan'

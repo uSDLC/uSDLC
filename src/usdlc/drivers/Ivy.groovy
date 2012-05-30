@@ -35,7 +35,7 @@ class Ivy {
 
 	Ivy fetch() {
 		ivy.resolve(args + [inline: true, showprogress: false, keep: true])
-		ivy.retrieve(pattern: "web/lib/$group/[artifact].[ext]")
+		ivy.retrieve(pattern: "usdlc/lib/$group/[artifact].[ext]")
 		this
 	}
 
@@ -54,14 +54,14 @@ class Ivy {
 			log "Download $url, $entity.contentLength bytes\n"
 			Map uri = Store.parts(to ?: url)
 			mkdir()
-			def out = new FileOutputStream("web/lib/$group/${uri['name']}${uri['ext']}")
+			def out = new FileOutputStream("usdlc/lib/$group/${uri['name']}${uri['ext']}")
 			entity.writeTo(out)
 			out.close()
 		}
 		this
 	}
 
-	private mkdir() { ant.mkdir(dir: "web/lib/$group") }
+	private mkdir() { ant.mkdir(dir: "usdlc/lib/$group") }
 
 	def ivy
 	Closure log

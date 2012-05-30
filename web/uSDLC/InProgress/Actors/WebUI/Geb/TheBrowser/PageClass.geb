@@ -1,5 +1,0 @@
-class HomePage extends UsdlcPage {
-    static url = "?uSDLC"
-}
-browse(UsdlcPage).to(HomePage)
-assert $("h1").text() == "Unifying the SDLC"

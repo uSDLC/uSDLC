@@ -39,6 +39,6 @@ DONE
 		# Java JDK is required. Everything else is self-contained.
 		# Look to build.xml for more developer enlightenment
 
-		java -cp web/lib/jars/ant-launcher.jar -Dant.home=web/lib/jars org.apache.tools.ant.launch.Launcher -nouserlib $*
+		java -cp usdlc/lib/jars/ant-launcher.jar -Dant.home=usdlc/lib/jars org.apache.tools.ant.launch.Launcher -nouserlib $*
 	fi
 fi

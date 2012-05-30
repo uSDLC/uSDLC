@@ -1,5 +1,0 @@
-browse UsdlcPage
-assert browser.page instanceof UsdlcPage
-browser.to ScratchPage
-assert $("h1").text() == "Title"
-assert browser.page instanceof ScratchPage

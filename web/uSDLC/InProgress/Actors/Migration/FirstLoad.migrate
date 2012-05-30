@@ -1,7 +1,0 @@
-table "philosophers"
-duplicates.overwrite
-load csv("Sample CSV File")
-
-assert verse('Mill') ~= 'shanty'
-assert verse('Hegel') == ''
-assert verse('Socrates') ~== /^Yes, .*\n.*pissed.$/

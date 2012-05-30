@@ -1,3 +1,0 @@
-browse ThisPage
-$("a#Home").click()
-assert $("h1").text() =~ /Unifying/

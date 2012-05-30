@@ -74,7 +74,7 @@ public class UsdlcJarLauncher {
 	}
 
 	private static URL[] classpaths() throws MalformedURLException {
-		File[] files = new File("web/lib/jars").listFiles(new JarFilter());
+		File[] files = new File("usdlc/lib/jars").listFiles(new JarFilter());
 		int items = files.length;
 		URL[] classpath = new URL[items + 1];
 		classpath[0] = new File("bin").toURI().toURL();

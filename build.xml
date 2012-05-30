@@ -9,8 +9,8 @@
 	XML. In summary:
 
 		Install Groovy support in your IDE (not needed if using ant alone)
-		classpath is all jars in 'web/lib/jars'
-		source path is 'src' and 'web/support'
+		classpath is all jars in 'usdlc/lib/jars'
+		source path is 'src' and 'usdlc/support'
 		compiler output to 'bin' (optional to match ant)
 		run or debug 'src/usdlc/server/standalone/server.groovy'
   -->
@@ -37,7 +37,7 @@
   </path>
 
   <path id="usdlc.module.classpath">
-    <fileset dir="${basedir}/web/lib/jars">
+    <fileset dir="${basedir}/usdlc/lib/jars">
       <patternset refid="library.patterns"/>
     </fileset>
   </path>
@@ -45,7 +45,7 @@
   <path id="usdlc.module.sourcepath">
     <dirset dir="${module.usdlc.basedir}">
       <include name="src"/>
-      <include name="web/support"/>
+      <include name="usdlc/support"/>
     </dirset>
   </path>
 
@@ -68,11 +68,11 @@
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.usdlc.basedir}/web/support">
+      <fileset dir="${module.usdlc.basedir}/usdlc/support">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.usdlc.basedir}/web/WEB-INF">
+      <fileset dir="${module.usdlc.basedir}/usdlc/WEB-INF">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
@@ -86,13 +86,14 @@
   <target name="run" depends="build" description="Run uSDLC">
 	  <java classname="usdlc.server.standalone.server"
 	        fork="true">
+		  <!--arg line="userId=Administrator"/-->
 	    <classpath>
 	      <pathelement location="${usdlc.output.dir}"/>
 		  <pathelement location="${basedir}/lib"/>
 		  <fileset dir="${java.home}/../lib" erroronmissingdir="false">
 			  <include name="tools.jar"/>
           </fileset>
-	      <fileset dir="${basedir}/web/lib/jars">
+	      <fileset dir="${basedir}/usdlc/lib/jars">
 	        <patternset refid="library.patterns"/>
 	      </fileset>
 	    </classpath>

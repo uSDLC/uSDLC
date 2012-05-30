@@ -186,6 +186,89 @@ class Page {
 		}
 		return false
 	}
+	boolean forceSave() {
+		updated = true
+		save()
+	}
+
+	def rename(from, to) {
+		def link = allSections.select("h1 a[href^=$from]").first()
+		link.html(to)
+		def toDirName = Store.camelCase(to)
+		link.attr('href', toDirName)
+		forceSave()
+		def child = store.rebase(from)
+		def childPage = new Page(child)
+		childPage.title = to
+		childPage.save()
+		child.renameTo(toDirName)
+	}
+
+	def createChild(name, id) {
+		def href = Store.camelCase(name)
+		footer.before("""
+			<div id="$id" class="editable section synopsis">
+			 <h1><a href="$href" action="page" id="${id}a0"
+				class="usdlc">$name</a></h1>
+		""")
+		forceSave()
+	}
+
+	def delete(name) {
+		def href = Store.camelCase(name)
+		store.rebase(href).delete()
+		childSection(href).remove()
+	}
+
+	def childSection(href) { selectSection("h1 a[href^=$href]") }
+
+	def paste(fromName, toPage, toName, position, cut = true) {
+//		println "from=${store.pathFromWebBase} ==> $fromName"
+//		println "to=${toPage.store.pathFromWebBase} ==> $toName"
+//		println "cut=$cut, position=$position"
+		def section = childSection(fromName)
+		if (position == 'first' || position == 'last') {
+			toPage = new Page(toPage.store.rebase(toName))
+		}
+		toPage.childSection(fromName)?.remove();   // so no duplicates
+		def sameParent = store.pathFromWebBase == toPage.store.pathFromWebBase
+		if (sameParent) toPage = this
+		switch (position) {
+			case 'before':
+				toPage.childSection(toName).before(section)
+				break
+			case 'after':
+				toPage.childSection(toName).after(section)
+				break
+			case 'first':
+				toPage.synopsis.after(section)
+				break
+			case 'last':
+				toPage.footer.before(section)
+				break
+		}
+		toPage.forceSave()
+		if (!sameParent) {
+			if (cut) {
+				section.remove()
+				forceSave()
+				store.rebase(fromName).moveTo(toPage.store.parent)
+			} else {
+				store.rebase(fromName).copyTo(toPage.store.parent)
+			}
+		}
+	}
+
+	def selectSection(selector) {
+		findSectionFor(allSections.select(selector).first())
+	}
+
+	def findSectionFor(element) {
+		while(element && ! element.hasClass('section')) {
+			element = element.parent()
+		}
+		return element
+	}
 
 	String toString() {
 		return store?.toString()

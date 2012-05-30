@@ -63,20 +63,21 @@ class Config {
 			if (parent && parent.path[name]) {
 				return parent // so ~home points to project home
 			}
-			if (name.toLowerCase() == 'usdlc') {
-				usdlcProject = project(name, '.', './uSDLC/Config.groovy')
-				return usdlcProject
-			}
 			def home = "$config.home/$name"
 			if (Store.absolute(home).exists()) {
-				return project(Store.decamel(name.capitalize()),
-							home, "$home/usdlc/Config.groovy")
+				if (name.indexOf('_') != -1) {
+					name = name.replaceAll('_', ' ')
+				} else {
+					name = Store.decamel(name.capitalize())
+				}
+				return project(name, home)
 			}
-			return project('none', config.home, '')
+			return project('none', config.home)
 		}
 		return config.projects[name]
 	}
-	static project(String name, String home, String configFile) {
+	static project(name, home) {
+		def configFile = "$home/usdlc/Config.groovy"
 		def pc = configFile ? parse(configFile) : [:]
 		pc.path = pc.path ?: [:]
 		pc.path.home = pc.home = home

@@ -1,4 +1,0 @@
-assert fail {
-    table "philosophers"
-    load csv("Sample CSV File")
-}

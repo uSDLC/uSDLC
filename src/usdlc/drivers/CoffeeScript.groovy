@@ -5,6 +5,11 @@ import usdlc.Store
 class CoffeeScript {
 	def bare, session
 	/**
+	 * We can preprocess the text before compiling. Used to extend the
+	 * CoffeeActor. See GwtActor for an example.
+	 */
+	def preprocessor = { text -> text }
+	/**
 	 * Constructor loads and compiles the coffee-script compiler
 	 */
 	CoffeeScript(boolean bare = false) {
@@ -29,6 +34,7 @@ class CoffeeScript {
 	 * Pass in a coffee-script file and the compiler will do it's magic
 	 */
 	String compile(String coffeeScriptSource) {
+		coffeeScriptSource = preprocessor coffeeScriptSource
 		String options = bare ? '{bare: true}' : '{}'
 		javascript.run("CoffeeScript.compile(coffeeScript, $options);",
 				[coffeeScript:coffeeScriptSource, newScope:true])

@@ -1,9 +1,0 @@
-append section 'Section Two Heading',
-    'Creates a section at the end of the page (above footer).'
-    'Each string will be entered as a paragraph in the section.'
-insert section 'Section One',
-    'In most cases a section will be a single paragraph with a link to activation code.'
-    
-select section 'most cases'
-next section()
-check section 'at the end of the page'

@@ -1,2 +1,0 @@
-driver 'Chrome:Firefox:IE:HtmlUnit'
-browse ScratchPage

@@ -1,1 +1,0 @@
-exchange.request.user.logout()

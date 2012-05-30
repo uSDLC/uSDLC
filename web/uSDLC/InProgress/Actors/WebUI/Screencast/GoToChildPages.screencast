@@ -1,7 +1,0 @@
-append section 'Showing a page link', "<a href='ChildPage'>This</a> is a page link"
-create page 'Child Page', 'Subtitle for Child Page',
-    'Synopsis for child page'
-check title 'Child Page'
-select section 'Synopsis for'
-click 'Parent'
-check title 'Screencast Test Page'

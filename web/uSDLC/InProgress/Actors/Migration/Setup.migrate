@@ -1,7 +1,0 @@
-database "jdbc:h2:mem:test:test"
-setup = { execute "drop table if exists philosophers" }
-
-verse = { philosopher ->
-    row = firstRow "select Verse from philosophers where Philosopher = $philosopher"
-    row.Verse
-}

@@ -1,11 +1,13 @@
 package usdlc.actor
 
 import groovy.transform.AutoClone
-import java.util.regex.Pattern
 import usdlc.Log
 import usdlc.Page
 import usdlc.Store
 import usdlc.drivers.JavaScript
+
+import java.util.regex.Pattern
+
 import static usdlc.MimeTypes.mimeType
 import static usdlc.config.Config.config
 
@@ -176,6 +178,7 @@ import static usdlc.config.Config.config
 		def actor = load(actorStore)
 		if (actor) {
 			wrapOutput(currentActor) { actor.run(context) }
+			exchange.response.print("\0")
 			actorState = 'succeeded'
 		}
 	}
@@ -201,9 +204,9 @@ import static usdlc.config.Config.config
 	/**
 	 * Special to run the script while wrapping the output for best effort.
 	 */
-	void runScript(Map binding) {
-		wrapOutput(script.pathFromWebBase) { delegate.run(binding) }
-	}
+//	void runScript(Map binding) {
+//		wrapOutput(script.pathFromWebBase) { delegate.run(binding) }
+//	}
 	/**
 	 * If an exception is thrown we need to display the error in a
 	 * user-friendly
@@ -265,9 +268,9 @@ import static usdlc.config.Config.config
 	}
 
 	static mimeTypeWrappers = [
-			'text/html': ['<pre style="padding-left:4em;">', '\n</pre>'],
+			'text/html': ['<pre style="padding-left:4em;">', '</pre>'],
 			'application/javascript': ['<script>', '</script>'],
-			'text/plain': ['<pre style="padding-left:4em;">', '\n</pre>']]
+			'text/plain': ['<pre style="padding-left:4em;">', '</pre>']]
 	/**
 	 * Write text to response output stream
 	 */

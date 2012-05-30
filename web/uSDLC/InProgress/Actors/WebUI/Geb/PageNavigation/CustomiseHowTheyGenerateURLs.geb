@@ -1,7 +1,0 @@
-browse GebPage
-to ThisPage
-assert title == "Advanced Page Navigation"
-to GebPage
-assert title != "Advanced Page Navigation"
-to GebPage, "PageNavigation"
-assert title == "Advanced Page Navigation"

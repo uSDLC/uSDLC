@@ -1,3 +1,0 @@
-Sandbox.page().newSection()
-client["a.cke_button_link"].click()
-assert client["a.cke_dialog_tab"].with("title", "Reports").size() == 1

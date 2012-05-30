@@ -1,2 +1,0 @@
-CachingDriverFactory.clearCache()
-CachingDriverFactory.clearCacheAndQuitDriver()

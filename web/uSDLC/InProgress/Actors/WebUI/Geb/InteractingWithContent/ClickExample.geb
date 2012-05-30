@@ -1,4 +1,0 @@
-$("a#Home").click(UsdlcPage)
-browser.page UsdlcPage
-assert $("h1").text() =~ /Unifying/
-browse ThisPage

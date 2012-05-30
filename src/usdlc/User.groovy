@@ -100,7 +100,12 @@ class User {
 	boolean authorised(Store store, String action = 'read') {
 		if (isAdmin || !store.isHtml) return true
 		def path = store.parent
-		if (path.indexOf('/') == -1 && path != 'uSDLC') return true
+		if (path == 'uSDLC' || path == '') {  // home page
+			// only Admin can edit home page
+			return action == 'read' || action == 'raw'
+		}
+		if (path.indexOf('/') == -1) return true
+
 		if (!data.pages[path]) {
 			def csv = store.onParentPath {
 				it.rebase('Groups.csv').ifExists()

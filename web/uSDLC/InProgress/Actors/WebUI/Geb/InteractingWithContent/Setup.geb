@@ -1,9 +1,0 @@
-'We define the base page an a commonly used (non-existent) scratch page'
-
-authority = "http://$exchange.request.header.host?"
-
-class ThisPage extends UsdlcPage {
-    static url = "?/uSDLC/Actors/Geb/InteractingWithContent"
-}
-browse ThisPage
-waitFor { $('a#Home').size() }

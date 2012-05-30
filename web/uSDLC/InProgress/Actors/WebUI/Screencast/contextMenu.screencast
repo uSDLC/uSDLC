@@ -1,3 +1,0 @@
-select section /Section One/
-menu section 'Navigation -> Next Section'
-check section 'single paragraph'
