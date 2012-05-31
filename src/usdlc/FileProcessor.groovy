@@ -31,7 +31,7 @@ class FileProcessor {
 
 	static gzip(Store inputFile, Store outputFile) {
 		Log.inf "Gzip $outputFile.name"
-		def gzipFile = Store.base("${outputFile.pathFromWebBase}.gzip")
+		def gzipFile = Store.base("${outputFile.path}.gzip")
 		gzipFile.file.withOutputStream {
 			def gzos = new GZIPOutputStream(it)
 			def bytes = inputFile.read()

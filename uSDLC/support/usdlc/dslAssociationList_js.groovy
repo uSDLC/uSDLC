@@ -1,7 +1,7 @@
 package usdlc
 write "usdlc.dsls = {"
-usdlc.Store.base('/support').dirs(~/.*DSL\.\w*/) { Store store ->
-	write store.pathFromWebBase.find(~/([^\/]*)DSL\.(.*)$/) {
+usdlc.Store.base('usdlc/support').dirs(~/.*DSL\.\w*/) { Store store ->
+	write store.path.find(~/([^\/]*)DSL\.(.*)$/) {
 		match, dsl, language ->
 		"$dsl: '$language',"
 	}

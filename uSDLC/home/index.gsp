@@ -2,18 +2,17 @@
 <head>
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
-	<link type="text/css" rel="stylesheet" href="/.store/css/usdlc.css">
-	<link rel="stylesheet" href="/rt/css/print.css" type="text/css" media="print" />
+	<link type="text/css" rel="stylesheet" href="/usdlc/.store/css/usdlc.css">
+	<link rel="stylesheet" href="/usdlc/rt/css/print.css" type="text/css" media="print" />
 	<% if (usdlc.config.Config.config.port == "80") { %>
 	<link
 		href="https://plus.google.com/116900499382012938759"
 		rel="publisher"/>
 	<% } %>
-	<!--link type="text/css" rel="stylesheet" href="/rt/css/menu.css"-->
+	<!--link type="text/css" rel="stylesheet" href="/usdlc/rt/css/menu.css"-->
 	<script>
-		testScripts = []//"/rt/js/menu.coffeescript"]
+		testScripts = []//"/usdlc/rt/js/menu.coffeescript"]
 	</script>
-	<link type="text/css" rel="stylesheet" href="/rt/css/menu.css">
 </head>
 <body>
 
@@ -21,7 +20,7 @@
 	<tr>
 		<td id="pageTitleTd" class="section editable"></td>
 		<td rowspan="2">
-			<img id="pageTitleImage" src="rt/base.logo.small.png" alt="Unifying the Software Development
+			<img id="pageTitleImage" src="/usdlc/rt/base.logo.small.png" alt="Unifying the Software Development
 				Lifecycle using Document Driven Development">
 
 			<div id='pageTitleVersion'>${usdlc.config.Config.version}</div>
@@ -34,7 +33,7 @@
 					<td>
 						<div id='topMenu'>
 							<div class='topMenu red-box rounded'
-								href="/rt/top.menu"
+								href="/usdlc/rt/top.menu"
 								action="loadMainMenu"></div>
 						</div>
 					</td>
@@ -50,7 +49,7 @@
 <table id="pageContentsTable">
 	<tr>
 		<td id="contentTreeTd">
-			<img id="treeHider" src="lib/circular-icons/arrows_east_west.png"
+			<img id="treeHider" src="/usdlc/lib/circular-icons/arrows_east_west.png"
 			     alt="">
 
 			<div id="contentTree" class="hidden">
@@ -63,13 +62,13 @@
 		<td id="pageContentsTd">
 			<div id="pageContents">
 				<div style="text-align: center">
-					<a href="/frontPage.html">uSDLC</a> -
-					<a href="uSDLC/Screencasts/Slideshare/index.html">
+					<a href="/usdlc/home">uSDLC</a> -
+					<a href="/usdlc/Screencasts/Slideshare/index.html">
 						Presentations</a> -
 					<a href="http://usdlc.wordpress.com/">News</a> -
 					<a href="http://usdlc.proboards.com/">Forum</a> -
 					<a href="http://github.usdlc.net">GitHub</a> -
-					<a href="/uSDLC/License.html">OSS License</a>
+					<a href="/usdlc/License.html">OSS License</a>
 
 					<p class='newsHeadline'>
 						${usdlc.News.cache.headline}
@@ -82,8 +81,7 @@
 	</tr>
 </table>
 
-<div id="pasteList" href="/rt/pasteList.html.groovy"></div>
-<script type="text/javascript" src='/.store/js/usdlcPre.js'></script>
+<script type="text/javascript" src='/usdlc/.store/js/usdlcPre.js'></script>
 <% if (usdlc.config.Config.config.port == "80") { %>
 <div style="position:absolute; bottom:10px; left:10px;">
 	<a href="https://plus.google.com/116900499382012938759?prsrc=3"

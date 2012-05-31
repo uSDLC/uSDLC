@@ -10,7 +10,7 @@ ant.manifest(file: 'META-INF/MANIFEST.MF') {
 }
 
 requiredJars = []
-usdlc.Store.base('lib/jars/required.txt').file.eachLine { String jar ->
+usdlc.Store.base('usdlc/lib/jars/required.txt').file.eachLine { String jar ->
     requiredJars << "usdlc/lib/jars/${jar}.jar"
 }
 requiredJars = requiredJars.join(' ')

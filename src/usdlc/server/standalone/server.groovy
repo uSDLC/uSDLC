@@ -22,11 +22,11 @@ import static usdlc.config.Config.config
  *
  * uSDLC baseDirectory=~/uSDLC
  */
-Config.load('standalone', 'web', args)
+Config.load('standalone', args)
 
 def host = InetAddress.localHost.hostAddress
-def baseUrl = "http://$host:$config.port/$config.urlBase"
-println "Starting uSDLC on $baseUrl from $config.baseDirectory/"
+def baseUrl = "http://$host:$config.port"
+println "Starting uSDLC on $baseUrl from ${new File('.').absolutePath}"
 println '''
 Copyright 2011 the Authors for http://usdlc.net
 use http://github/usdlc/usdlc to confirm author contribution
@@ -79,4 +79,4 @@ server.createContext '/', { HttpExchange httpExchange ->
 
 server.executor = Executors.newCachedThreadPool()
 server.start()
-Desktop.openURL("http://localhost:$config.port/$config.urlBase")
+Desktop.openURL("http://localhost:$config.port/usdlc/home")

@@ -32,7 +32,7 @@ $(function () {
 	})
 	// fetch data for report form
 	$.ajax({
-		url:     usdlc.urlBase + "/rt/reports/support/reportList_js.groovy",
+		url: '/usdlc/rt/reports/support/reportList_js.groovy',
 		dataType:'script'
 	})
 	/*

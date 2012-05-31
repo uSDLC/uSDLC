@@ -56,13 +56,13 @@ class Page {
 	 */
 	static Store store(Store store) {
 		if (store.isDirectory ||
-				store.pathFromWebBase.endsWith('/') ||
-				store.pathFromWebBase.indexOf('.') == -1) {
+				store.path.endsWith('/') ||
+				store.path.indexOf('.') == -1) {
 			store = store.rebase('index.gsp')
 			if (!store.exists()) store = store.rebase('index.html')
 		}
 		if (store.isHtml && !store.exists()) {
-			def page = new Page('rt/template.html')
+			def page = new Page('usdlc/rt/template.html')
 			page.store = store
 			def title = Store.decamel(
 					store.parts.path.replaceFirst(~'.*/', ''))
@@ -72,9 +72,7 @@ class Page {
 		return store
 	}
 
-	static Store store(String path) {
-		store(Store.base(path))
-	}
+	static Store store(String path) { store(Store.base(path)) }
 	/**
 	 * Replace contents of elements with HTML from text provided.
 	 */
@@ -137,7 +135,7 @@ class Page {
 		def reset() { list = [] }
 
 		def add(Store store, displayName) {
-			String path = store.pathFromWebBase
+			String path = store.path
 			if (!cache.contains(path)) {
 				cache.add(path)
 				if (store.isHtml) list << new Page(store, displayName)
@@ -218,21 +216,24 @@ class Page {
 		def href = Store.camelCase(name)
 		store.rebase(href).delete()
 		childSection(href).remove()
+		forceSave()
 	}
 
 	def childSection(href) { selectSection("h1 a[href^=$href]") }
 
-	def paste(fromName, toPage, toName, position, cut = true) {
+	def paste(fromName, toPage, toName, position, cut = 'true') {
 //		println "from=${store.pathFromWebBase} ==> $fromName"
 //		println "to=${toPage.store.pathFromWebBase} ==> $toName"
 //		println "cut=$cut, position=$position"
+		cut = cut.toBoolean()
 		def section = childSection(fromName)
 		if (position == 'first' || position == 'last') {
 			toPage = new Page(toPage.store.rebase(toName))
 		}
 		toPage.childSection(fromName)?.remove();   // so no duplicates
-		def sameParent = store.pathFromWebBase == toPage.store.pathFromWebBase
+		def sameParent = store == toPage.store
 		if (sameParent) toPage = this
+		if (! cut) section = section.toString() // so we get a copy
 		switch (position) {
 			case 'before':
 				toPage.childSection(toName).before(section)
@@ -252,9 +253,9 @@ class Page {
 			if (cut) {
 				section.remove()
 				forceSave()
-				store.rebase(fromName).moveTo(toPage.store.parent)
+				store.rebase(fromName).moveTo(toPage.store.dir)
 			} else {
-				store.rebase(fromName).copyTo(toPage.store.parent)
+				store.rebase(fromName).copyTo(toPage.store.dir)
 			}
 		}
 	}

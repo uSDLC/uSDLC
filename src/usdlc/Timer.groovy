@@ -25,7 +25,7 @@ class Timer {
 	 */
 	def log(path) {
 		def elapsed = System.currentTimeMillis() - start
-		Store.base(path).append("$title,$elapsed")
+		Store.base("usdlc/$path").append("$title,$elapsed")
 		return elapsed
 	}
 	/**

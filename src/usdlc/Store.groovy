@@ -11,8 +11,8 @@ class Store {
 	/**
 	 * Build a store object for a path relative to the web root
 	 */
-	static Store base(path = '', project = null) {
-		path = path.toString().replaceAll('\\\\', '/')
+	static Store base(path, project = null) {
+		path = path.toString().replaceAll('\\\\', '/').replaceAll('//', '/')
 		def homeIndex = path.indexOf(config.home)
 		if (homeIndex == 0 || homeIndex == 1) {
 			path = '~' + path[config.home.size() + homeIndex..-1]
@@ -32,20 +32,13 @@ class Store {
 
 	static pathRE = ~/^(.*)~\/?(\w*)(.*)$/
 
-	static absolute(path) { return new Store(path, Config.project('uSDLC')) }
-
-	private Store(String pathFromWebBase, project) {
-		if (pathFromWebBase[0] == '/') {
-			if (pathFromWebBase.size() > 1) {
-				pathFromWebBase = pathFromWebBase[1..-1]
-			} else {
-				pathFromWebBase = ''
-			}
-		}
-		this.pathFromWebBase = pathFromWebBase
+	private Store(String path, project) {
+		if (path[0] == '/') path = "./$path"
+		this.path = path
 		this.project = project
-		file = new File(config.baseDirectory as String, pathFromWebBase)
+		file = new File(path)
 	}
+	String path
 	/**
 	 * Return a Store for a non-existent file. It will refer to a new file
 	 * in /tmp. Use the ID to provide a reference name and file extension. All
@@ -55,12 +48,12 @@ class Store {
 		Store.base tmpDir.uniquePath("/$id")
 	}
 
-	@Lazy static Store tmpDir = Store.base('/tmp').rmdir()
+	@Lazy static Store tmpDir = Store.base('usdlc/tmp').rmdir()
 	/**
 	 * Sometimes we get a new store based on an old location
 	 */
 	Store rebase(String more = '') {
-		new Store(glue(parent, camelCase(more)), project)
+		new Store(glue(dir, camelCase(more)), project)
 	}
 	/**
 	 * Glue strings together to make a path - with the correct number of /s
@@ -93,46 +86,30 @@ class Store {
 	/**
 	 * build up directories underneath if they don't yet exist
 	 */
-	void mkdirs() {
-		new File(config.baseDirectory, parent).mkdirs()
-	}
+	void mkdirs() { new File(dir).mkdirs() }
 
-	static URI baseDirectoryURI = new File(config.baseDirectory).toURI()
-	/** Directory in which file/directory resides  */
-	@Lazy String parent = isDirectory ? pathFromWebBase : calcParent()
+	@Lazy String dir = isDirectory ? path : calcParent()
 	@Lazy String name = file.name
 	@Lazy String absolutePath = file.absolutePath
 	@Lazy URI uri = file.toURI()
 	@Lazy URL url = uri.toURL()
-	@Lazy parts = split(pathFromWebBase)
-	@Lazy fromHome = pathFromWebBase.startsWith(config.home) ?
-		pathFromWebBase[config.home.size()..-1] : null
-	@Lazy fromProjectHome = pathFromWebBase.startsWith(project.home) ?
-		pathFromWebBase[project.home.size()..-1] : pathFromWebBase
-	@Lazy String path = fromHome ? "~$fromHome" : pathFromWebBase
+	@Lazy parts = split(path)
+	@Lazy fromProjectHome = path.startsWith(project.home) ?
+			path[project.home.size()..-1] : path
 	@Lazy boolean isDirectory = file.isDirectory() ||
-			(!file.exists() && !parts.ext)
+					(!file.exists() && !parts.ext)
 	@Lazy boolean isHtml = isDirectory || parts.ext == 'html'
 
 	private String calcParent() {
 		int drop = file.path.size() - file.parent.size() + 1
-		if (drop >= pathFromWebBase.size()) return ''
-		pathFromWebBase[0..-drop]
-	}
-	/**
-	 * Return a string being the file path relative to the base directory.
-	 */
-	private static String pathFromBase(String path) {
-		if (path.startsWith(config.baseDirectory)) {
-			path = path[config.baseDirectory.size()..-1]
-		}
-		path
+		if (drop >= path.size()) return ''
+		path[0..-drop]
 	}
 	/**
 	 * Relative path from some base directory (store may be of file in
 	 * directory).
 	 */
-	String pathFrom(Store from) {
+	String pathBetweenFiles(Store from) {
 		File fromFile = from.isDirectory ? from.file : from.file.parentFile
 		fromFile.toURI().relativize(uri).path
 	}
@@ -202,17 +179,13 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(mask, Closure closure) {
-		file.eachFileMatch mask, { File file ->
-			closure(pathFromBase(file.path))
-		}
+		file.eachFileMatch mask, { File file -> closure(file.path) }
 	}
 	/**
 	 * Fetch a list of all contents of a directory
 	 * @param closure - code to execute for each file in the directory
 	 */
-	void dir(Closure closure) {
-		dir(~/.*/, closure)
-	}
+	void dir(Closure closure) { dir(~/.*/, closure) }
 	/**
 	 * Fetch a list of matching contents of a directory
 	 * @param mask - anything with isCase - typically a regular expression
@@ -228,16 +201,14 @@ class Store {
 	 * Fetch a list of all matching contents of a directory
 	 * @return list of all files in the directory
 	 */
-	List dir() {
-		dir(~/.*/)
-	}
+	List dir() { dir(~/.*/) }
 	/**
 	 * Call a closure for the contents of a directory tree (as in dir /s)
 	 */
 	void dirs(mask, Closure closure) {
 		try {
-			file.traverse(type: FILES, nameFilter: mask) { File file ->
-				closure(new Store(pathFromBase(file.path), project))
+			file.traverse(type: FILES, nameFilter: mask) { File found ->
+				closure(new Store(found.path, project))
 			}
 		} catch (e) {}
 	}
@@ -255,10 +226,9 @@ class Store {
 	 * Store.toString(), implicit or explicit will return the full path to the
 	 * file or directory
 	 */
-	String toString() { pathFromWebBase }
+	String toString() { path }
 
 	File file
-	String pathFromWebBase
 	Map project
 
 	/**
@@ -273,7 +243,7 @@ class Store {
 		while ((unique = new File(file, uniquePath)).exists()) {
 			uniquePath = "${timestamp}_${uniqifier++}_${camelCase(id)}"
 		}
-		pathFromBase(unique.path)
+		return unique.path
 	}
 
 	static int uniqifier = 0
@@ -319,14 +289,14 @@ class Store {
 	}
 
 	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(\w*)/
-	static decamelRE = ~/\B([A-Z])/
+	static decamelRE = ~/([a-z0-9]{2})([A-Z])/
 	static sloshRE = ~'\\\\'
 	static dateStampFormat = 'yyyy_MM_dd__HH_mm_ss'
 	/**
 	 * Turn a camel-case name back into a sentence
 	 */
 	static decamel(camelCase) {
-		camelCase.replaceAll(decamelRE, ' $1')
+		camelCase.replaceAll(decamelRE, '$1 $2')
 	}
 	/**
 	 * Split a fully qualified storage name into path, name and extension
@@ -358,8 +328,8 @@ class Store {
 	 * Rename a file or directory
 	 */
 	def renameTo(to) {
-		def dir = file.parent
-		ant.move(file:"$dir/$file.name", tofile:"$dir/$to")
+		def parent = file.parent
+		ant.move(file:"$parent/$file.name", tofile:"$parent/$to")
 	}
 	/**
 	 * Remove the path created for this store - if it is a directory
@@ -380,12 +350,16 @@ class Store {
 	 * Delete the file pointed to by the store.
 	 */
 	def delete() {
-		ant.delete(file: file.path)
+		if (isDirectory) {
+			rmdir()
+		} else {
+			ant.delete(file: file.path)
+		}
 	}
 
-	@Override int hashCode() { pathFromWebBase.hashCode() }
+	@Override int hashCode() { path.hashCode() }
 
-	boolean equals(Object obj) { pathFromWebBase == obj.pathFromWebBase }
+	boolean equals(Object obj) { path == obj.path }
 
 	@Lazy ant = Ant.builder(Log.file('store'), 2)
 	/**
@@ -405,17 +379,16 @@ class Store {
 		}
 		return roots
 	}
-	static Store[] getAllProjectRoots() {projectRoots + Store.base('/uSDLC')}
 	/**
 	 * @return Retrieve the root page of the uSDLC project
 	 */
-	static Store getUsdlcRoot() { Store.base('frontPage.html') }
+	static Store getUsdlcRoot() { Store.base('usdlc/frontPage/index.html') }
 	/**
 	 * Return first matching file searching up parent tree.
 	 */
 	Store onParentPath(Closure test) {
 		def home = project.home
-		def path = parent
+		def path = dir
 		while (path && path != home) {
 			def store = Store.base(path)
 			def result = test(store)

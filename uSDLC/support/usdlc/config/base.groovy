@@ -1,17 +1,16 @@
 package usdlc.config
 
-home = '../..'	// for ~/path - defaults to one directory above uSDLC
-urlBase = ''
-srcPath = ['./', 'support/']
-libPath = ['lib/jars/']
+home = '..'	// for ~/path - defaults to one directory above uSDLC
+srcPath = ['usdlc/', 'usdlc/support/']
+libPath = ['usdlc/lib/jars/']
 newsUrl = 'http://usdlc.wordpress.com/feed/'
 
 port = 9000
 environmentRegister = [db: 'usdlc.db.Database']
 compressCss = false
 compressJs = false
-noCompression = ~".*/rt/.*"
+noCompression = ~"usdlc/.*/rt/.*"
 
 startupScripts = [
-		"rt/css_and_js_builder.groovy"
+		"usdlc/rt/css_and_js_builder.groovy"
 ]

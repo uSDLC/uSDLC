@@ -102,9 +102,9 @@ $(function () {
 		pageContentsURL:     '/index.html',
 		normalizeURL:        function (path) {
 			var p = path
-			if (p.substring(0, usdlc.urlBase.length) != usdlc.urlBase) {
-				p = usdlc.urlBase + '/' + p
-			}
+//			if (p[0] != '/') {
+//				p = '/' + p
+//			}
 			var dot = p.lastIndexOf('.')
 			var slash = p.lastIndexOf('/')
 			if (slash == p.length - 1) {

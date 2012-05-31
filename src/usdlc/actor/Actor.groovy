@@ -6,6 +6,7 @@ import usdlc.Session
 import usdlc.Store
 import usdlc.config.Config
 import usdlc.drivers.Groovy
+
 import static usdlc.config.Config.config
 
 @AutoClone class Actor {
@@ -34,7 +35,7 @@ import static usdlc.config.Config.config
 		context.config = config
 		context.getters = context.getters ?: [:]
 		context.setters = context.setters ?: [:]
-		context.project = script ? script.project : Config.project('')
+		context.project = script ? script.project : Config.project('uSDLC')
 		dslContext.getters = dslContext.getters ?: [:]
 		dslContext.setters = dslContext.setters ?: [:]
 

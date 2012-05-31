@@ -14,9 +14,9 @@ switch (query.command) {
 		if (query.page.indexOf('/Environment/Trash') != -1) {
 			page(query.page) { parent, name -> parent.delete(name) }
 		} else {
-			def store = Store.base(query.page)
+			def store = Store.base("usdlc/$query.page")
 			def to = Store.base("~home/usdlc/Environment/Trash", store.project)
-			paste(query.page, to.pathFromWebBase, 'first', true)
+			paste(query.page, to.path, 'first', true)
 		}
 		break
 	case 'move':

@@ -1,74 +1,70 @@
-window.usdlc =
-	synopses : -> # we will provide one with teeth after
-	###
-	 Given a path (from a URL), return the parent path - being the complete
-	 directory structure without file name.
-	 ###
-	parentPath : (path) ->
-		lastSlash = path.lastIndexOf('/')
-		if lastSlash != -1 then path[0...lastSlash] else path
-
-	removeUrlBase : (path) ->
-		b = usdlc.urlBase + '/'
-		if path.substring(0, b.length) == b then path.substring(b.length) else path
-
-window.onload = ->
-	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
-	head = document.getElementsByTagName('head')[0]
-	base = document.createElement('base')
-	base.setAttribute('href', usdlc.urlBase)
-	head.appendChild(base)
-
-	loadScriptAsync = (path, onScriptLoaded) ->
-		script = document.createElement("script")
-		script.type = "text/javascript"
-		script.async = "async"
-
-		if script.readyState # IE
-			script.onreadystatechange = ->
-				if script.readyState == "loaded" || script.readyState == "complete"
-					script.onreadystatechange = null;
-					onScriptLoaded(path);
-		else # Other browsers
-			script.onload = -> onScriptLoaded(path)
-
-		script.src = usdlc.urlBase + path
-		head.appendChild(script)
-
-	loadSetInParallel = (scripts, onSetAllLoaded) ->
-		countdown = scripts.length
-		while scripts and scripts.length
-			loadScriptAsync scripts.shift(), -> onSetAllLoaded() unless --countdown
-
-	loader = (sets, onSetsAllLoaded) ->
-		if sets.length
-			loadSetInParallel sets.shift(), -> loader(sets, onSetsAllLoaded)
-		else
-			onSetsAllLoaded()
-
-	preload = [
-			[ '/lib/jquery/js/jquery.js' ]
-			[ '/lib/jquery/js/jquery-ui.js' ]
-			[ '/lib/jquery/js/jquery.cookie.js', '/lib/jquery/js/jquery.sausage.js'
-					'/lib/jquery/js/jquery.hotkeys.js', '/lib/jquery/js/jquery.url.js',
-					'/rt/js/base.js' ]
-			[ '/rt/js/init.js' ], [ '/rt/js/section.coffeescript', '/rt/js/template.js' ] ]
-	postload = [
-			[ '/lib/ckeditor/ckeditor.js', '/lib/jquery/js/jquery.scrollTo.js',
-				'/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js'
-				'/lib/CodeMirror/lib/codemirror.js' ]
-			[ '/rt/js/contentTree.coffeescript',
-				'/usdlc/dsl/dslAssociationList_js.groovy' ]
-			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
-				'/rt/js/menu.coffeescript', '/rt/js/moveSection.js',
-				'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js',
-				'/rt/js/sourceEditor.coffeescript', '/rt/js/ex.coffeescript',
-				'/rt/js/screencast.coffeescript' ] ]
-
-	loader preload, ->
-		usdlc.init.pageLayout()
-		usdlc.init.decoratePage()
-		postLoader = ->
-			loader postload, ->
-				loadSetInParallel usdlc.getSourceEditorModes(), usdlc.init.finalise
-		usdlc.init.loadPage -> setTimeout postLoader, 500
+#window.usdlc =
+#	synopses : -> # we will provide one with teeth after
+#	###
+#	 Given a path (from a URL), return the parent path - being the complete
+#	 directory structure without file name.
+#	 ###
+#	parentPath : (path) ->
+#		lastSlash = path.lastIndexOf('/')
+#		if lastSlash != -1 then path[0...lastSlash] else path
+#
+#window.onload = ->
+#	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
+#	head = document.getElementsByTagName('head')[0]
+#	base = document.createElement('base')
+#	base.setAttribute('href', usdlc.urlBase)
+#	head.appendChild(base)
+#
+#	loadScriptAsync = (path, onScriptLoaded) ->
+#		script = document.createElement("script")
+#		script.type = "text/javascript"
+#		script.async = "async"
+#
+#		if script.readyState # IE
+#			script.onreadystatechange = ->
+#				if script.readyState == "loaded" || script.readyState == "complete"
+#					script.onreadystatechange = null;
+#					onScriptLoaded(path);
+#		else # Other browsers
+#			script.onload = -> onScriptLoaded(path)
+#
+#		script.src = usdlc.urlBase + path
+#		head.appendChild(script)
+#
+#	loadSetInParallel = (scripts, onSetAllLoaded) ->
+#		countdown = scripts.length
+#		while scripts and scripts.length
+#			loadScriptAsync scripts.shift(), -> onSetAllLoaded() unless --countdown
+#
+#	loader = (sets, onSetsAllLoaded) ->
+#		if sets.length
+#			loadSetInParallel sets.shift(), -> loader(sets, onSetsAllLoaded)
+#		else
+#			onSetsAllLoaded()
+#
+#	preload = [
+#			[ '/lib/jquery/js/jquery.js' ]
+#			[ '/lib/jquery/js/jquery-ui.js' ]
+#			[ '/lib/jquery/js/jquery.cookie.js', '/lib/jquery/js/jquery.sausage.js'
+#					'/lib/jquery/js/jquery.hotkeys.js', '/lib/jquery/js/jquery.url.js',
+#					'/rt/js/base.js' ]
+#			[ '/rt/js/init.js' ], [ '/rt/js/section.coffeescript', '/rt/js/template.js' ] ]
+#	postload = [
+#			[ '/lib/ckeditor/ckeditor.js', '/lib/jquery/js/jquery.scrollTo.js',
+#				'/lib/jquery/js/jquery.jstree.js', '/rt/js/server.js'
+#				'/lib/CodeMirror/lib/codemirror.js' ]
+#			[ '/rt/js/contentTree.coffeescript',
+#				'/usdlc/dsl/dslAssociationList_js.groovy' ]
+#			[ '/rt/js/synopses.js', '/lib/ckeditor/adapters/jquery.js',
+#				'/rt/js/menu.coffeescript', '/rt/js/moveSection.js',
+#				'/rt/js/clipboard.js', '/rt/js/run.js', '/rt/js/htmlEditor.js',
+#				'/rt/js/sourceEditor.coffeescript', '/rt/js/ex.coffeescript',
+#				'/rt/js/screencast.coffeescript' ] ]
+#
+#	loader preload, ->
+#		usdlc.init.pageLayout()
+#		usdlc.init.decoratePage()
+#		postLoader = ->
+#			loader postload, ->
+#				loadSetInParallel usdlc.getSourceEditorModes(), usdlc.init.finalise
+#		usdlc.init.loadPage -> setTimeout postLoader, 500

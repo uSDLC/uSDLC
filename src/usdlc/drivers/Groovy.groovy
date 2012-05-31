@@ -1,8 +1,9 @@
 package usdlc.drivers
 
 import org.codehaus.groovy.runtime.InvokerHelper
-import static usdlc.config.Config.config
 import usdlc.Store
+
+import static usdlc.config.Config.config
 
 /**
  * Groovy script support
@@ -52,7 +53,7 @@ class Groovy {
 	 * logging and script includes
 	 */
 	def run(Store script, binding = baseBinding) {
-		def scriptClass = loadClass(script.parent, script.name) ?:
+		def scriptClass = loadClass(script.dir, script.name) ?:
 			loadScriptByName(script)
 		if (scriptClass) {
 			runClass(scriptClass, binding)
@@ -62,8 +63,10 @@ class Groovy {
 	}
 
 	def loadScriptByName(Store script) {
-		try {return gse.loadScriptByName(script.pathFromWebBase)}
-		catch(e) {return null}
+		try {return gse.loadScriptByName(script.absolutePath)}
+		catch(e) {
+			return null
+		}
 	}
 	/**
 	 * Run a list of scripts

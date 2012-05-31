@@ -86,7 +86,7 @@ class Screencast {
 			if (element.getAttribute('action') == 'page') {
 				def href = element.getAttribute('href').
 						replaceAll('http://[^/]*', '')
-				session.screencastPage = Store.base(href)
+				session.screencastPage = Store.base("usdlc/$href")
 				script("usdlc.relativePageContents('$href')")
 			} else {
 				element.click()

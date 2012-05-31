@@ -10,22 +10,14 @@ $(function() {
 			lastSlash = path.lastIndexOf('/')
 			if (lastSlash != -1) path = path.substring(0,lastSlash)
 			return path
-		},
-
-		removeUrlBase : function(path) {
-			b = usdlc.urlBase + '/'
-			if (path.substring(0, b.length) == b)
-				path = path.substring(b.length)
-			return path
 		}
 	}
-	usdlc.urlBase = usdlc.parentPath(window.location.pathname)
 	window.CKEDITOR_BASEPATH = '/lib/ckeditor/'
 
 
 	head = document.getElementsByTagName('head')[0]
 	base = document.createElement('base')
-	base.setAttribute('href', usdlc.urlBase)
+	base.setAttribute('href', '/')
 	head.appendChild(base)
 
 	$.extend(true, window.usdlc, {
@@ -48,7 +40,7 @@ $(function() {
 				}
 			}
 
-			script.src = usdlc.urlBase + path
+			script.src = path
 			head.appendChild(script)
 		},
 		/*
@@ -71,7 +63,7 @@ $(function() {
 		 * help directory.
 		 */
 		help : function() {
-			usdlc.window("help", "/rt/help/index.html", {})
+			usdlc.window("help", "/usdlc/rt/help/index.html", {})
 		},
 		cookie : function(key) {
 			return $.cookie(key)
@@ -101,7 +93,7 @@ $(function() {
 					$(event.target).children('.CodeMirror').size() > 0
 		},
 		logOut: function() {    // used in top.menu
-			$.get(usdlc.urlBase + '/support/usdlc/logOut.groovy',
+			$.get('/usdlc/support/usdlc/logOut.groovy',
 				function() {
 					$('#pageTitleImage').attr('title', '')
 					usdlc.goHome()
@@ -112,7 +104,7 @@ $(function() {
 			var password = $('#loginform input[name="password"]')[0].value
 			$.ajax({
 				type : "POST",
-				url : usdlc.urlBase + '/support/usdlc/logIn.groovy',
+				url : '/usdlc/support/usdlc/logIn.groovy',
 				contentType: 'application/x-www-form-urlencoded',
 				data : {name:userName,password:password},
 				success : function(data) {
@@ -128,7 +120,7 @@ $(function() {
 			})
 		},
 		changePassword: function() {    // used in top.menu
-			var url = usdlc.urlBase + '/support/usdlc/changePassword.groovy'
+			var url = '/usdlc/support/usdlc/changePassword.groovy'
 			var oldpwd = $('#changepassword input[name="oldpwd"]')[0].value
 			var pwd1 = $('#changepassword input[name="pwd1"]')[0].value
 			var pwd2 = $('#changepassword input[name="pwd1"]')[0].value
@@ -145,7 +137,7 @@ $(function() {
 			}
 		},
 		goHome: function() {
-			usdlc.absolutePageContents("/frontPage/",
+			usdlc.absolutePageContents("/frontPage",
 					function() {
 						usdlc.contentTree.jstree('deselect_all')
 						usdlc.contentTree.jstree('refresh')

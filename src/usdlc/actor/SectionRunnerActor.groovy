@@ -9,7 +9,6 @@ import usdlc.drivers.JavaScript
 import java.util.regex.Pattern
 
 import static usdlc.MimeTypes.mimeType
-import static usdlc.config.Config.config
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
@@ -25,7 +24,7 @@ import static usdlc.config.Config.config
 		// Make sure scripts have a clean slate
 		exchange.request.session.instance(JavaScript).globalScope = null
 
-		rerun = (script.pathFromWebBase == 'last.sectionRunner')
+		rerun = (script.path == 'last.sectionRunner')
 		if (rerun) {
 			if (lastRunner) {
 				exchange.request.session.persist.lastSectionRunner =
@@ -38,7 +37,7 @@ import static usdlc.config.Config.config
 			def rq = exchange.request
 			lastRunner = [
 					url: rq.header.with { "http://$host$uri?$query" },
-					page: rq.query.page,
+					page: "usdlc/$rq.query.page",
 					sections: rq.query.sections.split(',') as Set
 			]
 		}
@@ -74,13 +73,13 @@ import static usdlc.config.Config.config
 			}
 			if (!empty) {
 				wrapOutput(['<div class="gray">', '</div>']) {
-					write "Page $currentPage.parent"
+					write "Page $currentPage.dir"
 				}
 				if (actors) { runActorsOnPage(actors) }
 				if (onScreen) { updateLinkStates() }
 
 				String text = html.select('body').html()
-				def path = exchange.store.pathFromWebBase
+				def path = exchange.store.path
 				if (path.endsWith('.sectionRunner')) {
 					exchange.store = Store.base(path[0..-15])
 				}
@@ -102,7 +101,7 @@ import static usdlc.config.Config.config
 	private writeLinkHeader() {
 		write """<html><head>
 				<link type='text/css' rel='stylesheet'
-					href='$config.urlBase/rt/outputFrame.css'>
+					href='/usdlc/rt/outputFrame.css'>
 					</head><body>
 					<div id='output'>"""
 	}
@@ -134,7 +133,7 @@ import static usdlc.config.Config.config
 	 */
 	void runActorsOnPage(List<Store> actors) {
 		try {
-			def base = Store.base(actors[0].parent)
+			def base = Store.base(actors[0].dir)
 			runFiles(~/^Setup\..*/, base)
 			actors.each { Store actor -> runActor(actor) }
 			runFiles(~/^Cleanup\..*/, base)
@@ -173,7 +172,7 @@ import static usdlc.config.Config.config
 	 * in HTML if needed.
 	 */
 	void runActor(Store actorStore) {
-		currentActor = actorStore.pathFrom(currentPage)
+		currentActor = actorStore.pathBetweenFiles(currentPage)
 		actorState = 'running'
 		def actor = load(actorStore)
 		if (actor) {

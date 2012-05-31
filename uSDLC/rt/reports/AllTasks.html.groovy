@@ -20,7 +20,7 @@ doc.div(id: "pageTitle", 'class': "editable") {
 	h1("")
 	h2("")
 	def sections = []
-	Store.base().dirs(~/.*\.html$/) { String path ->
+	Store.base('usdlc').dirs(~/.*\.html$/) { String path ->
 		def page = new Page(Store.base(path).text())
 		page.each { html ->
 			def section = [page: page.name]

@@ -2,6 +2,7 @@ package usdlc.actor
 
 import usdlc.Store
 import usdlc.server.Execute
+
 import static usdlc.FileProcessor.fileProcessor
 import static usdlc.config.Config.config
 
@@ -29,7 +30,7 @@ class CompilerActor extends Actor {
 					Source: full.absolutePath,
 			]
 
-			fileProcessor(full.pathFromWebBase, context.compiles[language], {
+			fileProcessor(full.path, context.compiles[language], {
 				Store source, Writer out -> out.write(source.text)
 			}, { Store source -> // only compile on change
 				compiler.compile.execute(binding)

@@ -20,15 +20,13 @@ class Config {
 	 * Must be called early on by the server main program to initialise the
 	 * configuration.
 	 */
-	static load(String environment, String baseDirectory, argList) {
-		baseDir = baseDirectory
+	static load(String environment, argList) {
 		slurper = new ConfigSlurper(environment)
 		config = parseOptions('base')
 		config.projects = [:]
 		['webDriverConfig', 'languageConfig'].each { String scriptName ->
 			config.putAll(parseOptions(scriptName))
 		}
-		config.baseDirectory = baseDirectory
 		config.putAll(Dictionary.commandLine(argList))
 		// add home to source path so we can go app.blah
 		config.srcPath << new File(config.home).absolutePath
@@ -39,11 +37,11 @@ class Config {
 	}
 
 	private static Map parseOptions(String scriptName) {
-		parse("/support/usdlc/config/${scriptName}.groovy")
+		parse("usdlc/support/usdlc/config/${scriptName}.groovy")
 	}
 
 	private static Map parse(String scriptPath) {
-		def file = new File(baseDir, scriptPath)
+		def file = new File(scriptPath)
 		if (!file.exists()) return [:]
 		def url = file.toURI().toURL()
 		return slurper.parse(url)
@@ -57,36 +55,33 @@ class Config {
 	 * pd.name  Project name
 	 * pd.home project home
 	 */
-	static Map project(String name, parent = usdlcProject) {
-		if (!config.projects[name]) {
-			parent = parent ?: usdlcProject
-			if (parent && parent.path[name]) {
+	static Map project(String dir, parent = null) {
+		def home = "$config.home/$dir"
+		if (!config.projects[dir]) {
+			if (parent && parent.path[dir]) {
 				return parent // so ~home points to project home
 			}
-			def home = "$config.home/$name"
-			if (Store.absolute(home).exists()) {
+			def name = dir
+			if (new File(home).exists()) {
 				if (name.indexOf('_') != -1) {
 					name = name.replaceAll('_', ' ')
 				} else {
-					name = Store.decamel(name.capitalize())
+					if (name ==~ /[a-z][^A-Z].*/) name = name.capitalize()
+					name = Store.decamel(name)
 				}
-				return project(name, home)
+				def configFile = "$home/usdlc/Config.groovy"
+				def pc = configFile ? parse(configFile) : [:]
+				pc.path = pc.path ?: [:]
+				pc.path.home = pc.home = home
+				pc.dir = dir
+				pc.name = name
+				return config.projects[dir] = pc
 			}
-			return project('none', config.home)
+			if (name != 'uSDLC') return project('uSDLC')
 		}
-		return config.projects[name]
+		return config.projects[dir]
 	}
-	static project(name, home) {
-		def configFile = "$home/usdlc/Config.groovy"
-		def pc = configFile ? parse(configFile) : [:]
-		pc.path = pc.path ?: [:]
-		pc.path.home = pc.home = home
-		pc.name = name
-		return config.projects[name] = pc
-	}
-	static usdlcProject
 	static ConfigSlurper slurper
-	static String baseDir
 
 	static private buildClassPath() {
 		// Add to the uSDLC classpath - so that compilers behave
@@ -128,7 +123,7 @@ class Config {
 	@Lazy static manifest = {
 		def attributes = null
 		try {
-			Store store = Store.base('../META-INF/MANIFEST.MF')
+			Store store = Store.base('usdlc/META-INF/MANIFEST.MF')
 			Manifest mf = new Manifest(store.url.openStream());
 			attributes = mf.mainAttributes
 		} catch (Exception e) { }

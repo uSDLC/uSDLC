@@ -1,9 +1,9 @@
 package usdlc
 
 import usdlc.actor.Actor
+
 import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
-import static usdlc.config.Config.config
 
 /**
  * Core Processor for uSDLC - no matter which web server is in
@@ -161,7 +161,7 @@ class Exchange {
 		}
 		response.out = new PrintStream(outputStream, true)
 		response.header['Content-Type'] =
-			request.query.mimeType ?: mimeType(store.pathFromWebBase)
+			request.query.mimeType ?: mimeType(store.path)
 		response
 	}
 	/**
@@ -172,7 +172,7 @@ class Exchange {
 	 */
 	private checkForStaticGzip() {
 		if (request.header.acceptEncoding.indexOf('gzip') != -1) {
-			def gzip = Store.base("${store.pathFromWebBase}.gzip")
+			def gzip = Store.base("${store.path}.gzip")
 			if (gzip.exists() && !store.newer(gzip)) {
 				response.header['Content-Encoding'] = 'gzip'
 				store = gzip
@@ -183,13 +183,7 @@ class Exchange {
 	Store store
 	boolean inferredTarget
 
-	void setStore(String path) {
-		String urlBase = config.urlBase
-		if (path.startsWith(urlBase)) {
-			path = path[urlBase.size()..-1]
-		}
-		store = Page.store(path)
-	}
+	void setStore(String path) { store = Page.store(path) }
 
 	void save(String newContents) {
 		store.write newContents.bytes

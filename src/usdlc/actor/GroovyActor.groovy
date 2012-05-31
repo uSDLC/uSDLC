@@ -3,6 +3,7 @@ package usdlc.actor
 import usdlc.Log
 import usdlc.Store
 import usdlc.drivers.Groovy
+
 import static usdlc.config.Config.config
 
 /**
@@ -30,8 +31,8 @@ class GroovyActor extends Actor {
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->
-						groovy.gse.loadScriptByName script.
-								rebase(scriptName).pathFromWebBase
+						def toCompile = script.rebase(scriptName).path
+						groovy.gse.loadScriptByName toCompile
 					},
 			]
 		}

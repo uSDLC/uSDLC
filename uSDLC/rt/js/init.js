@@ -115,8 +115,8 @@ $(function() {
 			 * root.
 			 */
 			var path = window.location.pathname
-			if (path == usdlc.urlBase + '/') {
-				path = window.location.search || usdlc.cookie('currentPage') || '/frontPage.html'
+			if (path == '/usdlc/home') {
+				path = window.location.search || usdlc.cookie('currentPage') || path
 				if (path[0] == '?')
 					path = path.substring(1)
 			}
@@ -135,9 +135,9 @@ $(function() {
 		},
 		postLoader : function() {
 			usdlc.loadScriptAsync(
-					'/.store/js/usdlcPost.js', usdlc.init.finalise)
+					'/usdlc/.store/js/usdlcPost.js', usdlc.init.finalise)
 			usdlc.loadScriptAsync(
-					'/usdlc/dslAssociationList_js.groovy', function() {})
+					'/usdlc/support/usdlc/dslAssociationList_js.groovy', function() {})
 		}
 	}
 })

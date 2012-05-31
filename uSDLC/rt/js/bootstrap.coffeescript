@@ -1,9 +1,9 @@
 if not window.usdlc
-	url = window.location
-	document.cookie = "currentPage=#{url.pathname}"
-	url.href = "#{url.protocol}//#{url.host}?#{url.pathname}"
+  url = window.location
+  if url.pathname isnt '/'
+    document.cookie = "currentPage=#{url.pathname}"
+  url.href = "#{url.protocol}//#{url.host}/usdlc/home"
 else
   synopsis = $('div.section:first')
   if synopsis.text().length is 0
     usdlc.form('Synopsis')
-    a=1

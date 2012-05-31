@@ -3,7 +3,7 @@ $ ->
     section = usdlc.getSection(element)
     if section
       if colour
-        url = "url(#{usdlc.urlBase}/rt/gradients/#{colour}-right.png)"
+        url = "url(/usdlc/rt/gradients/#{colour}-right.png)"
         section.css(
           backgroundImage : url
           backgroundPosition : -10

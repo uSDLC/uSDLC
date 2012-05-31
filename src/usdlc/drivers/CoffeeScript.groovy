@@ -16,7 +16,7 @@ class CoffeeScript {
 		this.bare = bare
 		// Without this, Rhino hits a 64K byte-code limit and fails
 		javascript.optimise = false
-		javascript.run(Store.base('lib/coffeescript.js'))
+		javascript.run(Store.base('usdlc/lib/coffeescript.js'))
 	}
 	/**
 	 * Pass in a coffee-script file and the compiler will do it's magic
@@ -26,8 +26,7 @@ class CoffeeScript {
 			compile(coffeescript.text)
 		} catch (exception) {
 			throw new RuntimeException(
-			"Error in $coffeescript.pathFromWebBase ($exception.message)",
-					exception)
+			"Error in $coffeescript.path ($exception.message)", exception)
 		}
 	}
 	/**

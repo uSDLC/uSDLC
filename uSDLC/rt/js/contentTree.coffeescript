@@ -4,24 +4,21 @@ $ ->
     html_data :
       ajax :
         url : (li) ->
-          path = usdlc.urlBase
           if li is -1
-            path = "#{path}/contentTreeBase_html.groovy"
+            path = "/usdlc/contentTreeBase_html.groovy"
           else
             from = $('a', li).get(0).pathname
-            path = "#{path}/contentTree_html.groovy?from=#{from}"
+            path = "/usdlc/contentTree_html.groovy?from=#{from}"
           cr = jQuery.url.setUrl(path).attr("directory")
           cr = "#{cr}/" if cr.charAt(cr.length - 1) != '/'
           this.contentRoot = cr
           path
         success : (data) ->
           tree = ' '
-          root = this.contentRoot
           $('<ins/>').html(data).find('a.usdlc[action=page]').each ->
             a = $(this)
             href = usdlc.removeDomain(a.attr('href'))
             if href.substring(0, 2) != '..' and href[0] != '/'
-              href = root + href if href.charAt(0) != '/'
               id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
               rel = a.attr('rel') ? ''
               rel = "rel='#{rel}'" if rel
@@ -34,12 +31,15 @@ $ ->
       'shift+down': -> mover 'next', 'after'
       'shift+left': -> moveout 'parents', 'after'
       'shift+right': -> movein 'prev', 'last'
+      'ctrl+c': -> usdlc.contentTree.jstree 'copy', selectedNode
+      'ctrl+x': -> usdlc.contentTree.jstree 'cut', selectedNode
+      'ctrl+v': -> usdlc.contentTree.jstree 'paste', selectedNode
     cookies :
       cookie_options :
         expires : 1000
     themes :
       theme : 'classic'  # apple classic default
-      url : '/lib/jquery/js/themes/classic/style.css'
+      url : '/usdlc/lib/jquery/js/themes/classic/style.css'
     ui:
       select_limit: 1
     types :
@@ -65,9 +65,9 @@ $ ->
     last = steps.length - 1
     id = '#'
     open_node = (index) ->
-      if steps[index] == '~'
-        id += usdlc.camelCase " #{steps[index + 1]}"
-        open_node(index + 2)
+      if steps[index][0] == '~'
+        id += usdlc.camelCase " #{steps[index].substring(1)}"
+        open_node(index + 1)
       else
         id += usdlc.camelCase " #{steps[index]}" # leading space = upper first
         if index < last
@@ -87,7 +87,7 @@ $ ->
         page = pageFromLi data.rslt.obj
         href = page.split('/')
         href[href.length - 1] = usdlc.camelCase renameTo
-        updateContentTree parent(page), href.join('/'),
+        updateContentTree parent(data.rslt.obj), href.join('/'),
           command: 'rename'
           newName: renameTo
           page: page
@@ -102,11 +102,11 @@ $ ->
         id: usdlc.nextSectionId()
     'remove.jstree': (event, data) ->
       page = pageFromLi data.rslt.prev
-      updateContentTree parent(data.rslt.prev), page,
+      updateContentTree -1, page,
         command: 'delete'
         page: pageFromLi data.rslt.obj
     'move_node.jstree': (event, data) ->
-      move pageFromLi -1, data.rslt.np, data.rslt.o, data.rslt.r, data.rslt.p
+      move -1, pageFromLi(data.rslt.np), data.rslt.o, data.rslt.r, data.rslt.p
     'cut.jstree': (event, data) ->
       cutPage = pageFromLi data.rslt.prev
     'copy.jstree': (event, data) ->
@@ -167,6 +167,6 @@ $ ->
       move parent(reference), href, selectedNode, reference, position
 
   updateContentTree = (needingRefresh, href, data) ->
-    $.get "#{usdlc.urlBase}/support/usdlc/contentTree.groovy", data, (rslt) ->
+    $.get "/usdlc/support/usdlc/contentTree.groovy", data, (rslt) ->
       reloadAfterRefresh = href
       usdlc.contentTree.jstree 'refresh', needingRefresh

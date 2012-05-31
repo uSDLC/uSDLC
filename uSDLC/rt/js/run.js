@@ -59,8 +59,7 @@ $(function() {
 				return $(this).attr('id')
 			}).get().join(',')
 			var pc = usdlc.pageContentsURL
-			var pcf = usdlc.removeUrlBase(pc)
-			var url = pc + '.sectionRunner?page=' + pcf + '&sections=' + sections
+			var url = pc + '.sectionRunner?page=' + pc + '&sections=' + sections
 			outputFrame = $('<iframe/>').addClass('output').attr('src', url)
 			outputSection.append(outputFrame)
 		}

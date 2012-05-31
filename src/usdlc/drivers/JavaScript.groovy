@@ -3,6 +3,7 @@ package usdlc.drivers
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.Scriptable
 import usdlc.Store
+
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.config.Config.config
 
@@ -25,8 +26,7 @@ class JavaScript {
 			def inputStream = js.file.newInputStream()
 			reader = new InputStreamReader(inputStream, 'UTF-8')
 			def scope = scope(context, binding)
-			return context.evaluateReader(
-					scope, reader, js.pathFromWebBase, 0, null)
+			return context.evaluateReader(scope, reader, js.path, 0, null)
 		} finally {
 			reader?.close()
 			Context.exit()

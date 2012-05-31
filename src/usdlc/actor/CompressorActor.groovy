@@ -1,6 +1,7 @@
 package usdlc.actor
 
 import usdlc.Store
+
 import static usdlc.FileProcessor.gzip
 import static usdlc.config.Config.config
 
@@ -12,9 +13,9 @@ abstract class CompressorActor extends Actor {
 		Store source = exchange.store, compressed
 		if (config."compress${type.capitalize()}" &&
 				!config.noCompression.matcher(
-						source.pathFromWebBase).matches()) {
-			compressed = Store.base(".store/$type/base").
-					rebase(source.pathFromWebBase)
+						source.path).matches()) {
+			compressed = Store.base("usdlc/.store/$type/base").
+					rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()
 				source.file.withReader { Reader input ->

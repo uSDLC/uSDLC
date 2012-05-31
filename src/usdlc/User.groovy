@@ -28,9 +28,9 @@ class User {
 		isAdmin = false
 		def userId = Store.camelCase(userName)
 		password = 'unknown'
-		scripts = ['/support/usdlc/authorise.groovy']
+		scripts = ['usdlc/support/usdlc/authorise.groovy']
 		def found = false
-		Store.allProjectRoots.each {
+		Store.projectRoots.each {
 			def projectPath = it.path
 			def up = "$projectPath/Environment/Users/$userId"
 			scripts << "$up/Login.groovy"
@@ -99,7 +99,7 @@ class User {
 	 */
 	boolean authorised(Store store, String action = 'read') {
 		if (isAdmin || !store.isHtml) return true
-		def path = store.parent
+		def path = store.dir
 		if (path == 'uSDLC' || path == '') {  // home page
 			// only Admin can edit home page
 			return action == 'read' || action == 'raw'

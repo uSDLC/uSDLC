@@ -42,7 +42,8 @@ class CompilingClassLoader extends ClassLoader {
 
 	@SuppressWarnings("unchecked")
 	public Class findClass(String name) {
-		Store sourceFile = Store.base(name.replace('.', '/') + dotSourceExt);
+		def fileName = "usdlc/${name.replace('.', '/')}$dotSourceExt"
+		Store sourceFile = Store.base(fileName);
 		Class<?> classReference;
 		Store classFile = Store.base(basePath(sourceFile) + '.class');
 		if (sourceFile.exists()) {
@@ -58,7 +59,7 @@ class CompilingClassLoader extends ClassLoader {
 	}
 
 	private static String basePath(Store store) {
-		String path = store.pathFromWebBase;
-		return path.substring(0, path.length() - store.fullExt.length() - 2);
+		String bp = store.path;
+		return bp.substring(0, bp.length() - store.fullExt.length() - 2);
 	}
 }
