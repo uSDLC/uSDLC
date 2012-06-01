@@ -23,13 +23,15 @@ $ ->
     section
   ###
   Each paragraph is a focus element. Highlight it if clicked on or
-  otherwise referenced to.
+  otherwise referenced to. inFocus used for first load after click.
   ###
   usdlc.setFocus = (element) ->
     section = usdlc.getSection(element)
-    if not section.hasClass("inFocus")
+    console.log section
+    if not usdlc.inFocus
       usdlc.clearFocus()
-      usdlc.inFocus = section.addClass('inFocus ui-widget-content')
+      usdlc.inFocus = section
+      section.addClass('inFocus ui-widget-content')
       usdlc.contentTree.jstree('disable_hotkeys')
       $('#contentTree').removeClass('rounded pale-gray-box inFocus')
       usdlc.pageContentsSausages.sausage("setFocus", section)
@@ -38,19 +40,20 @@ $ ->
     section
 
   usdlc.clearFocus = ->
-    if not usdlc.inFocus then return
-    usdlc.menuToTop()
+    if usdlc.inFocus
+      usdlc.menuToTop()
+      $('.inFocus').removeClass('inFocus ui-widget-content')
+      usdlc.lastFocus = usdlc.inFocus
+      usdlc.inFocus = null
     $('.inFocus').removeClass('inFocus ui-widget-content')
-    usdlc.lastFocus = usdlc.inFocus
-    usdlc.inFocus = null
     usdlc.contentTree.jstree('enable_hotkeys')
     $('#contentTree').addClass('rounded pale-gray-box inFocus')
 
   usdlc.toggleFocus = ->
-      if usdlc.inFocus
-        usdlc.clearFocus()
-      else
-        usdlc.setFocus(usdlc.lastFocus || $('div.section:first'))
+    if usdlc.inFocus
+      usdlc.clearFocus()
+    else
+      usdlc.setFocus(usdlc.lastFocus || $('div.section:first'))
 
   usdlc.inFocus = null
   usdlc.lastFocus = null
