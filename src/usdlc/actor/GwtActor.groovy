@@ -1,14 +1,16 @@
 package usdlc.actor
+import usdlc.Store
 
 class GwtActor extends CoffeeActor {
-	void init() {
-		super.init()
-		compiler.preprocessor = { text ->
-			def parsed = []
-			text.eachLine {
-				parsed.push("gwt.processor '$it'")
-			}
-			return parsed.join('\n')
+	def preprocessor = { text ->
+		def parsed = []
+		text.eachLine {
+			parsed.push("gwt.processor '${it.replaceAll(/'/,/\'/)}'")
 		}
+		return parsed.join('\n')
+	}
+
+	public void run(Store me) {
+		super.run(compiler.javascript(me, preprocessor))
 	}
 }

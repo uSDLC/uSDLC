@@ -70,7 +70,7 @@ import static usdlc.config.Config.config
 		if (!cache[language].exists) return null
 		def clone = cache[language].clone()
 		clone.script = store
-		clone as Actor
+		return clone as Actor
 	}
 
 	private static retrieveDefinitions(String language, Map data) {

@@ -212,16 +212,12 @@ import static usdlc.MimeTypes.mimeType
 	 * way and flag the actor as having failed it's job.
 	 */
 	def reportException(Throwable throwable) {
-		def trace = throwable.stackTrace.find {
-			it.toString() ==~ ~/\w+\.run\(.*/
-		} ?: throwable.stackTrace.find {
-			it.fileName && it.lineNumber > 0 &&
-					!internalExceptions.matcher(it.className).find()
+		def messages = []
+		while (throwable) {
+			messages << throwable.message
+			throwable = throwable.cause
 		}
-		reportError {
-			write throwable.message
-			if (trace) { write "\n\n${trace.toString()}" }
-		}
+		reportError { write messages.join('\n') }
 		actorState = 'failed'
 	}
 	/**

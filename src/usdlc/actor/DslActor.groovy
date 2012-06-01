@@ -2,6 +2,7 @@ package usdlc.actor
 
 import usdlc.drivers.Grape
 import usdlc.drivers.Groovy
+
 import static usdlc.config.Config.config
 
 /**
@@ -33,12 +34,6 @@ class DslActor extends GroovyActor {
 		context << [grab: { Map dependency -> Grape.grab(dependency) }]
 		Groovy.runClass(languageScriptClass, new UsdlcBinding(dslContext, context))
 	}
-	/**
-	 * Keep a cache of previous instances - one per language - so we don't
-	 * have
-	 * to recompile. The cache includes instances that failed to find a
-	 * script.
-	 */
 	static gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
-	boolean asBoolean() {exists}
+//	boolean asBoolean() {exists}
 }

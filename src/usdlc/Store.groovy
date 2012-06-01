@@ -33,7 +33,7 @@ class Store {
 	static pathRE = ~/^(.*)~\/?(\w*)(.*)$/
 
 	private Store(String path, project) {
-		if (path[0] == '/') path = "./$path"
+		if (path[0] == '/') path = ".$path"
 		this.path = path
 		this.project = project
 		file = new File(path)

@@ -188,6 +188,15 @@ class Exchange {
 	void save(String newContents) {
 		store.write newContents.bytes
 	}
+	/**
+	 * Convenience function for Execute that keeps one copy in instance
+	 * and sets stdout and stderr to return in the response.
+	 */
+	def executor() {
+		def exec = request.session.instance(Execute)
+		exec.out = exec.err = response.out
+		return exec
+	}
 
 	// Point Apache Commons logging to a uSDLC proxy.
 	static { apacheCommons() }
