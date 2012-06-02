@@ -27,8 +27,7 @@ $ ->
   ###
   usdlc.setFocus = (element) ->
     section = usdlc.getSection(element)
-    console.log section
-    if not usdlc.inFocus
+    if not section.hasClass('inFocus')
       usdlc.clearFocus()
       usdlc.inFocus = section
       section.addClass('inFocus ui-widget-content')
@@ -65,15 +64,17 @@ $ ->
 
   usdlc.upFocus = ->
     return true unless usdlc.inFocus
-    focus = usdlc.inFocus.prev('.section')
-    usdlc.setFocus(focus) if focus?.length
+    focus = usdlc.inFocus.prevAll('div.section:not(.deleted)').first()
+    usdlc.setFocus(focus) if focus.length
     return false
 
   usdlc.downFocus = ->
     return true unless usdlc.inFocus
-    focus = usdlc.inFocus.next('.editable')
-    usdlc.setFocus(focus) if focus?.length
-    return false
+    focus = usdlc.inFocus.nextAll('div.section:not(.deleted)').first()
+    if focus.size()
+      usdlc.setFocus(focus)
+    else
+      usdlc.upFocus()
   ###
   Parse section title, subtitle, content, id and name (camel-case)
   ###
@@ -128,6 +129,31 @@ $ ->
     )
     usdlc.checkForSynopsis($section)
     usdlc.savePage()
+  ###
+  Delete a section - by making it invisible
+  ###
+  usdlc.deleteSectionInFocus = ->
+    if usdlc.inFocus
+      toDelete = usdlc.inFocus
+      usdlc.downFocus()
+      toDelete.addClass('deleted')
+      usdlc.savePage()
+  ###
+  restore a deleted section
+  ###
+  usdlc.undeleteSectionInFocus = ->
+    if usdlc.inFocus
+      usdlc.inFocus.removeClass('deleted showDeleted')
+      usdlc.savePage()
+  ###
+  Toggle hiding and showing deleted sections
+  ###
+  usdlc.toggleShowDeleted = ->
+    if $('.showDeleted').size()
+      usdlc.downFocus() if usdlc.inFocus.hasClass('deleted')
+      $('.deleted').removeClass('showDeleted')
+    else
+      $('.deleted').addClass('showDeleted')
   ###
   Load a page from disk and return the named section
   ###

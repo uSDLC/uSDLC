@@ -17,7 +17,7 @@ div.inclusion {
 	color: #191970;
 }
 
-div.hidden {
+div.hidden, div.deleted {
 	display:none
 }
 
@@ -25,6 +25,11 @@ div.editable {
 	min-height: 1em;
 	margin: 0;
 	padding: 0 1em 5px;
+}
+
+div.showDeleted {
+	display: block;
+	background-color: #ffb2b2 !important;
 }
 
 iframe.output {

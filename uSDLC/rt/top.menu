@@ -4,11 +4,8 @@ New,N
 	Feature,F,usdlc.form('New Section: Feature')
 	Scenario,S,usdlc.form('New Section: Scenario')
 	Guide,G,usdlc.form('New Section: Guide')
-Clipboard,C
-	Cut,C,usdlc.cutSectionInFocus(),ctrl+shift+X meta+shift+X
-	Copy,o,usdlc.copySectionInFocus(),ctrl+shift+C meta+shift+C
-	Paste,P,usdlc.pasteBelowSectionInFocus(),ctrl+shift+V meta+shift+V
 Section,S
+	Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E
 	Insert,I
 		Above,A,usdlc.upFocus();usdlc.form('New Section:'),^I meta+I
@@ -26,6 +23,8 @@ Section,S
 	Split,S
 		To new page,p,usdlc.extractSectionInFocus(),alt+E
 		Into section,s,usdlc.splitIntoSections(),alt+S
+	Toggle,T,usdlc.toggleShowDeleted(),^del meta+del
+	Undelete,U,usdlc.undeleteSectionInFocus()
 Run,R
 	Section,S,usdlc.runSectionInFocus({continuation:false}),^R alt+R
 	Page,P,usdlc.runPage({continuation:false}),^P alt+P

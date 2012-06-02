@@ -88,6 +88,7 @@ class Store {
 	 */
 	void mkdirs() { new File(dir).mkdirs() }
 
+	@Lazy String href = path.replaceFirst(~/^\.\.\//, '/~')
 	@Lazy String dir = isDirectory ? path : calcParent()
 	@Lazy String name = file.name
 	@Lazy String absolutePath = file.absolutePath

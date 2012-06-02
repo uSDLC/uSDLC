@@ -6,7 +6,7 @@ import usdlc.drivers.Groovy
 import static usdlc.config.Config.config
 
 class User {
-	def data, password, session, userPath
+	def data, password, session, userPath, home, userName
 	/**
 	 * Associate user and session
 	 */
@@ -30,9 +30,12 @@ class User {
 		password = 'unknown'
 		scripts = ['usdlc/support/usdlc/authorise.groovy']
 		def found = false
+		home = ''
 		Store.projectRoots.each {
 			def projectPath = it.path
 			def up = "$projectPath/Environment/Users/$userId"
+			def hd = Store.base("$up/Home")
+			if (hd.exists()) home = hd.href
 			scripts << "$up/Login.groovy"
 			def pwdStore = Store.base("$up/Password.txt")
 			if (pwdStore.exists()) found = true
@@ -43,6 +46,7 @@ class User {
 			}
 		}
 		if (found) {
+			this.userName = userName
 			def groovy = new Groovy(user: session.user, session: session)
 			groovy.scripts(scripts)
 			return true
@@ -56,13 +60,16 @@ class User {
 	def login(userName, passwordEntered) {
 		try {
 			if (load(userName) && checkPassword(passwordEntered)) {
-				return true
+				return this
 			}
 		} catch (e) { /* drop through to return to guest */ }
-		logout()
-		return false
+		return logout()
 	}
-	def logout() { load(config.userId ?: 'Guest') }
+	def logout() {
+		def userName = config.userId ?: 'Guest'
+		load(userName)
+		return this
+	}
 
 	def changePassword(was, to) {
 		if (checkPassword(was)) {
@@ -124,6 +131,13 @@ class User {
 			}
 		}
 		return data.pages[path].indexOf(action) != -1
+	}
+
+	def toHtml() {
+		if (home) {
+			return "<a href='$home' class='contentLink' action='page'>$userName</a>"
+		}
+		return ''
 	}
 
 	static csvRE = ~/\r*[\n,]/

@@ -19,7 +19,7 @@ $(function() {
 		cleanSections : function(sections) {
 			// clean up html of crap that builds up
 			sections.removeAttr('style')
-			.removeClass('inFocus hidden ui-state-highlight ui-widget-content')
+			.removeClass('inFocus hidden showDeleted ui-state-highlight ui-widget-content')
 			.filter('.synopsis').children().removeAttr('style')
 			$('div[href]', sections).html('')
 			$('*[activate]', sections).html('')
