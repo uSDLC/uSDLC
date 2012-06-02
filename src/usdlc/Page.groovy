@@ -222,9 +222,6 @@ class Page {
 	def childSection(href) { selectSection("h1 a[href^=$href]") }
 
 	def paste(fromName, toPage, toName, position, cut = 'true') {
-//		println "from=${store.pathFromWebBase} ==> $fromName"
-//		println "to=${toPage.store.pathFromWebBase} ==> $toName"
-//		println "cut=$cut, position=$position"
 		cut = cut.toBoolean()
 		def section = childSection(fromName)
 		if (position == 'first' || position == 'last') {
@@ -233,7 +230,10 @@ class Page {
 		toPage.childSection(fromName)?.remove();   // so no duplicates
 		def sameParent = store == toPage.store
 		if (sameParent) toPage = this
-		if (! cut) section = section.toString() // so we get a copy
+		if (! cut) section = section.clone() // so we get a copy
+		def newId = toPage.nextSectionId(), a = 0
+		section.attr('id', newId)
+		section.select('a').each {it.attr('id', "s${newId}a${a++}")}
 		switch (position) {
 			case 'before':
 				toPage.childSection(toName).before(section)
@@ -260,6 +260,15 @@ class Page {
 		}
 	}
 
+	def nextSectionId() {
+		def id = sections.size()
+		def ids = sections.collect {it.attr('id')} as Set
+		while (id in ids) { id++ }
+		return id
+	}
+
+	def sectionFromId(id) { selectSection("#$id") }
+
 	def selectSection(selector) {
 		findSectionFor(allSections.select(selector).first())
 	}
@@ -285,5 +294,6 @@ class Page {
 		Section(dom) {this.dom = dom}
 		/** Retrieve the unique section id */
 		String getId() { dom?.attr('id') ?: '' }
+		boolean isDeleted() {dom.hasClass('deleted')}
 	}
 }

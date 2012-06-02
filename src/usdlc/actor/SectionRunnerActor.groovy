@@ -64,7 +64,7 @@ import static usdlc.MimeTypes.mimeType
 		if (sectionsToRun) {
 			sections = sections.findAll { it.id in sectionsToRun }
 		}
-		sections.each { section ->
+		sections.collect{!it.isDeleted()}.each { section ->
 			def empty = true
 
 			section.select('a[action=page],a[action=runnable]').each { link ->
