@@ -1,8 +1,6 @@
 $(function () {
 	window.usdlc.editSectionInFocus = function () {
-		$('.inFocus').each(function () {
-			editSection(this)
-		})
+		if (usdlc.inFocus) editSection(usdlc.inFocus)
 	}
 	$.extend(true, window.usdlc, {
 		actorDefault:  usdlc.cookie("actorDefault") || 'coffee',
@@ -41,9 +39,7 @@ $(function () {
 	 * save sends a diff string to the usdlc.server.servletengine.server so that
 	 * full history is recorded.
 	 */
-	function editSection(section) {
-		var $section = $(section)
-		//usdlc.highlight(false) // remove highlighting so save will stand out
+	function editSection($section) {
 		usdlc.clearSynopses()
 		usdlc.menuToTop()
 		usdlc.scrollTo($section)

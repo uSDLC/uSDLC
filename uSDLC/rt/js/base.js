@@ -12,7 +12,7 @@ $(function() {
 			return path
 		}
 	}
-	window.CKEDITOR_BASEPATH = '/lib/ckeditor/'
+	window.CKEDITOR_BASEPATH = '/usdlc/lib/ckeditor/'
 
 
 	head = document.getElementsByTagName('head')[0]
@@ -93,27 +93,28 @@ $(function() {
 					$(event.target).children('.CodeMirror').size() > 0
 		},
 		logOut: function() {    // used in top.menu
+			$('#userName').html('')
 			$.get('/usdlc/support/usdlc/logOut.groovy',
-				function() {
-					$('#pageTitleImage').attr('title', '')
+				function(data) {
+					$('#userName').html(data)
 					usdlc.goHome()
 				})
 		},
 		logIn: function() {    // used in top.menu
 			var userName = $('#loginform input[name="user"]')[0].value
 			var password = $('#loginform input[name="password"]')[0].value
+			$('#userName').html('')
 			$.ajax({
 				type : "POST",
 				url : '/usdlc/support/usdlc/logIn.groovy',
 				contentType: 'application/x-www-form-urlencoded',
 				data : {name:userName,password:password},
 				success : function(data) {
-					if (data == 'ok') {
-						$('#pageTitleImage').attr('title', userName)
+					if (data.length > 0) {
+						$('#userName').html(data)
 						usdlc.closeDialog()
 						usdlc.goHome()
 					} else {
-						$('#pageTitleImage').attr('title', '')
 						usdlc.alert('Login Failed')
 					}
 				}

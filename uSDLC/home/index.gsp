@@ -51,7 +51,9 @@
 		<td id="contentTreeTd">
 			<img id="treeHider" src="/usdlc/lib/circular-icons/arrows_east_west.png"
 			     alt="">
-
+			<div id=userName class=rounded>
+				${exchange.request.user.toHtml()}
+			</div>
 			<div id="contentTree" class="hidden">
 				<ul>
 					<li class='jstree-closed'><a href="/"

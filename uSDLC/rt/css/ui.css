@@ -11,6 +11,15 @@ div#contentTree {
 	padding-right: 22px;
 }
 
+#contentTreeTd #userName {
+	text-align: center;
+	background-color: #fbffff;
+	border:none !important;
+}
+#contentTreeTd #userName a {
+	text-decoration: none;
+}
+
 img#treeHider {
 	float: right;
 	margin-right: -12px;

@@ -96,6 +96,7 @@ $(function () {
 //				afterwards && afterwards()
 //			})
 		},
+
 		relativePageContents:function (path) {
 			usdlc.absolutePageContents(usdlc.normalizeURL(path || '/'))
 		},

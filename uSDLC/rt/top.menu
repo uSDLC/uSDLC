@@ -1,15 +1,18 @@
 Home,H,usdlc.goHome()
 New,N
-	Project,r,usdlc.absolutePageContents('/uSDLC/Design/Projects/NewProject')
+	Vision,r,usdlc.form('New Vision')
+	Goal,G,usdlc.form('New Section: Goal')
+	Capability,C,usdlc.form('New Section: Capability')
 	Feature,F,usdlc.form('New Section: Feature')
 	Scenario,S,usdlc.form('New Section: Scenario')
-	Guide,G,usdlc.form('New Section: Guide')
+	Guide,u,usdlc.form('New Section: Guide')
+	Blank,B,usdlc.form('New Section: General')
 Section,S
 	Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E
 	Insert,I
-		Above,A,usdlc.upFocus();usdlc.form('New Section:'),^I meta+I
-		Below,B,usdlc.form('New Section:'),^A meta+A
+		Above,A,usdlc.upFocus();usdlc.newSectionForm(),^I meta+I
+		Below,B,usdlc.newSectionForm(),^A meta+A
 	Join,J
 		Above,A,usdlc.joinSectionAbove()
 		Below,B,usdlc.joinSectionBelow()
@@ -34,4 +37,4 @@ User,U
 	Log in,i,usdlc.form('Log In')
 	Log out,o,usdlc.logOut()
 	Change password,C,usdlc.form('Change Password')
-Help,l,usdlc.popWindow("?uSDLC/Guide"),F1
+Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1

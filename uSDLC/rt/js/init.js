@@ -89,7 +89,7 @@ $(function() {
 			usdlc.pageContentsSausages.sausage({
 				container : usdlc.pageContents,
 				page : function() {
-					return usdlc.pageContents.find('div.section')
+					return usdlc.pageContents.find("div.section:not('.deleted')")
 				},
 				scrollTo : usdlc.scrollTo,
 				content : function(i, $page) {

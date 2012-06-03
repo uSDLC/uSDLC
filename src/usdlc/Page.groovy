@@ -40,10 +40,6 @@ class Page {
 		allSections = allSections.not('div.footer, div:lt(2)')
 		sections = allSections.collect { new Section(it) }
 
-		if (updated) {
-			title.text(Store.decamel(from.parts.name))
-		}
-
 		if (!titleDiv.hasAttr('uuid')) {
 			titleDiv.attr('uuid', UUID.randomUUID().toString())
 			updated = true
@@ -65,8 +61,11 @@ class Page {
 			def page = new Page('usdlc/rt/template.html')
 			page.store = store
 			def title = Store.decamel(
-					store.parts.path.replaceFirst(~'.*/', ''))
-			page.select('div#pageTitle h1').html(title)
+					store.parts.path.replaceFirst(~'.*/', '')).split('_')
+			page.select('div#pageTitle h1').html(title[-1])
+			if (title.size() > 1) {
+				page.select('div#s1').append("<div class='pageType'>${title[-2]}</div>\n")
+			}
 			page.save()
 		}
 		return store
@@ -192,14 +191,7 @@ class Page {
 	def rename(from, to) {
 		def link = allSections.select("h1 a[href^=$from]").first()
 		link.html(to)
-		def toDirName = Store.camelCase(to)
-		link.attr('href', toDirName)
 		forceSave()
-		def child = store.rebase(from)
-		def childPage = new Page(child)
-		childPage.title = to
-		childPage.save()
-		child.renameTo(toDirName)
 	}
 
 	def createChild(name, id) {
