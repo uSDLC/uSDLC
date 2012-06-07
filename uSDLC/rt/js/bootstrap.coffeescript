@@ -5,5 +5,6 @@ if not window.usdlc
   url.href = "#{url.protocol}//#{url.host}/usdlc/home"
 else
   synopsis = $('div.section:first')
-  if synopsis.text().length is 0
-    usdlc.form('Synopsis')
+  children = synopsis.children().not('div.pageType')
+  if children.size() == 0
+    usdlc.form 'Synopsis', usdlc.selectSynopsisTab

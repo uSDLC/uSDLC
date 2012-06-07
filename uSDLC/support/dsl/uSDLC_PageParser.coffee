@@ -5,7 +5,7 @@ walkPage = (pg) ->
 	page? pg
 	if section
 		walkSection pg.synopsis
-		walkSection sect for sect in jsArray pg.sections
+		walkSection sect for sect in javaArray pg.sections
 		walkSection pg.footer
 
 walkPage pg for pg in usdlc.Page.pages()

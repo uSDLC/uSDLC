@@ -166,9 +166,21 @@ $(function() {
 				try {
 					usdlc[action](element)
 				} catch(e) {
-					usdlc.log("No action '"+action+"' when activating "+element.tagName())
+					usdlc.log(e)
 				}
 			})
 		}
 	})
+	usdlc.persist = function(key, to) {
+		var data = ''
+		try {
+			if (localStorage) {
+				data = localStorage.getItem(key)
+				if (to != undefined) {
+					localStorage.setItem(key, to)
+				}
+			}
+		} catch(e) {}
+		return data ? data : ''
+	}
 })

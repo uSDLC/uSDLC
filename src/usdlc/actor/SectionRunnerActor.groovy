@@ -64,7 +64,7 @@ import static usdlc.MimeTypes.mimeType
 		if (sectionsToRun) {
 			sections = sections.findAll { it.id in sectionsToRun }
 		}
-		sections.collect{!it.isDeleted()}.each { section ->
+		sections.findAll{!it.isDeleted()}.each { section ->
 			def empty = true
 
 			section.select('a[action=page],a[action=runnable]').each { link ->
@@ -214,7 +214,17 @@ import static usdlc.MimeTypes.mimeType
 	def reportException(Throwable throwable) {
 		def messages = []
 		while (throwable) {
-			messages << throwable.message
+			def message = throwable.message
+			messages << message
+
+			def match = (message =~ /^.*\((.+?)#(\d+)\).{0,2}$/)
+			if (match) {
+				def lno = match[0][2].toInteger()
+				def lines = new File(match[0][1]).readLines()
+				if (lno > 1) lno -= 2
+				def end = lno + 3
+				while (lno++ < end) messages << "    $lno: ${lines[lno]}"
+			}
 			throwable = throwable.cause
 		}
 		reportError { write messages.join('\n') }

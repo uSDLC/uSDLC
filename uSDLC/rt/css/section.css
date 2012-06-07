@@ -11,6 +11,12 @@ div.sectionType, div.pageType {
 	color:#00A;
 }
 
+.givenWhenThen {
+	font-size: 0.3em;
+	color: #808080;
+	vertical-align: super;
+}
+
 div.pageType {
 	float: none;
 	text-align: right;
@@ -77,9 +83,3 @@ a.succeeded {
 	border-color: #339933;
 	background-color: #ccffcc;
 	}
-
-div.givenWhenThen {
-	float: right;
-	font-size: 0.3em;
-	color: #808080;
-}

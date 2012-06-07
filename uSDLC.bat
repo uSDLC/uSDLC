@@ -10,7 +10,7 @@ goto end
 :developerMode
 if "%1"=="" goto usage
 
-	java -cp web\lib\jars\ant-launcher.jar -Dant.home=web\lib\jars org.apache.tools.ant.launch.Launcher -nouserlib %1 %2
+	java -cp usdlc\lib\jars\ant-launcher.jar -Dant.home=web\lib\jars org.apache.tools.ant.launch.Launcher -nouserlib %1 %2
 
 goto end
 

@@ -1,7 +1,7 @@
 package usdlc.config
 
 home = '..'	// for ~/path - defaults to one directory above uSDLC
-srcPath = ['usdlc/', 'usdlc/support/']
+srcPath = ['./', 'usdlc/', 'usdlc/support/']
 libPath = ['usdlc/lib/jars/']
 newsUrl = 'http://usdlc.wordpress.com/feed/'
 

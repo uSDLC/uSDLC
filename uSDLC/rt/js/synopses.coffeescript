@@ -1,0 +1,98 @@
+#//var values = {};
+#//$.each($('#myForm').serializeArray(), function(i, field) {
+#//    values[field.name] = field.value;
+#//});
+$ ->
+  usdlc.newSynopsis = (type) ->
+    synopsisSection = $ 'div.section:first'
+    usdlc.setFocus synopsisSection
+    form = new usdlc.FormProcessor "#new#{type}Synopsis"
+    html = form.toHtml()
+    usdlc.closeDialog()
+    if html.length
+      synopsisSection.append html
+      usdlc.savePage()
+      usdlc.saveAsa type, form.fieldMap.asa
+    else
+      usdlc.editSectionInFocus()
+
+  usdlc.selectSynopsisTab = (tabs) ->
+    type = $.trim($('div.pageType').text())
+    try
+      li = $("a:contains('#{type}')", tabs).parent()
+      href = $('a', li).attr('href')
+      return href.substring(1)
+    catch e
+      return null
+
+  usdlc.clearSynopses = (sections) ->
+    $("div.inclusion", sections ? usdlc.pageContents).remove()
+    usdlc.deleteOutput()
+
+  usdlc.doSynopses = ->
+    usdlc.clearSynopses()
+    $("div.synopsis a[action]").each ->
+      link = $ this
+      action = link.attr "action"
+      if action is 'runnable'
+        loadSynopsis link, usdlc.displaySource
+      else
+        loadSynopsis link, (wrapper, data) ->
+          html = $("<div/>").html(data).children("div.section").first()
+          $('.pageType', html).remove()
+          if html.text()
+            children = html.children()
+            wrapper.append if children.length then children else html
+
+  showSynopsis = (section) -> $('div.inclusion', section).show()
+  hideSynopsis = (section) -> $('div.inclusion', section).hide()
+
+  usdlc.checkForSynopsis = (section) ->
+    if $("a[action]", section).size() > 0
+      section.addClass('synopsis')
+    else
+      section.removeClass('synopsis')
+
+  loadSynopsis = (link, processor) ->
+    path = link.attr('href')
+    subPage = ->
+      if path[0] is '/' then return false
+      if path.length < 2 then return false
+      if path.substring(0, 2) == '..' then return false
+      if path.indexOf(':') != -1 then return false
+      return true
+
+    if subPage() and not link.hasClass('nosynopsis')
+      href = link.get(0).pathname
+      path = usdlc.normalizeURL href
+      section = link.parents('div.synopsis')
+      iid = link.attr('id') + '_inclusion'
+      inclusion = $('<div/>').addClass('inclusion').attr('id', iid)
+      section.append(inclusion)
+      $.ajax
+        url:      usdlc.serverActionUrl(path, 'raw')
+        data:     {}
+        dataType: 'text'   # so jquery won't process it
+        success:  (data) ->
+          if usdlc.pageIsLocked(data)
+            section.addClass('hidden')
+            $('div#contentTree a[href="' + href + '"]').
+            parent().remove()
+          else
+            if data.length < 3 then data = ''
+            processor(inclusion, data, path)
+
+  usdlc.loadAsa = (input) ->
+    key = "asa_#{input.attr('synopsis')}"
+    values = usdlc.persist(key).split(';;')
+    input.autocomplete source: values
+
+  usdlc.saveAsa = (type, statement) ->
+    key = "asa_#{type}"
+    values = usdlc.persist(key).split(';;')
+    for value in values
+      if value == statement then return
+    values.push statement
+    usdlc.persist(key, values.join(';;'))
+
+# usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)

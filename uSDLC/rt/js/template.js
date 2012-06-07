@@ -157,6 +157,8 @@ $(function () {
 						usdlc.setFocus(a)
 						usdlc.runSectionInFocus()
 						break
+					case 'reference':
+						break
 					case 'download':
 						href = href.substring(0, href.length-1) // drop bang
 						window.location.assign(href)

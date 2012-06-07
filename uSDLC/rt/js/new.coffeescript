@@ -3,13 +3,13 @@ $ ->
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
   ###
-  usdlc.newPageSection = ->
-    form = $ '#newPageSection'
-    title = $('input[name="title"]', form)[0].value
+  usdlc.newPageSection = (type) ->
+    form = new usdlc.FormProcessor "#new#{type}Section"
+    title = form.fieldMap['title']
     href = usdlc.camelCase(title)
     id = usdlc.nextSectionId()
-    a = createLink href, 'page', "#{id}a0", title
-    insertNewSection form, a, 1
+    a = createLink "#{type}_#{href}", 'page', "#{id}a0", title
+    insertNewSection form, a, 1, id, type
   ###
   Called by form to create a new section below the current one. It will create
   a new header link referencing an instrumentation script based on the title.
@@ -17,45 +17,59 @@ $ ->
   usdlc.newScenarioSection = ->
     newCodeSection 'Scenario', createBddLink
   usdlc.newInstrumentationSection = ->
-    newCodeSection 'Instrumentation', createLink
+    newCodeSection 'Instrumentation', createSingleLink
+  usdlc.newReferenceSection = ->
+    newCodeSection 'Reference', createSingleLink, 'reference'
 
-  newCodeSection = (name, codeLinkCreator) ->
-    form = $ "#new#{name}Section"
-    title = $('input[name="title"]', form)[0].value
+  newCodeSection = (name, codeLinkCreator, type = 'runnable') ->
+    form = new usdlc.FormProcessor "#new#{name}Section"
+    title = form.fieldMap['title']
     split = /^(.*)\.(\w+)$/.exec(title)
     if split
       title = split[1]
       ext = split[2]
       addActorType(ext)
     else
-      ext = $('select[name="type"]', form)[0].value
+      ext = form.fieldMap['type']
     usdlc.setCookie('actorDefault', ext)
 
     href = "#{usdlc.camelCase(title)}.#{ext}"
     id = usdlc.nextSectionId()
-    a = codeLinkCreator href, 'runnable', "#{id}a0", title
-    insertNewSection form, a, 2, id
+    a = codeLinkCreator form, href, type, "#{id}a0", title
+    insertNewSection form, a, 2, id, name
 
-  createBddLink = (href, action, id, title) ->
+  createBddLink = (form, href, action, id, title) ->
+    $.get '/usdlc/support/usdlc/newScenario.groovy',
+      scriptName: href
+      page: usdlc.pageContentsURL
+      given: form.fieldMap['Given']
+      when: form.fieldMap['When']
+      then: form.fieldMap['Then'], ->
+        usdlc.absolutePageContents usdlc.pageContentsURL
     heading = $ '<span/>'
     heading.html title
-    div = $ '<div/>', class: 'givenWhenThen'
-    div.append createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
-    div.append createLink "When_#{href}", 'runnable', "#{id}w", 'W'
-    div.append createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
-    heading.append div
+    gwt = $ '<span/>', class: 'givenWhenThen'
+    gwt.append(' &nbsp;(')
+    gwt.append createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
+    gwt.append createLink "When_#{href}", 'runnable', "#{id}w", 'W'
+    gwt.append createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
+    gwt.append(')')
+    heading.append gwt
     return heading
+
+  createSingleLink = (form, href, action, id, title) ->
+    createLink href, action, id, title
   ###
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
   ###
-  usdlc.newGuideSection = ->
-    form = $ '#newSectionSection'
-    title = $('input[name="title"]', form)[0].value
+  usdlc.newGeneralSection = (type) ->
+    form = new usdlc.FormProcessor "#new#{type}Section"
+    title = form.fieldMap['title']
     id = usdlc.nextSectionId()
     heading = $ '<span/>'
     heading.html title
-    insertNewSection form, heading, 2, id
+    insertNewSection form, heading, 2, id, type
     usdlc.editSectionInFocus()
   ###
   This is where the work is done...
@@ -73,17 +87,17 @@ $ ->
   ###
   usdlc.sectionTemplate = (name, page = 'Sections') ->
     usdlc.loadSection name, page, (h1) ->
-      section = usdlc.newSection()
+      section = usdlc.newSection(name)
       section.append h1.nextAll()
       section.insertAfter(usdlc.inFocus)
       usdlc.setFocus(section)
       usdlc.editSectionInFocus()
 
-  insertNewSection = (form, heading, level, id) ->
+  insertNewSection = (form, heading, level, id, type) ->
     if usdlc.inFocus
-      notes = $('textarea[name="notes"]', form)[0].value
+      notes = form.fieldMap['notes']
 
-      section = usdlc.newSection id
+      section = usdlc.newSection type, id
       h1 = $ "<h#{level}/>"
       h1.append heading
 
@@ -98,10 +112,12 @@ $ ->
   ###
   Creates basic new section code.
   ###
-  usdlc.newSection = (id = usdlc.nextSectionId()) ->
-    return $ "<div/>",
+  usdlc.newSection = (type, id = usdlc.nextSectionId()) ->
+    div = $ "<div/>",
       id : id
       'class' : 'editable section synopsis'
+    div.append "<div class='sectionType'>#{type}</div>"
+    return div
 
   usdlc.loadActorTypes = (select) ->
     actorTypes = (usdlc.cookie('actorTypes') || 'coffee').split(',')
@@ -119,3 +135,50 @@ $ ->
       actorTypes.push(ext)
       actorTypes.sort()
       usdlc.setCookie('actorTypes', actorTypes.toString())
+
+  findType = (url) ->
+    m = /(.*)\/(?:([a-zA-Z0-9]+)_)?([a-zA-Z0-9]+)(?:\/index\.html)?$/.exec url
+    return m?[2] ? ''
+    #return {path: m[1], type: m[2], name: m[3]}
+
+  usdlc.newSectionForm = ->
+    type = findType(usdlc.pageContentsURL)
+    usdlc.form 'New Section:', (tabs) ->
+      try
+        li = $("a:contains('#{type}')", tabs).parent()
+        next = li.next()
+        li = next if next.size()
+        href = $('a', li).attr('href')
+        return href.substring(1)
+      catch e
+        return null
+
+  usdlc.loadScenario = (input) ->
+    data =
+      page: usdlc.pageContentsURL
+      gwt: input.attr('name')
+    $.get '/usdlc/support/usdlc/loadScenario.groovy', data, (rslt) ->
+      input.bind "keydown", (event) ->
+        # don't navigate away from the field on tab when selecting an item
+        if event.keyCode is $.ui.keyCode.TAB
+      	  if $(this).data("autocomplete").menu.active
+      		  event.preventDefault()
+
+      choices = eval rslt
+
+      input.autocomplete
+        minLength: 0
+        autoFocus: true
+        source: (request, response) ->
+          # delegate back to autocomplete, but extract the last term
+          last = request.term.split(/,\s*/).pop()
+          response  $.ui.autocomplete.filter choices, last
+        focus: -> return false # prevent value inserted on focus
+        select: (event, ui) ->
+          terms = this.value.split /,\s*/
+          terms.pop() # remove the current input
+          terms.push ui.item.value # add the selected item
+				  # add placeholder to get the comma-and-space at the end
+          terms.push ''
+          this.value = terms.join ', '
+          return false

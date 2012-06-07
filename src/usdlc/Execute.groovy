@@ -10,6 +10,7 @@ class Execute {
 	Process process
 	OutputStream out = System.out, err = System.err
 	int timeout = 600000 // default 10 minute
+	def envp = null // defaults to inherit
 	/**
 	 * Set the directory to be used for the following commands.
 	 */
@@ -30,7 +31,7 @@ class Execute {
 	 * Does not wait.
 	 */
 	Execute execute(command) {
-		process = command.execute()
+		process = command.execute(envp, cwd)
 		process.consumeProcessOutput(out, err)
 		return this
 	}

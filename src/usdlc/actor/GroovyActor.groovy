@@ -42,6 +42,8 @@ class GroovyActor extends Actor {
 	 * logging and script includes
 	 */
 	void run(Store script) {
-		context.groovy.run(script, context.usdlcBinding)
+		if (!context.groovy.run(script, context.usdlcBinding)) {
+			throw context.groovy.lastError
+		}
 	}
 }

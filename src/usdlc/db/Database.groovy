@@ -1,9 +1,7 @@
 package usdlc.db
 
-import groovy.sql.GroovyResultSet
 import groovy.sql.Sql
 import org.h2.tools.RunScript
-import static usdlc.config.Config.config
 
 class Database {
 	def url, version = -1, tableGroup
@@ -62,10 +60,10 @@ class Database {
 			result = actions()
 			connection.sql.commit()
 		} catch (exception) {
-			connection.sql.rollback()
+			connection?.sql?.rollback()
 			exception.printStackTrace()
 		} finally {
-			synchronized (pool) { pool[url] << connection }
+			synchronized (pool) { if (pool[url]) pool[url] << connection }
 		}
 		return result
 	}

@@ -41,8 +41,13 @@ class HttpClient {
 			]
 			semaphore.release()
 		} as ResponseHandler
-		client.execute(request, responder)
-		semaphore.waitForRelease()
-		return response ?: [retcode: 403, status: 'no response']
+		try {
+			client.execute(request, responder)
+			semaphore.waitForRelease()
+		} catch (e) {
+			semaphore.release()
+			response = [retcode: '506', status: 'Service Down', body: '']
+		}
+		return response ?: [retcode: '500', status: 'no response', body: '']
 	}
 }

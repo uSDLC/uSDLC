@@ -7,7 +7,7 @@ import static usdlc.config.Config.config
 
 class RhinoActor extends Actor {
 	JavaScript javascript
-	def binding
+	def binding, stack = [null]
 
 	void init() {
 		javascript = exchange.request.session.instance JavaScript
@@ -58,7 +58,9 @@ class RhinoActor extends Actor {
 			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
 		}
 		try {
+			stack.push(found)
 			run found
+			stack.pop()
 		} catch (e) { throw new Exception("including '$name'", e) }
 	}
 
@@ -74,15 +76,16 @@ class RhinoActor extends Actor {
 	 */
 	Store onParentPath(name) {
 		if (name.indexOf('/') == -1) {
-			return currentlyRunningScript.onParentPath {
+			def lastScript = stack.last() ?: currentlyRunningScript
+			return lastScript.onParentPath {
 				def possible = it.rebase(name)
 				// Allow script to include same name and find in parent path
-				if (possible == currentlyRunningScript) return null
+				if (possible == lastScript) return null
 				return possible.ifExists()
 			}
 		}
 		return null
 	}
 
-	static dsls = [:]
+//	static dsls = [:]
 }

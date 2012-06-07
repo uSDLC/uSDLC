@@ -5,9 +5,9 @@ import usdlc.drivers.CoffeeScript
 import static usdlc.FileProcessor.fileProcessorWithGzip
 import static usdlc.drivers.JavaScript.javascriptBuilder
 
-jqueryUIbase = 'usdlc/lib/jquery/css/redmond'
+jqueryUIbase = 'usdlc/lib/jquery/css/start'
 files = [
-		"$jqueryUIbase/jquery-ui-1.8.16.custom.css",
+		"$jqueryUIbase/jquery-ui-1.8.21.custom.css",
 		'usdlc/lib/jquery/css/fg.menu.css',
 		'usdlc/lib/CodeMirror/lib/codemirror.css',
 		'usdlc/lib/CodeMirror/theme/default.css',
@@ -32,15 +32,16 @@ fileProcessorWithGzip('usdlc/.store/css/usdlc.css', files) {
 Store.base("$jqueryUIbase/images").copyTo('usdlc/.store/css')
 
 files = [
-		'usdlc/lib/jquery/js/jquery.js',
+		'usdlc/lib/jquery/js/jquery-1.7.2.js',
 		'usdlc/lib/underscore.js',
-		'usdlc/lib/jquery/js/jquery-ui.js',
+		'usdlc/lib/jquery/js/jquery-ui-1.8.21.custom.js',
 		'usdlc/lib/jquery/js/jquery.cookie.js',
 		'usdlc/lib/jquery/js/jquery.sausage.js',
 		'usdlc/lib/jquery/js/jquery.hotkeys.js',
 		'usdlc/lib/jquery/js/jquery.url.js',
 		'usdlc/rt/js/base.js',
 		'usdlc/rt/js/init.js',
+		'usdlc/rt/js/menu.coffeescript',
 		'usdlc/rt/js/section.coffeescript',
 		'usdlc/rt/js/template.js',
 		'usdlc/lib/jquery/js/jquery.scrollTo.js',
@@ -50,7 +51,7 @@ files = [
 		'usdlc/lib/CodeMirror/lib/codemirror.js',
 		'usdlc/rt/js/run.js',
 		'usdlc/rt/js/sourceEditor.coffeescript',
-		'usdlc/rt/js/synopses.js',
+		'usdlc/rt/js/synopses.coffeescript',
 		'usdlc/rt/js/postLoader.coffeescript',
 ]
 
@@ -62,7 +63,6 @@ files = [
 		'usdlc/lib/ckeditor/ckeditor.js',
 		'usdlc/lib/ckeditor/adapters/jquery.js',
 		'usdlc/rt/js/dialog.coffeescript',
-		'usdlc/rt/js/menu.coffeescript',
 		'usdlc/rt/js/new.coffeescript',
 		'usdlc/rt/js/moveSection.js',
 		'usdlc/rt/js/clipboard.coffeescript',

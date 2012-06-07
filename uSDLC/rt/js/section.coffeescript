@@ -34,7 +34,7 @@ $ ->
       usdlc.contentTree.jstree('disable_hotkeys')
       $('#contentTree').removeClass('rounded pale-gray-box inFocus')
       usdlc.pageContentsSausages.sausage("setFocus", section)
-      usdlc.scrollTo section
+      #usdlc.scrollTo section
       usdlc.resetMenu()
     section
 
@@ -124,7 +124,7 @@ $ ->
 
         if isHtml
           self.attr('action', 'page')
-        else
+        else if not self.attr('action')
           self.attr('action', 'runnable')
           self.addClass('sourceLink')
     )

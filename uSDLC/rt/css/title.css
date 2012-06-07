@@ -31,3 +31,20 @@
 	margin: 0;
 	font-size: 0.9em;
 }
+
+ul.etabs li.tab a {
+	font-size: 11px;
+	text-decoration: none;
+	padding: 0 6px;
+}
+
+div.centre600 {
+	width:600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.centreForm {
+	text-align: center;
+	padding-top:15px;
+}

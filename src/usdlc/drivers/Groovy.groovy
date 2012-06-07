@@ -63,8 +63,10 @@ class Groovy {
 	}
 
 	def loadScriptByName(Store script) {
-		try {return gse.loadScriptByName(script.absolutePath)}
+		// gse doesn't seem to like windows type paths (Windows only)
+		try {return gse.loadScriptByName(script.path)}
 		catch(e) {
+			lastError = e
 			return null
 		}
 	}
@@ -78,5 +80,6 @@ class Groovy {
 	}
 
 	def gse = new GroovyScriptEngine(config.srcPath as URL[])
+	def lastError = null
 	Binding baseBinding
 }

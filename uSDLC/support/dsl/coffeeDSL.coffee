@@ -15,8 +15,14 @@ timer = ->
 	Math.floor((java.lang.System.currentTimeMillis() - startTime) / 1000)
 sleep = (seconds) -> support.$sleep(seconds)
 
-jsArray = (arrayList) ->
+javaArray = (arrayList) ->
 	arrayList.get(index) for index in [0...arrayList.size()]
+
+javaMap = (javaMap) ->
+  map = {}
+  for key in javaMap.keySet().toArray()
+    map[String(key)] = String(javaMap.get(key).toString())
+  return map
 
 strings = (array) ->
 	String(string) for string in array
@@ -28,4 +34,5 @@ gwt.processor = (statement) ->
     match = item.pattern.exec(statement)
     if match
       item.action(match...)
-      break # only runs first match
+      return # only runs first match
+  throw "No command pattern for '#{statement}'\n"
