@@ -104,9 +104,11 @@ $ ->
       onCursorActivity : (editor) ->
       onGutterClick : (editor) ->
       onFocus : (editor) ->
-        usdlc.saveSource()
-        usdlc.setFocus wrapper
-        editorMode editor, true
+        after = ->
+          usdlc.saveSource()
+          usdlc.setFocus wrapper
+          editorMode editor, true
+        setTimeout(after, 300)  # so mouse click settles before we change mode
       onBlur : (editor) ->
         usdlc.saveSource()
         editorMode editor, false
