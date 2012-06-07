@@ -301,15 +301,15 @@ $(function () {
 			dialogDefinition.addContents(usdlc.reportsTabData);
 		}
 	})
-
-	function onDblclick(ev) {
-		if (!usdlc.inEditMode(ev)) {
-			usdlc.setFocus(ev.currentTarget)
-			usdlc.editSectionInFocus()
-			return false
-		} else {
-			return true
-		}
-	}
-	$('.editable').live('dblclick', onDblclick)
+//
+//	function onDblclick(ev) {
+//		if (!usdlc.inEditMode(ev)) {
+//			usdlc.setFocus(ev.currentTarget)
+//			usdlc.editSectionInFocus()
+//			return false
+//		} else {
+//			return true
+//		}
+//	}
+//	$('.editable').live('dblclick', onDblclick)
 })
