@@ -60,9 +60,8 @@ class Page {
 		if (store.isHtml && !store.exists()) {
 			def page = new Page('usdlc/rt/template.html')
 			page.store = store
-			def title = Store.decamel(
-					store.parts.path.replaceFirst(~'.*/', '')).split('_')
-			page.select('div#pageTitle h1').html(title[-1])
+			def title = store.parts.path.replaceFirst(~'.*/', '').split('_')
+			page.select('div#pageTitle h1').html(Store.decamel(title[-1]))
 			if (title.size() > 1) {
 				page.select('div#s1').append("<div class='pageType'>${title[-2]}</div>\n")
 			}

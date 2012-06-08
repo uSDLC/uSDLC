@@ -22,8 +22,7 @@ class Execute {
 	 * Run a shell script - using the system shell (cmd for windows, etc)
 	 */
 	Execute shell(command) {
-		execute("$shellCmd $command")
-
+		execute("$shellCmd $command").waitFor()
 		return this
 	}
 	/**
@@ -45,8 +44,8 @@ class Execute {
 	/**
 	 * Set the timeout in milliseconds
 	 */
-	Execute timeout(int milliseconds) {
-		timeout = milliseconds
+	Execute timeout(int seconds) {
+		timeout = seconds * 1000
 		return this
 	}
 	/**

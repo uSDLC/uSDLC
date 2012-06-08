@@ -1,16 +1,4 @@
 Home,H,usdlc.goHome()
-New,N
-	Project,j,usdlc.form('New Project')
-	Vision,V,usdlc.form('New Section: Vision')
-	Goal,G,usdlc.form('New Section: Goal')
-	Capability,C,usdlc.form('New Section: Capability')
-	Feature,F,usdlc.form('New Section: Feature')
-	Scenario,S,usdlc.form('New Section: Scenario')
-	Instrumentation,I,usdlc.form('New Section: Instrumentation')
-	Reference,R,usdlc.form('New Section: Reference')
-	Guide,u,usdlc.form('New Section: Guide')
-	Page,P,usdlc.form('New Section: Page')
-	Blank,B,usdlc.form('New Section: General')
 Section,S
 	Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E
@@ -23,22 +11,36 @@ Section,S
 	Move,M
 		Up,U,usdlc.moveSectionUp(),shift+up
 		Down,D,usdlc.moveSectionDown(),shift+down
-	Navigate,N
+	Navigate,v
 		Tree/Section,T,usdlc.toggleFocus(),tab
 		Previous,P,usdlc.upFocus(),up
 		Next,N,usdlc.downFocus(),down
+	New,N
+		Project,j,usdlc.form('New Section: Project')
+		Vision,V,usdlc.form('New Section: Vision')
+		Goal,G,usdlc.form('New Section: Goal')
+		Capability,C,usdlc.form('New Section: Capability')
+		Feature,F,usdlc.form('New Section: Feature')
+		Scenario,S,usdlc.form('New Section: Scenario')
+		Instrumentation,I,usdlc.form('New Section: Instrumentation')
+		Reference,R,usdlc.form('New Section: Reference')
+		Guide,u,usdlc.form('New Section: Guide')
+		Page,P,usdlc.form('New Section: Page')
+		Blank,B,usdlc.form('New Section: General')
 	Split,S
 		To new page,p,usdlc.extractSectionInFocus(),alt+E
 		Into section,s,usdlc.splitIntoSections(),alt+S
 	Toggle,T,usdlc.toggleShowDeleted(),^del meta+del
 	Undelete,U,usdlc.undeleteSectionInFocus()
+Project,P
+	New,N,usdlc.form('New Project')
 Run,R
 	Section,S,usdlc.runSectionInFocus({continuation:false}),^R alt+R
 	Page,P,usdlc.runPage({continuation:false}),^P alt+P
 	From error,e,usdlc.runPage({continuation:true}),^L alt+L
 	From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
 User,U
-	Log in,i,usdlc.form('Log In')
+	Log in,i,usdlc.form('User: Log In')
 	Log out,o,usdlc.logOut()
-	Change password,C,usdlc.form('Change Password')
+	Change password,C,usdlc.form('User: Change Password')
 Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1

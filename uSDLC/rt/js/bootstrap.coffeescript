@@ -7,4 +7,4 @@ else
   synopsis = $('div.section:first')
   children = synopsis.children().not('div.pageType')
   if children.size() == 0
-    usdlc.form 'Synopsis', usdlc.selectSynopsisTab
+    usdlc.form 'Synopsis:', usdlc.selectSynopsisTab

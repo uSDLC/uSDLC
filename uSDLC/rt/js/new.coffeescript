@@ -7,8 +7,9 @@ $ ->
     form = new usdlc.FormProcessor "#new#{type}Section"
     title = form.fieldMap['title']
     href = usdlc.camelCase(title)
+    href = "#{type}_#{href}" if type isnt 'General'
     id = usdlc.nextSectionId()
-    a = createLink "#{type}_#{href}", 'page', "#{id}a0", title
+    a = createLink href, 'page', "#{id}a0", title
     insertNewSection form, a, 1, id, type
   ###
   Called by form to create a new section below the current one. It will create
@@ -154,6 +155,7 @@ $ ->
         return null
 
   usdlc.loadScenario = (input) ->
+    return if not usdlc.inDialog(input)
     data =
       page: usdlc.pageContentsURL
       gwt: input.attr('name')
@@ -182,3 +184,15 @@ $ ->
           terms.push ''
           this.value = terms.join ', '
           return false
+
+  usdlc.loadProjects = (input) ->
+    $.get '/usdlc/support/usdlc/loadUnassignedProjects.groovy', (rslt) ->
+      choices = eval rslt
+      input.autocomplete source: choices
+
+  usdlc.newProject = ->
+    form = new usdlc.FormProcessor "#newProject"
+    project = form.fieldMap['title']
+    $.get '/usdlc/support/usdlc/newProject.groovy',
+      project:project, (rslt) ->
+      usdlc.contentTree.jstree 'refresh', -1

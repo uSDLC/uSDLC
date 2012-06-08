@@ -61,6 +61,10 @@ $ ->
       usdlc.activeSourceEditor.contentChanged = false
   # Links that don't end in .html can be edited with the source editor
   usdlc.displaySource = (wrapper, data, url) ->
+    if not usdlc.dsls
+      # wait for the dsls to load
+      setTimeout((-> usdlc.displaySource(wrapper, data, url)),200)
+      return
     mimeType = usdlc.mimeType(url)
     ext = mimeType.serverExt
     ext = usdlc.dsls[ext] if ext of usdlc.dsls

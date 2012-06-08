@@ -1,19 +1,5 @@
 package usdlc
-/*
- * Copyright 2011 the Authors for http://usdlc.net
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+
 class Desktop {
 	/**
 	 * Open a defined URL on the default browser for the current operating system.
@@ -26,4 +12,15 @@ class Desktop {
 			System.out.println "\tHeaderless (no local browser)"
 		}
 	}
+
+	static os = [windows:checkOS('win'), osx:checkOS('mac'),
+		linux:checkOS('ux'), unix:checkOS('nix'), solaris:checkOS('sunos')]
+	@Lazy static osName = System.getProperty("os.name").toLowerCase()
+	@Lazy static isWindows = os.windows
+	@Lazy static isOSX = os.osx
+	@Lazy static isLinux = os.linux
+	@Lazy static isUnix = os.unix
+	@Lazy static isSolaris = os.solaris
+	static checkOS(against) {osName.indexOf(against) != -1}
+	static isOS(name) {os[name.toLowerCase()]}
 }

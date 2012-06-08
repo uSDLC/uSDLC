@@ -24,8 +24,15 @@ javaMap = (javaMap) ->
     map[String(key)] = String(javaMap.get(key).toString())
   return map
 
-strings = (array) ->
-	String(string) for string in array
+# convert an array of Java strings to a Javascript array
+strings = (array) -> String(string) for string in array
+# refer to a file so we can process it
+store = (path) -> usdlc.Store.base path
+# return a list of files is a provided directory
+dir = (path) -> return javaArray usdlc.Store.base(path).dir()
+# delete all files in a directory
+purge = (path) -> print store(file) for file in dir(path)
+#purge = (path) -> store(file).delete() for file in dir(path)
 
 statements = []
 gwt = (pattern, action) -> statements.unshift {pattern:pattern, action:action}

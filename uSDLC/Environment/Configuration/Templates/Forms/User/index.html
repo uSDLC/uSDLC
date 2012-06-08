@@ -1,0 +1,76 @@
+<div id="pageTitle" class="editable" uuid="c39194be-e222-4059-9cf9-04798b8d108d">
+ <h1>User</h1>
+ <h2></h2>
+</div>
+<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> create new users<br><b class="blue">so that</b> they can access the system</div></div>
+<div id="s4" class="editable section"><h1>
+	User: Log In</h1>
+<form action="javascript:usdlc.logIn()" id="loginform" method="post" name="User authentication">
+	<table align="center" border="0" cellpadding="1" cellspacing="1">
+		<tbody>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>User</strong>:</td>
+				<td>
+					<input name="user" size="32" type="text"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Password</strong>:</td>
+				<td>
+					<input name="password" size="32" type="password"></td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;</td>
+				<td align="right">
+					<input type="submit" value="Log In"></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<p>
+	&nbsp;</p>
+</div>
+<div id="s5" class="editable section"><h1>
+	User: Change Password</h1>
+<form action="javascript:usdlc.changePassword()" id="changepassword" method="post" name="User authentication">
+	<table align="center" border="0" cellpadding="1" cellspacing="1">
+		<tbody>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Old password</strong>:</td>
+				<td>
+					<input name="oldpwd" size="32" type="password"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>New password</strong>:</td>
+				<td>
+					<input name="pwd1" size="32" type="password"></td>
+			</tr>
+			<tr>
+				<td style="text-align: right; ">
+					<strong>Again</strong>:</td>
+				<td>
+					<input name="pwd2" size="32" type="password"></td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;</td>
+				<td align="right">
+					<input type="submit" value="Change Password"></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<p>
+	&nbsp;</p>
+</div>
+<div id="s2" class="editable section footer synopsis">
+ <div>
+  <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> -
+  <a class="usdlc" href="Setup.coffee" id="s2a1" action="runnable"> Setup</a> -
+  <a class="usdlc" href="Cleanup.coffee" id="s2a2" action="runnable"> Cleanup</a>
+ </div>
+</div>

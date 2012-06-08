@@ -83,6 +83,7 @@ $ ->
             processor(inclusion, data, path)
 
   usdlc.loadAsa = (input) ->
+    return if not usdlc.inDialog(input)
     key = "asa_#{input.attr('synopsis')}"
     values = usdlc.persist(key).split(';;')
     input.autocomplete source: values

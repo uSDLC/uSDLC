@@ -1,4 +1,4 @@
-import usdlc.Store
+package usdlc
 
 query =  exchange.request.query
 givenWhenOrThen = query.gwt

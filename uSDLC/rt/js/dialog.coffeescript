@@ -50,7 +50,13 @@ $ ->
       box = openDialogs.pop()
       box.dialog("destroy").detach()
 
+  usdlc.inDialog = (element) ->
+    return element.parents('.ui-dialog').size() > 0
+
   showDialog = (name, page, after) ->
+    split = name.split(':')
+    if split.length > 1
+      page = "#{page}/#{usdlc.camelCase(split[0])}"
     usdlc.loadSection name, page, (h1) ->
       options =
         dialogClass: 'ui-corner-all'
@@ -145,7 +151,7 @@ $ ->
     toHtml: ->
       html = []
       for name in @fieldList
-        value = @fieldMap[name]
+        value = @fieldMap[name].replace(/\n/g, '<br>')
         if value.length
           label = @altMap[name]
           if label
