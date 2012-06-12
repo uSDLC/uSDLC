@@ -290,7 +290,7 @@ class Store {
 	}
 
 	static uniqueRE = ~/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)_(\w*)/
-	static decamelRE = ~/([a-z0-9]{1})([A-Z])/
+	static decamelRE = ~/([a-z0-9]{2})([A-Z])/
 	static sloshRE = ~'\\\\'
 	static dateStampFormat = 'yyyy_MM_dd__HH_mm_ss'
 	/**

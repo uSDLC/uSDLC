@@ -1,0 +1,24 @@
+$ ->
+  usdlc.moreFooter = ->
+    usdlc.form "Footer:", (tabs) ->
+      footer = load_footer()
+      tabsByName = usdlc.tabNames(tabs)
+      footer.a.each (i, a) ->
+        name = $(a).text()
+        if not tabsByName[name] then return name
+      return tabsByName[0]
+
+  usdlc.saveFooter = (type) ->
+    form = new usdlc.FormProcessor "#footer#{type}"
+    [name, ext] = usdlc.titleExt form, 'name'
+    name = type if not name
+    html = "<a class='usdlc', action='runnable', href='#{usdlc.camelCase name}.#{ext}'>#{name}</a> - "
+    load_footer().a.last().before(html)
+    usdlc.closeDialog()
+    usdlc.savePage()
+
+  load_footer = ->
+    div = $ 'div.footer'
+    a = $('a', div)
+    footer = {div:div, a:a}
+    return footer

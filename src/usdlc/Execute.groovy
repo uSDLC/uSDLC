@@ -51,6 +51,6 @@ class Execute {
 	/**
 	 * Retrieve the exit code for the command
 	 */
-	def exitCode() { return process.exitValue() }
+	int exitCode() { return process.exitValue() }
 	static shellCmd = SystemUtils.IS_OS_WINDOWS ? 'cmd /c' : 'bash -c'
 }

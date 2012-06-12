@@ -26,13 +26,15 @@ javaMap = (javaMap) ->
 
 # convert an array of Java strings to a Javascript array
 strings = (array) -> String(string) for string in array
-# refer to a file so we can process it
-store = (path) -> usdlc.Store.base path
-# return a list of files is a provided directory
-dir = (path) -> return javaArray usdlc.Store.base(path).dir()
-# delete all files in a directory
-purge = (path) -> print store(file) for file in dir(path)
-#purge = (path) -> store(file).delete() for file in dir(path)
+
+class Store
+  constructor: (@path) -> @store = usdlc.Store.base(path)
+  dir: -> return javaArray @store.dir()
+  delete: -> @store.delete()
+  purge: -> fs(entry).delete() for entry in @dir()
+  copyTo: (target) -> @store.copyTo(target)
+
+fs = (path) -> new Store usdlc.Store.base path
 
 statements = []
 gwt = (pattern, action) -> statements.unshift {pattern:pattern, action:action}

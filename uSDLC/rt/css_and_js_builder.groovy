@@ -62,6 +62,7 @@ files = [
 		'usdlc/lib/jquery/js/jquery.easytabs.js',
 		'usdlc/lib/ckeditor/ckeditor.js',
 		'usdlc/lib/ckeditor/adapters/jquery.js',
+		'usdlc/rt/js/footer.coffeescript',
 		'usdlc/rt/js/dialog.coffeescript',
 		'usdlc/rt/js/new.coffeescript',
 		'usdlc/rt/js/moveSection.js',

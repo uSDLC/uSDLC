@@ -27,15 +27,15 @@ $ ->
   ###
   usdlc.setFocus = (element) ->
     section = usdlc.getSection(element)
-    if not section.hasClass('inFocus')
-      usdlc.clearFocus()
-      usdlc.inFocus = section
-      section.addClass('inFocus ui-widget-content')
-      usdlc.contentTree.jstree('disable_hotkeys')
-      $('#contentTree').removeClass('rounded pale-gray-box inFocus')
-      usdlc.pageContentsSausages.sausage("setFocus", section)
-      #usdlc.scrollTo section
-      usdlc.resetMenu()
+    #if not section.hasClass('inFocus')
+    usdlc.resetMenu()
+    usdlc.clearFocus()
+    usdlc.inFocus = section
+    section.addClass('inFocus ui-widget-content')
+    usdlc.contentTree.jstree('disable_hotkeys')
+    $('#contentTree').removeClass('rounded pale-gray-box inFocus')
+    usdlc.pageContentsSausages.sausage("setFocus", section)
+    #usdlc.scrollTo section
     section
 
   usdlc.clearFocus = ->

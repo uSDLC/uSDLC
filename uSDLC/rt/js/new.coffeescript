@@ -24,7 +24,15 @@ $ ->
 
   newCodeSection = (name, codeLinkCreator, type = 'runnable') ->
     form = new usdlc.FormProcessor "#new#{name}Section"
-    title = form.fieldMap['title']
+    [title, ext] = usdlc.titleExt form, 'title'
+    href = "#{usdlc.camelCase(title)}.#{ext}"
+    id = usdlc.nextSectionId()
+    a = codeLinkCreator form, href, type, "#{id}a0", title
+    insertNewSection form, a, 2, id, name
+
+
+  usdlc.titleExt = (form, titleFieldName) ->
+    title = form.fieldMap[titleFieldName]
     split = /^(.*)\.(\w+)$/.exec(title)
     if split
       title = split[1]
@@ -33,11 +41,7 @@ $ ->
     else
       ext = form.fieldMap['type']
     usdlc.setCookie('actorDefault', ext)
-
-    href = "#{usdlc.camelCase(title)}.#{ext}"
-    id = usdlc.nextSectionId()
-    a = codeLinkCreator form, href, type, "#{id}a0", title
-    insertNewSection form, a, 2, id, name
+    return [title, ext]
 
   createBddLink = (form, href, action, id, title) ->
     $.get '/usdlc/support/usdlc/newScenario.groovy',
@@ -192,7 +196,6 @@ $ ->
 
   usdlc.newProject = ->
     form = new usdlc.FormProcessor "#newProject"
-    project = form.fieldMap['title']
-    $.get '/usdlc/support/usdlc/newProject.groovy',
-      project:project, (rslt) ->
-      usdlc.contentTree.jstree 'refresh', -1
+    title = form.fieldMap['title']
+    $.get '/usdlc/support/usdlc/loadUnassignedProjects.groovy', (rslt) ->
+        usdlc.contentTree.jstree 'refresh', -1

@@ -57,11 +57,10 @@ class RhinoActor extends Actor {
 		if (!found) {
 			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
 		}
-		try {
-			stack.push(found)
-			run found
-			stack.pop()
-		} catch (e) { throw new Exception("including '$name'", e) }
+		stack.push(found)
+		try { run found }
+		catch (e) {throw new Exception("including '$name'", e)}
+		finally {stack.pop()}
 	}
 
 	Store onDslSourcePath(name) {

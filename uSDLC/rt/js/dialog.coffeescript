@@ -135,6 +135,12 @@ $ ->
       complete = -> $('input', active).first().focus()
       setTimeout complete, 300
 
+  usdlc.tabNames = (tabs) ->
+    map = {}
+    $('ul.etabs a').each (i, a) ->
+      map[$.trim(a.text())] = a.parent()
+    return map
+
   class FormProcessor
     constructor: (selector) ->
       @form = $ selector

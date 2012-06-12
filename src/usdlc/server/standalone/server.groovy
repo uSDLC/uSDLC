@@ -79,4 +79,6 @@ server.createContext '/', { HttpExchange httpExchange ->
 
 server.executor = Executors.newCachedThreadPool()
 server.start()
-Desktop.openURL("http://localhost:$config.port/usdlc/home")
+if (! config.noBrowser) {
+	Desktop.openURL("http://localhost:$config.port/usdlc/home")
+}

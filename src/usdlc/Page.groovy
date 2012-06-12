@@ -58,7 +58,7 @@ class Page {
 			if (!store.exists()) store = store.rebase('index.html')
 		}
 		if (store.isHtml && !store.exists()) {
-			def page = new Page('usdlc/rt/template.html')
+			def page = new Page('usdlc/Environment/Configuration/Templates/Sections/Default/index.html')
 			page.store = store
 			def title = store.parts.path.replaceFirst(~'.*/', '').split('_')
 			page.select('div#pageTitle h1').html(Store.decamel(title[-1]))
