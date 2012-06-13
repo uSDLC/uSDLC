@@ -91,7 +91,7 @@ class Store {
 	@Lazy String href = path.replaceFirst(~/^\.\.\//, '/~')
 	@Lazy String dir = isDirectory ? path : calcParent()
 	@Lazy String name = file.name
-	@Lazy String absolutePath = file.absolutePath
+	@Lazy String absolutePath = file.canonicalPath
 	@Lazy URI uri = file.toURI()
 	@Lazy URL url = uri.toURL()
 	@Lazy parts = split(path)

@@ -52,6 +52,7 @@ files = [
 		'usdlc/rt/js/run.js',
 		'usdlc/rt/js/sourceEditor.coffeescript',
 		'usdlc/rt/js/synopses.coffeescript',
+		'/usdlc/rt/js/footer.coffeescript',
 		'usdlc/rt/js/postLoader.coffeescript',
 ]
 

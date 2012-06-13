@@ -96,7 +96,7 @@ $ ->
       mode : syntax
       theme : 'elegant'
       indentUnit : 4
-      indentWithTabs : true
+      indentWithTabs : false
       tabMode : 'indent'
       enterMode : 'indent'
       electricChars : true

@@ -60,8 +60,10 @@ import static usdlc.config.Config.config
 				cache[language] = data.groovyDSL
 			} else {
 				def actorClass = Groovy.loadClass(
+					"usdlc.actor.${language.capitalize()}Actor") ?:
+					Groovy.loadClass(
 						"usdlc.actor.${data.baseLanguage.capitalize()}Actor")
-				cache[language] = actorClass ?
+					cache[language] = actorClass ?
 					actorClass.newInstance() :
 					new DslActor("${data.baseLanguage.toLowerCase()}DSL")
 			}

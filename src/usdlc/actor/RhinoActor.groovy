@@ -32,22 +32,6 @@ class RhinoActor extends Actor {
 	 * eventually parse down to JavaScript. All incarnations
 	 * search on the DSL path as well as given the raw name.
 	 */
-//	public include(name) {
-//		name = Store.camelCase(name)
-//		def key = "$name#$currentlyRunningScript.pathFromWebBase"
-//		if (name.indexOf('.') == -1) {
-//			name += ".$currentlyRunningScript.parts.ext"
-//		}
-//		if (!dsls.containsKey(key)) {
-//			dsls[key] = onParentPath(name) ?: onDslSourcePath(name)
-//		}
-//		if (!dsls[key]) {
-//			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
-//		}
-//		try {
-//			run dsls[key]
-//		} catch (e) { throw new Exception("including '$name'", e) }
-//	}
 	public include(name) {
 		name = Store.camelCase(name)
 		if (name.indexOf('.') == -1) {
@@ -55,7 +39,10 @@ class RhinoActor extends Actor {
 		}
 		def found = onParentPath(name) ?: onDslSourcePath(name)
 		if (!found) {
-			throw new Exception("No include script $name on parent path or $config.dslSourcePath")
+			if (stack.size() == 1 || stack.last().name != name) {
+				exchange.problems("No include script $name on parent path or $config.dslSourcePath")
+			}
+			return;
 		}
 		stack.push(found)
 		try { run found }

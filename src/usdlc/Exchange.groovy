@@ -11,6 +11,11 @@ import static usdlc.MimeTypes.mimeType
  * server receives for it.
  */
 class Exchange {
+	def data = [:]
+	void problems(list) {
+		if (!data.problems) data.problems = []
+		data.problems << list.toString()
+	}
 
 	static class Header {
 		String host, method, query, uri, fragment, cookie, acceptEncoding

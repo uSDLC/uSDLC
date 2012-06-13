@@ -11,7 +11,14 @@ class CoffeeActor extends RhinoActor {
 		compiler.bare = true
 	}
 	public void run(Store me) {
-		super.run(compiler.javascript(me))
+		super.run(compiler.javascript(me, preprocess(me)))
 	}
 	CoffeeScript compiler
+	def preprocessors = [:]
+	def preprocessor(String ext, Closure preprocess) {
+		preprocessors[ext] = preprocess
+	}
+	def preprocess(Store script) {
+		preprocessors[script.parts.ext] ?: {text->text}
+	}
 }

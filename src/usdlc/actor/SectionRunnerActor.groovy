@@ -76,7 +76,17 @@ import static usdlc.MimeTypes.mimeType
 					write "Page $currentPage.dir"
 				}
 				if (actors) { runActorsOnPage(actors) }
-				if (onScreen) { updateLinkStates() }
+				if (exchange.data.problems) {
+					reportError(exchange.data.problems.join('\n'))
+					actorState = 'failed'
+				}
+				if (onScreen) {
+					if (exchange.data.refresh) {
+						return
+					} else {
+						updateLinkStates()
+					}
+				}
 
 				String text = html.select('body').html()
 				def path = exchange.store.path
@@ -153,11 +163,17 @@ import static usdlc.MimeTypes.mimeType
 					actorState = 'succeeded'
 				}
 			}
-			resizeOutputFrame()
+			if (onScreen) {
+				if (exchange.data.refresh) {
+					js('parent.usdlc.refreshPage()')
+				} else {
+					resizeOutputFrame(exchange.data.refresh)
+				}
+			}
 		}
 	}
 
-	void resizeOutputFrame() {
+	void resizeOutputFrame(refresh) {
 		js('parent.usdlc.resizeOutputFrame()')
 	}
 	/**

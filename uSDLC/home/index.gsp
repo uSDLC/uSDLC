@@ -11,7 +11,7 @@
 	<% } %>
 	<!--link type="text/css" rel="stylesheet" href="/usdlc/rt/css/menu.css"-->
 	<script>
-		testScripts = ["/usdlc/rt/js/footer.coffeescript"]//"/usdlc/rt/js/menu.coffeescript"]
+		testScripts = []//"/usdlc/rt/js/menu.coffeescript"]
 	</script>
 </head>
 <body>
