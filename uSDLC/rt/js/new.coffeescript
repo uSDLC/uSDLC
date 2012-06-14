@@ -100,7 +100,7 @@ $ ->
 
   insertNewSection = (form, heading, level, id, type) ->
     if usdlc.inFocus
-      notes = form.fieldMap['notes']
+      notes = form.fieldMap.notes
 
       section = usdlc.newSection type, id
       h1 = $ "<h#{level}/>"
@@ -113,7 +113,7 @@ $ ->
       usdlc.savePage()
     else
       usdlc.alert "Select Section First"
-    usdlc.closeDialog()
+    usdlc.closeDialog() if not form.fieldMap.KeepOpen
   ###
   Creates basic new section code.
   ###

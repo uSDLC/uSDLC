@@ -112,7 +112,7 @@ class Page {
 	 */
 	static Page[] pages(parent) {
 		def pages = new PageCache()
-		parent.select('a[action=page]').each { link ->
+		parent.select('div:not(.deleted) a[action=page]').each { link ->
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1) {
 				def child = parent.store.rebase(href)
