@@ -25,7 +25,6 @@ $ ->
             tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
           return tree
     hotkeys :
-      #'tab': -> usdlc.toggleFocus()
       'c': -> usdlc.contentTree.jstree 'create', null, "last"
       'r': -> usdlc.contentTree.jstree 'rename', null
       'shift+up': -> mover 'prev', 'before'
@@ -93,6 +92,7 @@ $ ->
           page: page
     'select_node.jstree': (event, data) ->
       selectedNode = data.rslt.obj
+      usdlc.contentTree.jstree 'open_node', selectedNode
     'create.jstree': (event, data) ->
       href = pageFromLi data.rslt.parent
       updateContentTree data.rslt.parent, href,

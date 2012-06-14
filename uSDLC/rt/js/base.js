@@ -138,7 +138,7 @@ $(function() {
 			}
 		},
 		goHome: function() {
-			usdlc.absolutePageContents("/home",
+			usdlc.absolutePageContents("/usdlc/home",
 					function() {
 						usdlc.contentTree.jstree('deselect_all')
 						usdlc.contentTree.jstree('refresh')
