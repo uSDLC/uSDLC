@@ -192,10 +192,11 @@ $ ->
   usdlc.loadProjects = (input) ->
     $.get '/usdlc/support/usdlc/loadUnassignedProjects.groovy', (rslt) ->
       choices = eval rslt
-      input.autocomplete source: choices
+      input.autocomplete {source: choices, minLength: 0}
 
   usdlc.newProject = ->
     form = new usdlc.FormProcessor "#newProject"
     title = form.fieldMap['title']
-    $.get '/usdlc/support/usdlc/loadUnassignedProjects.groovy', (rslt) ->
+    usdlc.closeDialog()
+    $.get '/usdlc/support/usdlc/newProject.groovy', project:title, (rslt) ->
         usdlc.contentTree.jstree 'refresh', -1

@@ -24,18 +24,23 @@
 
 <div id="s6" class="editable section"><h1 class="sectionType">
 	Footer: Instrument</h1>
-	<div class="centreForm">
-<form id="footerInstrument" action="javascript:usdlc.saveFooter('Instrument')">
-	<select activate="loadActorTypes" name="type" size="1"></select>
-	&nbsp;&nbsp;
-	<input type="submit" value="Create Instrument">
-</form></div></div>
+<div class="centreForm">
+	<form action="javascript:usdlc.saveFooter('Instrument')" id="footerInstrument">
+		<select activate="loadActorTypes" name="type" size="1"></select> &nbsp;&nbsp; <input type="submit" value="Create Instrument">&nbsp;</form>
+</div>
+</div><div id="s8" class="editable section"><h1 class="sectionType">
+	Footer: Groups</h1>
+<div class="centreForm">
+	<form action="javascript:usdlc.saveFooter('Groups')" id="footerGroups">
+		<select name="type" size="1"><option value="csv">csv</option></select> &nbsp;&nbsp; <input type="submit" value="Create Groups">&nbsp;</form>
+</div>
+</div>
 
 <div id="s7" class="editable section"><h1 class="sectionType">
 	Footer: Script</h1>
 	<div class="centreForm">
 <form id="footerScript" action="javascript:usdlc.saveFooter('Script')">
-	Name:&nbsp;<input type="text" size=24 name="name">
+	Name:&nbsp;<input type="text" size="24" name="name">
 	&nbsp;&nbsp;
 	<select activate="loadActorTypes" name="type" size="1"></select>
 	&nbsp;&nbsp;

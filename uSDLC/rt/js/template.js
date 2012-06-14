@@ -52,6 +52,9 @@ $(function () {
 				}
 			}
 		},
+		refreshPage: function() {
+			usdlc.absolutePageContents(usdlc.pageContentsURL)
+		},
 		absolutePageContents:function (path, afterwards) {
 			usdlc.menuToTop()
 			if (path[0] != '/') path = '/' + path

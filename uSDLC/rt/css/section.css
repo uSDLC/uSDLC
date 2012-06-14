@@ -1,9 +1,9 @@
-
-div.section
+div.section {
 	padding: 0.5em;
 	border-bottom: #f2f2f2 1px solid;
 	position: relative;
 }
+
 div.sectionType, div.pageType {
 	font-size: 0.7em;
 	float: right;

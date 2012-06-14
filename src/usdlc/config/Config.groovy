@@ -62,22 +62,19 @@ class Config {
 				return parent // so ~home points to project home
 			}
 			def name = dir
-			if (new File(home).exists()) {
-				if (name.indexOf('_') != -1) {
-					name = name.replaceAll('_', ' ')
-				} else {
-					if (name ==~ /[a-z][^A-Z].*/) name = name.capitalize()
-					name = Store.decamel(name)
-				}
-				def configFile = "$home/usdlc/Config.groovy"
-				def pc = configFile ? parse(configFile) : [:]
-				pc.path = pc.path ?: [:]
-				pc.path.home = pc.home = home
-				pc.dir = dir
-				pc.name = name
-				return config.projects[dir] = pc
+			if (name.indexOf('_') != -1) {
+				name = name.replaceAll('_', ' ')
+			} else {
+				if (name ==~ /[a-z][^A-Z].*/) name = name.capitalize()
+				name = Store.decamel(name)
 			}
-			if (name != 'uSDLC') return project('uSDLC')
+			def configFile = "$home/usdlc/Config.groovy"
+			def pc = configFile ? parse(configFile) : [:]
+			pc.path = pc.path ?: [:]
+			pc.path.home = pc.home = home
+			pc.dir = dir
+			pc.name = name
+			return config.projects[dir] = pc
 		}
 		return config.projects[dir]
 	}

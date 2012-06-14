@@ -63,7 +63,7 @@ class Screencast {
 		page.title = title
 		page.subtitle = subtitle
 		page.synopsis = synopsis
-		page.save()
+		page.forceSave()
 		script("usdlc.absolutePageContents('$store.pathFromWebBase')")
 	}
 

@@ -27,9 +27,9 @@ files = [
 
 fileProcessorWithGzip('usdlc/.store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
+	// copy jQueryUI images as they are expected to be below the css
+	Store.base("$jqueryUIbase/images").copyTo('usdlc/.store/css/images')
 }
-// copy jQueryUI images as they are expected to be below the css
-Store.base("$jqueryUIbase/images").copyTo('usdlc/.store/css')
 
 files = [
 		'usdlc/lib/jquery/js/jquery-1.7.2.js',

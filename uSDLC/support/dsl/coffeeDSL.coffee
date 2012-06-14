@@ -5,7 +5,6 @@ groovy = Packages.groovy
 print = (text) -> exchange.response.print "#{text}\n"
 output = (text) -> exchange.response.print text
 session = exchange.getRequest().session
-#session = instance : (cls) -> $session.get('instance').call cls
 include = run = dsl = (script) -> support.include script
 
 assert = (test, msg) -> throw msg or 'assert failed' if not test
@@ -28,20 +27,14 @@ javaMap = (javaMap) ->
 strings = (array) -> String(string) for string in array
 
 class Store
+  absolutePath: -> @store.file.getCanonicalPath()
   constructor: (@path) -> @store = usdlc.Store.base(path)
-  dir: -> return javaArray @store.dir()
-  delete: -> @store.delete()
-  purge: -> fs(entry).delete() for entry in @dir()
   copyTo: (target) -> @store.copyTo(target)
+  delete: -> @store.delete()
+  dir: -> return javaArray @store.dir()
+  exists: -> @store.exists()
+  purge: -> fs(entry).delete() for entry in @dir()
 
 fs = (path) -> new Store usdlc.Store.base path
 
-statements = []
-gwt = (pattern, action) -> statements.unshift {pattern:pattern, action:action}
-gwt.processor = (statement) ->
-  for item in statements
-    match = item.pattern.exec(statement)
-    if match
-      item.action(match...)
-      return # only runs first match
-  throw "No command pattern for '#{statement}'\n"
+dsl 'gwtDSL'

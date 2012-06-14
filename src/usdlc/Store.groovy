@@ -314,8 +314,8 @@ class Store {
 	 */
 	def copyTo(to) {
 		to = Store.base(to).absolutePath
-		def includes = (file.directory) ? "$file.name/*" : file.name
-		ant.copy(todir: to) { fileset(dir: file.parent, includes: includes) }
+		def includes = (file.directory) ? "**/*" : file.name
+		ant.copy(todir: to) { fileset(dir: dir, includes: includes) }
 	}
 	/**
 	 * moveTo a file or directory to a target directory.

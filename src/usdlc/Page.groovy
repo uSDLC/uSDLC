@@ -244,9 +244,9 @@ class Page {
 			if (cut) {
 				section.remove()
 				forceSave()
-				store.rebase(fromName).moveTo(toPage.store.dir)
+				store.rebase(fromName).moveTo("$toPage.store.dir/$fromName")
 			} else {
-				store.rebase(fromName).copyTo(toPage.store.dir)
+				store.rebase(fromName).copyTo("$toPage.store.dir/$fromName")
 			}
 		}
 	}
