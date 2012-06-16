@@ -5,7 +5,7 @@
 <div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> create new users<br><b class="blue">so that</b> they can access the system</div></div>
 <div id="s4" class="editable section"><h1>
 	User: Log In</h1>
-<form action="javascript:usdlc.logIn()" id="loginform" method="post" name="User authentication">
+<form onsubmit="javascript:usdlc.logIn()" id="loginform" method="post" name="User authentication">
 	<table align="center" border="0" cellpadding="1" cellspacing="1">
 		<tbody>
 			<tr>
@@ -34,7 +34,7 @@
 </div>
 <div id="s5" class="editable section"><h1>
 	User: Change Password</h1>
-<form action="javascript:usdlc.changePassword()" id="changepassword" method="post" name="User authentication">
+<form onsubmit="javascript:usdlc.changePassword()" id="changepassword" method="post" name="User authentication">
 	<table align="center" border="0" cellpadding="1" cellspacing="1">
 		<tbody>
 			<tr>
@@ -68,7 +68,7 @@
 	&nbsp;</p>
 </div><div id="s6" class="editable section"><h1 class="sectionType">
 	User: New</h1>
-<form action="javascript:usdlc.createNewUser()" align="center" id="createNewUser">
+<form onsubmit="javascript:usdlc.createNewUser()" align="center" id="createNewUser">
 	<div class="centreForm">
 		<table align="center">
 			<tbody>
@@ -134,8 +134,8 @@
 </div>
 <div id="s2" class="editable section footer synopsis">
  <div>
-  <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> -
-  <a class="usdlc" href="Setup.coffee" id="s2a1" action="runnable"> Setup</a> -
-  <a class="usdlc" href="Cleanup.coffee" id="s2a2" action="runnable"> Cleanup</a>
+  <a class="usdlc" href=".." id="s2a3" onsubmit="page"> Parent</a> -
+  <a class="usdlc" href="Setup.coffee" id="s2a1" onsubmit="runnable"> Setup</a> -
+  <a class="usdlc" href="Cleanup.coffee" id="s2a2" onsubmit="runnable"> Cleanup</a>
  </div>
 </div>
