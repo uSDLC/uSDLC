@@ -67,8 +67,10 @@ h1 a.running, h1 a.failed, h1 a.succeeded,
 h2 a.running, h2 a.failed, h2 a.succeeded,
 h3 a.running, h3 a.failed, h3 a.succeeded {
 	border: solid 2px #990066;
+	border-radius: 7px;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
+	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 	}

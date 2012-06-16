@@ -135,7 +135,7 @@ $(function() {
 		},
 		postLoader : function() {
 			usdlc.loadScriptAsync(
-					'/usdlc/.store/js/usdlcPost.js', usdlc.init.finalise)
+					'/.store/js/usdlcPost.js', usdlc.init.finalise)
 			usdlc.loadScriptAsync(
 					'/usdlc/support/usdlc/dslAssociationList_js.groovy', function() {})
 		}
