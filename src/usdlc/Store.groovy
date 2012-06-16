@@ -407,4 +407,15 @@ class Store {
 		def integer = new BigInteger(1, md.digest())
 		return integer.toString(16)
 	}
+	/**
+	 * Return a list of projects (or potential projects)
+	 */
+	static projects(potentials = false) {
+		def projects = []
+		base('~/').file.eachDir { File file ->
+			def store = Store.base("~/$file.name/usdlc")
+			if (store.exists() != potentials) projects << file.name
+		}
+		return projects
+	}
 }
