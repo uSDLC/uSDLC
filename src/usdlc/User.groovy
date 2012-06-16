@@ -105,11 +105,13 @@ class User {
 	 * Action can be read raw write or run
 	 */
 	boolean authorised(Store store, String action = 'read') {
-		if (isAdmin || !store.isHtml) return true
+		if (isAdmin) return true
+		def isRead = isRead(action)
+		if (!store.isHtml && isRead) return true
 		def path = store.dir
-		if (path == 'uSDLC' || path == '') {  // home page
+		if (path == 'home' || path == '') {  // home page
 			// only Admin can edit home page
-			return action == 'read' || action == 'raw'
+			return isRead
 		}
 		if (path.indexOf('/') == -1) return true
 
@@ -133,6 +135,8 @@ class User {
 		return data.pages[path].indexOf(action) != -1
 	}
 
+	private isRead(action) {action == 'read' || action == 'raw'}
+
 	def toHtml() {
 		if (home) {
 			return "<a href='$home' class='contentLink' action='page'>$userName</a>"
@@ -140,7 +144,7 @@ class User {
 		return ''
 	}
 
-	static csvRE = ~/\r*[\n,]/
+	static csvRE = ~/\r*[\n,]\s*/
 
 	def propertyMissing(String name) { data[name] }
 

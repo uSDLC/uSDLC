@@ -190,9 +190,10 @@ $ ->
           return false
 
   usdlc.loadProjects = (input) ->
-    $.get '/usdlc/support/usdlc/loadUnassignedProjects.groovy', (rslt) ->
+    $.get '/usdlc/support/usdlc/loadProjects.groovy',
+    unassigned: true,(rslt) ->
       choices = eval rslt
-      input.autocomplete {source: choices, minLength: 0}
+      input.autocomplete source: choices, minLength: 0
 
   usdlc.newProject = ->
     form = new usdlc.FormProcessor "#newProject"
@@ -200,3 +201,18 @@ $ ->
     usdlc.closeDialog()
     $.get '/usdlc/support/usdlc/newProject.groovy', project:title, (rslt) ->
         usdlc.contentTree.jstree 'refresh', -1
+
+  usdlc.loadUsdlcProjects = (input) ->
+    $.get '/usdlc/support/usdlc/loadProjects.groovy', (rslt) ->
+      choices = eval rslt
+      input.autocomplete {source: choices, minLength: 0}
+
+  usdlc.createNewUser = ->
+    form = new usdlc.FormProcessor "#createNewUser"
+    usdlc.closeDialog() if not form.fieldMap.keepOpen
+    $.get '/usdlc/support/usdlc/newUser.groovy', form.fieldMap, (rslt) ->
+      if rslt is 'ok'
+        usdlc.contentTree.jstree 'refresh', -1
+      else
+        usdlc.highlight('red')
+        alert(rslt)

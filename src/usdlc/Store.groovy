@@ -22,7 +22,7 @@ class Store {
 		if (matcher) {
 			//noinspection GroovyUnusedAssignment
 			def (all, core, home, rest) = matcher[0]
-			project = Config.project(home, project)
+			project = Config.project(home, project ?: Config.project('uSDLC'))
 			path = "$project.home$rest"
 			return new Store(path, project)
 		}

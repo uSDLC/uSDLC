@@ -96,7 +96,7 @@ import static usdlc.config.Config.config
 				}
 			}
 		}
-		data.scripts = scripts.unique()
+		data.scripts += scripts.unique()
 		if (!data.baseLanguage) data.baseLanguage = language
 	}
 	/**

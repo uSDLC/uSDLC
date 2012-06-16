@@ -7,7 +7,7 @@
  * write access
  * groups 'space separated list can change pages'
  * instrument access
- * geoups 'space separated list can run instrumentation'
+ * groups 'space separated list can run instrumentation'
  */
 package usdlc
 

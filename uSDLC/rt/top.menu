@@ -43,4 +43,5 @@ User,U
 	Log in,i,usdlc.form('User: Log In')
 	Log out,o,usdlc.logOut()
 	Change password,C,usdlc.form('User: Change Password')
+	New User,N,usdlc.form('User: New')
 Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1

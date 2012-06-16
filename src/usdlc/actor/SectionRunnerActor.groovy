@@ -17,7 +17,7 @@ import static usdlc.MimeTypes.mimeType
 	void run(Store script) {
 		def user = exchange.request.user
 		if (!user.authorised(script, 'run')) {
-			reportError "$user.id is not authorised to execute on this page"
+			reportError "$user.userName is not authorised to execute on this page"
 			return
 		}
 

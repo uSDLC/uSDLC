@@ -22,8 +22,8 @@ $(function () {
              url: url,
              data: what,
              contentType: 'text/html',
-             dataType: 'script'
-             //success: function (code) {$.globalEval(code)}
+             dataType: 'script',
+             success: function (code) {$.globalEval(code)}
            })
        },
 
