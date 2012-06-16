@@ -59,7 +59,7 @@ $ ->
         shortcut = 'ctrl+' + shortcut.substring(1) if shortcut[0] is '^'
         doc.bind 'keydown', shortcut, (event) ->
           if !usdlc.inEditMode(event)
-            event.srcElement.usdlcKeyEvent = true
+            event.target.usdlcKeyEvent = true
             item.action(item)
             event.preventDefault()
         a.attr('title', shortcut)

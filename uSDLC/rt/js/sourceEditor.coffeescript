@@ -122,9 +122,9 @@ $ ->
       onKeyEvent : (editor, event) ->
         if event.altKey or event.ctrlKey or event.metaKey
           if event.type in 'keydown'
-            event.srcElement.usdlcKeyEvent = false
+            event.target.usdlcKeyEvent = false
           wrapper.trigger(event)
-          if event.srcElement.usdlcKeyEvent
+          if event.target.usdlcKeyEvent
             event.stop()
         false
 
