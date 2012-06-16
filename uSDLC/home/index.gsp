@@ -2,7 +2,7 @@
 <head>
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<title></title>
-	<link type="text/css" rel="stylesheet" href="/usdlc/.store/css/usdlc.css">
+	<link type="text/css" rel="stylesheet" href="/.store/css/usdlc.css">
 	<link rel="stylesheet" href="/usdlc/rt/css/print.css" type="text/css" media="print" />
 	<% if (usdlc.config.Config.config.port == "80") { %>
 	<link
@@ -83,7 +83,7 @@
 	</tr>
 </table>
 
-<script type="text/javascript" src='/usdlc/.store/js/usdlcPre.js'></script>
+<script type="text/javascript" src='/.store/js/usdlcPre.js'></script>
 <% if (usdlc.config.Config.config.port == "80") { %>
 <div style="position:absolute; bottom:10px; left:10px;">
 	<a href="https://plus.google.com/116900499382012938759?prsrc=3"

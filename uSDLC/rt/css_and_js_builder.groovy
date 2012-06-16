@@ -25,10 +25,10 @@ files = [
 		'usdlc/rt/css/editor.css',
 ]
 
-fileProcessorWithGzip('usdlc/.store/css/usdlc.css', files) {
+fileProcessorWithGzip('.store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
 	// copy jQueryUI images as they are expected to be below the css
-	Store.base("$jqueryUIbase/images").copyTo('usdlc/.store/css/images')
+	Store.base("$jqueryUIbase/images").copyTo('.store/css/images')
 }
 
 files = [
@@ -57,7 +57,7 @@ files = [
 ]
 
 coffeeCompiler = new CoffeeScript()
-javascriptBuilder('usdlc/.store/js/usdlcPre.js', files, coffeeCompiler)
+javascriptBuilder('.store/js/usdlcPre.js', files, coffeeCompiler)
 
 files = [
 		'usdlc/lib/jquery/js/jquery.easytabs.js',
@@ -77,4 +77,4 @@ Store.base('usdlc/lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
 	files += store.path;
 }
 
-javascriptBuilder('usdlc/.store/js/usdlcPost.js', files, coffeeCompiler)
+javascriptBuilder('.store/js/usdlcPost.js', files, coffeeCompiler)

@@ -21,7 +21,7 @@ ant.jar(destfile: 'release/uSDLC-full.jar', compress: true, index: true) {
 		includes: 'bin/**/*.class,lib/**/*,src/**/*,usdlc/**/*,' +
 		    'uSDLC.sh,uSDLC.bat',
                 excludes:
-                    'usdlc/.store/**/*,usdlc/tmp/**/*,**/.*,' +
+                    '.store/**/*,tmp/**/*,**/.*,' +
 		            'usdlc/lib/javadoc/**/*,' +
                     'usdlc/lib/source/**/*,usdlc/lib/jars/*'
 	    )
