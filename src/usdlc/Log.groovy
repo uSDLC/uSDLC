@@ -28,7 +28,7 @@ class Log extends SimpleLog {
 	 * @return closure to call to write to the log.
 	 */
 	static file(name) {
-		def store = Store.base("usdlc/.store/log/${name}.log")
+		def store = Store.base(".store/log/${name}.log")
 		store.append("\n${new Date().format('yyyy-MM-dd HH:mm')}: ")
 		return { store.append it }
 	}
@@ -36,7 +36,7 @@ class Log extends SimpleLog {
 	 * Write row to csv log file
 	 */
 	static csv(name, row) {
-		def store = Store.base("usdlc/${name}.csv")
+		def store = Store.base("${name}.csv")
 		store.append "\n${new Date().format('yyyyMMdd,HHmm,Z')},"
 		store.append row
 	}

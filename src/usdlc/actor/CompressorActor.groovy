@@ -14,7 +14,7 @@ abstract class CompressorActor extends Actor {
 		if (config."compress${type.capitalize()}" &&
 				!config.noCompression.matcher(
 						source.path).matches()) {
-			compressed = Store.base("usdlc/.store/$type/base").
+			compressed = Store.base(".store/$type/base").
 					rebase(source.path)
 			if (source.newer(compressed)) {
 				compressed.mkdirs()
