@@ -28,9 +28,9 @@ $ ->
   usdlc.setFocus = (element) ->
     section = usdlc.getSection(element)
     #if not section.hasClass('inFocus')
-    usdlc.resetMenu()
     usdlc.clearFocus()
     usdlc.inFocus = section
+    usdlc.resetMenu()
     section.addClass('inFocus ui-widget-content')
     usdlc.contentTree.jstree('disable_hotkeys')
     $('#contentTree').removeClass('rounded pale-gray-box inFocus')
