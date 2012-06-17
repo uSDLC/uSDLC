@@ -7,7 +7,7 @@ $ ->
         name = $(a).text()
         if not tabsByName[name] then return name
       return tabsByName[0]
-      return false
+    return undefined
 
   usdlc.saveFooter = (type) ->
     form = new usdlc.FormProcessor "#footer#{type}"
