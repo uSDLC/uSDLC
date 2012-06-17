@@ -11,6 +11,7 @@ $ ->
     id = usdlc.nextSectionId()
     a = createLink href, 'page', "#{id}a0", title
     insertNewSection form, a, 1, id, type
+    return false
   ###
   Called by form to create a new section below the current one. It will create
   a new header link referencing an instrumentation script based on the title.
@@ -29,6 +30,7 @@ $ ->
     id = usdlc.nextSectionId()
     a = codeLinkCreator form, href, type, "#{id}a0", title
     insertNewSection form, a, 2, id, name
+    return false
 
 
   usdlc.titleExt = (form, titleFieldName) ->
@@ -76,6 +78,7 @@ $ ->
     heading.html title
     insertNewSection form, heading, 2, id, type
     usdlc.editSectionInFocus()
+    return false
   ###
   This is where the work is done...
   ###
@@ -90,13 +93,13 @@ $ ->
   ###
   Create a new section given a template
   ###
-  usdlc.sectionTemplate = (name, page = 'Sections') ->
-    usdlc.loadSection name, page, (h1) ->
-      section = usdlc.newSection(name)
-      section.append h1.nextAll()
-      section.insertAfter(usdlc.inFocus)
-      usdlc.setFocus(section)
-      usdlc.editSectionInFocus()
+#  usdlc.sectionTemplate = (name, page = 'Sections') ->
+#    usdlc.loadSection name, page, (h1) ->
+#      section = usdlc.newSection(name)
+#      section.append h1.nextAll()
+#      section.insertAfter(usdlc.inFocus)
+#      usdlc.setFocus(section)
+#      usdlc.editSectionInFocus()
 
   insertNewSection = (form, heading, level, id, type) ->
     if usdlc.inFocus
@@ -175,6 +178,7 @@ $ ->
     usdlc.closeDialog()
     $.get '/usdlc/support/usdlc/newProject.groovy', project:title, (rslt) ->
         usdlc.contentTree.jstree 'refresh', -1
+    return false
 
   usdlc.loadUsdlcProjects = (input) ->
     $.get '/usdlc/support/usdlc/loadProjects.groovy', (r)->sac(input, r)
@@ -188,6 +192,7 @@ $ ->
       else
         usdlc.highlight('red')
         alert(rslt)
+    return false
 
   usdlc.loadGroups = (input) ->
     $.get '/usdlc/support/usdlc/loadGroups.groovy', (r)->mac(input, r)

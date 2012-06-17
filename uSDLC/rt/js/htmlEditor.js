@@ -44,6 +44,8 @@ $(function () {
 		usdlc.menuToTop()
 		usdlc.scrollTo($section)
 		usdlc.clearFocus()
+		var inner = $('.editable', $section)
+		if (inner.size() > 0) $section = inner.first()
 		$section.ckeditor(function () {
 			usdlc.modalOn()
 		}, {
@@ -262,7 +264,7 @@ $(function () {
 						label:  'Link Type',
 						items:  [
 							[ 'Child', '' ],
-							[ 'Sibling', 'htm' ],
+							//[ 'Sibling', 'html' ],
 							//[ 'Download' ],
 							[ 'Actor' ]
 						],
@@ -301,15 +303,4 @@ $(function () {
 			dialogDefinition.addContents(usdlc.reportsTabData);
 		}
 	})
-//
-//	function onDblclick(ev) {
-//		if (!usdlc.inEditMode(ev)) {
-//			usdlc.setFocus(ev.currentTarget)
-//			usdlc.editSectionInFocus()
-//			return false
-//		} else {
-//			return true
-//		}
-//	}
-//	$('.editable').live('dblclick', onDblclick)
 })

@@ -60,7 +60,13 @@ class Page {
 		if (store.isHtml && !store.exists()) {
 			def page = new Page('usdlc/Environment/Configuration/Templates/Sections/Default/index.html')
 			page.store = store
-			def title = store.parts.path.replaceFirst(~'.*/', '').split('_')
+			def title, fn = store.parts
+			if (fn.name == 'index') {
+				title = fn.path.replaceFirst(~'.*/', '')
+			} else {
+				title = fn.name
+			}
+			title = title.split('_')
 			page.select('div#pageTitle h1').html(Store.decamel(title[-1]))
 			if (title.size() > 1) {
 				page.select('div#s1').append("<div class='pageType'>${title[-2]}</div>\n")

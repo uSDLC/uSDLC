@@ -99,6 +99,7 @@ $(function() {
 					$('#userName').html(data)
 					usdlc.goHome()
 				})
+			return false
 		},
 		logIn: function() {    // used in top.menu
 			var userName = $('#loginform input[name="user"]')[0].value
@@ -119,6 +120,7 @@ $(function() {
 					}
 				}
 			})
+			return false
 		},
 		changePassword: function() {    // used in top.menu
 			var url = '/usdlc/support/usdlc/changePassword.groovy'
@@ -136,6 +138,7 @@ $(function() {
 					}
 				})
 			}
+			return false
 		},
 		goHome: function() {
 			usdlc.absolutePageContents("/usdlc/home",

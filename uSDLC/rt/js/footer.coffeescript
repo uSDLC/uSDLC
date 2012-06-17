@@ -7,6 +7,7 @@ $ ->
         name = $(a).text()
         if not tabsByName[name] then return name
       return tabsByName[0]
+      return false
 
   usdlc.saveFooter = (type) ->
     form = new usdlc.FormProcessor "#footer#{type}"
@@ -16,6 +17,7 @@ $ ->
     load_footer().a.last().before(html)
     usdlc.closeDialog()
     usdlc.savePage()
+    return false
 
   load_footer = ->
     div = $ 'div.footer'
