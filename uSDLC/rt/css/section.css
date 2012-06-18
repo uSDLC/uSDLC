@@ -91,18 +91,18 @@ a.succeeded {
 	text-align: right;
 }
 
-h1 a[state=complete] {
-	color: blue;
+a[state=complete] {
+	color: #000099 !important;
 }
 
-h1 a[state=incomplete] {
-	color: #008b8b;
+a[state=incomplete] {
+	color: #008b8b !important;
 }
 
-h1 a[state=notStarted], h1 a:not([state]) {
-	color: #a9a9a9;
+a[state=notStarted], h1 a:not([state]) {
+	color: #a9a9a9 !important;
 }
 
-h1 a[state=errors] {
-	color: red;
+a[state=errors] {
+	color: red !important;
 }

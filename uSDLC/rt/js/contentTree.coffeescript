@@ -18,11 +18,13 @@ $ ->
           $('<ins/>').html(data).find('a.usdlc[action=page]').each ->
             a = $(this)
             href = usdlc.removeDomain(a.attr('href'))
+            state = a.attr('state') ? ''
+            state = "state='#{state}'" if state
 #            if href.substring(0, 2) != '..' and href[0] != '/'
             id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
             rel = a.attr('rel') ? ''
             rel = "rel='#{rel}'" if rel
-            tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page'>#{a.text()}</a></li>"
+            tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page' #{state}>#{a.text()}</a></li>"
           return tree
     hotkeys :
       'c': -> usdlc.contentTree.jstree 'create', null, "last"

@@ -109,7 +109,6 @@ class Page {
 	 */
 	static Page[] pages() {
 		def pages = new PageCache()
-		pages.add Store.usdlcRoot
 		Store.projectIndexes.each { page -> pages.add page }
 		return pages.list
 	}
@@ -122,7 +121,7 @@ class Page {
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1) {
 				def child = parent.store.rebase(href)
-				pages.add child, link.text()
+				pages.add child, link.text(), link.attr('state')
 			}
 		}
 		return pages.list
@@ -138,11 +137,13 @@ class Page {
 
 		def reset() { list = [] }
 
-		def add(Store store, displayName) {
+		def add(Store store, displayName = '', state='') {
 			String path = store.path
 			if (!cache.contains(path)) {
 				cache.add(path)
-				if (store.isHtml) list << new Page(store, displayName)
+				def page = new Page(store, displayName)
+				if (state) page.state = state
+				if (store.isHtml) list << page
 			}
 		}
 	}
@@ -284,6 +285,7 @@ class Page {
 	static slurper = new XmlSlurper(new SAXParser())
 	def out = new StreamingMarkupBuilder(), titleDiv, updated, displayName
 	def store, title, subtitle, sections, allSections, synopsis, footer
+	def state = ''
 	/** Wrap the dom section item to add functionality */
 	class Section {
 		@Delegate Element dom
