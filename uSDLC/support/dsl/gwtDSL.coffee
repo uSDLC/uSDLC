@@ -13,3 +13,5 @@ if not gwt
     if gwt.problems.length
       Packages.usdlc.GwtProcessor.update exchange.store, gwt.problems
       exchange.data.put('refresh', 'true')
+
+  gwt /wait (\d+) seconds?/, (all, seconds) -> sleep seconds

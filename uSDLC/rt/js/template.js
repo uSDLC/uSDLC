@@ -82,6 +82,12 @@ $(function () {
 					usdlc.contentTree.setFocus(to)
 					usdlc.clearFocus()
 					if (afterwards) afterwards()
+					var blind = $('div#blind').first().hide();
+					if (blind.size()) {
+						setTimeout(function(){
+							blind.first().show('blind', 10000)
+						}, 2000)
+					}
 				}
 			})
 

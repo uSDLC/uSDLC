@@ -6,6 +6,7 @@ import java.security.MessageDigest
 
 import static groovy.io.FileType.FILES
 import static usdlc.config.Config.config
+import java.util.regex.Pattern
 
 class Store {
 	/**
@@ -44,11 +45,9 @@ class Store {
 	 * in /tmp. Use the ID to provide a reference name and file extension. All
 	 * files here are deleted every time uSDLC is started.
 	 */
-	static Store tmp(String id = '.txt') {
-		Store.base tmpDir.uniquePath("/$id")
-	}
+	static Store tmp(String name) { Store.base tmpDir.unique(name) }
 
-	@Lazy static Store tmpDir = Store.base('usdlc/tmp').rmdir()
+	@Lazy static Store tmpDir = Store.base('tmp').rmdir()
 	/**
 	 * Sometimes we get a new store based on an old location
 	 */
@@ -102,6 +101,8 @@ class Store {
 	@Lazy boolean isHtml = isDirectory || parts.ext == 'html'
 
 	private String calcParent() {
+		def parent = file.parent
+		if (!parent) return '.'
 		int drop = file.path.size() - file.parent.size() + 1
 		if (drop >= path.size()) return ''
 		path[0..-drop]
@@ -180,7 +181,9 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(mask, Closure closure) {
-		file.eachFileMatch mask, { File file -> closure(file.path) }
+		try {
+			file.eachFileMatch mask, { File file -> closure(file.path) }
+		} catch(e) {}
 	}
 	/**
 	 * Fetch a list of all contents of a directory
@@ -232,21 +235,6 @@ class Store {
 	File file
 	Map project
 
-	/**
-	 * Find a directory that doesn't exist - based on a timestamp (i.e.
-	 * 2011-02-05_14-55-38-489_5).
-	 * This path will sort correctly for creation date.
-	 */
-	String uniquePath(id) {
-		def timestamp = new Date().format(dateStampFormat)
-		def uniquePath = "${timestamp}_${uniqifier}_${camelCase(id)}"
-		def unique
-		while ((unique = new File(file, uniquePath)).exists()) {
-			uniquePath = "${timestamp}_${uniqifier++}_${camelCase(id)}"
-		}
-		return unique.path
-	}
-
 	static int uniqifier = 0
 	/**
 	 * Find a file that doesn't exist - based on a timestamp (i.e.
@@ -255,9 +243,18 @@ class Store {
 	 * e.g. assert Store.base('/tmp').unique('test.txt') ==~ /[\d\-_]_test
 	 * .txt/
 	 */
-	Store unique(name) {
-		Store.base uniquePath(name)
+	String unique(name) {
+		if (!name) return unique()
+		name = camelCase(name)
+		def timestamp = new Date().format(dateStampFormat)
+		def uniquePath = "${timestamp}_${uniqifier}_${name}"
+		def unique
+		while ((unique = rebase(uniquePath)).exists()) {
+			uniquePath = "${timestamp}_${uniqifier++}_${name}"
+		}
+		return unique.path
 	}
+	String unique() { Store.base(dir, project).unique(name) }
 	/**
 	 * Convert any sentence into a single camel-case word. It remove all
 	 * punctuation and makes the start of each work a capital letter.
@@ -321,16 +318,16 @@ class Store {
 	 * moveTo a file or directory to a target directory.
 	 */
 	def moveTo(to) {
-		ant.move(todir: Store.base(to).absolutePath) {
-			fileset(dir: file.parent, includes: "$file.name/*")
-		}
+		to = Store.base(to).absolutePath
+		def includes = (file.directory) ? "**/*" : file.name
+		ant.move(todir: to) { fileset(dir: dir, includes: includes) }
 	}
 	/**
 	 * Rename a file or directory
 	 */
 	def renameTo(to) {
-		def parent = file.parent
-		ant.move(file:"$parent/$file.name", tofile:"$parent/$to")
+		if (to.indexOf('/') == -1) to = "${file.parent ?: '.'}/$to"
+		ant.move(file:"$file.path", tofile:"$to")
 	}
 	/**
 	 * Remove the path created for this store - if it is a directory
@@ -407,6 +404,20 @@ class Store {
 		def integer = new BigInteger(1, md.digest())
 		return integer.toString(16)
 	}
+	/**
+	 * Search text file for string matches
+	 */
+	def grep(String pattern) { grep ~/$pattern/ }
+	def grep(Pattern pattern) {
+		def results = []
+		file.eachLine { line, lno ->
+			if (line =~ pattern) {
+				results << new GrepResult(lineNumber: lno, contents: line)
+			}
+		}
+		return results
+	}
+	class GrepResult { int lineNumber; String contents; }
 	/**
 	 * Return a list of projects (or potential projects)
 	 */

@@ -1,3 +1,6 @@
+div#blind {
+	display: none;
+}
 button.ui-button-icon-only {
 	width: 20px;
 	height: 20px;

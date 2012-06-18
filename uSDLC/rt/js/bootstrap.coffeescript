@@ -3,6 +3,6 @@ if not window.usdlc
   if url.pathname isnt '/'
     document.cookie = "currentPage=#{url.pathname}"
   url.href = "#{url.protocol}//#{url.host}/usdlc/home"
-else if $('div.section:first').text().length < 2
+else if $('div.section:first').text().length < 16
     usdlc.form 'Synopsis:', usdlc.selectSynopsisTab
 

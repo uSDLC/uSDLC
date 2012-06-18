@@ -90,3 +90,19 @@ a.succeeded {
 .right {
 	text-align: right;
 }
+
+h1 a[state=complete] {
+	color: blue;
+}
+
+h1 a[state=incomplete] {
+	color: #008b8b;
+}
+
+h1 a[state=notStarted], h1 a:not([state]) {
+	color: #a9a9a9;
+}
+
+h1 a[state=errors] {
+	color: red;
+}

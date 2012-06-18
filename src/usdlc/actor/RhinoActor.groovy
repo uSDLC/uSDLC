@@ -18,9 +18,7 @@ class RhinoActor extends Actor {
 		javascript.run(script, binding)
 	}
 
-	public $sleep(seconds) {
-		sleep((long) (seconds * 1000))
-	}
+	public $sleep(seconds) { sleep((long) (seconds.toLong() * 1000)) }
 	/**
 	 * Another script can be run int the same context with:
 	 *

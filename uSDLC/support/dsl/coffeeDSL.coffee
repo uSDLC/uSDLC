@@ -30,10 +30,14 @@ class Store
   absolutePath: -> @store.file.getCanonicalPath()
   constructor: (@path) -> @store = usdlc.Store.base(path)
   copyTo: (target) -> @store.copyTo(target)
+  moveTo: (target) -> @store.moveTo(target)
+  renameTo: (target) -> @store.renameTo(target)
   delete: -> @store.delete()
-  dir: -> return javaArray @store.dir()
+  dir: -> javaArray @store.dir()
   exists: -> @store.exists()
   purge: -> fs(entry).delete() for entry in @dir()
+  unique: (name) -> @store.unique(name ? null)
+  grep: (regex) -> javaArray @store.grep(regex)
 
 fs = (path) -> new Store usdlc.Store.base path
 

@@ -80,6 +80,7 @@ $(function() {
 //			$(arguments[0]).css('display', 'inherit')
 //		},
 		camelCase : function(text) {
+			text = text.replace(/[\s:\?\*%\|"<>\-~]+$/, '')
 			return text.replace(/([\s:\?\*%\|"<>\-~]+)(\w)/g,
 					function(a, s, c) { return c.toUpperCase() })
 		},
