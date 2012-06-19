@@ -116,9 +116,8 @@ $(function() {
 			 */
 			var path = window.location.pathname
 			if (path == '/usdlc/home') {
-				path = window.location.search || usdlc.cookie('currentPage') || path
-				if (path[0] == '?')
-					path = path.substring(1)
+				path = window.location.hash || usdlc.cookie('currentPage') || path
+				if (path[0] == '#') path = path.substring(1)
 			}
 			usdlc.absolutePageContents(path, callback)
 		},

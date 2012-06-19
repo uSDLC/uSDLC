@@ -106,7 +106,7 @@ $ ->
       body = $ '<div/>', id: id
       body.append heading.nextAll()
       tabPanel.append body
-    tabPanel.easytabs animate: false
+    tabPanel.easytabs animate: false, updateHash: false
     return title
 
   getTitle = (box, heading) ->

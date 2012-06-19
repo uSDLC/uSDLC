@@ -64,6 +64,7 @@ $(function () {
 					usdlc.highlight('pink')
 				} else {
 					usdlc.pageContentsURL = to
+					window.location.hash = usdlc.reduceUrl(to)
 					pageHistory.push(to)
 					if (pageHistory.length > 100) {
 						pageHistory = pageHistory.slice(50)
@@ -79,7 +80,7 @@ $(function () {
 					usdlc.synopses()
 					usdlc.pageContentsSausages.sausage()
 					usdlc.scrollTop()
-					usdlc.contentTree.setFocus(to)
+					setTimeout(function(){usdlc.contentTree.setFocus(to)},500)
 					usdlc.clearFocus()
 					if (afterwards) afterwards()
 					var blind = $('div#blind').first().hide();
@@ -90,26 +91,12 @@ $(function () {
 					}
 				}
 			})
-
-//			usdlc.pageContentsURL = usdlc.normalizeURL(path)
-//			var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
-//			$('base').attr('href', base)
-//			usdlc.setCookie('currentPage', usdlc.pageContentsURL)
-//			$.get(usdlc.pageContentsURL, function (data) {
-//				usdlc.pageContents.html(data)
-//
-//				usdlc.setPageTitle()
-//				usdlc.synopses()
-//				usdlc.pageContentsSausages.sausage()
-//				usdlc.scrollTop()
-//				afterwards && afterwards()
-//			})
 		},
 
 		relativePageContents:function (path) {
 			usdlc.absolutePageContents(usdlc.normalizeURL(path || '/'))
 		},
-		pageContentsURL:     '/index.html',
+		pageContentsURL:     '/home',
 		normalizeURL:        function (path) {
 			var p = path
 //			if (p[0] != '/') {
@@ -123,6 +110,9 @@ $(function () {
 				p += "/index.html"
 			}
 			return p
+		},
+		reduceUrl: function(path) {
+			return path.replace(/^.*(~)/, '$1').replace(/\/index\..{3,4}$/, '')
 		},
 		savePage: function() {
 			/*
