@@ -33,7 +33,7 @@ class Store
   moveTo: (target) -> @store.moveTo(target)
   renameTo: (target) -> @store.renameTo(target)
   delete: -> @store.delete()
-  dir: -> javaArray @store.dir()
+  dir: (mask) -> javaArray @store.dir(mask ? '.*')
   exists: -> @store.exists()
   purge: -> fs(entry).delete() for entry in @dir()
   unique: (name) -> @store.unique(name ? null)
