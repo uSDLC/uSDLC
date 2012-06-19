@@ -180,11 +180,12 @@ class Store {
 	 * (~/re/)
 	 * @param closure - code to execute for each file in the directory
 	 */
-	void dir(mask, Closure closure) {
+	void dir(Pattern mask, Closure closure) {
 		try {
 			file.eachFileMatch mask, { File file -> closure(file.path) }
 		} catch(e) {}
 	}
+	void dir(mask, Closure closure) { dir(~/${mask ?: '.*'}/, closure) }
 	/**
 	 * Fetch a list of all contents of a directory
 	 * @param closure - code to execute for each file in the directory
@@ -210,12 +211,16 @@ class Store {
 	 * Call a closure for the contents of a directory tree (as in dir /s)
 	 */
 	void dirs(mask, Closure closure) {
+		dirs(~/$mask/, closure)
+	}
+	void dirs(Pattern mask, Closure closure) {
 		try {
 			file.traverse(type: FILES, nameFilter: mask) { File found ->
 				closure(new Store(found.path, project))
 			}
 		} catch (e) {}
 	}
+	void dirs(Closure closure) { dirs(~/.*/, closure) }
 	/**
 	 * Used to see if a compile/processing action is required because the
 	 * source is newer than the destination.

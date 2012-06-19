@@ -13,7 +13,7 @@ class GwtProcessor {
 			addFooter(store, 'Instrument')
 		}
 		unknownStatements.each { statement ->
-			instrument.file << "\ngwt /$statement/, () ->\n    throw 'Undefined'"
+			instrument.file << "\ngwt /$statement/, (all) ->\n    throw 'Undefined'"
 		}
 	}
 

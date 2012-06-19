@@ -230,7 +230,7 @@ class Page {
 		if (sameParent) toPage = this
 		if (! cut) section = section.clone() // so we get a copy
 		def newId = toPage.nextSectionId(), a = 0
-		section.attr('id', newId)
+		section.attr('id', newId.toString())
 		section.select('a').each {it.attr('id', "s${newId}a${a++}")}
 		switch (position) {
 			case 'before':
