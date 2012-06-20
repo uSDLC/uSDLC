@@ -249,9 +249,11 @@ $(function () {
 					urlField.setValue(usdlc.camelCase(highlightedText))
 					linkRadioDefault = ''
 				}
-				linkRadio.setValue(linkRadioDefault)
 				linkSelect.setValue(actorDefault)
+				linkRadio.setValue(linkRadioDefault)
+				setLinkType()
 				initialising = false
+//				setTimeout(function(){initialising = false}, 500)
 			}
 			// Add all the new link stuff related to actor and
 			// wiki type links.
