@@ -91,18 +91,6 @@ a.succeeded {
 	text-align: right;
 }
 
-a[state=complete] {
-	color: #000099 !important;
-}
-
-a[state=incomplete] {
-	color: #008b8b !important;
-}
-
-a[state=notStarted], h1 a:not([state]) {
-	color: #a9a9a9 !important;
-}
-
-a[state=errors] {
-	color: red !important;
+a.jstree-clicked {
+	color: white !important;
 }

@@ -83,12 +83,6 @@ $(function () {
 					setTimeout(function(){usdlc.contentTree.setFocus(to)},500)
 					usdlc.clearFocus()
 					if (afterwards) afterwards()
-					var blind = $('div#blind').first().hide();
-					if (blind.size()) {
-						setTimeout(function(){
-							blind.first().show('blind', 10000)
-						}, 2000)
-					}
 				}
 			})
 		},
@@ -99,9 +93,6 @@ $(function () {
 		pageContentsURL:     '/home',
 		normalizeURL:        function (path) {
 			var p = path
-//			if (p[0] != '/') {
-//				p = '/' + p
-//			}
 			var dot = p.lastIndexOf('.')
 			var slash = p.lastIndexOf('/')
 			if (slash == p.length - 1) {
@@ -112,7 +103,11 @@ $(function () {
 			return p
 		},
 		reduceUrl: function(path) {
-			return path.replace(/^.*(~)/, '$1').replace(/\/index\..{3,4}$/, '')
+			path = path.replace(/^.*(~)/, '$1').replace(/\/index\..{3,4}$/, '')
+			if (path[0] != '~') {
+				path = '~uSDLC' + path
+			}
+			return path
 		},
 		savePage: function() {
 			/*

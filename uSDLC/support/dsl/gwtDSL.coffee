@@ -11,7 +11,10 @@ if not gwt
     gwt.problems.push(statement)
   gwt.cleanup = ->
     if gwt.problems.length
-      Packages.usdlc.GwtProcessor.update exchange.store, gwt.problems
-      exchange.data.put('refresh', 'true')
+      rerun = Packages.usdlc.GwtProcessor.update exchange.store, gwt.problems
+      if rerun
+        exchange.data.put('rerun', 'rerun')
+      else
+        exchange.data.put('refresh', 'refresh')
 
   gwt /wait (\d+) seconds?/, (all, seconds) -> sleep seconds

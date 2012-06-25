@@ -85,8 +85,8 @@ $(function() {
 					function(a, s, c) { return c.toUpperCase() })
 		},
 		decamel : function(text) {
-			return text.replace(/\B([A-Z])/g,
-					function(a, c) { return ' ' + c })
+			return text.replace(/(\w)([A-Z])/g,
+					function(a, c1, c2) { return c1 + ' ' + c2 })
 		},
 		inEditMode: function(event) {
 			var node = event.target.nodeName.toLowerCase()

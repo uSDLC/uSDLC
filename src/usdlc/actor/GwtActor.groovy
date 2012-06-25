@@ -5,7 +5,9 @@ class GwtActor extends CoffeeActor {
 		preprocessor('gwt') { text ->
 			def parsed = ['gwt.setup()']
 			text.eachLine {
-				parsed.push("gwt.processor '${it.replaceAll(/'/,/\'/)}'")
+				if (it[0] != '#') {
+					parsed.push("gwt.processor '${it.replaceAll(/'/,/\'/)}'")
+				}
 			}
 			parsed.push('gwt.cleanup()')
 			return parsed.join('\n')

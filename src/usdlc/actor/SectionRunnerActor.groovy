@@ -9,6 +9,8 @@ import usdlc.drivers.JavaScript
 import java.util.regex.Pattern
 
 import static usdlc.MimeTypes.mimeType
+import com.google.common.base.CaseFormat
+import javax.swing.text.html.HTML
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
@@ -87,14 +89,6 @@ import static usdlc.MimeTypes.mimeType
 						updateLinkStates()
 					}
 				}
-
-				String text = html.select('body').html()
-				def path = exchange.store.path
-				if (path.endsWith('.sectionRunner')) {
-					exchange.store = Store.base(path[0..-15])
-				}
-				exchange.save(text)
-				write '</div></body></html>'
 			}
 		}
 	}
@@ -145,7 +139,9 @@ import static usdlc.MimeTypes.mimeType
 		try {
 			def base = Store.base(actors[0].dir)
 			runFiles(~/^Setup\..*/, base)
-			actors.each { Store actor -> runActor(actor) }
+			actors.each { Store actor ->
+				if (!exchange.data.rerun) runActor(actor)
+			}
 			runFiles(~/^Cleanup\..*/, base)
 		} catch (AssertionError assertion) {
 			reportException(assertion)
@@ -164,16 +160,20 @@ import static usdlc.MimeTypes.mimeType
 				}
 			}
 			if (onScreen) {
-				if (exchange.data.refresh) {
+				if (exchange.data.rerun) {
+					exchange.data.remove('rerun')
+					runActorsOnPage(actors)
+				} else if (exchange.data.refresh) {
+					exchange.data.remove('refresh')
 					js('parent.usdlc.refreshPage()')
 				} else {
-					resizeOutputFrame(exchange.data.refresh)
+					resizeOutputFrame()
 				}
 			}
 		}
 	}
 
-	void resizeOutputFrame(refresh) {
+	void resizeOutputFrame() {
 		js('parent.usdlc.resizeOutputFrame()')
 	}
 	/**
