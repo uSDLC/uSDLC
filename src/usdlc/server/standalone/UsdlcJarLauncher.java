@@ -60,7 +60,7 @@ public class UsdlcJarLauncher {
 		String toolsProperty = javaHomeProperty + "/../lib/tools.jar";
 		System.setProperty("tools.jar", toolsProperty);
 		String cd = new File(".").getAbsolutePath();
-		String groovyHomeProperty = cd + "/lib/jars/required";
+		String groovyHomeProperty = cd + "/usdlc/lib/jars";
 		System.setProperty("groovy.home", groovyHomeProperty);
 
 		URLClassLoader loader = new RootLoader(classpaths(),

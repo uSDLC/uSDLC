@@ -120,7 +120,7 @@ class Config {
 	@Lazy static manifest = {
 		def attributes = null
 		try {
-			Store store = Store.base('usdlc/META-INF/MANIFEST.MF')
+			Store store = Store.base('META-INF/MANIFEST.MF')
 			Manifest mf = new Manifest(store.url.openStream());
 			attributes = mf.mainAttributes
 		} catch (Exception e) { }

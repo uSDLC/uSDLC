@@ -35,7 +35,7 @@ class Store
   delete: -> @store.delete()
   dir: (mask) -> javaArray @store.dir(mask ? '.*')
   exists: -> @store.exists()
-  purge: -> fs(entry).delete() for entry in @dir()
+  purge: (mask) -> fs(entry).delete() for entry in @dir(mask)
   unique: (name) -> @store.unique(name ? null)
   grep: (regex) -> javaArray @store.grep(regex)
 
