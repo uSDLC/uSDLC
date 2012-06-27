@@ -2,22 +2,42 @@
 	<h1> uSDLC Stand-Alone</h1>
  <h2> No install - just run</h2>
 </div>
-<div id="s5" class="editable section synopsis"><p><b class="blue">As a</b> uSDLC Developer<br><b class="blue">I want</b> be able to create a stand-alone single jar installation solution<br><b class="blue">so that</b> I can easily create a new system without additional Internet downloads</p></div><div id="s1" class="editable section synopsis">
- <p> The stand-alone version is designed for systems that do not have an Internet or repository connection.</p>
- <ul>
-  <li> Create a directory uSDLC at the same level as your projects.</li>
-  <li> Download:
-   <ul>
-    <li> <a href="~/usdlc/uSDLC-full.jar!" id="s1a0" action="download">uSDLC-full.jar</a> for a running system and;</li>
-    <li> <a href="~/usdlc/uSDLC-optional-jars.zip!" id="s1a1" action="download">uSDLC-optional-jars.zip</a> for a sandbox (no internet) system.</li>
-   </ul> </li>
-  <li> From a prompt, run:
-   <ul>
-    <li> java -jar uSDLC-full.jar</li>
-   </ul> </li>
- </ul>
- <p> It will unpack both archives - by only over-writing files that are newer in the archive than on disk. This way you can update uSDLC on an existing project safely.</p>
- <p> If you don't download the optional jar archive, uSDLC will fetch the jars on demand.</p>
+<div id="s5" class="editable section synopsis"><p><b class="blue">As a</b> uSDLC Developer<br><b class="blue">I want</b> be able to create a stand-alone single jar installation solution<br><b class="blue">so that</b> I can easily create a new system without additional Internet downloads</p></div><div id="s1" class="editable section synopsis"><div class="sectionType">
+	Guide</div>
+<h1>
+	Using snapshots</h1>
+<p>
+	The stand-alone version is designed for systems that do not have an Internet or repository connection.</p>
+<ul>
+	<li>
+		Create a directory uSDLC at the same level as your projects.</li>
+	<li>
+		Download:
+		<ul>
+			<li>
+				<a href="~/usdlc/uSDLC-full.jar!" id="s1a0" action="download">uSDLC-full.jar</a> for a running system and;</li>
+			<li>
+				<a href="~/usdlc/uSDLC-optional-jars.zip!" id="s1a1" action="download">uSDLC-optional-jars.zip</a> for a sandbox (no internet) system.</li>
+		</ul>
+	</li>
+	<li>
+		From a prompt, run:
+		<ul>
+			<li>
+				java -jar uSDLC-full.jar</li>
+		</ul>
+	</li>
+</ul>
+<p>
+	It will unpack both archives - by only over-writing files that are newer in the archive than on disk. This way you can update uSDLC on an existing project safely.</p>
+<p>
+	If you don't download the optional jar archive, uSDLC will fetch the jars on demand.</p>
+</div><div id="s6" class="editable section synopsis"><div class="sectionType">
+	Guide</div>
+<h2>
+	<span>Creating a Snapshot</span></h2>
+<p>
+	It is possible to create a single executable jar file that exactly reflects the state of uSDLC at this moment. Go to the <a href="/usdlc/home#USDLC/usdlc/Environment/Configuration/Installation/USDLCStandAlone" id="s6a6" class="usdlc sourceLink" action="runnable">stand-alone</a> page and run the <u>Snapshot</u> link. The results will be in the <em>/release</em> directory.</p>
 </div>
 <div id="s3" class="editable section synopsis">
  <h3> <a class="usdlc sourceLinksucceeded" href="Snapshot.grant" id="s3a0" action="runnable">Snapshot</a></h3>

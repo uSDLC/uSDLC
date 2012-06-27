@@ -2,7 +2,17 @@
  <h1>Forms</h1>
  <h2></h2>
 </div>
-<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> to be able to change the new section forms<br><b class="blue">so that</b> a customised experience for my site</div></div>
+<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> to be able to change the new section forms<br><b class="blue">so that</b> a customised experience for my site</div></div><div id="s11" class="editable section"><div class="sectionType">
+	Guide</div>
+<h2>
+	<span>Synopsis</span></h2>
+<p>
+	The first section on any page is a synopsis that is displayed in the referencing parent page. <em><strong>uSDLC</strong></em> facilitates organised design by offering a form of ubiqitous language fields that will fill the synopsis.</p>
+<p>
+	This form is only an option. You can always press escape and edit the synopsis section yourself.</p>
+<p>
+	The <strong><em>As a // I want // so that</em></strong> ubiqitous language introduced in behaviour driven development (BDD) provides the default questions for Project through to Feature pages. This can be changed to anything your team requires by editing any or all of the forms. Input elements have an alt attribute that is used for the bold ubiqitous sentence start.</p>
+</div>
 <div id="s10" class="editable section"><h1>
 	Synopsis: General</h1>
 <form action="javascript:usdlc.newSynopsis('General')" id="newGeneralSynopsis" method="post">
@@ -29,36 +39,35 @@
 	Synopsis: Project</h1>
 <form action="javascript:usdlc.newSynopsis('Project')" id="newProjectSynopsis" method="post">
 	<div class="centreForm">
-	<fieldset style="text-align: right;">
-		<legend>Vision</legend>
-		<p>
-			<strong>As a</strong>&nbsp;
-			<input alt="As a" name="asa" size="67" type="text" value="vision holder" synopsis="Vision" activate="loadAsa"></p>
-		<p>
-			<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
-		<p>
-			<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
-	</fieldset>
-	<div>
-		<table border="0" cellpadding="1" cellspacing="1" align="right">
-			<tbody>
-				<tr>
-					<td>
-						<strong>Notes:&nbsp;</strong></td>
-					<td>
-						<textarea cols="64" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-				<td colspan="2" valign="bottom" style="text-align: right">
-						<input name="button" type="submit" value="New Synopsis"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<fieldset style="text-align: right;">
+			<legend>Vision</legend>
+			<p>
+				<strong>As a</strong>&nbsp; <input activate="loadAsa" alt="As a" name="asa" size="67" synopsis="Vision" type="text" value="vision holder"></p>
+			<p>
+				<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
+			<p>
+				<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
+		</fieldset>
+		<div>
+			<table align="right" border="0" cellpadding="1" cellspacing="1">
+				<tbody>
+					<tr>
+						<td>
+							<strong>Notes:&nbsp;</strong></td>
+						<td>
+							<textarea cols="64" name="notes" rows="4"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right" valign="bottom">
+							<input name="button" type="submit" value="New Synopsis"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
+	</div>
 </form>
-	<div class="centre600">
-Please enter a short synopsis for this project or sub-project. Sections
-here will, by default, be elements of the vision.</div>
+<div class="centre600">
+	Please enter a short synopsis for this project or sub-project. Sections here will, by default, be elements of the vision.</div>
 </div>
 <div id="s15" class="editable section"><h1>
 	Synopsis: Vision</h1>

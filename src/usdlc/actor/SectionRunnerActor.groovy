@@ -60,33 +60,50 @@ import javax.swing.text.html.HTML
 	 * afterwards. If no sections are provided, all sections processed.
 	 */
 	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
-		currentPage = page
-		Page html = new Page(page)
-		def sections = html.sections
-		if (sectionsToRun) {
-			sections = sections.findAll { it.id in sectionsToRun }
-		}
-		sections.findAll{!it.isDeleted()}.each { section ->
-			def empty = true
-
-			section.select('a[action=page],a[action=runnable]').each { link ->
-				if (empty) { writeLinkHeader(); empty = false }
-				runLink(link, page)
+		wrapOutput([
+				"<div class='gray'>Page $page.dir > ",
+				"End $page.dir</div>"]) {
+			currentPage = page
+			Page html = new Page(page)
+			def sections = html.sections
+			if (sectionsToRun) {
+				sections = sections.findAll { it.id in sectionsToRun }
 			}
-			if (!empty) {
-				wrapOutput(['<div class="gray">', '</div>']) {
-					write "Page $currentPage.dir"
+			def empty = true
+			sections.findAll{!it.isDeleted()}.each { section ->
+				def actors = []
+
+				section.select('a[action=page],a[action=runnable]').
+						each { link ->
+					if (empty) { writeLinkHeader(); empty = false }
+					String href = link.attr('href')
+					hrefs[href] = link
+					def linkStore = page.rebase(href)
+					switch (link.attr('action')) {
+						case 'page':
+							def clone = this.clone()
+							clone.onScreen = false
+							clone.runSectionsOnPage(linkStore)
+							break
+						case 'runnable':
+							actors.push(linkStore)
+							break
+						default:
+							break
+					}
 				}
-				if (actors) { runActorsOnPage(actors) }
-				if (exchange.data.problems) {
-					reportError(exchange.data.problems.join('\n'))
-					actorState = 'failed'
-				}
-				if (onScreen) {
-					if (exchange.data.refresh) {
-						return
-					} else {
-						updateLinkStates()
+				if (!empty) {
+					if (actors) { runActorsOnPage(actors) }
+					if (exchange.data.problems) {
+						reportError(exchange.data.problems.join('\n'))
+						actorState = 'failed'
+					}
+					if (onScreen) {
+						if (exchange.data.refresh) {
+							return
+						} else {
+							updateLinkStates()
+						}
 					}
 				}
 			}
@@ -110,32 +127,14 @@ import javax.swing.text.html.HTML
 					<div id='output'>"""
 	}
 
-	private runLink(link, page) {
-		String href = link.attr('href')
-		hrefs[href] = link
-		def linkStore = page.rebase(href)
-		switch (link.attr('action')) {
-			case 'page':
-				def clone = this.clone()
-				clone.onScreen = false
-				clone.runSectionsOnPage(linkStore)
-				break
-			case 'runnable':
-				actors.push(linkStore)
-				break
-			default:
-				break
-		}
-	}
-
-	def hrefs = [:], actors = []
+	def hrefs = [:]
 	def onScreen = true
 	def currentPage
 	def linkStates = [:]
 	/**
 	 * Called when running an actor in-context by using Setup and Cleanup.
 	 */
-	void runActorsOnPage(List<Store> actors) {
+	private runActorsOnPage(List<Store> actors) {
 		try {
 			def base = Store.base(actors[0].dir)
 			runFiles(~/^Setup\..*/, base)
@@ -289,9 +288,10 @@ import javax.swing.text.html.HTML
 	}
 
 	static mimeTypeWrappers = [
-			'text/html': ['<pre style="padding-left:4em;">', '</pre>'],
+			'text/html': ['<pre style="padding-left:4em;color:blue;">',
+					'</pre>'],
 			'application/javascript': ['<script>', '</script>'],
-			'text/plain': ['<pre style="padding-left:4em;">', '</pre>']]
+			'text/plain': ['<pre style="padding-left:4em;color:blue;">', '</pre>']]
 	/**
 	 * Write text to response output stream
 	 */

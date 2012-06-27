@@ -44,7 +44,9 @@ class RhinoActor extends Actor {
 		}
 		stack.push(found)
 		try { run found }
-		catch (e) {throw new Exception("including '$name'", e)}
+		catch (e) {
+			throw new Exception("including '$name'", e)
+		}
 		finally {stack.pop()}
 	}
 

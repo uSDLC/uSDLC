@@ -8,6 +8,5 @@ Store.projects().each { projectName ->
 		}
 	}
 }
-println "result $groups"
 write "['${(groups as List).join(/','/)}']"
 

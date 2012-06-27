@@ -72,7 +72,8 @@ class Exchange {
 			String string = text.toString()
 			if (first) {
 				first = false
-				if (string[0] != '<') {
+				def trim = string.trim()
+				if (trim && trim[0] != '<') {
 					out.print '<pre>'
 					post = '</pre>'
 				}

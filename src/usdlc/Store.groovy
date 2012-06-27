@@ -181,9 +181,7 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(Pattern mask, Closure closure) {
-		try {
-			file.eachFileMatch mask, { File file -> closure(file.path) }
-		} catch(e) {}
+		file.eachFileMatch mask, { File file -> closure(file.path) }
 	}
 	void dir(mask, Closure closure) { dir(~/${mask ?: '.*'}/, closure) }
 	/**

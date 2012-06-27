@@ -2,7 +2,17 @@
  <h1>User</h1>
  <h2></h2>
 </div>
-<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> create new users<br><b class="blue">so that</b> they can access the system</div></div>
+<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> create new users<br><b class="blue">so that</b> they can access the system</div></div><div id="s7" class="editable section"><div class="sectionType">
+	Guide</div>
+<h2>
+	<span>User Administration</span></h2>
+<p>
+	Users can log in, log out and change password from the main menu.&nbsp;In addition an administrator can create new users.</p>
+<p>
+	Each user gets a login page and a home page. The login page sets user details and group memberships in the session. The user name above the left navigation tree is also a link to a user home page.</p>
+<p>
+	Users can be created in any project, but their access to all project is by group membership, not parent project.</p>
+</div>
 <div id="s4" class="editable section"><h1>
 	User: Log In</h1>
 <form onsubmit="javascript:return usdlc.logIn()" id="loginform" method="post" name="User authentication">
@@ -76,7 +86,7 @@
 					<td>
 						Project:</td>
 					<td>
-						<input activate="loadUsdlcProjects" name="project" role="textbox" size="66" type="text"></td>
+						<input activate="loadUsdlcProjects" name="project" role="textbox" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" aria-autocomplete="list" aria-haspopup="true"></td>
 				</tr>
 				<tr>
 					<td>
@@ -94,25 +104,25 @@
 					<td>
 						no access groups:</td>
 					<td>
-						<input activate="loadGroups" name="noAccessGroups" size="66" type="text"></td>
+						<input activate="loadGroups" name="noAccessGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
 				</tr>
 				<tr>
 					<td>
 						read groups:</td>
 					<td>
-						<input activate="loadGroups" name="readGroups" size="66" type="text"></td>
+						<input activate="loadGroups" name="readGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
 				</tr>
 				<tr>
 					<td>
 						write groups:</td>
 					<td>
-						<input activate="loadGroups" name="writeGroups" size="66" type="text"></td>
+						<input activate="loadGroups" name="writeGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
 				</tr>
 				<tr>
 					<td>
 						run groups:</td>
 					<td>
-						<input activate="loadGroups" name="runGroups" size="66" type="text"></td>
+						<input activate="loadGroups" name="runGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
 				</tr>
 				<tr>
 					<td>
