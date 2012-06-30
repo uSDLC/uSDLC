@@ -82,6 +82,7 @@ $(function () {
 					usdlc.scrollTop()
 					setTimeout(function(){usdlc.contentTree.setFocus(to)},500)
 					usdlc.clearFocus()
+					usdlc.actorStates()
 					if (afterwards) afterwards()
 				}
 			})

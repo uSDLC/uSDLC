@@ -124,8 +124,9 @@ $ ->
 
         if isHtml
           self.attr('action', 'page')
-        else if not self.attr('action')
-          self.attr('action', 'runnable')
+        else
+          if not self.attr('action')
+            self.attr('action', 'runnable')
           self.addClass('sourceLink')
     )
     usdlc.checkForSynopsis($section)

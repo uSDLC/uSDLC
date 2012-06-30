@@ -49,7 +49,7 @@ files = [
 		'usdlc/rt/js/server.js',
 		'usdlc/rt/js/contentTree.coffeescript',
 		'usdlc/lib/CodeMirror/lib/codemirror.js',
-		'usdlc/rt/js/run.js',
+		'usdlc/rt/js/run.coffeescript',
 		'usdlc/rt/js/sourceEditor.coffeescript',
 		'usdlc/rt/js/synopses.coffeescript',
 		'/usdlc/rt/js/footer.coffeescript',

@@ -60,4 +60,20 @@ class CSV {
 	]
 	/** List to hold results in memory (if no iterator) */
 	def list = []
+	/** Name value pairs - one per line */
+	static nvp(store) {
+		def map = [:]
+		try {
+			store.file.eachLine {
+				nvp = it.split(~/\s*,\s*/, 2)
+				map[nvp[0]] = nvp[1]
+			}
+		} catch (e) {Log.err("No file $store")}
+		return map
+	}
+	static nvp(store, map) {
+		store.file.withPrintWriter { PrintWriter writer ->
+			map.each { key, value -> writer.println "$key,$value" }
+		}
+	}
 }

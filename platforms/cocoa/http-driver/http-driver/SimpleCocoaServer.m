@@ -33,35 +33,14 @@
 
 @implementation SimpleCocoaServer
 
-#pragma mark Class Methods
-
-+ (id)server
-{
-	self = [[self alloc] init];
-	return self;
-}
-
-+ (id)serverWithPort:(int)initPort delegate:(id)initDelegate
-{
-	self = [[self alloc] initWithPort:initPort delegate:initDelegate];
-	return self;
-}
-
 #pragma mark Instance Methods
 
 - (id)init
 {
 	if(self = [super init]) {
-		
-		//NSAssert(delegate != nil, @"Please specify a delegate");
-		//NSAssert([delegate respondsToSelector:@selector(processMessage:connection:)],
-		//		 @"Delegate needs to implement 'processMessage:connection:'");
-		
-		serverPort = 0;
-		serverDelegate = nil;
+		port = 9010;
+        [self setListenAddress: @"127.0.0.1"];
 		connections = [[NSMutableArray alloc] init];
-		lAddr = SCSListenAll;
-		//initialize lStrAddr;
 		isListening = NO;
 		
 	}
@@ -69,25 +48,81 @@
 	return self;	
 }
 
-- (id)initWithPort:(int)initPort delegate:(id)initDelegate
-{
-	if(self = [super init]) {
-		
-		//NSAssert(delegate != nil, @"Please specify a delegate");
-		//NSAssert([delegate respondsToSelector:@selector(processMessage:connection:)],
-		//		 @"Delegate needs to implement 'processMessage:connection:'");
-		
-		serverPort = initPort;
-		serverDelegate = [initDelegate retain];
-		connections = [[NSMutableArray alloc] init];
-		lAddr = SCSListenAll;
-		isListening = NO;
-		
-	}
-	
-	return self;
-	
+- (void)setListenAddress:(NSString *)to
+{   // @"127.0.0.1" or @"0.0.0.0"
+	strncpy(listenAddress, [to UTF8String], 15);
 }
+
+- (void)start:(int)newPort
+{
+	port = newPort;
+    [self start];
+}
+
+- (void)start
+{
+	CFSocketRef socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, 1, NULL, NULL);
+	NSAssert(socket, @"Cannot create socket connection");
+		
+    int filedescriptor = CFSocketGetNative(socket);
+    
+    //this code prevents the socket from existing after the server has crashed or been forced to close
+    int yes = 1;
+    setsockopt(filedescriptor, SOL_SOCKET, SO_REUSEADDR, (void *)&yes, sizeof(yes));
+    
+    struct sockaddr_in addr4;
+    memset(&addr4, 0, sizeof(addr4));
+    addr4.sin_len = sizeof(addr4);
+    addr4.sin_family = AF_INET;
+    addr4.sin_port = htons(port);
+    inet_pton(AF_INET, listenAddress, &addr4.sin_addr);
+    //addr4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    //addr4.sin_addr.s_addr = htonl(INADDR_ANY); //any network address, e.g. 127.0.0.1, 168.192.2.101 etc;
+    NSData *address4 = [NSData dataWithBytes:&addr4 length:sizeof(addr4)];
+    
+    NSAssert(kCFSocketSuccess == CFSocketSetAddress(socket, (CFDataRef)address4), @"Cannot set socket address");
+		
+	fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:filedescriptor closeOnDealloc:YES];
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self
+		   selector:@selector(newConnection:)
+			   name:NSFileHandleConnectionAcceptedNotification
+			 object:nil];
+	[fileHandle acceptConnectionInBackgroundAndNotify];
+	
+	isListening = YES;
+}
+
+- (void)newConnection:(NSNotification *)notification
+{
+	NSDictionary *userInfo = [notification userInfo];
+	NSFileHandle *remoteFileHandle = [userInfo objectForKey: NSFileHandleNotificationFileHandleItem];
+	NSNumber *errorNo = [userInfo objectForKey:@"NSFileHandleError"];
+    NSAssert(!errorNo, @"Notification error");
+	
+	[fileHandle acceptConnectionInBackgroundAndNotify];
+	
+	if(remoteFileHandle) {
+		SimpleCocoaConnection *connection = [[SimpleCocoaConnection alloc] 
+                                             initWithFileHandle:remoteFileHandle delegate:self];
+		if(connection) {
+			NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:[connections count]];
+            [self willChange:NSKeyValueChangeInsertion
+             valuesAtIndexes:insertedIndexes forKey:@"connections"];
+            [connections addObject:connection];
+            [self didChange:NSKeyValueChangeInsertion
+			valuesAtIndexes:insertedIndexes forKey:@"connections"];
+            [connection release];
+			[self processNewConnection:connection];
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+//NSAssert(delegate != nil, @"Please specify a delegate");
+//NSAssert([delegate respondsToSelector:@selector(processMessage:connection:)],
+//		 @"Delegate needs to implement 'processMessage:connection:'");
 
 - (void)dealloc
 {
@@ -96,7 +131,6 @@
 		[fileHandle release];
 	}
 	[connections release];
-	[serverDelegate release];
 	[super dealloc];
 }
 
@@ -187,14 +221,6 @@
 	return isListening;
 }
 
-- (BOOL)setServerPort:(int)newPort
-{
-	if(!isListening)
-		serverPort = newPort;
-	else
-		return NO;
-	return YES;
-}
 
 - (int)serverPort
 {
@@ -220,30 +246,6 @@
 - (NSString *)listenAddressAsString
 {
 	return [NSString stringWithUTF8String:lStrAddr];
-}
-
-- (void)setListenAddress:(SCSListenAddress)newLAddr
-{
-	lAddr = newLAddr;
-	NSString *tmpListenAddr;
-	if(lAddr == SCSListenLoopback)
-		tmpListenAddr = @"127.0.0.1";
-	else if(lAddr == SCSListenLocal) 
-		tmpListenAddr = @"127.0.0.1"; //currently
-	else
-		tmpListenAddr = @"0.0.0.0";
-	strncpy(lStrAddr,[tmpListenAddr UTF8String],15);
-}
-
-- (BOOL)setListenAddressByString:(NSString *)newStrAddr
-{
-	if(!isListening) {
-		[self setListenAddress:SCSListenOther]; //needs to be called
-		strncpy(lStrAddr, [newStrAddr UTF8String], 15); //before address is copied here
-	} else {
-		return NO;
-	}
-	return YES;
 }
 
 #pragma mark Delegate Methods
@@ -289,34 +291,6 @@
 - (NSArray *)connections
 {
 	return connections;
-}
-
-- (void)newConnection:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	NSFileHandle *remoteFileHandle = [userInfo objectForKey:
-									  NSFileHandleNotificationFileHandleItem];
-	NSNumber *errorNo = [userInfo objectForKey:@"NSFileHandleError"];
-	if(errorNo) {
-		//[self processNewConnectionFileHandleError:errorNo]; //Not used in this version. Perhaps used and documented in future versions.
-		return;
-	}
-	
-	[fileHandle acceptConnectionInBackgroundAndNotify];
-	
-	if(remoteFileHandle) {
-		SimpleCocoaConnection *connection = [[SimpleCocoaConnection alloc] initWithFileHandle:remoteFileHandle delegate:self];
-		if(connection) {
-			NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:[connections count]];
-            [self willChange:NSKeyValueChangeInsertion
-             valuesAtIndexes:insertedIndexes forKey:@"connections"];
-            [connections addObject:connection];
-            [self didChange:NSKeyValueChangeInsertion
-			valuesAtIndexes:insertedIndexes forKey:@"connections"];
-            [connection release];
-			[self processNewConnection:connection];
-		}
-	}
 }
 
 - (void)closeConnection:(SimpleCocoaConnection *)con

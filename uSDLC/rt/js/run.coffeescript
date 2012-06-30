@@ -1,0 +1,45 @@
+$ ->
+
+  resizeOutputFrameImmediate = ->
+    frame = $('iframe.output').last()
+    height = $("div#output", frame.contents()).height() + 33
+    frame.height (if height < 20 then 0 else height)
+
+  runSections = (sections) ->
+    return if sections.length is 0
+    $("a.usdlc[action=runnable]", sections).
+      removeClass('running failed succeeded').addClass('running')
+    usdlc.saveSource()
+    usdlc.deleteOutput()
+    outputSection = sections.first()
+    sections = sections.map( -> return $(this).attr('id')).get().join(',')
+    pc = usdlc.pageContentsURL
+    url = "#{pc}.sectionRunner?page=#{pc}&sections=#{sections}"
+    outputFrame = $('<iframe/>').addClass('output').attr('src', url)
+    outputSection.append(outputFrame)
+
+  usdlc.passed = -> usdlc.highlight 'green'
+  usdlc.failed = -> usdlc.highlight 'red'
+
+  usdlc.runPage = -> runSections $ 'div.section'
+
+  usdlc.runSectionInFocus = ->
+  runSections usdlc.inFocus if usdlc.inFocus
+
+  usdlc.runFromSectionInFocus = ->
+    runSections usdlc.inFocus.nextAll('.section').andSelf() if usdlc.inFocus
+
+  usdlc.deleteOutput = -> $('iframe.output').remove()
+
+  usdlc.resizeOutputFrame = -> setTimeout resizeOutputFrameImmediate, 1000
+
+  usdlc.actorState = (href, state) ->
+    $("a[href='#{href}']").removeClass('running failed succeeded').addClass(state)
+
+  usdlc.actorStates = ->
+    $("a.usdlc[action=runnable]").removeClass('running failed succeeded')
+    url = "#{usdlc.reduceUrl(usdlc.pageContentsURL)}/runstates.csv?action=raw"
+    $.get url, (data) ->
+      for row in data.split(/\r?\n/)
+        [href, state] = row.split /,\s*/
+        usdlc.actorState href, state

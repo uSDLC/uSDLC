@@ -27,42 +27,19 @@
 //#import <Cocoa/Cocoa.h>
 @class SimpleCocoaConnection;
 
-//return values of startListening message
-enum SCSInit {
-    SCSInitOK = 1,
-    SCSInitError_Listening = 2,
-	SCSInitError_Port = 4,
-	SCSInitError_Delegate = 8,
-	SCSInitError_Bind = 16,
-	SCSInitError_NoSocket = 32
-};
-typedef enum SCSInit SCSInit;
-
-enum SCSListenAddress {
-	SCSListenOther = 0, //currently same as SCSListenAddressAll
-	SCSListenAll = 1,
-	SCSListenLoopback = 2,
-	SCSListenLocal = 4 //currently same as SCSListenLoopback
-};
-typedef enum SCSListenAddress SCSListenAddress;
-
-
 @interface SimpleCocoaServer : NSObject {
 	@private
-	int serverPort; //Port on which server runs
-    id serverDelegate; //Delegate that will be sent the process.. messages
+	int port; //Port on which server runs
 	BOOL isListening; //is server running?
     NSFileHandle *fileHandle; //Server socket
     NSMutableArray *connections; //all connections are saved in here
-	SCSListenAddress lAddr; //all or local
-	char lStrAddr[16]; //if listen address is SCSListenOther;
+	char listenAddress[16]; //if listen address is SCSListenOther;
 }
 
-+ (id)server;
-+ (id)serverWithPort:(int)initPort delegate:(id)initDelegate;
-
 - (id)init;
-- (id)initWithPort:(int)initPort delegate:(id)initDelegate;
+- (void)start;
+- (void)start:(int)port;
+- (BOOL)setListenAddress:(NSString *)to;
 
 - (SCSInit)startListening;
 - (void)stopListening;
@@ -72,8 +49,6 @@ typedef enum SCSListenAddress SCSListenAddress;
 - (int)serverPort;
 - (SCSListenAddress)listenAddress;
 - (NSString *)listenAddressAsString;
-- (void)setListenAddress:(SCSListenAddress)newLAddr;
-- (BOOL)setListenAddressByString:(NSString *)newStrAddr;
 
 - (void)processMessage:(NSString *)message orData:(NSData *)data fromConnection:(SimpleCocoaConnection *)con;
 - (void)processNewConnection:(SimpleCocoaConnection *)con;

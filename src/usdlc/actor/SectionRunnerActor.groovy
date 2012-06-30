@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 import static usdlc.MimeTypes.mimeType
 import com.google.common.base.CaseFormat
 import javax.swing.text.html.HTML
+import usdlc.CSV
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
@@ -60,6 +61,8 @@ import javax.swing.text.html.HTML
 	 * afterwards. If no sections are provided, all sections processed.
 	 */
 	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
+		Store runStateStore = page.rebase('runstates.csv')
+		linkStates = CSV.nvp(runStateStore)
 		wrapOutput([
 				"<div class='gray'>Page $page.dir > ",
 				"End $page.dir</div>"]) {
@@ -77,7 +80,6 @@ import javax.swing.text.html.HTML
 						each { link ->
 					if (empty) { writeLinkHeader(); empty = false }
 					String href = link.attr('href')
-					hrefs[href] = link
 					def linkStore = page.rebase(href)
 					switch (link.attr('action')) {
 						case 'page':
@@ -101,22 +103,13 @@ import javax.swing.text.html.HTML
 					if (onScreen) {
 						if (exchange.data.refresh) {
 							return
-						} else {
-							updateLinkStates()
 						}
 					}
 				}
 			}
 		}
-	}
-
-	private updateLinkStates() {
-		linkStates.each { href, state ->
-			js("parent.usdlc.actorState('$href', '$state')")
-			if (href in hrefs) {
-				hrefs[href].attr('class', "usdlc sourceLink$state")
-			}
-		}
+		CSV.nvp(runStateStore, linkStates)
+		js("parent.usdlc.actorStates()")
 	}
 
 	private writeLinkHeader() {
@@ -127,7 +120,6 @@ import javax.swing.text.html.HTML
 					<div id='output'>"""
 	}
 
-	def hrefs = [:]
 	def onScreen = true
 	def currentPage
 	def linkStates = [:]
@@ -172,9 +164,7 @@ import javax.swing.text.html.HTML
 		}
 	}
 
-	void resizeOutputFrame() {
-		js('parent.usdlc.resizeOutputFrame()')
-	}
+	void resizeOutputFrame() { js('parent.usdlc.resizeOutputFrame()') }
 	/**
 	 * Given a pattern, run all scripts that match it the base directory.
 	 * Used to Setup and Cleanup scripts for a page

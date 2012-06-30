@@ -23,6 +23,7 @@ $(function() {
 			.filter('.synopsis').children().removeAttr('style')
 			$('div[href]', sections).html('')
 			$('*[activate]', sections).html('')
+			$('a', sections).removeClass('running failed succeeded')
 			$('div#myEventWatcherDiv').remove()
 			usdlc.clearSynopses(sections)
 			usdlc.screencast.close()
