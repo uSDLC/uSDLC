@@ -39,14 +39,15 @@
 	Synopsis: Project</h1>
 <form action="javascript:usdlc.newSynopsis('Project')" id="newProjectSynopsis" method="post">
 	<div class="centreForm">
-		<fieldset style="text-align: right;">
+		<fieldset style="text-align: left;">
 			<legend>Vision</legend>
 			<p>
-				<strong>As a</strong>&nbsp; <input activate="loadAsa" alt="As a" name="asa" size="67" synopsis="Vision" type="text" value="vision holder"></p>
+				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" type="text"></p>
 			<p>
-				<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
+				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" activate="loadLocalAutocomplete" type="text" value="vision holder" synopsis="Vision">&nbsp;
+				<strong>I want</strong>&nbsp;<input alt="I want" name="i_want" activate="loadLocalAutocomplete" size="31" type="text"></p>
 			<p>
-				<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
+				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
 		</fieldset>
 		<div>
 			<table align="right" border="0" cellpadding="1" cellspacing="1">
@@ -55,7 +56,7 @@
 						<td>
 							<strong>Notes:&nbsp;</strong></td>
 						<td>
-							<textarea cols="64" name="notes" rows="4"></textarea></td>
+							<textarea cols="70" name="notes" rows="3"></textarea></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align: right" valign="bottom">
@@ -73,31 +74,32 @@
 	Synopsis: Vision</h1>
 <form action="javascript:usdlc.newSynopsis('Vision')" id="newVisionSynopsis" method="post">
 	<div class="centreForm">
-	<fieldset style="text-align: right;">
-		<legend>Vision</legend>
-		<p>
-			<strong>As a</strong>&nbsp;
-			<input alt="As a" name="asa" size="67" type="text" value="vision holder" synopsis="Vision" activate="loadAsa"></p>
-		<p>
-			<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
-		<p>
-			<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
-	</fieldset>
-	<div>
-		<table border="0" cellpadding="1" cellspacing="1" align="right">
-			<tbody>
-				<tr>
-					<td>
-						<strong>Notes:&nbsp;</strong></td>
-					<td>
-						<textarea cols="64" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-				<td colspan="2" valign="bottom" style="text-align: right">
-						<input name="button" type="submit" value="New Synopsis"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<fieldset style="text-align: left;">
+			<legend>Vision</legend>
+			<p>
+				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" type="text"></p>
+			<p>
+				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="vision holder">&nbsp;
+				<strong>I want</strong>&nbsp;<input alt="I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
+			<p>
+				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
+		</fieldset>
+		<div>
+			<table align="right" border="0" cellpadding="1" cellspacing="1">
+				<tbody>
+					<tr>
+						<td>
+							<strong>Notes:&nbsp;</strong></td>
+						<td>
+							<textarea cols="70" name="notes" rows="3"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right" valign="bottom">
+							<input name="button" type="submit" value="New Synopsis"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		</div>
 </form>
 	<div class="centre600">
@@ -107,31 +109,32 @@
 	Synopsis: Goal</h1>
 <form action="javascript:usdlc.newSynopsis('Goal')" id="newGoalSynopsis" method="post">
 	<div class="centreForm">
-	<fieldset style="text-align: right;">
-		<legend>Goal</legend>
-		<p>
-			<strong>As a</strong>&nbsp;
-			<input alt="As a" name="asa" size="67" type="text" value="stake-holder" synopsis="Goal" activate="loadAsa"></p>
-		<p>
-			<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
-		<p>
-			<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
-	</fieldset>
-	<div>
-		<table border="0" cellpadding="1" cellspacing="1" align="right">
-			<tbody>
-				<tr>
-					<td>
-						<strong>Notes:&nbsp;</strong></td>
-					<td>
-						<textarea cols="64" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-				<td colspan="2" valign="bottom" style="text-align: right">
-						<input name="button" type="submit" value="New Synopsis"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<fieldset style="text-align: left;">
+			<legend>Goal</legend>
+			<p>
+				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
+			<p>
+				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="stake-holder">&nbsp;
+				<strong>I want</strong>&nbsp;<input alt="I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
+			<p>
+				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
+		</fieldset>
+		<div>
+			<table align="right" border="0" cellpadding="1" cellspacing="1">
+				<tbody>
+					<tr>
+						<td>
+							<strong>Notes:&nbsp;</strong></td>
+						<td>
+							<textarea cols="70" name="notes" rows="3"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right" valign="bottom">
+							<input name="button" type="submit" value="New Synopsis"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		</div>
 </form>
 	<div class="centre600">
@@ -140,31 +143,32 @@
 <div id="s17" class="editable section"><h1>Synopsis: Capability</h1>
 <form action="javascript:usdlc.newSynopsis('Capability')" id="newCapabilitySynopsis" method="post">
 	<div class="centreForm">
-	<fieldset style="text-align: right;">
-		<legend>Capability</legend>
-		<p>
-			<strong>As a</strong>&nbsp;
-			<input alt="As a" name="asa" size="67" type="text" value="user" synopsis="Capability" activate="loadAsa"></p>
-		<p>
-			<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
-		<p>
-			<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
-	</fieldset>
-	<div>
-		<table border="0" cellpadding="1" cellspacing="1" align="right">
-			<tbody>
-				<tr>
-					<td>
-						<strong>Notes:&nbsp;</strong></td>
-					<td>
-						<textarea cols="64" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-				<td colspan="2" valign="bottom" style="text-align: right">
-						<input name="button" type="submit" value="New Synopsis"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<fieldset style="text-align: left;">
+			<legend>Capability</legend>
+			<p>
+				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
+			<p>
+				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="user">&nbsp;
+				<strong>I want</strong>&nbsp;<input alt="I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
+			<p>
+				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
+		</fieldset>
+		<div>
+			<table align="right" border="0" cellpadding="1" cellspacing="1">
+				<tbody>
+					<tr>
+						<td>
+							<strong>Notes:&nbsp;</strong></td>
+						<td>
+							<textarea cols="70" name="notes" rows="3"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right" valign="bottom">
+							<input name="button" type="submit" value="New Synopsis"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		</div>
 </form>
 	<div class="centre600">
@@ -176,31 +180,32 @@
 	Synopsis: Feature</h1>
 <form action="javascript:usdlc.newSynopsis('Feature')" id="newFeatureSynopsis" method="post">
 	<div class="centreForm">
-	<fieldset style="text-align: right;">
-		<legend>Feature</legend>
-		<p>
-			<strong>As a</strong>&nbsp;
-			<input alt="As a" name="asa" size="67" type="text" value="" synopsis="Feature" activate="loadAsa"></p>
-		<p>
-			<strong>I want</strong>&nbsp;<input alt="I want" name="iwant" size="64" type="text"></p>
-		<p>
-			<strong>so that</strong>&nbsp;<input alt="so that" name="sothat" size="64" type="text"></p>
-	</fieldset>
-	<div>
-		<table border="0" cellpadding="1" cellspacing="1" align="right">
-			<tbody>
-				<tr>
-					<td>
-						<strong>Notes:&nbsp;</strong></td>
-					<td>
-						<textarea cols="64" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-				<td colspan="2" valign="bottom" style="text-align: right">
-						<input name="button" type="submit" value="New Synopsis"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<fieldset style="text-align: left;">
+			<legend>Feature</legend>
+			<p>
+				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
+			<p>
+				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="user">&nbsp;
+				<strong>I want</strong>&nbsp;<input alt="I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
+			<p>
+				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
+		</fieldset>
+		<div>
+			<table align="right" border="0" cellpadding="1" cellspacing="1">
+				<tbody>
+					<tr>
+						<td>
+							<strong>Notes:&nbsp;</strong></td>
+						<td>
+							<textarea cols="70" name="notes" rows="3"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right" valign="bottom">
+							<input name="button" type="submit" value="New Synopsis"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		</div>
 </form>
 	<div class="centre600">

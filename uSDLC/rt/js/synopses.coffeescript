@@ -12,7 +12,8 @@ $ ->
     if html.length
       synopsisSection.append html
       usdlc.savePage()
-      usdlc.saveAsa type, form.fieldMap.asa
+      for name, value of form.fieldMap
+        usdlc.saveLocalAutocomplete name, value
     else
       usdlc.editSectionInFocus()
 
@@ -82,18 +83,27 @@ $ ->
             if data.length < 3 then data = ''
             processor(inclusion, data, path)
 
-  usdlc.loadAsa = (input) ->
+  usdlc.loadLocalAutocomplete = (input) ->
     return if not usdlc.inDialog(input)
-    key = "asa_#{input.attr('synopsis')}"
+    key = "synopsis_#{input.attr('name')}"
     values = usdlc.persist(key).split(';;')
-    input.autocomplete source: values
+    #console.log "#{key}=#{values}"
+    if values.length
+      input.autocomplete source: values
+    else
+      usdlc.persist(key, '!')
 
-  usdlc.saveAsa = (type, statement) ->
-    key = "asa_#{type}"
+  usdlc.saveLocalAutocomplete = (key, statement) ->
+    key = "synopsis_#{key}"
     values = usdlc.persist(key).split(';;')
-    for value in values
-      if value == statement then return
-    values.push statement
-    usdlc.persist(key, values.join(';;'))
+    #console.log("#{key}=#{statement}=#{values.length}")
+    return if not values.length
+    if values.length is 1 and values[0] == '!'
+      usdlc.persist(key, statement)
+    else
+      for value in values
+        return if value is statement
+      values.push statement
+      usdlc.persist(key, values.join(';;'))
 
 # usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)

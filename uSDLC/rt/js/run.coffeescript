@@ -24,7 +24,7 @@ $ ->
   usdlc.runPage = -> runSections $ 'div.section'
 
   usdlc.runSectionInFocus = ->
-  runSections usdlc.inFocus if usdlc.inFocus
+    runSections usdlc.inFocus if usdlc.inFocus
 
   usdlc.runFromSectionInFocus = ->
     runSections usdlc.inFocus.nextAll('.section').andSelf() if usdlc.inFocus

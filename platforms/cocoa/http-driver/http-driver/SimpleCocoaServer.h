@@ -24,43 +24,23 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 //
 
-//#import <Cocoa/Cocoa.h>
 @class SimpleCocoaConnection;
 
 @interface SimpleCocoaServer : NSObject {
 	@private
 	int port; //Port on which server runs
-	BOOL isListening; //is server running?
     NSFileHandle *fileHandle; //Server socket
     NSMutableArray *connections; //all connections are saved in here
 	char listenAddress[16]; //if listen address is SCSListenOther;
 }
 
 - (id)init;
-- (void)start;
-- (void)start:(int)port;
-- (BOOL)setListenAddress:(NSString *)to;
-
-- (SCSInit)startListening;
-- (void)stopListening;
-- (BOOL)isListening;
-
-- (BOOL)setServerPort:(int)newPort;
-- (int)serverPort;
-- (SCSListenAddress)listenAddress;
-- (NSString *)listenAddressAsString;
-
-- (void)processMessage:(NSString *)message orData:(NSData *)data fromConnection:(SimpleCocoaConnection *)con;
-- (void)processNewConnection:(SimpleCocoaConnection *)con;
-- (void)processClosingConnection:(SimpleCocoaConnection *)con;
+- (SimpleCocoaServer*)start;
+- (SimpleCocoaServer*)setPort:(int)port;
+- (SimpleCocoaServer*)setListenAddress:(NSString *)to;
 
 - (NSArray *)connections;
 - (void)closeConnection:(SimpleCocoaConnection *)con;
-
-- (BOOL)sendData:(NSData *)data toConnection:(SimpleCocoaConnection *)con;
-- (BOOL)sendString:(NSString *)string toConnection:(SimpleCocoaConnection *)con;
-- (void)sendDataToAll:(NSData *)data;
-- (void)sendStringToAll:(NSString *)string;
 
 @end
 
@@ -68,18 +48,17 @@
 
 @interface SimpleCocoaConnection : NSObject {
 	@private
+    SimpleCocoaServer *server;
 	NSFileHandle *fileHandle; //Socket for the connection
-    id connectionDelegate; //always the server
     NSString *remoteAddress;  // client IP address
 	int remotePort; //client port
 
 }
 
-- (id)initWithFileHandle:(NSFileHandle *)fh delegate:(id)initDelegate;
+- (SimpleCocoaConnection*)initWithFileHandle:(NSFileHandle *)fh server:(SimpleCocoaServer*)serverRef;
 
-- (NSFileHandle *)fileHandle;
-- (NSString *)remoteAddress;
-- (int)remotePort;
+- (void)sendData:(NSData *)data;
+- (void)sendString:(NSString *)string;
 
 @end
 

@@ -6,6 +6,7 @@ if not gwt
     for item in statements
       match = item.pattern.exec(statement)
       if match
+        print statement
         item.action(match...)
         return # only runs first match
     gwt.problems.push(statement)
