@@ -87,7 +87,6 @@ $ ->
     return if not usdlc.inDialog(input)
     key = "synopsis_#{input.attr('name')}"
     values = usdlc.persist(key).split(';;')
-    #console.log "#{key}=#{values}"
     if values.length
       input.autocomplete source: values
     else
@@ -96,7 +95,6 @@ $ ->
   usdlc.saveLocalAutocomplete = (key, statement) ->
     key = "synopsis_#{key}"
     values = usdlc.persist(key).split(';;')
-    #console.log("#{key}=#{statement}=#{values.length}")
     return if not values.length
     if values.length is 1 and values[0] == '!'
       usdlc.persist(key, statement)
@@ -105,5 +103,3 @@ $ ->
         return if value is statement
       values.push statement
       usdlc.persist(key, values.join(';;'))
-
-# usdlc.contentTree.bind('after_open.jstree after_close.jstree', onResize)

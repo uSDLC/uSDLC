@@ -68,7 +68,7 @@ class CSV {
 				nvp = it.split(~/\s*,\s*/, 2)
 				map[nvp[0]] = nvp[1]
 			}
-		} catch (e) {Log.err("No file $store")}
+		} catch (e) {}
 		return map
 	}
 	static nvp(store, map) {

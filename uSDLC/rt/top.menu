@@ -22,11 +22,12 @@ Section,S
 		Capability,C,usdlc.form('New Section: Capability')
 		Feature,F,usdlc.form('New Section: Feature')
 		Scenario,S,usdlc.form('New Section: Scenario')
-		Instrumentation,I,usdlc.form('New Section: Instrumentation')
+		Script,t,usdlc.form('New Section: Instrumentation')
 		Reference,R,usdlc.form('New Section: Reference')
 		Guide,u,usdlc.form('New Section: Guide')
 		Page,P,usdlc.form('New Section: Page')
 		Blank,B,usdlc.form('New Section: General')
+		Issue,I,usdlc.form('New Section: Issue')
 	Split,S
 		To new page,p,usdlc.extractSectionInFocus(),alt+E
 		Into section,s,usdlc.splitIntoSections(),alt+S

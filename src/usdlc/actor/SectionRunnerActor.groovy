@@ -63,9 +63,12 @@ import usdlc.CSV
 	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
 		Store runStateStore = page.rebase('runstates.csv')
 		linkStates = CSV.nvp(runStateStore)
+		def p = page.dir.replaceFirst(~'^.*/usdlc/', '').split('/').collect {
+			Store.decamel(it).replaceFirst(~'.*_', '')
+		}.join(' -> ')
 		wrapOutput([
-				"<div class='gray'>Page $page.dir > ",
-				"End $page.dir</div>"]) {
+				"<div class='gray'>Page: $p ->",
+				"End: $p</div>"]) {
 			currentPage = page
 			Page html = new Page(page)
 			def sections = html.sections

@@ -161,10 +161,13 @@ $ ->
         if value.length
           label = @altMap[name]
           if label
-            html.push "<b class='blue'>#{label}</b> #{value}"
+            if label.length > 2 and label[0..1] == '::'
+              html.push "::<b class='blue'>#{label.substring(2)}</b> #{value}"
+            else
+              html.push "<b class='blue'>#{label}</b> #{value}"
           else
             html.push value
       return '' if not html.length
-      return "<div>#{html.join('<br/>')}</div>"
+      return "<div>#{html.join('<br/>')}</div>".replace(/<br.>::/, '&nbsp;')
 
   usdlc.FormProcessor = FormProcessor

@@ -76,8 +76,8 @@ $ ->
     id = usdlc.nextSectionId()
     heading = $ '<span/>'
     heading.html title
-    insertNewSection form, heading, 2, id, type
-    usdlc.editSectionInFocus()
+    if insertNewSection form, heading, 2, id, type
+      usdlc.editSectionInFocus()
     return false
   ###
   This is where the work is done...
@@ -102,6 +102,7 @@ $ ->
 #      usdlc.editSectionInFocus()
 
   insertNewSection = (form, heading, level, id, type) ->
+    edit = false
     if usdlc.inFocus
       notes = form.fieldMap.notes
 
@@ -114,9 +115,16 @@ $ ->
       section.insertAfter(usdlc.inFocus)
       usdlc.setFocus(section)
       usdlc.savePage()
+      edit = not notes
     else
       usdlc.alert "Select Section First"
-    usdlc.closeDialog() if not form.fieldMap.KeepOpen
+
+    if form.fieldMap.KeepOpen
+      edit = false
+    else
+      usdlc.closeDialog()
+
+    return edit
   ###
   Creates basic new section code.
   ###
@@ -199,7 +207,10 @@ $ ->
 
   sac = (input, response) -> # single auto-complete
     choices = eval response
-    input.autocomplete source: choices, minLength: 0
+    input.autocomplete
+      source: choices
+      minLength: 1
+
   mac = (input, response) -> # multi-select auto-complete
     input.bind "keydown", (event) ->
       # don't navigate away from the field on tab when selecting an item
@@ -208,7 +219,7 @@ $ ->
     		  event.preventDefault()
     choices = eval response
     input.autocomplete
-      minLength: 0
+      minLength: 1
       autoFocus: true
       source: (request, response) ->
         # delegate back to autocomplete, but extract the last term

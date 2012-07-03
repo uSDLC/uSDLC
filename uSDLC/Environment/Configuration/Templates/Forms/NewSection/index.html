@@ -245,7 +245,7 @@
 					<td style="text-align: right; ">
 						<strong>Title:&nbsp;</strong></td>
 					<td>
-						<input name="title" size="32" type="text">&nbsp; <input name="newGuide" type="submit" value="New Section"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
+						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Section"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
 				</tr>
 				<tr>
 					<td style="text-align: right; ">
@@ -258,7 +258,32 @@
 	</div>
 </form>
 <div class="centre600">
-	Create a section for documentation artifacts or the like.</div>
+	Create a section for unclassified information.</div>
+</div>
+<div id="s16" class="editable section"><h1>
+	New Section: Issue</h1>
+<form onsubmit="javascript:return usdlc.newGeneralSection('Issue')" id="newIssueSection" method="post" name="New Issue Section">
+	<div class="centreForm">
+		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
+			<tbody>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Title:&nbsp;</strong></td>
+					<td>
+						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Issue"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
+				</tr>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="61" name="notes" rows="4"></textarea></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	Add questions without answers to the issue register.</div>
 </div>
 <div id="s2" class="editable section footer synopsis">
  <div>
