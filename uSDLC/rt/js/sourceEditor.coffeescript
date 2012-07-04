@@ -57,8 +57,10 @@ $ ->
     if usdlc.inEditor and force
       usdlc.deleteOutput()
       content = usdlc.activeSourceEditor.getValue()
-      usdlc.save(usdlc.activeSourceEditor.url, content, '')
+      usdlc.save(usdlc.activeSourceEditor.url, content,
+          '&runstate=changed&after=usdlc.actorStates()')
       usdlc.activeSourceEditor.contentChanged = false
+      usdlc.actorState()
   # Links that don't end in .html can be edited with the source editor
   usdlc.displaySource = (wrapper, data, url) ->
     if not usdlc.dsls

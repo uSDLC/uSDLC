@@ -78,7 +78,6 @@
     //addr4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
     //addr4.sin_addr.s_addr = htonl(INADDR_ANY); //any network address, e.g. 127.0.0.1, 168.192.2.101 etc;
     NSData *address4 = [NSData dataWithBytes:&addr4 length:sizeof(addr4)];
-    
     NSAssert(kCFSocketSuccess == CFSocketSetAddress(socket, (CFDataRef)address4), @"Cannot set socket address");
 		
 	fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:filedescriptor closeOnDealloc:YES];

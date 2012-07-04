@@ -63,17 +63,20 @@ class CSV {
 	/** Name value pairs - one per line */
 	static nvp(store) {
 		def map = [:]
-		try {
-			store.file.eachLine {
-				nvp = it.split(~/\s*,\s*/, 2)
-				map[nvp[0]] = nvp[1]
-			}
-		} catch (e) {}
+		store.file.eachLine {
+			def nvp = it.split(',')
+			map[nvp[0]] = nvp[1]
+		}
 		return map
 	}
 	static nvp(store, map) {
 		store.file.withPrintWriter { PrintWriter writer ->
 			map.each { key, value -> writer.println "$key,$value" }
 		}
+	}
+	static nvp(store, key, value) {
+		def map = nvp(store)
+		map[key] = value
+		nvp(store, map)
 	}
 }

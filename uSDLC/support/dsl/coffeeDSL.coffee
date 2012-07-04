@@ -7,8 +7,6 @@ output = (text) -> exchange.response.print text
 
 session = exchange.getRequest().session
 include = run = dsl = (script) -> support.include script
-# throw an error (width message) if test is false
-assert = (test, msg) -> throw msg or 'assert failed' if not test
 # measure running time at any point (in seconds)
 startTime = java.lang.System.currentTimeMillis()
 timer = ->

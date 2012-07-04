@@ -4,6 +4,7 @@ import usdlc.actor.Actor
 
 import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
+import static usdlc.Log.csv
 
 /**
  * Core Processor for uSDLC - no matter which web server is in
@@ -116,6 +117,13 @@ class Exchange {
 			if (request.user.authorised(store, action)) switch (action) {
 				case 'save':    // saves html and actor
 					save(request.body())
+					// reset the runstate now the script has changed
+					def runstate = request.query['runstate']
+					if (runstate) {
+						def csvName = store.rebase('runstates.csv')
+						CSV.nvp(csvName, store.name, runstate)
+
+					}
 					def after = request.query['after'] ?: ''
 					staticResponse "usdlc.highlight('sky');$after"
 					break

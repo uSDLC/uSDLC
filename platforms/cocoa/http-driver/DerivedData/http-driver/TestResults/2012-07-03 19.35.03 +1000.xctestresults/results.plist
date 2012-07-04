@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Results</key>
+	<array>
+		<dict>
+			<key>Provider Name</key>
+			<string>http-driver</string>
+			<key>Testable Name</key>
+			<string>http-driverTests</string>
+			<key>Testable Tests</key>
+			<array/>
+		</dict>
+	</array>
+	<key>Version</key>
+	<string>1.0</string>
+</dict>
+</plist>

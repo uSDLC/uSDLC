@@ -145,7 +145,7 @@ import usdlc.CSV
 		} finally {
 			context.each { key, value ->
 				if (value?.metaClass?.respondsTo('close')) {
-					actorState "finalise $key"
+					actorState = "finalise $key"
 					try { value.close() } catch (throwable) {
 						reportException(throwable)
 						throwable.printStackTrace()

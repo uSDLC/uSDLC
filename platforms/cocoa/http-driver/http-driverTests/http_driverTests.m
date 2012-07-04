@@ -1,12 +1,5 @@
-//
-//  http_driverTests.m
-//  http-driverTests
-//
-//  Created by Paul Marrington on 17/06/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "http_driverTests.h"
+
 
 @implementation http_driverTests
 
@@ -26,7 +19,8 @@
 
 - (void)testExample
 {
-    STFail(@"Unit tests are not implemented yet in http-driverTests");
+    sleep(3600);
+    STFail(@"Main timed out");
 }
 
 @end

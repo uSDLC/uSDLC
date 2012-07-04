@@ -10,10 +10,7 @@ $(function () {
 				$("body").append("<div class='logMessage'>" + message + "</div>");
 			}
 		},
-       /**
-        * Save a file to the usdlc.server.servletengine.server and expect a
-        * response in javaScript.
-        */
+       /** Save a file  and expect a response in javaScript. */
        save:function (where, what, more) {
            var url = usdlc.serverActionUrl(
 	               where, 'save' + (more || ''))

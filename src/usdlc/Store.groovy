@@ -102,7 +102,7 @@ class Store {
 
 	private String calcParent() {
 		def parent = file.parent
-		if (!parent) return '.'
+		if (!parent) return ''
 		int drop = file.path.size() - file.parent.size() + 1
 		if (drop >= path.size()) return ''
 		path[0..-drop]
@@ -181,6 +181,7 @@ class Store {
 	 * @param closure - code to execute for each file in the directory
 	 */
 	void dir(Pattern mask, Closure closure) {
+		mkdirs()
 		file.eachFileMatch mask, { File file -> closure(file.path) }
 	}
 	void dir(mask, Closure closure) { dir(~/${mask ?: '.*'}/, closure) }
