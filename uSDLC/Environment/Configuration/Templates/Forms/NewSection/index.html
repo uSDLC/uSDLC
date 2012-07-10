@@ -144,8 +144,8 @@
 	To explore and flesh out a feature we provide as many examples as we can in the form of scenarios. These scenarios can be phrased in natural language, but are at the same time computer readable. Scenarios provide the feedback loop across the SDLC. A scenario exercises the production code as it becomes available and will tease out disconnects between vision and produciton. In traditional parlance a scenario can be an acceptance test, integration test or unit test.</div>
 </div>
 <div id="s7" class="editable section"><h1>
-	New Section: Instrument</h1>
-<form onsubmit="javascript:return usdlc.newInstrumentationSection()" id="newInstrumentationSection" method="post" name="New Instrumentation Section">
+	New Section: Script</h1>
+<form id="newInstrumentationSection" method="post" name="New Instrumentation Section" onsubmit="javascript:return usdlc.newInstrumentationSection()">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 600px; ">
 			<tbody>
@@ -160,10 +160,10 @@
 						<strong>Notes:&nbsp;</strong></td>
 					<td>
 						<textarea cols="61" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-					<td colspan="2" align="right">
-						<input name="New Instrumentation" type="submit" value="New Instrumentation"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen">
-					</td>
+				</tr>
+				<tr>
+					<td align="right" colspan="2">
+						<input type="submit" value="New Script"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -173,8 +173,8 @@
 	Scenarios will need backing data and actions. A scenario that needs tabular of information may refer to a csv table instrumentation section.</div>
 </div>
 <div id="s22" class="editable section"><h1>
-	New Section: Reference</h1>
-<form onsubmit="javascript:return usdlc.newReferenceSection()" id="newReferenceSection" method="post">
+	New Section: Data</h1>
+<form id="newReferenceSection" method="post" onsubmit="javascript:return usdlc.newReferenceSection()">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 600px; ">
 			<tbody>
@@ -189,10 +189,10 @@
 						<strong>Notes:&nbsp;</strong></td>
 					<td>
 						<textarea cols="61" name="notes" rows="4"></textarea></td>
-				</tr><tr>
-					<td colspan="2" align="right">
-						<input type="submit" value="New Reference"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen">
-					</td>
+				</tr>
+				<tr>
+					<td align="right" colspan="2">
+						<input type="submit" value="New Data File"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
 				</tr>
 			</tbody>
 		</table>

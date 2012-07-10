@@ -1,107 +1,0 @@
-Thttp-driver
-v5
-r1
-cCheck dependencies
-cCompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a" normal armv7
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk
-c000000004F453DF20000000000000110
-t1329937906
-s272
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/Foundation.framework/Foundation
-c000000004FD6A13F000000000052C940
-t1339466047
-s5425472
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o
-t1341213159
-s27548
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http-driver.LinkFileList
-c000000004FDDB72F00000000000001A6
-t1339930415
-s422
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o
-t1339930415
-s3024
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a
-t1341213159
-s31504
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.h
-c000000004FF149E70000000000000881
-t1341213159
-s2177
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m
-c000000004FF149A80000000000001CA1
-t1341213096
-s7329
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http-driver-Prefix.pch
-c000000004FDDAE8A00000000000000A3
-t1339928202
-s163
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.h
-c000000004FDDAE8A00000000000000E2
-t1339928202
-s226
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m
-c000000004FF2BB680000000000000142
-t1341307752
-s322
-
-CBuild AST from "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m"
-r0
-
-CBuild AST from "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m"
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies6729a9fef2a2b541^fa0aaafef2a2b541^---0#1#0#--18"Check dependencies36"CEE23A25-5DFC-42B8-B7BB-474F97C39E9E-
-
-CCompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s362905959.310994
-e362905959.724526
-r1
-xCompileC
-xDerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m
-xnormal
-xarmv7
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Compile /Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.mf2b4506781a1b541^af79b96781a1b541^---0#0#0#-19%DVTDocumentLocation2@127"file://localhost/Users/paul/Dropbox/My%20Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m0000000000000000^4101"CompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o http-driver/SimpleCocoaServer.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver"    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk -Wprotocol -Wdeprecated-declarations -g -Wno-conversion -Wno-sign-conversion -mthumb "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -miphoneos-version-min=5.1 -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-generated-files.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-own-target-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-all-target-headers.hmap" -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-project-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/include" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/DerivedSources/armv7" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/DerivedSources" "-F/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos" -include "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http-driver-Prefix.pch" -MMD -MT dependencies -MF "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.d" --serialize-diagnostics "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.dia" -c "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/SimpleCocoaServer.m" -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/SimpleCocoaServer.o"36"E03281A7-8942-457A-BC79-3F681FF2090A-
-
-CCompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s363000574.665920
-e363000574.774746
-r1
-xCompileC
-xDerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m
-xnormal
-xarmv7
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection111"Compile /Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m4b93aafef2a2b541^2a55c6fef2a2b541^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/paul/Dropbox/My%20Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m0000000000000000^4065"CompileC DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o http-driver/http_driver.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver"    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk -Wprotocol -Wdeprecated-declarations -g -Wno-conversion -Wno-sign-conversion -mthumb "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -miphoneos-version-min=5.1 -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-generated-files.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-own-target-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-all-target-headers.hmap" -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/http-driver-project-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/include" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/DerivedSources/armv7" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/DerivedSources" "-F/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos" -include "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http-driver-Prefix.pch" -MMD -MT dependencies -MF "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.d" --serialize-diagnostics "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.dia" -c "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/http-driver/http_driver.m" -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http_driver.o"36"A4D4F715-4931-4398-87C1-6284F94F7318-
-
-CLibtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a" normal armv7
-s363000574.781492
-e363000574.790648
-r1
-xLibtool
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a
-xnormal
-xarmv7
-o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: -dynamic not specified the following flags are invalid: -ObjC 
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Libtool DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a normal armv7ef1ec8fef2a2b541^7367cafef2a2b541^-159"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: -dynamic not specified the following flags are invalid: -ObjC -0#0#0#--1196"Libtool DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a normal armv7    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver"    setenv IPHONEOS_DEPLOYMENT_TARGET 5.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk "-L/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos" -filelist "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Intermediates/http-driver.build/Debug-iphoneos/http-driver.build/Objects-normal/armv7/http-driver.LinkFileList" -ObjC -framework Foundation -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a"36"CB026D63-5FBA-40DE-89DC-618D2440A83D-
-

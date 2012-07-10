@@ -94,3 +94,22 @@ a.succeeded {
 a.jstree-clicked {
 	color: white !important;
 }
+
+a.contentLink:not([state]) {
+	color: #666;
+}
+a.contentLink[state] {
+	color: #808080;
+}
+a.contentLink[state=succeeded] {
+	color: black;
+}
+a.contentLink[state=changed] {
+	color: #808080;
+}
+a.contentLink[state=created] {
+	color: #aaaaaa;
+}
+a.contentLink[state=failed] {
+	color: #C70B0B;
+}

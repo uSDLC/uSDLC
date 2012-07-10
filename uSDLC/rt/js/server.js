@@ -68,7 +68,7 @@ $(function() {
 		$.each(options, function(k, v) {
 			os += ',' + k + '=' + v
 		})
-		window.open(url, options.name, os)
+		window.open(url, name, os)
 	}
 	/**
 	 * While designed for ajax commands, queue() works for any function that works asynchronously, takes time and has a

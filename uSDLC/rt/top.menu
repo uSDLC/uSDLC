@@ -22,8 +22,8 @@ Section,S
 		Capability,C,usdlc.form('New Section: Capability')
 		Feature,F,usdlc.form('New Section: Feature')
 		Scenario,S,usdlc.form('New Section: Scenario')
-		Script,t,usdlc.form('New Section: Instrumentation')
-		Reference,R,usdlc.form('New Section: Reference')
+		Script,t,usdlc.form('New Section: Script')
+		Data,D,usdlc.form('New Section: Data')
 		Guide,u,usdlc.form('New Section: Guide')
 		Page,P,usdlc.form('New Section: Page')
 		Blank,B,usdlc.form('New Section: General')
@@ -40,6 +40,7 @@ Run,R
 	Page,P,usdlc.runPage({continuation:false}),^P alt+P
 	From error,e,usdlc.runPage({continuation:true}),^L alt+L
 	From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
+	Rerun,R,usdlc.rerun(),^U alt-U
 User,U
 	Log in,i,usdlc.form('User: Log In')
 	Log out,o,usdlc.logOut()

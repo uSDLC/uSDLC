@@ -63,6 +63,7 @@ class Store
   renameTo: (target) -> @store.renameTo(target) if @store.exists()
   text: -> @store.getText()
   unique: (name) -> @store.unique(name ? null)
+  write: (contents) -> @store.setText(contents)
 
 fs = (path) -> new Store usdlc.Store.base path
 

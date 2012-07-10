@@ -43,3 +43,9 @@ $ ->
       for row in data.split(/\r?\n/)
         [href, state] = row.split /,\s*/
         usdlc.actorState href, state
+      usdlc.contentTree.refresh()
+
+  usdlc.rerun = ->
+    url = window.location
+    href = "#{url.protocol}//#{url.host}?action=rerun"
+    usdlc.window 'Rerun Latest Test', href, width: 800

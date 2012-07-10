@@ -8,3 +8,5 @@ nohup.out
 USDLC.iml
 *.html.timings.csv
 .*
+
+platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios-usdlc-connector-Prefix.pch
