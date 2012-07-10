@@ -132,9 +132,7 @@ class Store {
 	 * Public method used to read the file into a string.
 	 * @return File contents as a string.
 	 */
-	String getText() {
-		try { file.text } catch (FileNotFoundException fne) { '' }
-	}
+	String getText() { file.exists() ? file.text : '' }
 	/**
 	 * Set the contents of the file as a string (use write for binary)
 	 */
@@ -310,7 +308,7 @@ class Store {
 	}
 
 	static splitRE = ~/^(?:(.*)[\/\\])?(.*?)(?:\.([^\.]*))?$/
-	/**
+	/**curl http://127.0.0.1?action=rerun
 	 * Copy a file or directory to a target directory.
 	 */
 	def copyTo(to) {

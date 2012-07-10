@@ -121,7 +121,8 @@ class Page {
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1) {
 				def child = parent.store.rebase(href)
-				pages.add child, link.text(), link.attr('state')
+				def state = child.rebase('pagestate.txt').text
+				pages.add child, link.text(), state
 			}
 		}
 		return pages.list

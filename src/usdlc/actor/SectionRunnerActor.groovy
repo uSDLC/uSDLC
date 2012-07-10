@@ -12,57 +12,52 @@ import static usdlc.MimeTypes.mimeType
 import com.google.common.base.CaseFormat
 import javax.swing.text.html.HTML
 import usdlc.CSV
+import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader
+import usdlc.PageState
 
 @AutoClone class SectionRunnerActor extends Actor {
 	/**
-	 * Override to run the section runner script.
+	 * Override to run the section runner script from a UI command
 	 */
 	void run(Store script) {
-		def user = exchange.request.user
-		if (!user.authorised(script, 'run')) {
-			reportError "$user.userName is not authorised to execute on this page"
-			return
-		}
-
 		// Make sure scripts have a clean slate
 		exchange.request.session.instance(JavaScript).globalScope = null
 
-		rerun = (script.path == 'last.sectionRunner')
-		if (rerun) {
-			if (lastRunner) {
-				exchange.request.session.persist.lastSectionRunner =
-					lastRunner
-			} else {
-				lastRunner = exchange.request.session.persist
-						.lastSectionRunner
+		if (exchange.request.query.mode == 'text') { textMode = true }
+		if (exchange.request.query.action == 'rerun') {
+			def bookmark = lastRunner.url
+			if (!textMode) {
+				bookmark = bookmark.replaceAll('&', '&amp;')
 			}
+			// dump command line and redirect output to server.
+//			exchange.response.out = System.out
+			write("$bookmark\n")
+			runSectionsOnPage(Store.base(lastRunner.page), lastRunner.sections)
 		} else {
+			def user = exchange.request.user
+			if (!user.authorised(script, 'run')) {
+				reportError "$user.userName is not authorised to execute on this page"
+				return
+			}
 			def rq = exchange.request
 			lastRunner = [
 					url: rq.header.with { "http://$host$uri?$query" },
 					page: "usdlc/$rq.query.page",
-					sections: rq.query.sections.split(',') as Set
+					sections: rq.query.sections?.split(',') as Set
 			]
+			runSectionsOnPage(Store.base(lastRunner.page), lastRunner.sections)
 		}
-		rerun = rerun || exchange.request.query.rerun
-		if (rerun) {
-			// dump command line and redirect output to server.
-			println "$lastRunner.url&rerun=true"
-			exchange.response.out = System.out
-		}
-		runSectionsOnPage(Store.base(lastRunner.page), lastRunner.sections)
 	}
 
 	static lastRunner
-	boolean rerun
+	def textMode = false, pageState
 	/**
 	 * Given a page reference and an optional list of sections, parse html and
 	 * process each section looking for sub-pages to run and actors to run
 	 * afterwards. If no sections are provided, all sections processed.
 	 */
 	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
-		Store runStateStore = page.rebase('runstates.csv')
-		linkStates = CSV.nvp(runStateStore)
+		pageState = new PageState(page)
 		def p = page.dir.replaceFirst(~'^.*/usdlc/', '').split('/').collect {
 			Store.decamel(it).replaceFirst(~'.*_', '')
 		}.join(' -> ')
@@ -111,21 +106,21 @@ import usdlc.CSV
 				}
 			}
 		}
-		CSV.nvp(runStateStore, linkStates)
+		pageState.save()
+		// so screen can display current actor states
 		js("parent.usdlc.actorStates()")
 	}
 
 	private writeLinkHeader() {
-		write """<html><head>
-				<link type='text/css' rel='stylesheet'
-					href='/usdlc/rt/outputFrame.css'>
-					</head><body>
-					<div id='output'>"""
+		if (!textMode) write """
+			<html><head>
+			<link type='text/css' rel='stylesheet'
+			href='/usdlc/rt/outputFrame.css'>
+			</head><body><div id='output'>"""
 	}
 
 	def onScreen = true
 	def currentPage
-	def linkStates = [:]
 	/**
 	 * Called when running an actor in-context by using Setup and Cleanup.
 	 */
@@ -145,7 +140,7 @@ import usdlc.CSV
 		} finally {
 			context.each { key, value ->
 				if (value?.metaClass?.respondsTo('close')) {
-					actorState = "finalise $key"
+					actorState = "finalising $key"
 					try { value.close() } catch (throwable) {
 						reportException(throwable)
 						throwable.printStackTrace()
@@ -155,7 +150,7 @@ import usdlc.CSV
 			}
 			if (onScreen) {
 				if (exchange.data.rerun) {
-					exchange.data.remove('rerun')
+					exchange.data.remove('Rerun')
 					runActorsOnPage(actors)
 				} else if (exchange.data.refresh) {
 					exchange.data.remove('refresh')
@@ -187,6 +182,8 @@ import usdlc.CSV
 			wrapOutput(currentActor) { actor.run(context) }
 			exchange.response.print("\0")
 			actorState = 'succeeded'
+		} else {
+			actorState = 'data'
 		}
 	}
 	/**
@@ -195,7 +192,7 @@ import usdlc.CSV
 	 * In all cases update the state in the page for persistence.
 	 */
 	void setActorState(String to) {
-		linkStates[currentActor] = to
+		pageState.linkStates[currentActor] = to
 		String elapsed = timer
 		wrapOutput([
 				'<span class="gray" style="padding-left:2em;">',
@@ -258,7 +255,9 @@ import usdlc.CSV
 	 * Inject javascript into the output stream
 	 */
 	void js(String content) {
-		wrapOutput(['<script>', '</script>']) { write content.toString() }
+		wrapOutput(['<script>', '</script>']) {
+			write content.toString()
+		}
 	}
 	/**
 	 * Wrap data of defined mime-type as if it were to be included in a
@@ -272,11 +271,16 @@ import usdlc.CSV
 	 * Wrap data in a HTML tag
 	 */
 	def wrapOutput(List<String> wrapper, Closure closure) {
-		write wrapper[0]
-		try {
+		if (!textMode) {
+			write wrapper[0]
+			try {
+				closure()
+			} finally {
+				write wrapper[1]
+			}
+		} else {
 			closure()
-		} finally {
-			write wrapper[1]
+			write("\n")
 		}
 	}
 
@@ -288,7 +292,5 @@ import usdlc.CSV
 	/**
 	 * Write text to response output stream
 	 */
-	def write(String text) {
-		if (!rerun) { exchange.response.write text }
-	}
+	def write(String text) { exchange.response.write text }
 }

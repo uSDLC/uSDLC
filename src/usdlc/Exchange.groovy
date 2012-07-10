@@ -5,6 +5,7 @@ import usdlc.actor.Actor
 import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
 import static usdlc.Log.csv
+import usdlc.actor.SectionRunnerActor
 
 /**
  * Core Processor for uSDLC - no matter which web server is in
@@ -114,14 +115,14 @@ class Exchange {
 			}
 			response = createResponse(outputStream)
 
+			//noinspection GroovyFallthrough
 			if (request.user.authorised(store, action)) switch (action) {
 				case 'save':    // saves html and actor
 					save(request.body())
 					// reset the runstate now the script has changed
 					def runstate = request.query['runstate']
 					if (runstate) {
-						def csvName = store.rebase('runstates.csv')
-						CSV.nvp(csvName, store.name, runstate)
+						new PageState(store).save(store.name, runstate)
 
 					}
 					def after = request.query['after'] ?: ''
@@ -130,6 +131,9 @@ class Exchange {
 				case 'raw':    // actors sent rather than run (editing)
 					staticResponse store.read()
 					break
+				case 'rerun':
+					setStore("index.html.sectionRunner")
+					// drop through to run this instead of expected url
 				default:
 					checkForStaticGzip()
 					Actor actor = Actor.load(store)
