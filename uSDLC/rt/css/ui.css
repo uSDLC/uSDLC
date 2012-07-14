@@ -26,8 +26,9 @@ div#contentTree {
 }
 
 img#treeHider {
-	float: right;
-	margin-right: -12px;
+	float: left;
+	margin-left: -10px;
+	position: absolute;
 }
 
 form {

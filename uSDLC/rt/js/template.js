@@ -143,7 +143,15 @@ $(function () {
 			case 'https:':
 				switch (a.attr('action')) {
 					case 'page':
-						usdlc.relativePageContents(url)
+						if (ev.shiftKey) {
+							var loc = window.location
+							var ref = loc.protocol + '//' + loc.host + '/usdlc/home#' + href
+							usdlc.window(ref, ref, {width:800})
+							// put tree focus back if we changed it
+							usdlc.contentTree.setFocus(usdlc.pageContentsURL)
+						} else {
+							usdlc.relativePageContents(url)
+						}
 						break
 					case 'runnable':
 						usdlc.setFocus(a)
@@ -157,7 +165,7 @@ $(function () {
 						break
 					default:
 						if (href[0] == '#' || !url) return true
-						usdlc.window(href,href,'from-usdlc')
+						usdlc.window("from uSDLC", href, {})
 						break
 				}
 				break

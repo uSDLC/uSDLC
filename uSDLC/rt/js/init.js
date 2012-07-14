@@ -22,15 +22,14 @@ $(function() {
 				usdlc.titleVisible = function() {
 					return ptt.css('margin-top') == '0px'
 				}
-				var treeHider = $('img#treeHider').fadeTo(1, 0.3)
+				var treeHider = $('img#treeHider').fadeTo(1, 0.4)
 				usdlc.treeVisible = function() {
 					return treeHider.offset().left > 0
 				}
 				var lastScrollTop = 0
 				function setViewportHeight() {
 					var pad = usdlc.pageContents.outerHeight() - usdlc.pageContents.height()
-					if (pad < 0 || pad > 50)
-						pad = 25
+					if (pad < 0 || pad > 50) pad = 25
 					var viewPortHeight = w.height() - ptt.outerHeight() - pad
 					viewPortHeight += usdlc.titleVisible() ? 0 : 50
 					var aboveScroll = (viewPortHeight > 800) ? 100 : 0
@@ -64,13 +63,10 @@ $(function() {
 				var pct = $('table#pageContentsTable')
 				var ctt = $('div#contentTree')
 				usdlc.toggleHideTree = function() {
-					var left = treeHider.offset().left
-					left = left <= 0 ? 0 : -left
-					pct.animate({
-						'margin-left' : left
-					})
+					$('#contentTreeTd').toggle()
 				}
 				treeHider.unbind().bind('click', usdlc.toggleHideTree)
+
 				$('body').delegate('.hideOnHover', 'mouseenter', function() {
 					var element = $(this)
 					element.hide()
@@ -139,4 +135,8 @@ $(function() {
 					'/usdlc/support/usdlc/dslAssociationList_js.groovy', function() {})
 		}
 	}
+	if ($(window).height() <= 600) {
+		$('table#pageTitleTable').css('margin-top', -50)
+	}
+
 })

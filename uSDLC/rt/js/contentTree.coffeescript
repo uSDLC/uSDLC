@@ -51,6 +51,8 @@ $ ->
         open_node: false
     plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys',
       'types', 'crrm', 'dnd', 'contextmenu' ]
+  if $(window).width() <= 800
+    $('#contentTreeTd').hide()
   usdlc.contentTree.removeClass('hidden')
 
   cutPage = ''
@@ -92,9 +94,9 @@ $ ->
           command: 'rename'
           newName: renameTo
           page: page
-    'select_node.jstree': (event, data) ->
-      selectedNode = data.rslt.obj
-      usdlc.contentTree.jstree 'open_node', selectedNode
+    #'select_node.jstree': (event, data) ->
+      #selectedNode = data.rslt.obj
+      #usdlc.contentTree.jstree 'open_node', selectedNode
     'create.jstree': (event, data) ->
       href = pageFromLi data.rslt.parent
       updateContentTree data.rslt.parent, href,

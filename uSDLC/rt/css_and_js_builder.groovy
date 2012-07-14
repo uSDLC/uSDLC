@@ -71,7 +71,8 @@ files = [
 		'usdlc/rt/js/htmlEditor.js',
 		'usdlc/rt/js/ex.coffeescript',
 		'usdlc/rt/js/screencast.coffeescript',
-		'usdlc/rt/js/news.coffeescript'
+		'usdlc/rt/js/news.coffeescript',
+		'usdlc/lib/jquery/js/jquery.tagcanvas.min.js'
 ]
 Store.base('usdlc/lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
 	files += store.path;
