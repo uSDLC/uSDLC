@@ -49,8 +49,6 @@
 <table id="pageContentsTable">
 	<tr>
 		<td id="contentTreeTd">
-			<img id="treeHider" src="/usdlc/lib/circular-icons/arrows_east_west.png"
-			     alt="">
 			<div id=userName class=rounded>
 				${exchange.request.user.toHtml()}
 			</div>
@@ -62,6 +60,8 @@
 			</div>
 		</td>
 		<td id="pageContentsTd">
+			<img id="treeHider" src="/usdlc/lib/circular-icons/arrows_east_west.png"
+			     alt="">
 			<div id="pageContents">
 				<div style="text-align: center">
 					<a href="/usdlc/home">uSDLC</a> -
