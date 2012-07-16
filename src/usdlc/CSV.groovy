@@ -63,9 +63,11 @@ class CSV {
 	/** Name value pairs - one per line */
 	static nvp(store) {
 		def map = [:]
-		store.file.eachLine {
-			def nvp = it.split(',')
-			map[nvp[0]] = nvp[1]
+		if (store.exists()) {
+			store.file.eachLine {
+				def nvp = it.split(',')
+				map[nvp[0]] = nvp[1]
+			}
 		}
 		return map
 	}
