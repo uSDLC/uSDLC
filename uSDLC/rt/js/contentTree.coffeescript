@@ -49,6 +49,8 @@ $ ->
         max_children : 0
         select_node : false
         open_node: false
+    core:
+      animation: 500
     plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys',
       'types', 'crrm', 'dnd', 'contextmenu' ]
   if $(window).width() <= 800
@@ -62,7 +64,10 @@ $ ->
     li = $('a.jstree-clicked').parent('li')
     parent = li.parent().closest('li')
     li = parent if parent.size() > 0
+    width = $('#contentTree').width()
+    $('#contentTree').width(width)
     usdlc.contentTree.jstree 'refresh', li
+    setTimeout("$('#contentTree').css('width','')", 500)
 
   usdlc.contentTree.setFocus = (to) ->
     steps = to.replace(/\/index\.html$/, '').split('/')
@@ -94,9 +99,9 @@ $ ->
           command: 'rename'
           newName: renameTo
           page: page
-    #'select_node.jstree': (event, data) ->
-      #selectedNode = data.rslt.obj
-      #usdlc.contentTree.jstree 'open_node', selectedNode
+    'select_node.jstree': (event, data) ->
+      selectedNode = data.rslt.obj
+      usdlc.contentTree.jstree 'open_node', selectedNode
     'create.jstree': (event, data) ->
       href = pageFromLi data.rslt.parent
       updateContentTree data.rslt.parent, href,
