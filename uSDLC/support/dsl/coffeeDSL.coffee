@@ -50,8 +50,9 @@ javaMap = (javaMap) ->
 strings = (array) -> String(string) for string in array
 
 class Store
-  absolutePath: -> @store.file.getCanonicalPath()
   constructor: (@path) -> @store = usdlc.Store.base(path)
+
+  absolutePath: -> @store.file.getCanonicalPath()
   copyTo: (target) -> @store.copyTo(target)
   delete: -> @store.delete()
   dir: (mask) -> strings javaArray swallow => @store.dir(mask ? '.*')
@@ -66,5 +67,6 @@ class Store
   write: (contents) -> @store.setText(contents)
 
 fs = (path) -> new Store usdlc.Store.base path
+camelCase = (name) -> usdlc.Store.camelCase(name)
 
 dsl 'gwtDSL'

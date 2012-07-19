@@ -19,3 +19,11 @@ if not gwt
         exchange.data.put('refresh', 'refresh')
 
   gwt /wait (\d+) seconds?/, (all, seconds) -> sleep seconds
+  gwt /[sS]ame setup as for (.*)/, (all, name) ->
+    run "Given_#{camelCase name}.gwt"
+  gwt /[sS]ame scenario as for (.*)/, (all, name) ->
+    run "Given_#{camelCase name}.gwt"
+    run "When_#{camelCase name}.gwt"
+    run "Then_#{camelCase name}.gwt"
+  gwt /[sS]ame script as for (.*)/, (all, name) ->
+    run camelCase name
