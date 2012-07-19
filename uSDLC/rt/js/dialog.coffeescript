@@ -167,6 +167,7 @@ $ ->
         if value.length
           label = @altMap[name]
           if label
+            if label[0] is ' ' then html.push ''
             if label.length > 2 and label[0..1] == '::'
               html.push "::<b class='blue'>#{label.substring(2)}</b> #{value}"
             else
