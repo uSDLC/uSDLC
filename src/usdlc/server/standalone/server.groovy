@@ -11,6 +11,9 @@ import usdlc.config.Config
 import java.util.concurrent.Executors
 
 import static usdlc.config.Config.config
+import org.apache.http.impl.client.DefaultHttpClient
+import org.apache.http.client.methods.HttpGet
+import usdlc.HttpClient
 
 /**
  * This is a Groovy script that starts up a web server to serve uSDLC content.
@@ -49,7 +52,8 @@ try {
 } catch (BindException be) {
 	//noinspection GroovyEmptyCatchBlock
 	try {
-		"${baseUrl}rt/util/exit.groovy?action=stop".toURL().text
+		def url = "${baseUrl}/usdlc/rt/util/exit.groovy?action=stop"
+		new HttpClient(secondsTimeout: 0).get(url)
 	} catch (anyException) {}
 	server = HttpServer.create(socket, 0)
 }
