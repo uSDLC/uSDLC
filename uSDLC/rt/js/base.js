@@ -14,11 +14,7 @@ $(function() {
 	}
 	window.CKEDITOR_BASEPATH = '/usdlc/lib/ckeditor/'
 
-
-	head = document.getElementsByTagName('head')[0]
-	base = document.createElement('base')
-	base.setAttribute('href', '/')
-	head.appendChild(base)
+	$('head').prepend($('<base href="/"/>'))
 
 	$.extend(true, window.usdlc, {
 		loadScriptAsync : function(path, onScriptLoaded) {
@@ -41,6 +37,7 @@ $(function() {
 			}
 
 			script.src = path
+			head = document.getElementsByTagName('head')[0]
 			head.appendChild(script)
 		},
 		/*

@@ -1,7 +1,3 @@
-#//var values = {};
-#//$.each($('#myForm').serializeArray(), function(i, field) {
-#//    values[field.name] = field.value;
-#//});
 $ ->
   usdlc.newSynopsis = (type) ->
     synopsisSection = $ 'div.section:first'

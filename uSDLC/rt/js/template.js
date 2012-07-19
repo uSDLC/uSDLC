@@ -67,6 +67,7 @@ $(function () {
 						pageHistory = pageHistory.slice(50)
 					}
 					var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
+					base = "http://" + window.location.host + base
 					$('base').attr('href', base)
 					usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 
