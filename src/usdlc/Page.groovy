@@ -88,8 +88,8 @@ class Page {
 	 * Walk all pages in the uSDLC and connected projects, calling a closure
 	 * for each page.
 	 */
-	static Page walk(Closure pageProcessor) {
-		drill(Store.usdlcRoot, pageProcessor)
+	static void walk(Closure pageProcessor) {
+		//drill(Store.usdlcRoot, pageProcessor)
 		Store.projectIndexes.each { drill(it, pageProcessor) }
 	}
 
@@ -98,7 +98,7 @@ class Page {
 		pageProcessor(page)
 		page.select('a[action=page]').each { link ->
 			String href = link.attr('href')
-			if (href.indexOf('..') == -1) {
+			if (href.indexOf('..') == -1 && href.indexOf('/') == -1) {
 				drill(store.rebase(href), pageProcessor)
 			}
 		}
@@ -295,5 +295,24 @@ class Page {
 		/** Retrieve the unique section id */
 		String getId() { dom?.attr('id') ?: '' }
 		boolean isDeleted() {dom.hasClass('deleted')}
+	}
+	/**
+	 * Walk from this page down and where there is a section that is a
+	 * reference copy to another, update it with the latest gumph.
+	 */
+	public updateReferenceCopies() {
+		drill(store) { page ->
+			page.allSections.select("div.sectionType a").each { a ->
+				def copy = page.findSectionFor(a)
+				def href = a.attr('href').split(/@/)
+				def sourcePage = new Page(href[0])
+				def sourceSection = sourcePage.allSections.
+						select("#${href[1]}").first()
+				copy.children().not('div.sectionType').remove()
+				def source = sourceSection.children().not('div.sectionType')
+				source.each { copy.appendChild(it)}
+				page.forceSave()
+			}
+		}
 	}
 }

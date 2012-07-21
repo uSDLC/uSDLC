@@ -379,10 +379,10 @@ class Store {
 		}
 		return roots
 	}
-	/**
-	 * @return Retrieve the root page of the uSDLC project
-	 */
-	static Store getUsdlcRoot() { Store.base('usdlc/frontPage/index.html') }
+//	/**
+//	 * @return Retrieve the root page of the uSDLC project
+//	 */
+//	static Store getUsdlcRoot() { Store.base('usdlc/frontPage/index.html') }
 	/**
 	 * Return first matching file searching up parent tree.
 	 */
