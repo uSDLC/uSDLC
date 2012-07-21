@@ -19,7 +19,15 @@
 <h3>
 	Editing a Form</h3>
 <p>
-	The built-in editor provides form and field selections. For synopsis forms, you will need to edit the source and add <em>alt</em> attributes. These are displayed in bold as part of the synopsis.</p>
+	The built-in editor provides form and field selections with some special tricks:</p>
+<ol>
+	<li>
+		If input name attribute ends in underscore (_) then this is considered a title and placed in front of the entered text in a bold blue font.</li>
+	<li>
+		If the input name attribute starts with a underscore, the resulting text will have a blank line above it.</li>
+	<li>
+		If the input name attribute starts with :: then this line is concatenated to the one before in the result.</li>
+</ol>
 </div> 
 <div id="s2" class="editable section footer synopsis"> 
  <div> 

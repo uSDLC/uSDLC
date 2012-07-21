@@ -35,6 +35,8 @@ $ ->
     usdlc.contentTree.jstree('disable_hotkeys')
     $('#contentTree').removeClass('rounded pale-gray-box inFocus')
     usdlc.pageContentsSausages.sausage("setFocus", section)
+    url = window.location.hash.split('@')
+    window.location.hash = url[0] + '@' + section.attr('id')
     #usdlc.scrollTo section
     return section
 
@@ -44,6 +46,8 @@ $ ->
       $('.inFocus').removeClass('inFocus ui-widget-content')
       usdlc.lastFocus = usdlc.inFocus
       usdlc.inFocus = null
+      url = window.location.hash.split('@')
+      window.location.hash = url[0]
     $('.inFocus').removeClass('inFocus ui-widget-content')
     usdlc.contentTree.jstree('enable_hotkeys')
     $('#contentTree').addClass('rounded pale-gray-box inFocus')
@@ -62,6 +66,10 @@ $ ->
     id++ while ($('div#s' + id).length > 0)
     "s#{id}"
 
+  usdlc.sectionIsReferenceTo = (section = usdlc.inFocus) ->
+    a = $ ".sectionType a", section
+    return if a.size() then a else null
+
   usdlc.upFocus = ->
     return true unless usdlc.inFocus
     focus = usdlc.inFocus.prevAll('div.section:not(.deleted)').first()
@@ -79,7 +87,7 @@ $ ->
   Parse section title, subtitle, content, id and name (camel-case)
   ###
   usdlc.parseSection = (section) ->
-    header = section.children().first('h1,h2,h3,h4,h5,h6')
+    header = section.children('h1,h2,h3,h4,h5,h6').first()
     title = header.text()
     section.data =
       title : title

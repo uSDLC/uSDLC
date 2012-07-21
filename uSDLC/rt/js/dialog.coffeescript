@@ -27,7 +27,7 @@ $ ->
       pageRelativeDialog(box)
 
   usdlc.dialog = (contents, options) ->
-    contents = $(contents)
+    contents = $ contents
     options ?= {}
     match = options.height?.match percentRE
     if match
@@ -157,7 +157,12 @@ $ ->
       $.each @form.serializeArray(), (i, field) =>
         @fieldMap[field.name] = field.value
         alt = $("[name=#{field.name}]", @form).attr('alt')
-        @altMap[field.name] = alt ? ''
+        if not alt
+          if field.name[field.name.length - 1] == '_'
+            alt = field.name.replace(/_/g, ' ')
+          else
+            alt = ''
+        @altMap[field.name] = alt
         @fieldList.push field.name
 
     toHtml: ->

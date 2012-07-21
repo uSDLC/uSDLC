@@ -56,11 +56,11 @@ $(function () {
 			usdlc.menuToTop()
 			if (path[0] != '/') path = '/' + path
 			var to = usdlc.normalizeURL(path)
-			$.get(to, function (data) {
+			$.get(to.split('@')[0], function (data) {
 				if (usdlc.pageIsLocked(data)) {
 					usdlc.highlight('pink')
 				} else {
-					usdlc.pageContentsURL = to
+					usdlc.pageContentsURL = to.split('@')[0]
 					window.location.hash = usdlc.reduceUrl(to)
 					pageHistory.push(to)
 					if (pageHistory.length > 100) {
@@ -78,8 +78,18 @@ $(function () {
 					usdlc.synopses()
 					usdlc.pageContentsSausages.sausage()
 					usdlc.scrollTop()
-					setTimeout(function(){usdlc.contentTree.setFocus(to)},500)
+					usdlc.finalisers.add(
+							function(){usdlc.contentTree.setFocus(to)})
+					usdlc.contentTree.setFocus(to)
 					usdlc.clearFocus()
+					path = path.split('@')
+					usdlc.finalisers.add(
+						function(){
+							usdlc.contentTree.setFocus(to)
+							if (path.length > 1) {
+								usdlc.setFocus($('#'+path[1]))
+							}
+						})
 					usdlc.actorStates()
 					if (afterwards) afterwards()
 				}
@@ -91,7 +101,9 @@ $(function () {
 		},
 		pageContentsURL:     '/home',
 		normalizeURL:        function (path) {
-			var p = path
+			var p = path.split('@')
+			var sectionId = (p.length > 1) ? p[1] : ''
+			p = p[0]
 			var dot = p.lastIndexOf('.')
 			var slash = p.lastIndexOf('/')
 			if (slash == p.length - 1) {
@@ -99,10 +111,12 @@ $(function () {
 			} else if (dot < slash) {
 				p += "/index.html"
 			}
+			if (sectionId != '') p = p + '@' + sectionId
 			return p
 		},
 		reduceUrl: function(path) {
-			path = path.replace(/^.*(~)/, '$1').replace(/\/index\..{3,4}$/, '')
+			path = path.replace(/^.*(~)/, '$1').
+					replace(/\/index\..{3,4}(@.*)?$/, '$1')
 			if (path[0] != '~') {
 				path = '~uSDLC' + path
 			}

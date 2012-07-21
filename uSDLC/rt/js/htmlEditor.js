@@ -40,6 +40,11 @@ $(function () {
 	 * full history is recorded.
 	 */
 	function editSection($section) {
+		var a = usdlc.sectionIsReferenceTo($section)
+		if (a != null) {
+			usdlc.absolutePageContents(a.attr('href'))
+			return
+		}
 		usdlc.clearSynopses()
 		usdlc.menuToTop()
 		usdlc.scrollTo($section)

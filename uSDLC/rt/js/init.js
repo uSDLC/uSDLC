@@ -1,4 +1,13 @@
 $(function() {
+	usdlc.finalisers = []
+	usdlc.finalisers.add = function(action) {
+		if (usdlc.finalisers.done) {
+			action()
+		} else {
+			usdlc.finalisers.push(action)
+		}
+	}
+
 	usdlc.init = {
 		queue : [],
 		pageLayout : function() {
@@ -126,6 +135,10 @@ $(function() {
 				usdlc.synopses = usdlc.doSynopses
 				usdlc.synopses()
 				usdlc.activateHtml($('body'))
+				while (usdlc.finalisers.length > 0) {
+					usdlc.finalisers.shift()()
+				}
+				usdlc.finalisers.done = true
 			}
 		},
 		postLoader : function() {

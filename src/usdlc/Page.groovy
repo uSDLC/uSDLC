@@ -119,7 +119,7 @@ class Page {
 		def pages = new PageCache()
 		parent.select('div:not(.deleted) a[action=page]').each { link ->
 			String href = link.attr('href')
-			if (href.indexOf('..') == -1) {
+			if (href.indexOf('..') == -1 && href.indexOf('/') == -1) {
 				def child = parent.store.rebase(href)
 				def state = child.rebase('pagestate.txt').text
 				pages.add child, link.text(), state

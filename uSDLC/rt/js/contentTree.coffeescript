@@ -70,7 +70,7 @@ $ ->
     setTimeout("$('#contentTree').css('width','')", 500)
 
   usdlc.contentTree.setFocus = (to) ->
-    steps = to.replace(/\/index\.html$/, '').split('/')
+    steps = to.replace(/\/index\.html(@.*)?$/, '').split('/')
     last = steps.length - 1
     id = '#'
     open_node = (index) ->

@@ -1,0 +1,52 @@
+$ ->
+  clipboard = null
+  open = ->
+    if clipboard
+      clipboard.dialog('open')
+    else
+      clipboard = usdlc.dialog '<div class="clipboard"/>', title: 'Clipboard'
+      clipboard.dialog("widget").position
+          of: $('body')
+          my: 'right top'
+          at: 'right top'
+
+  paste = (item) ->
+    return if not usdlc.inFocus
+    contents = item.data 'section'
+    section = usdlc.newSection()
+    section.append contents.children()
+    section.insertAfter(usdlc.inFocus)
+    usdlc.setFocus(section)
+    usdlc.savePage()
+    item.remove()
+
+  usdlc.clipboard =
+    clear: ->
+      clipboard.html ''
+    copy: ->
+      if usdlc.inFocus
+        open()
+        data = usdlc.parseSection usdlc.inFocus
+        url = "#{usdlc.pageContentsURL}@#{data.id}"
+        $("a[href='#{url}']", clipboard).remove()
+        link = "<a href='#{url}' action='page' class='usdlc'>"
+        item = $ "<div>#{link}#{data.title}</a></div>"
+        section = usdlc.inFocus.clone()
+        section.find('.topMenu').remove()
+        section.find('.inclusion').remove()
+        section.find('a.usdlc').each (index, a) ->
+          a = $ a
+          href = a.attr 'href'
+          if href.indexOf('/') == -1
+            a.attr 'href', "#{usdlc.reduceUrl usdlc.pageContentsURL}/#{href}"
+        type = section.find('.sectionType')
+        type.html("#{link}#{type.html()}</a>")
+        item.data 'section', section
+        clipboard.append item
+    drop: ->
+      clipboard.children('div').last().remove()
+    show: -> open()
+    paste: ->
+      paste clipboard.children('div').last()
+    drain: ->
+      clipboard.children('div').each (index, item) -> paste $ item

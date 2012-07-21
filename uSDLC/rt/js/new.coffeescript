@@ -128,11 +128,12 @@ $ ->
   ###
   Creates basic new section code.
   ###
-  usdlc.newSection = (type, id = usdlc.nextSectionId()) ->
+  usdlc.newSection = (type = '', id = usdlc.nextSectionId()) ->
     div = $ "<div/>",
       id : id
       'class' : 'editable section synopsis'
-    div.append "<div class='sectionType'>#{type}</div>"
+    if type
+      div.append "<div class='sectionType'>#{type}</div>"
     return div
 
   usdlc.loadActorTypes = (select) ->

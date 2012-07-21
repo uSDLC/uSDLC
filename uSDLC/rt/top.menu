@@ -1,4 +1,11 @@
 Home,H,usdlc.goHome()
+Clip,C
+	Clear,l,usdlc.clipboard.clear()
+	Copy,C,usdlc.clipboard.copy(),^C meta-C
+	Drain,D,usdlc.clipboard.drain(), ^shift+V meta+shift+V
+	Drop,r,usdlc.clipboard.drop()
+	Paste,P,usdlc.clipboard.paste(),^V meta-V
+	Show,S,usdlc.clipboard.show()
 Section,S
 	Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
 	Edit,E,usdlc.editSectionInFocus(),^E meta+E

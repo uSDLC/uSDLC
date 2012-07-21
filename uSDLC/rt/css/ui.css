@@ -75,3 +75,7 @@ li.jstree-leaf > ins.jstree-icon {
 .ui-menu, .ui-autocomplete-input, .ui-widget input {
 	font-size: 0.8em !important;
 }
+
+.clipboard {
+	font-size: smaller;
+}

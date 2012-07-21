@@ -1,4 +1,6 @@
 $ ->
+  usdlc.resetMenu = -> #temporary until main one loaded
+
   usdlc.loadMainMenu = (div, content) ->
     doc = $(document)
     submenu = (depth, menu) ->
