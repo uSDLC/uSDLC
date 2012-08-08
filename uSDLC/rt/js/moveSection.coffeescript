@@ -1,0 +1,127 @@
+$ ->
+  usdlc.cleanSections = (sections) ->
+    # clean up html of crap that builds up
+    sections.removeAttr('style')
+    sections.removeClass('inFocus hidden showdeleted showhide ui-state-highlight ui-widget-content')
+    sections.filter('.synopsis').children().removeAttr('style')
+    $('div[href]', sections).html('')
+    $('*[activate]', sections).html('')
+    $('a', sections).removeClass('running failed succeeded')
+    $('div#myEventWatcherDiv').remove()
+    usdlc.clearSynopses(sections)
+    usdlc.screencast.close()
+
+  usdlc.moveSectionUp = ->
+    return true if not usdlc.inFocus
+    swap = usdlc.inFocus.prev()
+    if swap.length
+      usdlc.inFocus.insertBefore swap
+      usdlc.savePage()
+    return false
+
+  usdlc.moveSectionDown = ->
+    return true if not usdlc.inFocus
+    swap = usdlc.inFocus.next()
+    if swap.length
+      usdlc.inFocus.insertAfter(swap)
+      usdlc.savePage()
+    return false
+
+  usdlc.joinSectionAbove = ->
+    return true if not usdlc.inFocus
+    above = usdlc.inFocus.prev()
+    if above.length
+      usdlc.inFocus.prepend(above.children())
+      above.remove()
+      usdlc.savePage()
+    return false
+
+  usdlc.joinSectionBelow = ->
+    return true if not usdlc.inFocus
+    below = usdlc.inFocus.next()
+    if below.length
+      usdlc.inFocus.append(below.children())
+      below.remove()
+      usdlc.savePage()
+    return false
+
+  usdlc.splitIntoSections = ->
+    return true if not usdlc.inFocus
+    pieces = usdlc.inFocus.find('li')
+    if pieces.length <= 1
+      pieces = usdlc.inFocus.find('p')
+    if pieces.length <= 1
+      pieces = usdlc.inFocus.find('div')
+
+    type = $('div.sectionType', usdlc.inFocus).text()
+    id = parseInt(usdlc.nextSectionId().substring(1))
+
+    if usdlc.inFocus.hasClass('page')
+      headerBuilder = (title) ->
+        href = usdlc.camelCase(title)
+        href = "#{type}_#{href}" if type isnt 'General'
+        return usdlc.createLink href, 'page', "s#{id}a0", title
+    else
+      headerBuilder = (title) -> return $ "<span>#{title}</span>"
+
+    last = usdlc.inFocus
+    pieces.each (index, piece) ->
+      contents = $(piece).contents()
+      section = usdlc.newSection type, "s#{id}"
+
+      h1 = $ "<h2/>"
+      h1.append headerBuilder contents.first().text()
+      section.append h1
+
+      items = contents.size()
+      if items > 2 then section.append contents[i] for i in [2..items]
+      section.insertAfter last
+      last = section
+      id += 1
+
+    pieces.remove()
+    usdlc.savePage()
+    return false
+
+  ###
+   * Called by the context menu - causing the section in focus to be
+   * created as a new page.
+  ###
+  usdlc.extractSectionInFocus = ->
+    return false if not usdlc.inFocus
+    section = usdlc.parseSection(usdlc.inFocus)
+    newPageName = "#{section.name}/index.html"
+
+    header = usdlc.createPageTitle(section.title, section.subtitle)
+    header.replaceAll(section.header)
+    header.after($('<div/>').attr('id', 's1')
+    header.addClass('editable section').append(section.content))
+
+    usdlc.save(newPageName, usdlc.inFocus.html())
+    focus = usdlc.inFocus
+    focus.addClass('synopsis').empty().append($('<h1/>')
+    focus.append($('<a/>').attr('href', section.name + '/index.html')
+    focus.attr('id', section.id + 'a0').addClass('usdlc')
+    focus.attr('action', 'page').text(section.title)))
+    usdlc.savePage()
+    return true
+
+  ###
+  // todo: reinstate with special key down only - stops editor from blurring
+  // Make it so we can move sections with drag and drop.
+  // usdlc.pageContents.sortable({
+  // axis : 'y',
+  // containment: 'parent',
+  // items : 'div.section',
+  // revert : true,
+  // placeholder : "ui-state-highlight",
+  // tolerance : 'pointer',
+  // opacity : 0.5,
+  // start : function(event) {
+  // usdlc.setFocus($(event.srcElement))
+  // },
+  // update : function() {
+  // usdlc.savePage()
+  // }
+  // })
+  ###

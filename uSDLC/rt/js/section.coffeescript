@@ -143,27 +143,28 @@ $ ->
   Delete a section - by making it invisible
   ###
   usdlc.deleteSectionInFocus = ->
-    if usdlc.inFocus
-      toDelete = usdlc.inFocus
-      usdlc.downFocus()
-      toDelete.addClass('deleted')
-      usdlc.savePage()
+    if usdlc.inFocus and not usdlc.inFocus.hasClass('deleted')
+      usdlc.classify(usdlc.inFocus, 'deleted')
   ###
   restore a deleted section
   ###
   usdlc.undeleteSectionInFocus = ->
-    if usdlc.inFocus
-      usdlc.inFocus.removeClass('deleted showDeleted')
-      usdlc.savePage()
+    if usdlc.inFocus?.hasClass('deleted')
+      usdlc.classify(usdlc.inFocus, 'deleted')
+      usdlc.toggleShow()
   ###
   Toggle hiding and showing deleted sections
   ###
-  usdlc.toggleShowDeleted = ->
-    if $('.showDeleted').size()
-      usdlc.downFocus() if usdlc.inFocus.hasClass('deleted')
-      $('.deleted').removeClass('showDeleted')
-    else
-      $('.deleted').addClass('showDeleted')
+  usdlc.toggleShow = ->
+    toggle = (type) ->
+      show = "show#{type}"
+      dotType = ".#{type}"
+      if $(".#{show}").size()
+        usdlc.downFocus() if usdlc.inFocus.hasClass(type)
+        $(dotType).removeClass(show)
+      else
+        $(dotType).addClass(show)
+    toggle 'deleted'
   ###
   Load a page from disk and return the named section
   ###
@@ -177,8 +178,55 @@ $ ->
     $.get usdlc.serverActionUrl(page, 'raw'), (data) ->
       html = $("<div/>").html(data)
       action $("div.section h1:contains('#{name}')", html)
+  ###
+  Fold or display a section and all lower sections below it
+  ###
+  usdlc.foldSections = (section = usdlc.inFocus) ->
+    usdlc.classify(section, 'folded')
+  ###
+  Add or remove class for sectiona and subsections
+  ###
+  usdlc.classify = (section, className) ->
+    usdlc.menuToTop()
+    removeClass = not section.hasClass(className)
+    sections = usdlc.withSubsections(section)
+    if removeClass
+      sections.addClass(className)
+    else
+      sections.removeClass(className)
+    usdlc.savePage()
+  ###
+  return a section and those following with a smaller heading
+  ###
+  usdlc.withSubsections = (section) ->
+    return null if not section
+    if section.attr('id') is 's1'
+      return section.nextUntil('.footer')
 
-  # Anything that has focus can be edited.
+    isSub = (section, depthBelow) ->
+      return 0 if section.hasClass('footer')
+      header = $('h1, h2, h3, h4, h5, h6', section)
+      return 99 if not header.size()
+      depth = +(header[0].nodeName[1])
+      return 0 if depth <= depthBelow
+      return depth
+
+    first = rest = section
+    depthBelow = isSub(first, 0)
+    return $([]) if depthBelow is 99
+
+    while true
+      rest = rest.next('.section')
+      break if not rest.size()
+      if not isSub rest, depthBelow
+        usdlc.setFocus(rest)
+        break
+      section = section.add(rest)
+
+    return section
+  ###
+  Anything that has focus can be edited.
+  ###
   $('.editable').css('background-image', "none").live('click', (ev) ->
     usdlc.setFocus(ev.currentTarget)
     return true

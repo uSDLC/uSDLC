@@ -9,8 +9,8 @@ $ ->
     href = usdlc.camelCase(title)
     href = "#{type}_#{href}" if type isnt 'General'
     id = usdlc.nextSectionId()
-    a = createLink href, 'page', "#{id}a0", title
-    insertNewSection form, a, 1, id, type
+    a = usdlc.createLink href, 'page', "#{id}a0", title
+    insertNewSection form, a, 2, id, type
     return false
   ###
   Called by form to create a new section below the current one. It will create
@@ -57,21 +57,21 @@ $ ->
     heading.html title
     gwt = $ '<span/>', class: 'givenWhenThen'
     gwt.append(' &nbsp;(')
-    gwt.append createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
-    gwt.append createLink "When_#{href}", 'runnable', "#{id}w", 'W'
-    gwt.append createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
+    gwt.append usdlc.createLink "Given_#{href}", 'runnable', "#{id}g", 'G'
+    gwt.append usdlc.createLink "When_#{href}", 'runnable', "#{id}w", 'W'
+    gwt.append usdlc.createLink "Then_#{href}", 'runnable', "#{id}t", 'T'
     gwt.append(')')
     heading.append gwt
     return heading
 
   createSingleLink = (form, href, action, id, title) ->
-    createLink href, action, id, title
+    usdlc.createLink href, action, id, title
   ###
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
   ###
   usdlc.newGeneralSection = (type) ->
-    form = new usdlc.FormProcessor "#new#{type}Section"
+    form = new usdlc.FormProcessor "#new#{usdlc.camelCase(type)}Section"
     title = form.fieldMap['title']
     id = usdlc.nextSectionId()
     heading = $ '<span/>'
@@ -82,7 +82,7 @@ $ ->
   ###
   This is where the work is done...
   ###
-  createLink = (href, action, id, title) ->
+  usdlc.createLink = (href, action, id, title) ->
     a = $ '<a/>',
       href: href
       action: action
@@ -107,6 +107,7 @@ $ ->
       notes = form.fieldMap.notes
 
       section = usdlc.newSection type, id
+      section.addClass('page') if heading.is('a')
       h1 = $ "<h#{level}/>"
       h1.append heading
 
@@ -131,7 +132,7 @@ $ ->
   usdlc.newSection = (type = '', id = usdlc.nextSectionId()) ->
     div = $ "<div/>",
       id : id
-      'class' : 'editable section synopsis'
+      'class' : "editable section synopsis #{type}"
     if type
       div.append "<div class='sectionType'>#{type}</div>"
     return div
