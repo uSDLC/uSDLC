@@ -17,7 +17,9 @@ $ ->
       usdlc.currentMainMenu = menu
       menu.div.children('span').detach()
       menu.div.append menu.dom
-      if usdlc.inFocus?.parents('#pageContents').size()
+      hasSections = -> usdlc.inFocus?.parents('#pageContents').size()
+      folded = -> usdlc.inFocus?.hasClass('folded')
+      if hasSections() and not folded()
         div.detach()
         usdlc.inFocus.prepend(div)
 

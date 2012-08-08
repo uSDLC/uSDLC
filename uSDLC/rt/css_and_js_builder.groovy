@@ -66,7 +66,7 @@ files = [
 		'usdlc/rt/js/footer.coffeescript',
 		'usdlc/rt/js/dialog.coffeescript',
 		'usdlc/rt/js/new.coffeescript',
-		'usdlc/rt/js/moveSection.js',
+		'usdlc/rt/js/moveSection.coffeescript',
 		'usdlc/rt/js/clipboard.coffeescript',
 		'usdlc/rt/js/htmlEditor.js',
 		'usdlc/rt/js/ex.coffeescript',

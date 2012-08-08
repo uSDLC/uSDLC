@@ -6,6 +6,7 @@ import static usdlc.Log.apacheCommons
 import static usdlc.MimeTypes.mimeType
 import static usdlc.Log.csv
 import usdlc.actor.SectionRunnerActor
+import com.sun.tools.doclets.formats.html.HelpWriter
 
 /**
  * Core Processor for uSDLC - no matter which web server is in
@@ -205,6 +206,7 @@ class Exchange {
 
 	void save(String newContents) {
 		store.write newContents.bytes
+		new Page(store).updateRegisters()
 	}
 	/**
 	 * Convenience function for Execute that keeps one copy in instance

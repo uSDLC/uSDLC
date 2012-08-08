@@ -15,6 +15,8 @@
 		A013B4A516CA78C077620942 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A013B4A516CA78C07762092C /* Foundation.framework */; };
 		A013B4A516CA78C07762094A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A013B4A516CA78C077620949 /* InfoPlist.strings */; };
 		A013B4A516CA78C07762094D /* ios_usdlc_connectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A013B4A516CA78C07762094C /* ios_usdlc_connectorTests.m */; };
+		A013B4A516CA78C07762094F /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = A013B4A516CA78C07762094E /* GCDAsyncSocket.h */; };
+		A013B4A516CA78C077620951 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A013B4A516CA78C077620950 /* GCDAsyncSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		A013B4A516CA78C077620948 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A013B4A516CA78C07762094B /* ios_usdlc_connectorTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ios_usdlc_connectorTests.h; sourceTree = "<group>"; };
 		A013B4A516CA78C07762094C /* ios_usdlc_connectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ios_usdlc_connectorTests.m; sourceTree = "<group>"; };
+		A013B4A516CA78C07762094E /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = "ios-usdlc-connector/GCDAsyncSocket.h"; sourceTree = "<group>"; };
+		A013B4A516CA78C077620950 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = "ios-usdlc-connector/GCDAsyncSocket.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,8 @@
 		A013B4A516CA78C07762091F = {
 			isa = PBXGroup;
 			children = (
+				A013B4A516CA78C077620950 /* GCDAsyncSocket.m */,
+				A013B4A516CA78C07762094E /* GCDAsyncSocket.h */,
 				A013B4A516CA78C077620920 /* Products */,
 				A013B4A516CA78C07762092B /* Frameworks */,
 				A013B4A516CA78C07762092E /* ios-usdlc-connector */,
@@ -138,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A013B4A516CA78C077620932 /* ios_usdlc_connector.h in Headers */,
+				A013B4A516CA78C07762094F /* GCDAsyncSocket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A013B4A516CA78C077620934 /* ios_usdlc_connector.m in Sources */,
+				A013B4A516CA78C077620951 /* GCDAsyncSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +392,7 @@
 				A013B4A516CA78C077620927 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A013B4A516CA78C077620937 /* Build configuration list for PBXNativeTarget "ios-usdlc-connectorTests" */ = {
 			isa = XCConfigurationList;
@@ -392,6 +401,7 @@
 				A013B4A516CA78C077620939 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

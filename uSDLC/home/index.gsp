@@ -9,10 +9,13 @@
 		href="https://plus.google.com/116900499382012938759"
 		rel="publisher"/>
 	<% } %>
-	<!--link type="text/css" rel="stylesheet" href="/usdlc/rt/css/menu.css"-->
+	<link type="text/css" rel="stylesheet" href="/usdlc/rt/css/section.css">
 	<script>
-		testScripts = ["/usdlc/rt/js/clipboard.coffeescript"]
+		testScripts = []
 	</script>
+	<!--<script>-->
+		<!--testScripts = ["/usdlc/rt/js/clipboard.coffeescript"]-->
+	<!--</script>-->
 </head>
 <body>
 

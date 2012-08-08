@@ -138,8 +138,8 @@ $ ->
       setTimeout complete, 300
       # Need to press escape if user knows the box, but stop it
       # making forms abort while user is entering data
-      stopEscape = -> box.dialog "option", "closeOnEscape", false
-      setTimeout stopEscape, 5000
+#      stopEscape = -> box.dialog "option", "closeOnEscape", false
+#      setTimeout stopEscape, 5000
 
   usdlc.tabNames = (tabs) ->
     map = {}

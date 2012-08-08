@@ -123,10 +123,6 @@ $(function () {
 			return path
 		},
 		savePage: function() {
-			/*
-			 * Give back to the usdlc.server.servletengine.server - after moving
-			 * page title back into the body temporarily.
-			 */
 			var focus = usdlc.inFocus
 			usdlc.clearFocus()
 			usdlc.cleanSections($('div.editable'))

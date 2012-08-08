@@ -53,7 +53,8 @@ $ ->
   loadSynopsis = (link, processor) ->
     path = link.attr('href')
     subPage = ->
-      if path[0] is '/' then return false
+      # remove so we can get to source
+      # if path[0] is '/' then return false
       if path.length < 2 then return false
       if path.substring(0, 2) == '..' then return false
       if path.indexOf(':') != -1 then return false

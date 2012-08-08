@@ -1,13 +1,15 @@
-//
-//  ios_usdlc_connector.h
-//  ios-usdlc-connector
-//
-//  Created by Paul Marrington on 07/04/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
+#import "GCDAsyncSocket.h"
 
-@interface ios_usdlc_connector : NSObject
+@interface ios_usdlc_connector : NSObject {
+    NSURL *url;
+    GCDAsyncSocket *socket;
+    NSMutableArray *header, *params;
+    NSString *command;
+}
 
+- (id)initWithUrl:(NSString *)urlString;
+- (bool)connect;
+- (void)processCommand;
+- (NSString *)usdlc:(NSArray *) params;
 @end

@@ -5,6 +5,7 @@ import org.cyberneko.html.parsers.SAXParser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import sun.jvm.hotspot.debugger.PageCache
 
 /**
  * Here we read in a uSDLC page and provide access to the internals:
@@ -119,7 +120,7 @@ class Page {
 		def pages = new PageCache()
 		parent.select('div:not(.deleted) a[action=page]').each { link ->
 			String href = link.attr('href')
-			if (href.indexOf('..') == -1 && href.indexOf('/') == -1) {
+			if (href.indexOf('..') == -1/* && href.indexOf('/') == -1*/) {
 				def child = parent.store.rebase(href)
 				def state = child.rebase('pagestate.txt').text
 				pages.add child, link.text(), state
@@ -230,9 +231,7 @@ class Page {
 		def sameParent = store == toPage.store
 		if (sameParent) toPage = this
 		if (! cut) section = section.clone() // so we get a copy
-		def newId = toPage.nextSectionId(), a = 0
-		section.attr('id', newId.toString())
-		section.select('a').each {it.attr('id', "s${newId}a${a++}")}
+		toPage.prepareSectionForMove(section)
 		switch (position) {
 			case 'before':
 				toPage.childSection(toName).before(section)
@@ -257,6 +256,13 @@ class Page {
 				store.rebase(fromName).copyTo("$toPage.store.dir/$fromName")
 			}
 		}
+	}
+
+	def prepareSectionForMove(section) {
+		def newId = nextSectionId(), a = 0
+		section.attr('id', "s$newId")
+		section.select('a').each {it.attr('id', "s${newId}a${a++}")}
+		return section
 	}
 
 	def nextSectionId() {
@@ -303,15 +309,59 @@ class Page {
 	public updateReferenceCopies() {
 		drill(store) { page ->
 			page.allSections.select("div.sectionType a").each { a ->
-				def copy = page.findSectionFor(a)
+				def copySection = page.findSectionFor(a)
 				def href = a.attr('href').split(/@/)
 				def sourcePage = new Page(href[0])
 				def sourceSection = sourcePage.allSections.
 						select("#${href[1]}").first()
-				copy.children().not('div.sectionType').remove()
-				def source = sourceSection.children().not('div.sectionType')
-				source.each { copy.appendChild(it)}
-				page.forceSave()
+				if (copyReferenceContents(sourceSection, copySection)) {
+					page.forceSave()
+				}
+			}
+		}
+	}
+	private referenceContents(section) {
+		return section.children().not('div.sectionType')
+	}
+	boolean copyReferenceContents(sourceSection, copySection) {
+		def copyContents = referenceContents(copySection)
+		def sourceContents = referenceContents(sourceSection)
+
+		if (copyContents.html() == sourceContents.html()) return false
+
+		copyContents.remove()
+		sourceContents.each {copySection.appendChild(it)}
+		return true
+	}
+	/**
+	 * If any sections on the page are of a register type, make sure that
+	 * if they have changed this gets reflected in the registers.
+	 */
+	public updateRegisters() {
+		allSections.select("div.sectionType").each { div ->
+			def sectionType = div.text()
+			def m = (sectionType =~ ~/^(\w+)\s+(\w+)$/)
+			if (!m.size()) return
+			def(all, type, register) = m[0]
+
+			if (register == "Register") {
+				def sourceSection = findSectionFor(div)
+				def url = "$store.href@${sourceSection.attr('id')}"
+				def registerPage = new Page(
+						"/~$store.project.dir/usdlc/Registers/${type}s")
+				def copySection = registerPage.selectSection(
+						"div.sectionType a[href=$url]")
+				if (copySection) {
+					if (copyReferenceContents(sourceSection, copySection)) {
+						registerPage.forceSave()
+					}
+				} else {
+					copySection = prepareSectionForMove(sourceSection.clone())
+					def sectionTypeDiv = copySection.select("div.sectionType")
+					sectionTypeDiv.html("<a href='$url' action='page' class='usdlc'>$sectionType</a>")
+					registerPage.footer.before(copySection)
+					registerPage.forceSave()
+				}
 			}
 		}
 	}

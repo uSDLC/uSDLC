@@ -39,7 +39,7 @@ div.inclusion {
 	color: #191970;
 }
 
-div.hidden, div.deleted {
+div.deleted {
 	display:none
 }
 
@@ -49,10 +49,33 @@ div.editable {
 	padding: 0 1em 5px;
 }
 
-div.showDeleted {
+div.showdeleted {
 	display: block;
 	background-color: #ffb2b2 !important;
 }
+
+div.folded, div.folded a {
+	color: #8e8e8e;
+}
+div.folded * {
+	display: none;
+}
+div.folded h1 *, div.folded h2 *, div.folded h3 *,
+div.folded h4 *, div.folded h5 *, div.folded h6 * {
+	display: inline;
+}
+div.folded h1, div.folded h2, div.folded h3,
+div.folded h4, div.folded h5, div.folded h6 {
+	display: inline;
+	border-bottom: none;
+}
+
+div.folded h1 {}
+div.folded h2 {margin-left: 2em;}
+div.folded h3 {margin-left: 4em;}
+div.folded h4 {margin-left: 6em;}
+div.folded h5 {margin-left: 8em;}
+div.folded h6 {margin-left: 10em;}
 
 iframe.output {
 	width: 100%;

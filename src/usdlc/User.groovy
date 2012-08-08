@@ -66,7 +66,7 @@ class User {
 		return logout()
 	}
 	def logout() {
-		def userName = config.userId ?: 'Guest'
+		def userName = config.userId ?: 'Administrator'
 		load(userName)
 		return this
 	}

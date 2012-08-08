@@ -74,7 +74,7 @@
 </div>
 <div id="s12" class="editable section"><h1>
 	New Section: Capability</h1>
-<form onsubmit="javascript:return usdlc.newPageSection('Capability')" id="newCapabilitySection" method="post" name="New Capability Section">
+<form id="newCapabilitySection" method="post" name="New Capability Section" onsubmit="javascript:return usdlc.newPageSection('Capability')">
 	<div class="centreForm">
 		<label>Title</label> <input name="title" size="32" type="text"> <input name="newProject" type="submit" value="New Capability"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></div>
 </form>
@@ -170,7 +170,7 @@
 	</div>
 </form>
 <div class="centre600">
-	Scenarios will need backing data and actions. A scenario that needs tabular of information may refer to a csv table instrumentation section.</div>
+	Scenarios will need backing actions.</div>
 </div>
 <div id="s22" class="editable section"><h1>
 	New Section: Data</h1>
@@ -260,15 +260,17 @@
 <div class="centre600">
 	Create a section for unclassified information.</div>
 </div>
-<div id="s16" class="editable section"><h1>
+
+<div id="s23" class="editable section"><h1>
 	New Section: Issue</h1>
-<form onsubmit="javascript:return usdlc.newGeneralSection('Issue')" id="newIssueSection" method="post" name="New Issue Section">
+<form onsubmit="javascript:return usdlc.newGeneralSection('Issue Register')"
+	id="newIssueRegisterSection" method="post">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 			<tbody>
 				<tr>
 					<td style="text-align: right; ">
-						<strong>Title:&nbsp;</strong></td>
+						<strong>Issue:&nbsp;</strong></td>
 					<td>
 						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Issue"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
 				</tr>
@@ -283,8 +285,79 @@
 	</div>
 </form>
 <div class="centre600">
-	Add questions without answers to the issue register.</div>
+	Any member at any point in the project may need to ask a question that
+	does not have an immediate answer. It may be that the question needs to
+	go to a review group - or it may be that it just needs to be passed to
+	the person with that domain knowledge. These questions are posed within
+	uSDLC when they are discovered, but they are also recorded in the issues
+	register for review and resolution.
 </div>
+</div>
+
+<div id="s24" class="editable section"><h1>
+	New Section: Bug</h1>
+<form onsubmit="javascript:return usdlc.newGeneralSection('Problem Register')"
+	id="newProblemRegisterSection" method="post">
+	<div class="centreForm">
+		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
+			<tbody>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Problem:&nbsp;</strong></td>
+					<td>
+						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Problem"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
+				</tr>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="61" name="notes" rows="4"></textarea></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	The bug register is created from bug sections raised in the <i><b>uSDLC</b></i>
+	document as they are discovered. This provides context. The bug register
+	itself provides a place for prioritisation, review and resolution
+	management.
+</div>
+</div>
+
+<div id="s25" class="editable section"><h1>
+	New Section: Idea</h1>
+<form onsubmit="javascript:return usdlc.newGeneralSection('Idea Register')"
+	id="newIdeaRegisterSection" method="post">
+	<div class="centreForm">
+		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
+			<tbody>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Issue:&nbsp;</strong></td>
+					<td>
+						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Idea"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
+				</tr>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="61" name="notes" rows="4"></textarea></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	Many committed team members will have ideas outside their immediate task
+	that could improve the project. These are usually lost because there is
+	no place for them in a traditional project. <i><b>uSDLC</b></i> provides
+	an idea register. Any team member can create a section wherever they are
+	and it's contents will be reflected in the ideas register for later
+	review and action.
+</div>
+</div>
+
 <div id="s2" class="editable section footer synopsis">
  <div>
 	 <a class="usdlc" href=".." id="s2a3" action="page"> Parent</a> -
