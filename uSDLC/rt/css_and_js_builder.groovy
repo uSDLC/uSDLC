@@ -33,7 +33,7 @@ fileProcessorWithGzip('.store/css/usdlc.css', files) {
 
 files = [
 		'usdlc/lib/jquery/js/jquery-1.7.2.js',
-		'usdlc/lib/underscore.js',
+		//'usdlc/lib/underscore.js',
 		'usdlc/lib/jquery/js/jquery-ui-1.8.21.custom.js',
 		'usdlc/lib/jquery/js/jquery.cookie.js',
 		'usdlc/lib/jquery/js/jquery.sausage.js',
@@ -42,6 +42,7 @@ files = [
 		'usdlc/rt/js/base.js',
 		'usdlc/rt/js/init.js',
 		'usdlc/rt/js/menu.coffeescript',
+		'usdlc/rt/js/tasklist.coffeescript',
 		'usdlc/rt/js/section.coffeescript',
 		'usdlc/rt/js/template.js',
 		'usdlc/lib/jquery/js/jquery.scrollTo.js',
@@ -54,6 +55,8 @@ files = [
 		'usdlc/rt/js/synopses.coffeescript',
 		'/usdlc/rt/js/footer.coffeescript',
 		'usdlc/rt/js/postLoader.coffeescript',
+		'usdlc/rt/js/forms.coffeescript',
+		'usdlc/rt/js/dialog.coffeescript',
 ]
 
 coffeeCompiler = new CoffeeScript()
@@ -64,7 +67,6 @@ files = [
 		'usdlc/lib/ckeditor/ckeditor.js',
 		'usdlc/lib/ckeditor/adapters/jquery.js',
 		'usdlc/rt/js/footer.coffeescript',
-		'usdlc/rt/js/dialog.coffeescript',
 		'usdlc/rt/js/new.coffeescript',
 		'usdlc/rt/js/moveSection.coffeescript',
 		'usdlc/rt/js/clipboard.coffeescript',

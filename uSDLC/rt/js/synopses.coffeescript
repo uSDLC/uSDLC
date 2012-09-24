@@ -81,6 +81,7 @@ $ ->
             processor(inclusion, data, path)
 
   usdlc.loadLocalAutocomplete = (input) ->
+    input.empty()
     return if not usdlc.inDialog(input)
     key = "synopsis_#{input.attr('name')}"
     values = usdlc.persist(key).split(';;')

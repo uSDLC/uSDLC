@@ -58,6 +58,7 @@ import usdlc.PageState
 	 */
 	void runSectionsOnPage(Store page, Set sectionsToRun = null) {
 		pageState = new PageState(page)
+		context._includes = []
 		def p = page.dir.replaceFirst(~'^.*/usdlc/', '').split('/').collect {
 			Store.decamel(it).replaceFirst(~'.*_', '')
 		}.join(' -> ')
@@ -106,7 +107,7 @@ import usdlc.PageState
 				}
 			}
 		}
-		pageState.save()
+		pageState.save(context._includes)
 		// so screen can display current actor states
 		js("parent.usdlc.actorStates()")
 	}
@@ -150,7 +151,7 @@ import usdlc.PageState
 			}
 			if (onScreen) {
 				if (exchange.data.rerun) {
-					exchange.data.remove('Rerun')
+					exchange.data.remove('rerun')
 					runActorsOnPage(actors)
 				} else if (exchange.data.refresh) {
 					exchange.data.remove('refresh')

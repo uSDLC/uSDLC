@@ -53,7 +53,7 @@ $(function () {
 			usdlc.absolutePageContents(usdlc.pageContentsURL)
 		},
 		absolutePageContents:function (path, afterwards) {
-			usdlc.menuToTop()
+			usdlc.clearFocus()
 			if (path[0] != '/') path = '/' + path
 			var to = usdlc.normalizeURL(path)
 			$.get(to.split('@')[0], function (data) {
@@ -86,9 +86,8 @@ $(function () {
 					usdlc.finalisers.add(
 						function(){
 							usdlc.contentTree.setFocus(to)
-							if (path.length > 1) {
-								usdlc.setFocus($('#'+path[1]))
-							}
+							if (path.length <= 1) path[1] = "s1"
+							usdlc.setFocus($('#'+path[1]))
 						})
 					usdlc.actorStates()
 					if (afterwards) afterwards()
@@ -126,6 +125,7 @@ $(function () {
 			var focus = usdlc.inFocus
 			usdlc.clearFocus()
 			usdlc.cleanSections($('div.editable'))
+			usdlc.destroyTasklists()
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)
 			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')

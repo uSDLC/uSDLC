@@ -12,9 +12,9 @@ if not gwt
     gwt.problems.push(statement)
   gwt.cleanup = ->
     if gwt.problems.length
-      rerun = Packages.usdlc.GwtProcessor.update exchange.store, gwt.problems
+      rerun = usdlc.GwtProcessor.update exchange.store, gwt.problems
       if rerun
-        exchange.data.put('Rerun', 'Rerun')
+        exchange.data.put('rerun', 'rerun')
       else
         exchange.data.put('refresh', 'refresh')
 

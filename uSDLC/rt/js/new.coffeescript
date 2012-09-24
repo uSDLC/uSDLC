@@ -32,7 +32,6 @@ $ ->
     insertNewSection form, a, 2, id, name
     return false
 
-
   usdlc.titleExt = (form, titleFieldName) ->
     title = form.fieldMap[titleFieldName]
     split = /^(.*)\.(\w+)$/.exec(title)
@@ -66,6 +65,23 @@ $ ->
 
   createSingleLink = (form, href, action, id, title) ->
     usdlc.createLink href, action, id, title
+
+  ###
+    Create a new section using the tasklist template
+  ###
+  usdlc.newTasklistSection = () ->
+    form = new usdlc.FormProcessor "#newTasklistSection"
+    title = form.fieldMap['title']
+    section = usdlc.newSection "Tasklist"
+    section.insertAfter usdlc.inFocus
+    usdlc.closeDialog() if not form.fieldMap.KeepOpen
+    usdlc.loadSection 'Tasklist', 'Sections', (h1) ->
+      section.append h1.nextAll()
+      $('li:first', section).attr('id', "#{section.attr('id')}t1").html("<a href='#'>#{form.fieldMap['title']}</a>")
+      $('div#taskDetail', section).attr('id', "#{section.attr('id')}t0d")
+      usdlc.setFocus section
+      usdlc.savePage()
+    return false
   ###
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
@@ -124,7 +140,6 @@ $ ->
       edit = false
     else
       usdlc.closeDialog()
-
     return edit
   ###
   Creates basic new section code.
@@ -138,6 +153,7 @@ $ ->
     return div
 
   usdlc.loadActorTypes = (select) ->
+    select.empty()
     actorTypes = (usdlc.cookie('actorTypes') || 'coffee').split(',')
     $.each actorTypes, (index, value) ->
       option = $ '<option/>',
@@ -173,14 +189,14 @@ $ ->
 
   usdlc.loadScenario = (input) ->
     return if not usdlc.inDialog(input)
-    data =
+    usdlc.autocomplete input, '/usdlc/support/usdlc/loadScenario.groovy',
       page: usdlc.pageContentsURL
       gwt: input.attr('name')
-    $.get '/usdlc/support/usdlc/loadScenario.groovy', data, (r)->mac(input, r)
+      multiple_select: true
 
   usdlc.loadProjects = (input) ->
-    $.get '/usdlc/support/usdlc/loadProjects.groovy',
-    unassigned: true, (r)->sac(input, r)
+    usdlc.autocomplete input, '/usdlc/support/usdlc/loadProjects.groovy',
+      unassigned: true
 
   usdlc.newProject = ->
     form = new usdlc.FormProcessor "#newProject"
@@ -191,7 +207,7 @@ $ ->
     return false
 
   usdlc.loadUsdlcProjects = (input) ->
-    $.get '/usdlc/support/usdlc/loadProjects.groovy', (r)->sac(input, r)
+    usdlc.autocomplete input, '/usdlc/support/usdlc/loadProjects.groovy'
 
   usdlc.createNewUser = ->
     form = new usdlc.FormProcessor "#createNewUser"
@@ -205,34 +221,4 @@ $ ->
     return false
 
   usdlc.loadGroups = (input) ->
-    $.get '/usdlc/support/usdlc/loadGroups.groovy', (r)->mac(input, r)
-
-  sac = (input, response) -> # single auto-complete
-    choices = eval response
     input.autocomplete
-      source: choices
-      minLength: 1
-
-  mac = (input, response) -> # multi-select auto-complete
-    input.bind "keydown", (event) ->
-      # don't navigate away from the field on tab when selecting an item
-      if event.keyCode is $.ui.keyCode.TAB
-    	  if $(this).data("autocomplete").menu.active
-    		  event.preventDefault()
-    choices = eval response
-    input.autocomplete
-      minLength: 1
-      autoFocus: true
-      source: (request, response) ->
-        # delegate back to autocomplete, but extract the last term
-        last = request.term.split(/,\s*/).pop()
-        response  $.ui.autocomplete.filter choices, last
-      focus: -> return false # prevent value inserted on focus
-      select: (event, ui) ->
-        terms = this.value.split /,\s*/
-        terms.pop() # remove the current input
-        terms.push ui.item.value # add the selected item
-		  # add placeholder to get the comma-and-space at the end
-        terms.push ''
-        this.value = terms.join ', '
-        return false

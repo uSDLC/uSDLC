@@ -59,7 +59,7 @@ class Page {
 			if (!store.exists()) store = store.rebase('index.html')
 		}
 		if (store.isHtml && !store.exists()) {
-			def page = new Page('usdlc/Environment/Configuration/Templates/Sections/Default/index.html')
+			def page = new Page('usdlc/Environment/Configuration/Templates/Pages/Default/index.html')
 			page.store = store
 			def title, fn = store.parts
 			if (fn.name == 'index') {
@@ -122,7 +122,7 @@ class Page {
 			String href = link.attr('href')
 			if (href.indexOf('..') == -1/* && href.indexOf('/') == -1*/) {
 				def child = parent.store.rebase(href)
-				def state = child.rebase('pagestate.txt').text
+				def state = child.rebase('pagestate.txt').text.trim()
 				pages.add child, link.text(), state
 			}
 		}

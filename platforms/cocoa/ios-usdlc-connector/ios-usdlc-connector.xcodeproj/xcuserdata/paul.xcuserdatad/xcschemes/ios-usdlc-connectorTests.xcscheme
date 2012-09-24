@@ -7,8 +7,11 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
+            buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForTesting = "YES">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A013B4A516CA78C077620936"
@@ -45,7 +48,6 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
-      enableOpenGLFrameCaptureMode = "0"
       allowLocationSimulation = "YES">
       <AdditionalOptions>
       </AdditionalOptions>

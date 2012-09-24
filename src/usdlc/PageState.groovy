@@ -17,7 +17,9 @@ class PageState {
 		}
 	}
 	/** Save the link states and walk up parents telling everyone */
-	def save() {
+	def save(includes) {
+		// add includes to succeeded
+		includes.each {linkStates[it] = 'succeeded'}
 		// save link states - used to display colour for all links
 		CSV.nvp(runStateStore, linkStates)
 		// save page state - calculate the worst result on the page just run

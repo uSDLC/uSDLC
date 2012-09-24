@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA61AF65158DEF07009987A4 /* libhttp-driver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA61AF64158DEF07009987A4 /* libhttp-driver.a */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA4B89F315D5204A00E6C00A /* libios-usdlc-connector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74378015626BAE00E37406 /* libios-usdlc-connector.a */; };
 		DA74374115626BAD00E373FC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74374015626BAD00E373FC /* UIKit.framework */; };
 		DA74374315626BAD00E373FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74374215626BAD00E373FC /* Foundation.framework */; };
 		DA74374515626BAD00E373FC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74374415626BAD00E373FC /* CoreGraphics.framework */; };
@@ -26,9 +26,18 @@
 		DA74376D15626BAD00E373FC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74374615626BAD00E373FC /* CoreData.framework */; };
 		DA74377515626BAE00E373FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA74377315626BAE00E373FC /* InfoPlist.strings */; };
 		DA74377815626BAE00E373FC /* test_usdlcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DA74377715626BAE00E373FC /* test_usdlcTests.m */; };
+		DA74378015626BAE00E3740A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74378015626BAE00E37409 /* CFNetwork.framework */; };
+		DA74378015626BAE00E3740C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA74378015626BAE00E3740B /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DA4B89F115D51F5E00E6C00A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A013B4A516CA78C077620924;
+			remoteInfo = "ios-usdlc-connector";
+		};
 		DA74376E15626BAD00E373FC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA74373315626BAD00E373FC /* Project object */;
@@ -36,10 +45,23 @@
 			remoteGlobalIDString = DA74373B15626BAD00E373FC;
 			remoteInfo = "test-usdlc";
 		};
+		DA74378015626BAE00E37405 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 094F27C2C2846D7AE20F89F5;
+			remoteInfo = "ios-usdlc-connector";
+		};
+		DA74378015626BAE00E37407 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 32959825515F8556CD291E0D;
+			remoteInfo = "ios-usdlc-connectorTests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DA61AF64158DEF07009987A4 /* libhttp-driver.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libhttp-driver.a"; path = "../http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos/libhttp-driver.a"; sourceTree = "<group>"; };
 		DA74373C15626BAD00E373FC /* test-usdlc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-usdlc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA74374015626BAD00E373FC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DA74374215626BAD00E373FC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -64,6 +86,9 @@
 		DA74377415626BAE00E373FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DA74377615626BAE00E373FC /* test_usdlcTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_usdlcTests.h; sourceTree = "<group>"; };
 		DA74377715626BAE00E373FC /* test_usdlcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test_usdlcTests.m; sourceTree = "<group>"; };
+		DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "ios-usdlc-connector.xcodeproj"; path = "../ios-usdlc-connector/ios-usdlc-connector.xcodeproj"; sourceTree = "<group>"; };
+		DA74378015626BAE00E37409 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		DA74378015626BAE00E3740B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,11 +96,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA61AF65158DEF07009987A4 /* libhttp-driver.a in Frameworks */,
+				DA4B89F315D5204A00E6C00A /* libios-usdlc-connector.a in Frameworks */,
 				DA74374115626BAD00E373FC /* UIKit.framework in Frameworks */,
 				DA74374315626BAD00E373FC /* Foundation.framework in Frameworks */,
 				DA74374515626BAD00E373FC /* CoreGraphics.framework in Frameworks */,
 				DA74374715626BAD00E373FC /* CoreData.framework in Frameworks */,
+				DA74378015626BAE00E3740A /* CFNetwork.framework in Frameworks */,
+				DA74378015626BAE00E3740C /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +123,7 @@
 		DA74373115626BAD00E373FC = {
 			isa = PBXGroup;
 			children = (
-				DA61AF64158DEF07009987A4 /* libhttp-driver.a */,
+				DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */,
 				DA74374815626BAD00E373FC /* test-usdlc */,
 				DA74377015626BAD00E373FC /* test-usdlcTests */,
 				DA74373F15626BAD00E373FC /* Frameworks */,
@@ -116,6 +143,8 @@
 		DA74373F15626BAD00E373FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA74378015626BAE00E3740B /* Security.framework */,
+				DA74378015626BAE00E37409 /* CFNetwork.framework */,
 				DA74374015626BAD00E373FC /* UIKit.framework */,
 				DA74374215626BAD00E373FC /* Foundation.framework */,
 				DA74374415626BAD00E373FC /* CoreGraphics.framework */,
@@ -172,6 +201,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		DA74378015626BAE00E37404 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA74378015626BAE00E37406 /* libios-usdlc-connector.a */,
+				DA74378015626BAE00E37408 /* ios-usdlc-connectorTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -186,6 +224,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DA4B89F215D51F5E00E6C00A /* PBXTargetDependency */,
 			);
 			name = "test-usdlc";
 			productName = "test-usdlc";
@@ -217,7 +256,7 @@
 		DA74373315626BAD00E373FC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = DA74373615626BAD00E373FC /* Build configuration list for PBXProject "test-usdlc" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -229,6 +268,12 @@
 			mainGroup = DA74373115626BAD00E373FC;
 			productRefGroup = DA74373D15626BAD00E373FC /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DA74378015626BAE00E37404 /* Products */;
+					ProjectRef = DA74378015626BAE00E37403 /* ios-usdlc-connector.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				DA74373B15626BAD00E373FC /* test-usdlc */,
@@ -236,6 +281,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DA74378015626BAE00E37406 /* libios-usdlc-connector.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libios-usdlc-connector.a";
+			remoteRef = DA74378015626BAE00E37405 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DA74378015626BAE00E37408 /* ios-usdlc-connectorTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ios-usdlc-connectorTests.octest";
+			remoteRef = DA74378015626BAE00E37407 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DA74373A15626BAD00E373FC /* Resources */ = {
@@ -298,6 +360,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DA4B89F215D51F5E00E6C00A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ios-usdlc-connector";
+			targetProxy = DA4B89F115D51F5E00E6C00A /* PBXContainerItemProxy */;
+		};
 		DA74376F15626BAD00E373FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DA74373B15626BAD00E373FC /* test-usdlc */;
@@ -394,11 +461,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test-usdlc/test-usdlc-Prefix.pch";
 				INFOPLIST_FILE = "test-usdlc/test-usdlc-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../ios-usdlc-connector/** \"${PROJECT_DIR}/../ios-usdlc-connector/** \"${PROJECT_DIR}/../ios-usdlc-connector/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -409,11 +474,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test-usdlc/test-usdlc-Prefix.pch";
 				INFOPLIST_FILE = "test-usdlc/test-usdlc-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../http-driver/DerivedData/http-driver/Build/Products/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../ios-usdlc-connector/** \"${PROJECT_DIR}/../ios-usdlc-connector/** \"${PROJECT_DIR}/../ios-usdlc-connector/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

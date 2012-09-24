@@ -1497,6 +1497,7 @@
 			tmp = f._get_settings().hotkeys[i];
 			if(tmp) { return tmp.call(f, event); }
 		}
+		return false;
 	}
 	$.jstree.plugin("hotkeys", {
 		__init : function () {

@@ -1,0 +1,151 @@
+$ ->
+  cut = false
+
+  usdlc.activateTasklist = (div) ->
+#    return if div.hasClass('jstree')
+    detailsPane = div.parent().next();
+    section = usdlc.getSection(div)
+    sectionId = section.attr('id')
+    uuid = "#{$('#pageTitle').attr('uuid')}-#{sectionId}"
+
+    div.jstree
+      cookies :
+        save_opened: "#{uuid}-opened"
+        save_selected: "#{uuid}-selected"
+        cookie_options : expires : 1000
+      themes :
+        theme : 'classic'  # apple classic default
+        url : '/usdlc/lib/jquery/js/themes/classic/style.css'
+        icons : false
+      core:
+        animation: 500
+        html_titles: true
+      checkbox:
+        two_state: true
+      hotkeys :
+        'esc': -> usdlc.clearFocus(); return false
+        'x': -> usdlc.setMenuContext('Section_Menu'); return false
+        'i': -> div.insertNode(); return false
+        'r': -> div.renameNode(); return false
+        'shift+up': -> mover 'prev', 'before'; return false
+        'shift+down': -> mover 'next', 'after'; return false
+        'shift+left': -> mover 'parents', 'after'; return false
+        'shift+right': -> mover 'prev', 'last'; return false
+        'ctrl+c meta+c': -> div.jstree 'copy', selectedNode; return false
+        'ctrl+x meta+x': -> div.jstree 'cut', selectedNode; return false
+        'ctrl+v meta+v': -> div.jstree 'paste', selectedNode; return false
+      plugins : [ 'ui', 'html_data', 'themes', 'hotkeys', 'checkbox', 'types',
+        'types', 'crrm', 'dnd', 'contextmenu', 'cookies', 'search' ] #
+
+    nextId = 2
+    addId = (li) ->
+      nextId += 1 while ($(id = "##{sectionId}t#{nextId}", div).size() > 0)
+      id = id.substring(1)
+      li.attr('id', id)
+      return id
+
+    div.bind
+      'create.jstree': (event, data) -> addId(data.rslt.obj)
+      'cut.jstree': (event, data) -> cut = true
+      'copy.jstree': (event, data) -> cut = false
+      'paste.jstree': (event, data) ->
+        if cut then data.rslt.nodes.each (index, node) -> addId(node)
+        return false
+      'select_node.jstree': (event, data) ->
+        selectedNode = data.rslt.obj
+        div.jstree 'open_node', selectedNode
+        showTask detailsPane, "#{selectedNode.attr('id')}d"
+        return false
+
+    mover = (refDir, position) ->
+      selectedNode = $('.jstree-clicked', div).parents('li').first()
+      reference = (selectedNode[refDir])('li').first()
+      if reference.size()
+        div.jstree "move_node", selectedNode, reference, position
+    div.moveup = div.movedown = div.movein = div.moveout = mover
+    div.copyNode = -> div.jstree 'copy', selectedNode
+    div.cutNode = -> div.jstree 'cut', selectedNode
+    div.pasteNode = -> div.jstree 'paste', selectedNode
+    div.insertNode = -> div.jstree 'create', null, "last"
+    div.renameNode = -> div.jstree 'rename', null
+
+  showTask = (detailsPane, id) ->
+    detailsPane.children().hide()
+    detailDiv = $("##{id}", detailsPane).first()
+    detailDiv = detailsPane.children('div').first() if not detailDiv.size()
+    detailDiv.show()
+
+  getActiveTaskId = (elem) ->
+    return $('.jstree-clicked', elem.closest('tr')).closest('li').attr('id')
+
+  usdlc.buildTaskDetail = (formElement) ->
+    formElement = $ formElement
+    parts = $('input:checked', formElement).toArray()
+    return if not parts
+    id = "#{getActiveTaskId(formElement)}d"
+    detailDiv = $("<div/>").attr('id', id)
+    detailsPane = formElement.closest('td')
+    detailsPane.append detailDiv
+    showTask detailsPane, id
+    loadPart = (input) ->
+      name = $(input).attr('value')
+      usdlc.loadSection name, 'Tasks', (h1) ->
+        detailDiv.append h1.nextAll().remove('h2')
+        if parts.length > 0
+          loadPart parts.shift()
+        else
+          usdlc.activateHtml detailDiv
+    loadPart parts.shift()
+
+  usdlc.inTasklist = ->
+    return null if not usdlc.inFocus
+    treeContainer = $('.jstree', usdlc.inFocus).first()
+    return treeContainer if treeContainer.size() > 0
+    return null
+  usdlc.inTreeMode = (event) ->
+    if usdlc.inFocus
+      return usdlc.inTasklist()
+    else
+      return usdlc.contentTreeContainer
+
+  usdlc.setTasklistFocus = (section) ->
+    container = usdlc.setTreeFocus((section))
+    if container
+      usdlc.setMenuContext 'Tasklist_Menu'
+      container.addClass('inFocus')
+
+  usdlc.setTreeFocus = (container) ->
+    if not container.hasClass('jstree')
+      container = $('.jstree', container).first()
+    return null if container.size() is 0
+    container.jstree('set_focus')
+    container.jstree('enable_hotkeys')
+    return container
+
+  usdlc.unsetTreeFocus = (container) ->
+    if not container.hasClass('jstree')
+      container = $('.jstree', container).first()
+    return false if container.size() is 0
+    container.jstree('unset_focus')
+    container.jstree('disable_hotkeys')
+    container.removeClass('rounded pale-gray-box inFocus')
+    usdlc.setMenuContext? 'Section_Menu'
+    return true
+
+  usdlc.destroyTasklists = ->
+    lists = $('div.tasklist')
+    lists.jstree('destroy')
+    lists.find('ins').remove()
+    $("[class]", lists).each (index, element) ->
+      element = $(element)
+      element.attr('class', $.trim(element.attr('class')))
+
+  usdlc.treeCopy = () -> usdlc.inTreeMode()?.copyNode()
+  usdlc.treeCut = () -> usdlc.inTreeMode()?.cutNode()
+  usdlc.treePaste = () -> usdlc.inTreeMode()?.pasteNode()
+  usdlc.treeInsert = () -> usdlc.inTreeMode()?.insertNode()
+  usdlc.treeRename = () -> usdlc.inTreeMode()?.renameNode()
+  usdlc.treeMoveDown = () -> usdlc.inTreeMode()?.movedown 'next', 'after'
+  usdlc.treeMoveLeft = () -> usdlc.inTreeMode()?.moveout 'parents', 'after'
+  usdlc.treeMoveRight = () -> usdlc.inTreeMode()?.movein 'prev', 'last'
+  usdlc.treeMoveUp = () -> usdlc.inTreeMode()?.moveup 'prev', 'before'

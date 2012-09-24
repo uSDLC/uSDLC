@@ -54,6 +54,18 @@ class User {
 		return false
 	}
 	/**
+	 * Return a list of all users
+	 */
+	static list() {
+		def users = [];
+		Store.projectRoots.each {
+			it.rebase('Environment/Users').file.eachDir { File file ->
+				users << file.name
+			}
+		}
+		return users;
+	}
+	/**
 	 * Logging in means checking the password before allowing the user to
 	 * continue.
 	 */

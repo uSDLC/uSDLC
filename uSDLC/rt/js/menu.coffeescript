@@ -10,8 +10,13 @@ $ ->
       menu.keys = {}
       menu.div = div
       return menu
-    usdlc.rootMainMenu = menu = submenu 0, depth : 0
-    usdlc.resetMenu = -> usdlc.showMainMenu usdlc.rootMainMenu
+    menuData = menu = submenu 0, depth : 0
+    menuBases = {}
+    contextMenu = ""
+    usdlc.resetMenu = -> usdlc.showMainMenu contextMenu
+    usdlc.setMenuContext = (to) ->
+      contextMenu = menuBases[to]
+      usdlc.resetMenu()
 
     usdlc.showMainMenu = (menu) ->
       usdlc.currentMainMenu = menu
@@ -33,9 +38,10 @@ $ ->
       item.parent = menu
 
       [text,key,action,shortcut] = row.split /,\s*/
-      item.key = key
+      item.key = key ? '\0'
       [all,spaces,item.text] = text.match(/(\s*)(.*)/)
       item.depth = spaces.length
+      menuBases[item.text] = item
 
       if action
         try
@@ -53,6 +59,7 @@ $ ->
 
       text = text.replace(key, "<u>#{key}</u>")
       a = $('<a>').attr('href', 'javascript:').append(text)
+      a.addClass 'hidden' if text[0] is '_'
       a.click (event) ->
         event.preventDefault()
         item.action(item)
@@ -60,28 +67,35 @@ $ ->
       menu.dom.append a
 
       if shortcut
-        shortcut = 'ctrl+' + shortcut.substring(1) if shortcut[0] is '^'
-        doc.bind 'keydown', shortcut, (event) ->
-          if !usdlc.inEditMode(event)
-            event.target.usdlcKeyEvent = true
-            item.action(item)
-            event.preventDefault()
+        if shortcut[0..2] is '##' # popup only
+          shortcut = shortcut[2..shortcut.length]
+        else
+          shortcut = 'ctrl+' + shortcut.substring(1) if shortcut[0] is '^'
+          doc.bind 'keydown', shortcut, (event) ->
+            if !usdlc.menuKeysOff(event)
+              event.target.usdlcKeyEvent = true
+              item.action(item)
+              event.preventDefault()
         a.attr('title', shortcut)
 
       menu.children.push menu.keys[item.key.toUpperCase()] = item
 
     processRow row for row in content.split(/\r?\n/)
-    usdlc.resetMenu()
+    usdlc.setMenuContext "Section_Menu"
 
   usdlc.menuKeystroke = (key) ->
-    item = usdlc.currentMainMenu.keys[key.toUpperCase()]
+    item = usdlc.currentMainMenu?.keys[key.toUpperCase()]
     if item
       item.action(item)
       return true
     return false
 
+  usdlc.menuKeysOff = (event) ->
+    return usdlc.inEditMode(event) or usdlc.inTreeMode() or usdlc.inDialogs()
+
   $(document).keydown (event) ->
-    return true if usdlc.inEditMode(event)
+    return true if usdlc.menuKeysOff(event)
+    return true if usdlc.inDialogs()
     return true if event.metaKey or event.altKey or event.ctrlKey
     if event.which is 27
       usdlc.resetMenu()

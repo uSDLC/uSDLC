@@ -23,6 +23,7 @@ class DslInclusions {
 	}
 
 	def include(String inclusion) {
+		if (binding._includes) binding._includes << inclusion;
 		gse.run binding.script.rebase(inclusion).path, binding
 	}
 }

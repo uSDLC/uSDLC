@@ -116,15 +116,16 @@ $(function() {
 		loadPage : function(callback) {
 			/**
 			 * When you open uSDLC without asking for a page, the last page
-			 * displayed will return. Use /frontPage.html to get to the true
-			 * root.
+			 * displayed will return.
 			 */
 			var path = window.location.pathname
 			if (path == '/usdlc/home') {
 				path = window.location.hash || usdlc.cookie('currentPage') || path
 				if (path[0] == '#') path = path.substring(1)
 			}
+			setTimeout(function(){
 			usdlc.absolutePageContents(path, callback)
+			}, 500)
 		},
 		finalise : function() {
 			if (testScripts.length) {
@@ -151,5 +152,4 @@ $(function() {
 	if ($(window).height() <= 600) {
 		$('table#pageTitleTable').css('margin-top', -50)
 	}
-
 })

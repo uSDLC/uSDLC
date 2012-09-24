@@ -79,3 +79,28 @@ li.jstree-leaf > ins.jstree-icon {
 .clipboard {
 	font-size: smaller;
 }
+
+div.tasklist ul {display:none; margin-right: 10px;}
+div.jstree ul, div.template ul {display:inherit;}
+
+.full, .half, .threequarter, .quarter,.third,.twothird,.fifth,.twofifth,
+.threefifth,.fourfifth,.sixth,.fivesixth {
+	float:left;
+	display:inline;
+	margin:0 10px 0 10px;
+	padding:0;
+}
+.full {width:96%;}
+.half {width:48%;}
+.threequarter {width:72%;}
+.quarter {width:24%;}
+.third {width:32%;}
+.twothird {width:63%;}
+.fifth {width:19%;}
+.twofifth {width:38%;}
+.threefifth {width:57%;}
+.fourfifth {width:77%;}
+.sixth {width:15%;}
+.fivesixth {width:80%;}
+.first {margin-left:0;}
+.last {margin-right:0;}

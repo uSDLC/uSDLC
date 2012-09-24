@@ -28,29 +28,34 @@ $ ->
   usdlc.setFocus = (element) ->
     section = usdlc.getSection(element)
     #if not section.hasClass('inFocus')
-    usdlc.clearFocus()
-    usdlc.inFocus = section
-    usdlc.resetMenu()
-    section.addClass('inFocus ui-widget-content')
-    usdlc.contentTree.jstree('disable_hotkeys')
-    $('#contentTree').removeClass('rounded pale-gray-box inFocus')
-    usdlc.pageContentsSausages.sausage("setFocus", section)
-    url = window.location.hash.split('@')
-    window.location.hash = url[0] + '@' + section.attr('id')
-    #usdlc.scrollTo section
+    if section.attr('id') isnt usdlc.inFocus?.attr('id')
+      usdlc.clearFocus()
+      usdlc.inFocus = section
+      usdlc.resetMenu()
+      section.addClass('inFocus ui-widget-content')
+      usdlc.unsetTreeFocus(usdlc.contentTreeContainer)
+      usdlc.setTasklistFocus(section)
+      usdlc.pageContentsSausages.sausage("setFocus", section)
+      url = window.location.hash.split('@')
+      window.location.hash = url[0] + '@' + section.attr('id')
+      # usdlc.scrollTo section
     return section
 
   usdlc.clearFocus = ->
+    inTasklist = false
     if usdlc.inFocus
+      inTasklist = usdlc.inTasklist()
       usdlc.menuToTop()
       $('.inFocus').removeClass('inFocus ui-widget-content')
       usdlc.lastFocus = usdlc.inFocus
       usdlc.inFocus = null
-      url = window.location.hash.split('@')
-      window.location.hash = url[0]
+#      url = window.location.hash.split('@')
+#      window.location.hash = url[0]
     $('.inFocus').removeClass('inFocus ui-widget-content')
-    usdlc.contentTree.jstree('enable_hotkeys')
-    $('#contentTree').addClass('rounded pale-gray-box inFocus')
+    if inTasklist
+      usdlc.savePage()
+      usdlc.unsetTreeFocus(inTasklist)
+    usdlc.setContentTreeFocus()
 
   usdlc.toggleFocus = ->
     if usdlc.inFocus
@@ -122,11 +127,16 @@ $ ->
       else if href.indexOf(':') is -1 and href[0] isnt '#'
         self.addClass('usdlc')
 
-        href = usdlc.camelCase(href)
-        self.attr('href', href)
-        endsInSlash = (lastChar == '/')
+        if href[0] == '~'
+          href = "/#{href}"
+          self.attr('href', href)
+        isRef = (lastChar == '/') or /^.?~.+@s\d+$/.test(href)
+        if not isRef
+          href = usdlc.camelCase(href)
+          self.attr('href', href)
         isParent = (href is '..')
-        isPage = endsInSlash or isParent or /^\w+$/.test(href)
+        isRef = /^.?~.+@s\d+$/.test(href)
+        isPage = isParent or isRef or /^\w+$/.test(href)
         isHtml = isPage or
           (usdlc.mimeType(href).clientExt in ['html', 'gsp'])
 
@@ -173,11 +183,12 @@ $ ->
     if split.length > 1 then [page,name] = split
     first = page[0]
     if first isnt '~' and first isnt '/'
-      page = "/uSDLC/Environment/Configuration/Templates/#{page}"
+      page = "~uSDLC/usdlc/Environment/Configuration/Templates/#{page}"
 
     $.get usdlc.serverActionUrl(page, 'raw'), (data) ->
       html = $("<div/>").html(data)
-      action $("div.section h1:contains('#{name}')", html)
+      $('.template', html).removeClass('template')
+      action $("div.section h1:contains('#{name}'),div.section h2:contains('#{name}')", html)
   ###
   Fold or display a section and all lower sections below it
   ###

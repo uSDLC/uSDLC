@@ -90,6 +90,11 @@ $(function() {
 			return node == 'textarea' || node == 'input' ||
 					$(event.target).children('.CodeMirror').size() > 0
 		},
+		loadUser: function(input, multiple_select) {
+			usdlc.autocomplete(input, '/usdlc/support/usdlc/loadUsers.groovy',
+					{ multiple_select: multiple_select });
+		},
+		loadUsers: function(input) { usdlc.loadUser(input, true); },
 		logOut: function() {    // used in top.menu
 			$('#userName').html('')
 			$.get('/usdlc/support/usdlc/logOut.groovy',
@@ -163,11 +168,13 @@ $(function() {
 			})
 			$('*[activate]', html).each(function() {
 				var element = $(this)
-				var action = element.attr('activate')
-				try {
-					usdlc[action](element)
-				} catch(e) {
-					usdlc.log(e)
+				if (!element.hasClass('template')) {
+					var action = element.attr('activate')
+					try {
+						usdlc[action](element)
+					} catch(e) {
+						usdlc.log("error:activate "+action+" -- " + e)
+					}
 				}
 			})
 		}

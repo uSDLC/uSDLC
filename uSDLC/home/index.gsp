@@ -10,11 +10,13 @@
 		rel="publisher"/>
 	<% } %>
 	<link type="text/css" rel="stylesheet" href="/usdlc/rt/css/section.css">
+	<style type="text/css">
+	</style>
 	<script>
 		testScripts = []
 	</script>
 	<!--<script>-->
-		<!--testScripts = ["/usdlc/rt/js/clipboard.coffeescript"]-->
+		<!--testScripts = ["/usdlc/rt/js/tasklist.coffeescript"]-->
 	<!--</script>-->
 </head>
 <body>

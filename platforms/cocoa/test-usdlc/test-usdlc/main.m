@@ -1,18 +1,12 @@
-//
-//  main.m
-//  test-usdlc
-//
-//  Created by Paul Marrington on 15/05/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
+#import "ios_usdlc_connector.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
+        [[ios_usdlc_connector alloc] init];
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

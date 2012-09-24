@@ -209,12 +209,14 @@ $(function () {
 					type = usdlc.actorDefault = linkSelect.getValue()
 					usdlc.setCookie('actorDefault', type)
 				}
-
-				var name = usdlc.splitUrl(urlField.getValue()).name
-				if (type) {
-					name += '.' + type
+				var name = urlField.getValue()
+				if (name.indexOf('@') == -1) {
+					name = usdlc.splitUrl(name).name
+					if (type) {
+						name += '.' + type
+					}
+					urlField.setValue(name)
 				}
-				urlField.setValue(name)
 			}
 
 			// We save the actor type in a cookie for default -
@@ -234,7 +236,7 @@ $(function () {
 				linkRadio = this.getContentElement('info', 'linkRadio');
 				var url = urlField.getValue()
 				if (url) {
-					var ext = usdlc.splitUrl(urlField.getValue()).ext
+					var ext = usdlc.splitUrl(url).ext
 					switch (ext) {
 						case '':
 							linkRadioDefault = ext

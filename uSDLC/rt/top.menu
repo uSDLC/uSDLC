@@ -1,60 +1,87 @@
-Home,H,usdlc.goHome()
-Clip,C
-	Clear,l,usdlc.clipboard.clear()
-	Copy,C,usdlc.clipboard.copy(),^C meta-C
-	Drain,D,usdlc.clipboard.drain(), ^shift+V meta+shift+V
-	Drop,r,usdlc.clipboard.drop()
-	Paste,P,usdlc.clipboard.paste(),^V meta-V
-	Show,S,usdlc.clipboard.show()
-Project,P
-	New,N,usdlc.form('New Project')
-Register,g
-	Ideas,d,usdlc.form('New Section: Ideas')
-	Issues,I,usdlc.form('New Section: Issues')
-	Bugs,B,usdlc.form('New Section: Bugs')
-Run,R
-	Section,S,usdlc.runSectionInFocus({continuation:false}),^R alt+R
-	Page,P,usdlc.runPage({continuation:false}),^P alt+P
-	From error,e,usdlc.runPage({continuation:true}),^L alt+L
-	From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
-	Rerun,R,usdlc.rerun(),^U alt-U
-Section,S
-	Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
-	Edit,E,usdlc.editSectionInFocus(),^E meta+E
-	Insert,I
-		Above,A,usdlc.upFocus();usdlc.newSectionForm(),^I meta+I
-		Below,B,usdlc.newSectionForm(),^A meta+A
-	Fold,F,usdlc.foldSections(),^F meta+F
-	Join,J
-		Above,A,usdlc.joinSectionAbove()
-		Below,B,usdlc.joinSectionBelow()
-	Move,M
-		Up,U,usdlc.moveSectionUp(),shift+up
-		Down,D,usdlc.moveSectionDown(),shift+down
-	Navigate,v
-		Tree/Section,T,usdlc.toggleFocus(),tab
-		Previous,P,usdlc.upFocus(),up
-		Next,N,usdlc.downFocus(),down
-	New,N
-		Project,j,usdlc.form('New Section: Project')
-		Vision,V,usdlc.form('New Section: Vision')
-		Goal,G,usdlc.form('New Section: Goal')
-		Capability,C,usdlc.form('New Section: Capability')
-		Feature,F,usdlc.form('New Section: Feature')
-		Scenario,S,usdlc.form('New Section: Scenario')
-		Script,t,usdlc.form('New Section: Script')
-		Data,D,usdlc.form('New Section: Data')
-		Guide,u,usdlc.form('New Section: Guide')
-		Page,P,usdlc.form('New Section: Page')
-		Blank,B,usdlc.form('New Section: General')
-	Split,S
-		To new page,p,usdlc.extractSectionInFocus(),alt+E
-		Into section,s,usdlc.splitIntoSections(),alt+S
-	Toggle,T,usdlc.toggleShow(),^del meta+del
-	Undelete,U,usdlc.undeleteSectionInFocus()
-User,U
-	Log in,i,usdlc.form('User: Log In')
-	Log out,o,usdlc.logOut()
-	Change password,C,usdlc.form('User: Change Password')
-	New User,N,usdlc.form('User: New')
-Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1
+Section_Menu
+	Home,H,usdlc.goHome()
+	Clip,C
+		Clear,l,usdlc.clipboard.clear()
+		Copy,C,usdlc.clipboard.copy(),^C meta-C
+		Drain,D,usdlc.clipboard.drain(), ^shift+V meta+shift+V
+		Drop,r,usdlc.clipboard.drop()
+		Paste,P,usdlc.clipboard.paste(),^V meta-V
+		Show,S,usdlc.clipboard.show()
+	Project,P
+		New,N,usdlc.form('New Project')
+	Register,e
+		Ideas,d,usdlc.form('New Section: Ideas')
+		Issues,I,usdlc.form('New Section: Issues')
+		Bugs,B,usdlc.form('New Section: Bugs')
+	Run,R
+		Section,S,usdlc.runSectionInFocus({continuation:false}),^R alt+R
+		Page,P,usdlc.runPage({continuation:false}),^P alt+P
+		From error,e,usdlc.runPage({continuation:true}),^L alt+L
+		From section,c,usdlc.runSectionInFocus({continuation:true}),^O alt-O
+		Rerun,R,usdlc.rerun(),^U alt-U
+	Section,S
+		Delete,D,usdlc.deleteSectionInFocus(),^shift+del meta+shift+del
+		Edit,E,usdlc.editSectionInFocus(),^E meta+E
+		Insert,I
+			Above,A,usdlc.upFocus();usdlc.newSectionForm(),^I meta+I
+			Below,B,usdlc.newSectionForm(),^A meta+A
+		Fold,F,usdlc.foldSections(),^F meta+F
+		Join,J
+			Above,A,usdlc.joinSectionAbove()
+			Below,B,usdlc.joinSectionBelow()
+		Move,M
+			Up,U,usdlc.moveSectionUp(),shift+up
+			Down,D,usdlc.moveSectionDown(),shift+down
+		Navigate,v
+			Tree/Section,T,usdlc.toggleFocus(),esc
+			Previous,P,usdlc.upFocus(),up
+			Next,N,usdlc.downFocus(),down
+		New,N
+			Project,j,usdlc.form('New Section: Project')
+			Vision,V,usdlc.form('New Section: Vision')
+			Goal,G,usdlc.form('New Section: Goal')
+			Capability,C,usdlc.form('New Section: Capability')
+			Feature,F,usdlc.form('New Section: Feature')
+			Scenario,S,usdlc.form('New Section: Scenario')
+			Script,t,usdlc.form('New Section: Script')
+			Data,D,usdlc.form('New Section: Data')
+			Guide,u,usdlc.form('New Section: Guide')
+			Page,P,usdlc.form('New Section: Page')
+			Blank,B,usdlc.form('New Section: General')
+		Split,S
+			To new page,p,usdlc.extractSectionInFocus(),alt+E
+			Into section,s,usdlc.splitIntoSections(),alt+S
+		Toggle,T,usdlc.toggleShow(),^del meta+del
+		Undelete,U,usdlc.undeleteSectionInFocus()
+	User,U
+		Log in,i,usdlc.form('User: Log In')
+		Log out,o,usdlc.logOut()
+		Change password,C,usdlc.form('User: Change Password')
+		New User,N,usdlc.form('User: New')
+	Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1
+Tasklist_Menu
+	Clipboard, C
+		Copy, c, usdlc.treeCopy(),##^C meta+C
+		Cut, u, usdlc.treeCut(),##^X meta+X
+		Paste, p, usdlc.treePaste(),##^V meta+V
+	Insert, I, usdlc.treeInsert()
+	Rename, R, usdlc.treeRename()
+	Move
+		Down, D, usdlc.treeMoveDown(),##shift+down
+		Left, L, usdlc.treeMoveLeft(),##shift+left
+		Right, R, usdlc.treeMoveRight(),##shift+right
+		Up, U, usdlc.treeMoveUp(),##shift+up
+	Exit, x, usdlc.setMenuContext('Section_Menu')
+ContentTree_Menu
+	Clipboard, C
+		Copy, c, usdlc.treeCopy(),##^C meta+C
+		Cut, u, usdlc.treeCut(),##^X meta+X
+		Paste, p, usdlc.treePaste(),##^V meta+V
+	Insert, I, usdlc.treeInsert()
+	Rename, R, usdlc.treeRename()
+	Move
+		Down, D, usdlc.treeMoveDown(),##shift+down
+		Left, L, usdlc.treeMoveLeft(),##shift+left
+		Right, R, usdlc.treeMoveRight(),##shift+right
+		Up, U, usdlc.treeMoveUp(),##shift+up
+	Exit, x, usdlc.setMenuContext('Section_Menu')

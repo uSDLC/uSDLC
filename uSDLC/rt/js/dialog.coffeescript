@@ -26,6 +26,8 @@ $ ->
     else
       pageRelativeDialog(box)
 
+  usdlc.inDialogs = () -> openDialogs.length > 0
+
   usdlc.dialog = (contents, options) ->
     contents = $ contents
     options ?= {}
@@ -51,7 +53,7 @@ $ ->
       box.dialog("destroy").detach()
 
   usdlc.inDialog = (element) ->
-    return element.parents('.ui-dialog').size() > 0
+    return element.closest('.ui-dialog').size() > 0
 
   showDialog = (name, page, after) ->
     split = name.split(':')
@@ -72,7 +74,7 @@ $ ->
         title = single box, h1
       else
         title = tabbed box, h1
-      usdlc.activateHtml(box)
+      usdlc.activateHtml box
       openDialogs.push box
 
       box.dialog("option", "title", title)
@@ -146,40 +148,3 @@ $ ->
     $('ul.etabs a').each (i, a) ->
       map[$.trim(a.text())] = a.parent()
     return map
-
-  class FormProcessor
-    constructor: (selector) ->
-      @form = $ selector
-      @fieldMap = {}
-      @altMap = {}
-      @fieldList = []
-      self = this
-      $.each @form.serializeArray(), (i, field) =>
-        @fieldMap[field.name] = field.value
-        alt = $("[name=#{field.name}]", @form).attr('alt')
-        if not alt
-          if field.name[field.name.length - 1] == '_'
-            alt = field.name.replace(/_/g, ' ')
-          else
-            alt = ''
-        @altMap[field.name] = alt
-        @fieldList.push field.name
-
-    toHtml: ->
-      html = []
-      for name in @fieldList
-        value = @fieldMap[name].replace(/\n/g, '<br>')
-        if value.length
-          label = @altMap[name]
-          if label
-            if label[0] is ' ' then html.push ''
-            if label.length > 2 and label[0..1] == '::'
-              html.push "::<b class='blue'>#{label.substring(2)}</b> #{value}"
-            else
-              html.push "<b class='blue'>#{label}</b> #{value}"
-          else
-            html.push value
-      return '' if not html.length
-      return "<div>#{html.join('<br/>')}</div>".replace(/<br.>::/, '&nbsp;')
-
-  usdlc.FormProcessor = FormProcessor

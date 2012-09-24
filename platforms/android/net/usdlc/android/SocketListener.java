@@ -3,10 +3,8 @@ package net.usdlc.android;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -36,19 +34,19 @@ public abstract class SocketListener extends Thread {
 			Socket socket = null;
 			try {
 				socket = new Socket(host, port);
+				socket.setKeepAlive(true);
+				socket.setSoLinger(true, 1000);
+				socket.setSoTimeout(0);
 				writer = new PrintWriter(socket.getOutputStream());
 				BufferedReader reader = new BufferedReader(new
 					InputStreamReader(socket.getInputStream()), 512);
-				log("connected");
+				log("reconnect");
 				send(request);
-				String[] header = readBlock(reader);
+				String header = readBlock(reader);
 				while (true) {
-					String[] command = readBlock(reader);
-					if (command.length == 0) break;
-					String response = process(command);
-					if (response == null) {
-						response = "error,not implemented,"+command[0];
-					}
+					String code = readBlock(reader);
+					if (code.length() == 0) break;
+					String response = process(code);
 					send(response + "\r\n");
 				}
 			} catch (Exception e) {
@@ -70,9 +68,9 @@ public abstract class SocketListener extends Thread {
 		} catch (Exception ignored) {}
 	}
 
-	private String[] readBlock(BufferedReader reader) throws
+	private String readBlock(BufferedReader reader) throws
 		Exception {
-		ArrayList<String> block = new ArrayList<String>();
+		StringBuilder block = new StringBuilder(128);
 		String line = "";
 		// drop blank lines
 		do {
@@ -80,17 +78,17 @@ public abstract class SocketListener extends Thread {
 		} while (line != null  &&  line.length() == 0);
 
 		while (line != null  &&  line.length() != 0) {
-			block.add(line);
+			block.append(line).append('\n');
 			line = reader.readLine();
 		}
 		//noinspection ToArrayCallWithZeroLengthArrayArgument
-		return block.toArray(new String[0]);
+		return block.toString();
 	}
 	/**
 	 * Override to process a command block. Return null of command not
 	 * implemented.
 	 */
-	protected String process(String[] command) { return null; }
+	protected String process(String code) { return null; }
 	/**
 	 * Override if you need to send more than just the raw command
 	 */
@@ -103,8 +101,8 @@ public abstract class SocketListener extends Thread {
 	protected void error(String message, Throwable exception) {
 		Log.e(TAG, message, exception);
 	}
-	protected void error(String message) {
-		Log.e(TAG, message);
+	protected void error(Object message) {
+		Log.e(TAG, message.toString());
 	}
 	protected void log(String message) {
 		Log.i(TAG, message);

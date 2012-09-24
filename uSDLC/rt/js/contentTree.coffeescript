@@ -1,5 +1,6 @@
 $ ->
-  usdlc.contentTree = $('#contentTree').jstree
+  usdlc.contentTreeContainer = $('#contentTree')
+  usdlc.contentTree = usdlc.contentTreeContainer.jstree
     animation : 0
     html_data :
       ajax :
@@ -27,15 +28,17 @@ $ ->
             tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page' #{state}>#{a.text()}</a></li>"
           return tree
     hotkeys :
-      'c': -> usdlc.contentTree.jstree 'create', null, "last"
-      'r': -> usdlc.contentTree.jstree 'rename', null
-      'shift+up': -> mover 'prev', 'before'
-      'shift+down': -> mover 'next', 'after'
-      'shift+left': -> moveout 'parents', 'after'
-      'shift+right': -> movein 'prev', 'last'
-      'ctrl+c': -> usdlc.contentTree.jstree 'copy', selectedNode
-      'ctrl+x': -> usdlc.contentTree.jstree 'cut', selectedNode
-      'ctrl+v': -> usdlc.contentTree.jstree 'paste', selectedNode
+      'esc': -> usdlc.setFocus(usdlc.lastFocus); return false
+      'x': -> usdlc.setMenuContext('Section_Menu'); return false
+      'i': -> usdlc.contentTreeContainer.insertNode(); return false
+      'r': -> usdlc.contentTreeContainer.renameNode(); return false
+      'shift+up': -> moveup 'prev', 'before'; return false
+      'shift+down': -> movedown 'next', 'after'; return false
+      'shift+left': -> moveout 'parents', 'after'; return false
+      'shift+right': -> movein 'prev', 'last'; return false
+      'ctrl+c': -> usdlc.contentTree.jstree 'copy', selectedNode; return false
+      'ctrl+x': -> usdlc.contentTree.jstree 'cut', selectedNode; return false
+      'ctrl+v': -> usdlc.contentTree.jstree 'paste', selectedNode; return false
     cookies :
       cookie_options :
         expires : 1000
@@ -51,6 +54,7 @@ $ ->
         open_node: false
     core:
       animation: 500
+      html_titles: true
     plugins : [ 'html_data', 'ui', 'cookies', 'themes', 'hotkeys',
       'types', 'crrm', 'dnd', 'contextmenu' ]
   if $(window).width() <= 800
@@ -143,16 +147,15 @@ $ ->
       reference: pageFromLi reference
       position: position
 
-  mover = (referenceDir, position) ->
-    reference = selectedNode[referenceDir] 'li'
-    reference = reference.first()
+  usdlc.contentTreeContainer.movedown = (referenceDir, position) ->
+    reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
+  usdlc.contentTreeContainer.moveup = usdlc.contentTreeContainer.movedown
 
-  moveout = (referenceDir, position) ->
-    reference = selectedNode[referenceDir] 'li'
-    reference = reference.first()
+  usdlc.contentTreeContainer.moveout = (referenceDir, position) ->
+    reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     href = href.split('/')
     end = href.length - 1
@@ -162,9 +165,8 @@ $ ->
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
 
-  movein = (referenceDir, position) ->
-    reference = selectedNode[referenceDir] 'li'
-    reference = reference.first()
+  usdlc.contentTreeContainer.movein = (referenceDir, position) ->
+    reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     reference_name = pageFromLi(reference).split('/')
     reference_name = reference_name[reference_name.length - 1]
@@ -174,6 +176,23 @@ $ ->
     href = href.join('/')
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
+
+  usdlc.contentTreeContainer.copyNode = ->
+    usdlc.contentTree.jstree 'copy', selectedNode
+  usdlc.contentTreeContainer.cutNode = ->
+    usdlc.contentTree.jstree 'cut', selectedNode
+  usdlc.contentTreeContainer.pasteNode = ->
+    usdlc.contentTree.jstree 'paste', selectedNode
+  usdlc.contentTreeContainer.insertNode = ->
+    usdlc.contentTree.jstree 'create', null, "last"
+  usdlc.contentTreeContainer.renameNode = ->
+    usdlc.contentTree.jstree 'rename', null
+
+  usdlc.setContentTreeFocus = ->
+    container = usdlc.setTreeFocus(usdlc.contentTreeContainer)
+    if container
+      container.addClass 'rounded pale-gray-box inFocus'
+      usdlc.setMenuContext? 'ContentTree_Menu'
 
   updateContentTree = (needingRefresh, href, data) ->
     $.get "/usdlc/support/usdlc/contentTree.groovy", data, (rslt) ->
