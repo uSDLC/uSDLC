@@ -50,3 +50,10 @@ $ ->
       paste clipboard.children('div').last()
     drain: ->
       clipboard.children('div').each (index, item) -> paste $ item
+    pasteLink: (element, closest, linkContainer) ->
+      parent = $(element).closest(closest) if closest
+      container = $(linkContainer, parent)
+      item = clipboard.children('div').last()
+      item.detach()
+      container.append item
+      return $('a', item)

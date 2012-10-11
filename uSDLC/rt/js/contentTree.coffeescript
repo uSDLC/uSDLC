@@ -21,15 +21,14 @@ $ ->
             href = usdlc.removeDomain(a.attr('href'))
             state = a.attr('state') ? ''
             state = "state='#{state}'" if state
-#            if href.substring(0, 2) != '..' and href[0] != '/'
             id = usdlc.camelCase(href.replace(/\/index\.html/g, '').replace(/\//g, ' '))
             rel = a.attr('rel') ? ''
             rel = "rel='#{rel}'" if rel
             tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page' #{state}>#{a.text()}</a></li>"
           return tree
     hotkeys :
-      'esc': -> usdlc.setFocus(usdlc.lastFocus); return false
-      'x': -> usdlc.setMenuContext('Section_Menu'); return false
+      'tab': -> usdlc.setFocus(usdlc.lastFocus); return false
+      'x': -> usdlc.unsetTreeFocus(usdlc.contentTreeContainer); return false
       'i': -> usdlc.contentTreeContainer.insertNode(); return false
       'r': -> usdlc.contentTreeContainer.renameNode(); return false
       'shift+up': -> moveup 'prev', 'before'; return false
@@ -71,7 +70,7 @@ $ ->
     width = $('#contentTree').width()
     $('#contentTree').width(width)
     usdlc.contentTree.jstree 'refresh', li
-    setTimeout("$('#contentTree').css('width','')", 500)
+    setTimeout("$('#contentTree').css('width','')", 500);
 
   usdlc.contentTree.setFocus = (to) ->
     steps = to.replace(/\/index\.html(@.*)?$/, '').split('/')
@@ -192,7 +191,7 @@ $ ->
     container = usdlc.setTreeFocus(usdlc.contentTreeContainer)
     if container
       container.addClass 'rounded pale-gray-box inFocus'
-      usdlc.setMenuContext? 'ContentTree_Menu'
+      usdlc.setContext 'ContentTree'
 
   updateContentTree = (needingRefresh, href, data) ->
     $.get "/usdlc/support/usdlc/contentTree.groovy", data, (rslt) ->

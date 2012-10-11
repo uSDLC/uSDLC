@@ -33,7 +33,7 @@ Section_Menu
 			Up,U,usdlc.moveSectionUp(),shift+up
 			Down,D,usdlc.moveSectionDown(),shift+down
 		Navigate,v
-			Tree/Section,T,usdlc.toggleFocus(),esc
+			Tree/Section,T,usdlc.toggleFocus(),tab
 			Previous,P,usdlc.upFocus(),up
 			Next,N,usdlc.downFocus(),down
 		New,N
@@ -66,12 +66,12 @@ Tasklist_Menu
 		Paste, p, usdlc.treePaste(),##^V meta+V
 	Insert, I, usdlc.treeInsert()
 	Rename, R, usdlc.treeRename()
-	Move
+	Move, M
 		Down, D, usdlc.treeMoveDown(),##shift+down
 		Left, L, usdlc.treeMoveLeft(),##shift+left
 		Right, R, usdlc.treeMoveRight(),##shift+right
 		Up, U, usdlc.treeMoveUp(),##shift+up
-	Exit, x, usdlc.setMenuContext('Section_Menu')
+	Exit, x, usdlc.unsetTreeFocus(usdlc.inTasklist())
 ContentTree_Menu
 	Clipboard, C
 		Copy, c, usdlc.treeCopy(),##^C meta+C
@@ -79,9 +79,9 @@ ContentTree_Menu
 		Paste, p, usdlc.treePaste(),##^V meta+V
 	Insert, I, usdlc.treeInsert()
 	Rename, R, usdlc.treeRename()
-	Move
+	Move, M
 		Down, D, usdlc.treeMoveDown(),##shift+down
 		Left, L, usdlc.treeMoveLeft(),##shift+left
 		Right, R, usdlc.treeMoveRight(),##shift+right
 		Up, U, usdlc.treeMoveUp(),##shift+up
-	Exit, x, usdlc.setMenuContext('Section_Menu')
+	Exit, x, usdlc.unsetTreeFocus(usdlc.contentTreeContainer)

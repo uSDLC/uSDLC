@@ -81,7 +81,7 @@ $ ->
       menu.children.push menu.keys[item.key.toUpperCase()] = item
 
     processRow row for row in content.split(/\r?\n/)
-    usdlc.setMenuContext "Section_Menu"
+    usdlc.setContext "Section"
 
   usdlc.menuKeystroke = (key) ->
     item = usdlc.currentMainMenu?.keys[key.toUpperCase()]
@@ -91,7 +91,7 @@ $ ->
     return false
 
   usdlc.menuKeysOff = (event) ->
-    return usdlc.inEditMode(event) or usdlc.inTreeMode() or usdlc.inDialogs()
+    return usdlc.inEditMode(event) or usdlc.inDialogs() or not usdlc.inSection()
 
   $(document).keydown (event) ->
     return true if usdlc.menuKeysOff(event)

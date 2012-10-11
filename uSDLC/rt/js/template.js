@@ -41,58 +41,61 @@ $(function () {
 		menuToTop: function() {},
 		pageIsLocked: function(data) {return data=='~locked~'},
 		pageBack: function() {
-			while (pageHistory.length) {
-				var to = pageHistory.pop()
-				if (to != usdlc.pageContentsURL) {
-					usdlc.absolutePageContents(to)
-					return
-				}
+			if (pageHistory.length) {
+				usdlc.absolutePageContents(pageHistory.pop())
 			}
 		},
 		refreshPage: function() {
+			pageHistory.pop()
 			usdlc.absolutePageContents(usdlc.pageContentsURL)
 		},
 		absolutePageContents:function (path, afterwards) {
 			usdlc.clearFocus()
 			if (path[0] != '/') path = '/' + path
 			var to = usdlc.normalizeURL(path)
-			$.get(to.split('@')[0], function (data) {
-				if (usdlc.pageIsLocked(data)) {
-					usdlc.highlight('pink')
-				} else {
-					usdlc.pageContentsURL = to.split('@')[0]
-					window.location.hash = usdlc.reduceUrl(to)
-					pageHistory.push(to)
-					if (pageHistory.length > 100) {
-						pageHistory = pageHistory.slice(50)
+			if (pageHistory.length > 0 &&
+					to == pageHistory[pageHistory.length - 1]) {
+				if (afterwards) afterwards()
+			} else {
+				$.get(to.split('@')[0], function (data) {
+					if (usdlc.pageIsLocked(data)) {
+						usdlc.highlight('pink')
+					} else {
+						usdlc.pageContentsURL = to.split('@')[0]
+						window.location.hash = usdlc.reduceUrl(to)
+						pageHistory.push(to)
+						if (pageHistory.length > 100) {
+							pageHistory = pageHistory.slice(50)
+						}
+						var base = jQuery.url.
+								setUrl(usdlc.pageContentsURL).attr("directory")
+						base = "http://" + window.location.host + base
+						$('base').attr('href', base)
+						usdlc.setCookie('currentPage', usdlc.pageContentsURL)
+
+						usdlc.pageContents.html(data)
+
+						usdlc.activateHtml(usdlc.pageContents)
+						usdlc.setPageTitle()
+						usdlc.synopses()
+						usdlc.pageContentsSausages.sausage()
+						usdlc.scrollTop()
+						usdlc.finalisers.add(
+								function(){usdlc.contentTree.setFocus(to)})
+						usdlc.contentTree.setFocus(to)
+						usdlc.clearFocus()
+						path = path.split('@')
+						usdlc.finalisers.add(
+							function(){
+								usdlc.contentTree.setFocus(to)
+								if (path.length <= 1) path[1] = "s1"
+								usdlc.setFocus($('#'+path[1]))
+							})
+						usdlc.actorStates()
+						if (afterwards) afterwards()
 					}
-					var base = jQuery.url.setUrl(usdlc.pageContentsURL).attr("directory")
-					base = "http://" + window.location.host + base
-					$('base').attr('href', base)
-					usdlc.setCookie('currentPage', usdlc.pageContentsURL)
-
-					usdlc.pageContents.html(data)
-
-					usdlc.activateHtml(usdlc.pageContents)
-					usdlc.setPageTitle()
-					usdlc.synopses()
-					usdlc.pageContentsSausages.sausage()
-					usdlc.scrollTop()
-					usdlc.finalisers.add(
-							function(){usdlc.contentTree.setFocus(to)})
-					usdlc.contentTree.setFocus(to)
-					usdlc.clearFocus()
-					path = path.split('@')
-					usdlc.finalisers.add(
-						function(){
-							usdlc.contentTree.setFocus(to)
-							if (path.length <= 1) path[1] = "s1"
-							usdlc.setFocus($('#'+path[1]))
-						})
-					usdlc.actorStates()
-					if (afterwards) afterwards()
-				}
-			})
+				})
+			}
 		},
 
 		relativePageContents:function (path) {
@@ -145,7 +148,8 @@ $(function () {
 	$('a').live('click', function (ev) {
 		var a = $(ev.currentTarget)
 		var href = a.attr('href')
-		if (a.attr('target') || href[0] == '#') {
+		var isHash = (href.length > 0 && href[0] == '#')
+		if (a.attr('target') || isHash) {
 			return true
 		}
 		var url = ev.currentTarget.pathname
@@ -175,7 +179,7 @@ $(function () {
 						window.location.assign(href)
 						break
 					default:
-						if (href[0] == '#' || !url) return true
+						if (isHash || !url) return true
 						usdlc.window("from uSDLC", href, {})
 						break
 				}

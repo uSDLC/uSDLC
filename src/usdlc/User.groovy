@@ -4,6 +4,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor
 import usdlc.drivers.Groovy
 
 import static usdlc.config.Config.config
+import java.util.logging.Logging
 
 class User {
 	def data, password, session, userPath, home, userName
@@ -59,8 +60,11 @@ class User {
 	static list() {
 		def users = [];
 		Store.projectRoots.each {
-			it.rebase('Environment/Users').file.eachDir { File file ->
-				users << file.name
+			def userDir = it.rebase('Environment/Users')
+			if (userDir.exists()) {
+				userDir.file.eachDir { File file ->
+					users << Store.decamel(file.name);
+				}
 			}
 		}
 		return users;

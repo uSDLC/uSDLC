@@ -136,3 +136,12 @@ a.contentLink[state=created] {
 a.contentLink[state=failed] {
 	color: #C70B0B;
 }
+
+div.taskHistoryItem {
+	font-size: small;
+	border-bottom: 1px #CCC solid;
+}
+
+span.taskHistoryDate {
+	font-weight: bold;
+}

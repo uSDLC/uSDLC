@@ -66,6 +66,8 @@ $ ->
   usdlc.inFocus = null
   usdlc.lastFocus = null
 
+  usdlc.inSection = -> usdlc.context == 'Section'
+
   usdlc.nextSectionId = ->
     id = $('.section').length + 1
     id++ while ($('div#s' + id).length > 0)
@@ -217,8 +219,11 @@ $ ->
     isSub = (section, depthBelow) ->
       return 0 if section.hasClass('footer')
       header = $('h1, h2, h3, h4, h5, h6', section)
-      return 99 if not header.size()
-      depth = +(header[0].nodeName[1])
+      if $('.jstree', section).size()
+        depth = 7
+      else
+        return 99 if not header.size()
+        depth = +(header[0].nodeName[1])
       return 0 if depth <= depthBelow
       return depth
 

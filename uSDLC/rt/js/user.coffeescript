@@ -1,0 +1,52 @@
+$ ->
+  usdlc.listUserAutocomplete = (input) ->
+      usdlc.autocomplete input, '/usdlc/support/usdlc/loadUsers.groovy',
+          multiple_select: false
+
+  usdlc.listUsersAutocomplete = (input) ->
+    usdlc.autocomplete input, '/usdlc/support/usdlc/loadUsers.groovy',
+        multiple_select: true
+
+  usdlc.listUsersAndGroupsAutocomplete = (input) ->
+    usdlc.autocomplete input, '/usdlc/support/usdlc/loadUsers.groovy?includeGroups=true',
+        multiple_select: true
+
+  usdlc.logOut = -> # used in top.menu
+    $('#userName').html('')
+    $.get '/usdlc/support/usdlc/logOut.groovy', (data) ->
+      $('#userName').html(data)
+      usdlc.goHome()
+    return false
+
+  usdlc.logIn = -> # used in top.menu
+    userName = $('#loginform input[name="user"]')[0].value
+    password = $('#loginform input[name="password"]')[0].value
+    $('#userName').html('')
+    $.ajax
+      type : "POST"
+      url : '/usdlc/support/usdlc/logIn.groovy'
+      contentType: 'application/x-www-form-urlencoded'
+      data :  name:userName, password:password
+      success : (data) ->
+        if data.length > 0
+          $('#userName').html(data)
+          usdlc.closeDialog()
+          usdlc.goHome()
+        else
+          usdlc.alert('Login Failed')
+    return false
+
+  usdlc.changePassword = -> # used in top.menu
+    url = '/usdlc/support/usdlc/changePassword.groovy'
+    oldpwd = $('#changepassword input[name="oldpwd"]')[0].value
+    pwd1 = $('#changepassword input[name="pwd1"]')[0].value
+    pwd2 = $('#changepassword input[name="pwd1"]')[0].value
+    if pwd1 isnt pwd2
+      usdlc.alert('Password Mismatch')
+    else
+      $.post url, {was:oldpwd,to:pwd1}, (data) ->
+        if data is 'ok'
+          usdlc.closeDialog()
+        else
+          usdlc.alert('Password Change Failure')
+    return false

@@ -2,7 +2,9 @@ $ ->
   cut = false
 
   usdlc.activateTasklist = (div) ->
-#    return if div.hasClass('jstree')
+    delayed = -> usdlc._activateTasklist div
+    setTimeout delayed, 500
+  usdlc._activateTasklist = (div) ->
     detailsPane = div.parent().next();
     section = usdlc.getSection(div)
     sectionId = section.attr('id')
@@ -22,9 +24,9 @@ $ ->
         html_titles: true
       checkbox:
         two_state: true
-      hotkeys :
-        'esc': -> usdlc.clearFocus(); return false
-        'x': -> usdlc.setMenuContext('Section_Menu'); return false
+      hotkeys:
+        'tab': -> usdlc.clearFocus(); return false
+        'x': -> usdlc.unsetTreeFocus(div); return false
         'i': -> div.insertNode(); return false
         'r': -> div.renameNode(); return false
         'shift+up': -> mover 'prev', 'before'; return false
@@ -35,7 +37,7 @@ $ ->
         'ctrl+x meta+x': -> div.jstree 'cut', selectedNode; return false
         'ctrl+v meta+v': -> div.jstree 'paste', selectedNode; return false
       plugins : [ 'ui', 'html_data', 'themes', 'hotkeys', 'checkbox', 'types',
-        'types', 'crrm', 'dnd', 'contextmenu', 'cookies', 'search' ] #
+        'types', 'crrm', 'dnd', 'contextmenu', 'cookies', 'search' ]
 
     nextId = 2
     addId = (li) ->
@@ -45,6 +47,8 @@ $ ->
       return id
 
     div.bind
+      'click.jstree': (event) ->
+        usdlc.setTasklistFocus(usdlc.inTasklist())
       'create.jstree': (event, data) -> addId(data.rslt.obj)
       'cut.jstree': (event, data) -> cut = true
       'copy.jstree': (event, data) -> cut = false
@@ -68,6 +72,7 @@ $ ->
     div.pasteNode = -> div.jstree 'paste', selectedNode
     div.insertNode = -> div.jstree 'create', null, "last"
     div.renameNode = -> div.jstree 'rename', null
+    setTimeout hideCompleted, 500
 
   showTask = (detailsPane, id) ->
     detailsPane.children().hide()
@@ -83,7 +88,7 @@ $ ->
     parts = $('input:checked', formElement).toArray()
     return if not parts
     id = "#{getActiveTaskId(formElement)}d"
-    detailDiv = $("<div/>").attr('id', id)
+    detailDiv = $("<div/>").attr('id', id).addClass('taskDetail')
     detailsPane = formElement.closest('td')
     detailsPane.append detailDiv
     showTask detailsPane, id
@@ -111,10 +116,12 @@ $ ->
   usdlc.setTasklistFocus = (section) ->
     container = usdlc.setTreeFocus((section))
     if container
-      usdlc.setMenuContext 'Tasklist_Menu'
+      container.focus()
+      usdlc.setContext 'Tasklist'
       container.addClass('inFocus')
 
   usdlc.setTreeFocus = (container) ->
+    return false if not container
     if not container.hasClass('jstree')
       container = $('.jstree', container).first()
     return null if container.size() is 0
@@ -123,18 +130,21 @@ $ ->
     return container
 
   usdlc.unsetTreeFocus = (container) ->
+    return false if not container
     if not container.hasClass('jstree')
       container = $('.jstree', container).first()
     return false if container.size() is 0
     container.jstree('unset_focus')
     container.jstree('disable_hotkeys')
     container.removeClass('rounded pale-gray-box inFocus')
-    usdlc.setMenuContext? 'Section_Menu'
+    usdlc.setContext 'Section'
     return true
 
   usdlc.destroyTasklists = ->
     lists = $('div.tasklist')
+    $("li.jstree-checked", lists).attr('checked', 'true')
     lists.jstree('destroy')
+    $('li[checked]', lists).removeAttr('checked').addClass('jstree-checked')
     lists.find('ins').remove()
     $("[class]", lists).each (index, element) ->
       element = $(element)
@@ -149,3 +159,84 @@ $ ->
   usdlc.treeMoveLeft = () -> usdlc.inTreeMode()?.moveout 'parents', 'after'
   usdlc.treeMoveRight = () -> usdlc.inTreeMode()?.movein 'prev', 'last'
   usdlc.treeMoveUp = () -> usdlc.inTreeMode()?.moveup 'prev', 'before'
+
+  usdlc.loadTaskUsers = (input) ->
+    usdlc.listUsersAndGroupsAutocomplete(input)
+    usdlc.addTasklistHistoryOnBlur input, "Assign to"
+
+  usdlc.loadTaskPriority = ($select) ->
+    select = $select.get(0)
+    $select.change ->
+      index = select.selectedIndex
+      value = $select.val()
+      $('option', $select).removeAttr('selected')
+      selectedOption = select.options[index]
+      $(selectedOption).attr('selected', 'selected')
+      $select.val(value)
+      usdlc.tasklistHistory $select, "Priority: #{selectedOption.text}"
+
+  saveCheckbox = (input) ->
+    checked = input.attr 'checked'
+    if checked
+      input.attr 'checked', 'checked'
+      return true
+    else
+      input.removeAttr 'checked'
+      return false
+
+  usdlc.taskCheckbox = (input) ->
+    input.change ->
+      saveCheckbox input
+      usdlc.tasklistHistory input, "#{input.attr('value')}: #{input.attr('checked') ? 'no'}"
+
+  usdlc.taskAutocomplete = (input) ->
+    usdlc.loadLocalAutocomplete(input)
+    usdlc.addTasklistHistoryOnBlur input, input.attr('name')
+
+  usdlc.taskDatePicker = (input) ->
+    usdlc.datePicker input,
+      onClose: (dateText) ->
+        input.attr 'value', dateText
+        usdlc.tasklistHistory input, "#{input.attr('name')} date: #{dateText}"
+
+  usdlc.addTaskClip = (elem) ->
+    a = usdlc.clipboard.pasteLink(elem,'div.taskDetail','fieldset.taskPageLinks')
+    usdlc.tasklistHistory(elem, "Reference: #{a.html()}")
+
+  usdlc.addTaskNote = (button) ->
+    parent = $(button).closest('div.taskDetail')
+    textarea = $('textarea.newTaskNote', parent)
+    usdlc.tasklistHistory(button, "Note: #{textarea.val()}")
+    textarea.val('')
+
+  usdlc.addTasklistHistoryOnBlur = (element, label) ->
+    element.change ->
+      element.attr 'value', element.val()
+      usdlc.tasklistHistory element, "#{label}: #{element.val()}"
+
+  usdlc.tasklistHistory = (element, entry) ->
+    parent = $(element).closest('div.taskDetail')
+    history = $('fieldset.taskHistory', parent)
+    div = $('<div/>').addClass('taskHistoryItem')
+    date = $.datepicker.formatDate('D, dd-M-yy', new Date())
+    div.html("<span class='taskHistoryDate'>#{date}</span> #{entry}")
+    history.append(div)
+
+  hideCompleted = -> $("li.jstree-checked", usdlc.inTasklist).addClass('hidden')
+  showCompleted = -> $("li.jstree-checked", usdlc.inTasklist).removeClass('hidden')
+
+  usdlc.completedCheckbox = (input) ->
+    input.change ->
+#      saveCheckbox input
+      if input.attr 'checked'
+        showCompleted()
+      else
+        hideCompleted()
+
+  $('div.taskDetail').live 'focus', (ev) -> usdlc.unsetTreeFocus(usdlc.inTasklist())
+  $('div.taskDetail').live 'blur', (ev) -> usdlc.setTasklistFocus(usdlc.inTasklist())
+
+# todo: button to make current detail the default
+# todo: make tree from clipboard entry
+# todo: button to refresh tree and sections connection
+# todo: add gantt chart

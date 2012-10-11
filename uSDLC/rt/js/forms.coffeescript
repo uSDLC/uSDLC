@@ -36,14 +36,17 @@ $ ->
 
   usdlc.FormProcessor = FormProcessor
 
+  autocomplete = (input, args = {}) ->
+    defaults = minLength: 0
+    input.autocomplete $.extend {}, defaults, args
+    input.bind 'focus', (event) ->
+      input.autocomplete('search')
+
   usdlc.autocomplete = (input, scriptPath, parameters = {}) ->
-    inputElement.empty();
+    input.empty();
     $.get scriptPath, parameters, (response) ->
       if not parameters.multiple_select
-        input.autocomplete
-          source: eval response
-          minLength: 1
-        return
+        return autocomplete input, source: eval response
       # else multiple results allowed
       input.bind "keydown", (event) ->
         # don't navigate away from the field on tab when selecting an item
@@ -51,14 +54,13 @@ $ ->
           if $(this).data("autocomplete").menu.active
             event.preventDefault()
       choices = eval response
-      input.autocomplete
-        minLength: 1
-        autoFocus: true
+      autocomplete input,
         source: (request, response) ->
           # delegate back to autocomplete, but extract the last term
           last = request.term.split(/,\s*/).pop()
           response  $.ui.autocomplete.filter choices, last
         focus: -> return false # prevent value inserted on focus
+        change: (ev) -> input.trigger('change')
         select: (event, ui) ->
           terms = this.value.split /,\s*/
           terms.pop() # remove the current input
@@ -68,3 +70,40 @@ $ ->
           this.value = terms.join ', '
           return false
       return
+
+  usdlc.loadLocalAutocomplete = (input) ->
+    input.empty()
+    key = "localAutocomplete_#{input.attr('name')}"
+    values = usdlc.persist(key).split(';;')
+    if not values.length or ((values.length is 1) and not values[0])
+      values = input.attr('seed').split(';;')
+    input.removeAttr('seed') if values.length
+    autocomplete input, source: values
+    input.bind 'blur', (event) ->
+      entered = input.val()
+      if values.length
+        for value in values
+          return if value is entered
+        values.push entered
+        usdlc.persist(key, values.join(';;'))
+      else
+        usdlc.persist(key, statement)
+
+  usdlc.datePicker = (input, params = {}) ->
+    input.removeClass 'hasDatepicker'
+    defaults = $.extend {},
+      defaultDate: input.attr('defaultDate') ? '+1d'
+      changeMonth: true
+      changeYear: true
+      numberOfMonths: 3
+      dateFormat: input.attr('dateFormat') ? 'D dd-M-yy'
+      onSelect: (selectedDate) ->
+        pair = input.attr('pair')
+        if pair is 'last'
+          first = input.prev('input[activate=datePicker]')
+          first.datepicker( "option", "maxDate", selectedDate )
+        else if pair is 'first'
+          last = input.next('input[activate=datePicker]')
+          last.datepicker( "option", "minDate", selectedDate )
+        input.attr('value', input.val())
+    input.datepicker $.extend defaults, params

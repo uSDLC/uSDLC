@@ -15,7 +15,7 @@
 	When you create a new section, it is copied from one of the sections below.</p>
 </div><div id="s6" class="editable section"><h2>
 	<span>Tasklist</span></h2>
-<table border="0" cellpadding="1" cellspacing="1">
+<table border="0" cellpadding="11" cellspacing="11">
 	<tbody>
 		<tr>
 			<td valign="top">
@@ -25,10 +25,14 @@
 							fillmein</li>
 					</ul>
 				</div>
+				<span style="font-size:12px;">
+					<input type="checkbox" activate="completedCheckbox">
+					Completed
+				</span>
 			</td>
 			<td valign="top">
 				<div id="taskDetail">
-					<form name="Task Detail" onsubmit="usdlc.buildTaskDetail(this);return false">
+					<form name="Task Detail" onsubmit="usdlc.buildTaskDetail(this);return false" style="width:100%">
 						<p>
 							<input checked="checked" name="Assign" type="checkbox" value="Assign">Assign<br>
 							<input checked="checked" name="Priority" type="checkbox" value="Priority">Priority<br>

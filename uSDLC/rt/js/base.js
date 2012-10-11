@@ -1,5 +1,6 @@
 $(function() {
 	window.usdlc = {
+		context : 'Section',
 		synopses : function(){}, //# we will provide one with teeth after
 		loadActorTypes : function() {},
 		/*
@@ -17,6 +18,12 @@ $(function() {
 	$('head').prepend($('<base href="/"/>'))
 
 	$.extend(true, window.usdlc, {
+		setContext : function(context) {
+			usdlc.context = context
+			if (usdlc.setMenuContext) {
+				usdlc.setMenuContext(context+'_Menu')
+			}
+		},
 		loadScriptAsync : function(path, onScriptLoaded) {
 			script = document.createElement("script")
 			script.type = "text/javascript"
@@ -90,59 +97,6 @@ $(function() {
 			return node == 'textarea' || node == 'input' ||
 					$(event.target).children('.CodeMirror').size() > 0
 		},
-		loadUser: function(input, multiple_select) {
-			usdlc.autocomplete(input, '/usdlc/support/usdlc/loadUsers.groovy',
-					{ multiple_select: multiple_select });
-		},
-		loadUsers: function(input) { usdlc.loadUser(input, true); },
-		logOut: function() {    // used in top.menu
-			$('#userName').html('')
-			$.get('/usdlc/support/usdlc/logOut.groovy',
-				function(data) {
-					$('#userName').html(data)
-					usdlc.goHome()
-				})
-			return false
-		},
-		logIn: function() {    // used in top.menu
-			var userName = $('#loginform input[name="user"]')[0].value
-			var password = $('#loginform input[name="password"]')[0].value
-			$('#userName').html('')
-			$.ajax({
-				type : "POST",
-				url : '/usdlc/support/usdlc/logIn.groovy',
-				contentType: 'application/x-www-form-urlencoded',
-				data : {name:userName,password:password},
-				success : function(data) {
-					if (data.length > 0) {
-						$('#userName').html(data)
-						usdlc.closeDialog()
-						usdlc.goHome()
-					} else {
-						usdlc.alert('Login Failed')
-					}
-				}
-			})
-			return false
-		},
-		changePassword: function() {    // used in top.menu
-			var url = '/usdlc/support/usdlc/changePassword.groovy'
-			var oldpwd = $('#changepassword input[name="oldpwd"]')[0].value
-			var pwd1 = $('#changepassword input[name="pwd1"]')[0].value
-			var pwd2 = $('#changepassword input[name="pwd1"]')[0].value
-			if (pwd1 != pwd2) {
-				usdlc.alert('Password Mismatch')
-			} else {
-				$.post(url, {was:oldpwd,to:pwd1}, function(data) {
-					if (data == 'ok') {
-						usdlc.closeDialog()
-					} else {
-						usdlc.alert('Password Change Failure')
-					}
-				})
-			}
-			return false
-		},
 		goHome: function() {
 			usdlc.absolutePageContents("/usdlc/home",
 					function() {
@@ -166,17 +120,19 @@ $(function() {
 					usdlc[action](element, data)
 				})
 			})
-			$('*[activate]', html).each(function() {
-				var element = $(this)
-				if (!element.hasClass('template')) {
-					var action = element.attr('activate')
-					try {
-						usdlc[action](element)
-					} catch(e) {
-						usdlc.log("error:activate "+action+" -- " + e)
+			if (usdlc.pageContentsURL.indexOf('/Configuration/Templates/') == -1) {
+				$('*[activate]', html).each(function() {
+					var element = $(this)
+					if (!element.hasClass('template')) {
+						var action = element.attr('activate')
+						try {
+							usdlc[action](element)
+						} catch(e) {
+							usdlc.log("error:activate "+action+" -- " + e)
+						}
 					}
-				}
-			})
+				})
+			}
 		}
 	})
 	usdlc.persist = function(key, to) {

@@ -2,7 +2,7 @@ $ ->
   usdlc.cleanSections = (sections) ->
     # clean up html of crap that builds up
     sections.removeAttr('style')
-    sections.removeClass('inFocus hidden showdeleted showhide ui-state-highlight ui-widget-content')
+    sections.removeClass('inFocus hidden showdeleted showhide ui-state-highlight ui-widget-content hasDatepicker ui-autocomplete-input')
     sections.filter('.synopsis').children().removeAttr('style')
     $('div[href]', sections).html('')
     $('a', sections).removeClass('running failed succeeded')

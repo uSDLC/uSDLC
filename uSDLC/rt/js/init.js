@@ -123,9 +123,9 @@ $(function() {
 				path = window.location.hash || usdlc.cookie('currentPage') || path
 				if (path[0] == '#') path = path.substring(1)
 			}
-			setTimeout(function(){
+//			setTimeout(function(){
 			usdlc.absolutePageContents(path, callback)
-			}, 500)
+//			}, 500)
 		},
 		finalise : function() {
 			if (testScripts.length) {
@@ -140,6 +140,7 @@ $(function() {
 					usdlc.finalisers.shift()()
 				}
 				usdlc.finalisers.done = true
+				usdlc.refreshPage()
 			}
 		},
 		postLoader : function() {
