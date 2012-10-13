@@ -132,6 +132,12 @@ class Exchange {
 				case 'raw':    // actors sent rather than run (editing)
 					staticResponse store.read()
 					break
+				case 'binary':
+					if (response.header['Content-Type'] == 'text/html') {
+						response.header['Content-Type'] = 'application/octet-stream'
+					}
+					staticResponse store.read()
+					break
 				case 'rerun':
 					setStore("index.html.sectionRunner")
 					// drop through to run this instead of expected url

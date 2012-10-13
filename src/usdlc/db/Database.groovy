@@ -77,8 +77,8 @@ class Database {
 	static h2Db(name) { "jdbc:h2:.db/$name" }
 
 	private runScript(toVersion) {
-		toVersion = String.format('%03d', toVersion)
-		def name = "database_update_${tableGroup}_${toVersion}.groovy"
+//		toVersion = String.format('%03d', toVersion)
+//		def name = "database_update_${tableGroup}_${toVersion}.groovy"
 		// todo: search projects for update script
 	}
 
@@ -122,13 +122,13 @@ class Database {
 		 * Can be called by migration closures to find a script of the form
 		 * "$tableGroup.$toVersion(3 digits).sql" and migrate it.
 		 */
-		static migrateByScript = { String url, tableGroup, toVersion ->
+		static migrateByScript = { String scriptUrl, scriptTableGroup, toVersion ->
 			try {
 				def script =
-					"${tableGroup}.${String.format('%03d', toVersion)}.sql"
+					"${scriptTableGroup}.${String.format('%03d', toVersion)}.sql"
 				System.err.print "Migrating $script ..."
 				def timer = new Timer()
-				runSqlScript url, script
+				runSqlScript scriptUrl, script
 				System.err.println " done in $timer"
 			} catch (IOException ioe) { ioe.printStackTrace() }
 		}

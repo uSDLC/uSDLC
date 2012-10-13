@@ -60,7 +60,7 @@ $(function () {
 				$.get(to.split('@')[0], function (data) {
 					if (usdlc.pageIsLocked(data)) {
 						usdlc.highlight('pink')
-					} else {
+					} else if (to.indexOf("action=") == -1) {
 						usdlc.pageContentsURL = to.split('@')[0]
 						window.location.hash = usdlc.reduceUrl(to)
 						pageHistory.push(to)
@@ -148,6 +148,7 @@ $(function () {
 	$('a').live('click', function (ev) {
 		var a = $(ev.currentTarget)
 		var href = a.attr('href')
+		if (!href) return true
 		var isHash = (href.length > 0 && href[0] == '#')
 		if (a.attr('target') || isHash) {
 			return true
@@ -178,6 +179,8 @@ $(function () {
 						href = href.substring(0, href.length-1) // drop bang
 						window.location.assign(href)
 						break
+					case 'raw':
+						return true;    // let the browser handle it
 					default:
 						if (isHash || !url) return true
 						usdlc.window("from uSDLC", href, {})
