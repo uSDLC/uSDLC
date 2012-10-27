@@ -300,6 +300,19 @@ class Page {
 		Section(dom) {this.dom = dom}
 		/** Retrieve the unique section id */
 		String getId() { dom?.attr('id') ?: '' }
+		Page getChild() {
+			def child = dom?.select('h1,h2,h3')?.select('a')
+			if (!child.size()) return null
+			def href = child.attr('href')
+			if (href.indexOf('/') != -1) return null
+			return new Page(store.rebase(href))
+		}
+		String getHeading() {
+			return dom?.select('h1,h2,h3')?.first()?.text()?.trim() ?: ''
+		}
+		String getType() {
+			return dom?.select('div.sectionType')?.text()?.trim() ?: 'General'
+		}
 		boolean isDeleted() {dom.hasClass('deleted')}
 	}
 	/**
@@ -333,36 +346,36 @@ class Page {
 		sourceContents.each {copySection.appendChild(it)}
 		return true
 	}
-	/**
-	 * If any sections on the page are of a register type, make sure that
-	 * if they have changed this gets reflected in the registers.
-	 */
-	public updateRegisters() {
-		allSections.select("div.sectionType").each { div ->
-			def sectionType = div.text()
-			def m = (sectionType =~ ~/^(\w+)\s+(\w+)$/)
-			if (!m.size()) return
-			def(all, type, register) = m[0]
-
-			if (register == "Register") {
-				def sourceSection = findSectionFor(div)
-				def url = "$store.href@${sourceSection.attr('id')}"
-				def registerPage = new Page(
-						"/~$store.project.dir/usdlc/Registers/${type}s")
-				def copySection = registerPage.selectSection(
-						"div.sectionType a[href=$url]")
-				if (copySection) {
-					if (copyReferenceContents(sourceSection, copySection)) {
-						registerPage.forceSave()
-					}
-				} else {
-					copySection = prepareSectionForMove(sourceSection.clone())
-					def sectionTypeDiv = copySection.select("div.sectionType")
-					sectionTypeDiv.html("<a href='$url' action='page' class='usdlc'>$sectionType</a>")
-					registerPage.footer.before(copySection)
-					registerPage.forceSave()
-				}
-			}
-		}
-	}
+//	/**
+//	 * If any sections on the page are of a register type, make sure that
+//	 * if they have changed this gets reflected in the registers.
+//	 */
+//	public updateRegisters() {
+//		allSections.select("div.sectionType").each { div ->
+//			def sectionType = div.text()
+//			def m = (sectionType =~ ~/^(\w+)\s+(\w+)$/)
+//			if (!m.size()) return
+//			def(all, type, register) = m[0]
+//
+//			if (register == "Register") {
+//				def sourceSection = findSectionFor(div)
+//				def url = "$store.href@${sourceSection.attr('id')}"
+//				def registerPage = new Page(
+//						"/~$store.project.dir/usdlc/Registers/${type}s")
+//				def copySection = registerPage.selectSection(
+//						"div.sectionType a[href=$url]")
+//				if (copySection) {
+//					if (copyReferenceContents(sourceSection, copySection)) {
+//						registerPage.forceSave()
+//					}
+//				} else {
+//					copySection = prepareSectionForMove(sourceSection.clone())
+//					def sectionTypeDiv = copySection.select("div.sectionType")
+//					sectionTypeDiv.html("<a href='$url' action='page' class='usdlc'>$sectionType</a>")
+//					registerPage.footer.before(copySection)
+//					registerPage.forceSave()
+//				}
+//			}
+//		}
+//	}
 }

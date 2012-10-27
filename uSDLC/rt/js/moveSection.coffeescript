@@ -4,6 +4,7 @@ $ ->
     sections.removeAttr('style')
     sections.removeClass('inFocus hidden showdeleted showhide ui-state-highlight ui-widget-content hasDatepicker ui-autocomplete-input')
     sections.filter('.synopsis').children().removeAttr('style')
+    $('div.workflow.visible', sections).removeClass('visible')
     $('div[href]', sections).html('')
     $('a', sections).removeClass('running failed succeeded')
     $('div#myEventWatcherDiv').remove()

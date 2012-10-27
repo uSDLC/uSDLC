@@ -37,30 +37,24 @@ $ ->
   usdlc.FormProcessor = FormProcessor
 
   autocomplete = (input, args = {}) ->
-    defaults = minLength: 0
-    input.autocomplete $.extend {}, defaults, args
-    input.bind 'focus', (event) ->
-      input.autocomplete('search')
-
-  usdlc.autocomplete = (input, scriptPath, parameters = {}) ->
-    input.empty();
-    $.get scriptPath, parameters, (response) ->
-      if not parameters.multiple_select
-        return autocomplete input, source: eval response
-      # else multiple results allowed
+    defaults =
+      minLength: 0
+      change: (ev) -> input.trigger('change')
+    parameters = $.extend {}, defaults, args
+    input.bind 'focus', (event) -> input.autocomplete('search')
+    if parameters.multiple_select or input.attr('multiple_select')
       input.bind "keydown", (event) ->
         # don't navigate away from the field on tab when selecting an item
         if event.keyCode is $.ui.keyCode.TAB
           if $(this).data("autocomplete").menu.active
             event.preventDefault()
-      choices = eval response
-      autocomplete input,
+      choices = parameters.source
+      $.extend parameters,
         source: (request, response) ->
           # delegate back to autocomplete, but extract the last term
           last = request.term.split(/,\s*/).pop()
           response  $.ui.autocomplete.filter choices, last
         focus: -> return false # prevent value inserted on focus
-        change: (ev) -> input.trigger('change')
         select: (event, ui) ->
           terms = this.value.split /,\s*/
           terms.pop() # remove the current input
@@ -69,16 +63,23 @@ $ ->
           terms.push ''
           this.value = terms.join ', '
           return false
-      return
+    input.autocomplete parameters
 
-  usdlc.loadLocalAutocomplete = (input) ->
+  usdlc.autocomplete = (input, scriptPath, parameters = {}) ->
+    input.empty();
+    $.get scriptPath, parameters, (response) ->
+      parameters.source = eval response
+      autocomplete input, parameters
+
+  usdlc.loadLocalAutocomplete = (input, parameters = {}) ->
     input.empty()
     key = "localAutocomplete_#{input.attr('name')}"
-    values = usdlc.persist(key).split(';;')
-    if not values.length or ((values.length is 1) and not values[0])
-      values = input.attr('seed').split(';;')
+    values = usdlc.persist(key)?.split(';;')
+    if not values?.length or ((values.length is 1) and not values[0])
+      values = input.attr('seed')?.split(';;') ? []
     input.removeAttr('seed') if values.length
-    autocomplete input, source: values
+    parameters.source = values
+    autocomplete input, parameters
     input.bind 'blur', (event) ->
       entered = input.val()
       if values.length

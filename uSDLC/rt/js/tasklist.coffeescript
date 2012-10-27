@@ -1,14 +1,30 @@
 $ ->
   cut = false
 
-  usdlc.activateTasklist = (div) ->
-    delayed = -> usdlc._activateTasklist div
-    setTimeout delayed, 500
-  usdlc._activateTasklist = (div) ->
-    detailsPane = div.parent().next();
+  usdlc.treeHotkeys =
+    'shift+up': -> usdlc.treeMoveUp(); return false
+    'shift+down': -> usdlc.treeMoveDown(); return false
+    'shift+left': -> usdlc.treeMoveLeft(); return false
+    'shift+right': -> usdlc.treeMoveRight(); return false
+    'ctrl+c meta+c': -> usdlc.treeCopy(); return false
+    'ctrl+x meta+x': -> usdlc.treeCut(); return false
+    'ctrl+v meta+v': -> usdlc.treePaste(); return false
+
+  tasklistHistoryFromTree = (li, action) ->
+    text = usdlc.taskNameFromLi li
+    id = "#{li.attr('id')}d"
+    detail = $("##{id}")
+    if detail.size()
+      usdlc.tasklistHistory(detail, "#{action} task '#{text}'")
+      usdlc.updateTreeCount(li)
+    else
+      usdlc.pokeTasklistUpdateTimer(li)
+
+  usdlc._activateChecklist = (div, key, addHistory, hotkeys = {}) ->
     section = usdlc.getSection(div)
     sectionId = section.attr('id')
-    uuid = "#{$('#pageTitle').attr('uuid')}-#{sectionId}"
+    uuid = "#{$('#pageTitle').attr('uuid')}-#{sectionId}-#{key}"
+    selectedNode = null
 
     div.jstree
       cookies :
@@ -24,31 +40,18 @@ $ ->
         html_titles: true
       checkbox:
         two_state: true
-      hotkeys:
-        'tab': -> usdlc.clearFocus(); return false
-        'x': -> usdlc.unsetTreeFocus(div); return false
-        'i': -> div.insertNode(); return false
-        'r': -> div.renameNode(); return false
-        'shift+up': -> mover 'prev', 'before'; return false
-        'shift+down': -> mover 'next', 'after'; return false
-        'shift+left': -> mover 'parents', 'after'; return false
-        'shift+right': -> mover 'prev', 'last'; return false
-        'ctrl+c meta+c': -> div.jstree 'copy', selectedNode; return false
-        'ctrl+x meta+x': -> div.jstree 'cut', selectedNode; return false
-        'ctrl+v meta+v': -> div.jstree 'paste', selectedNode; return false
+      hotkeys: hotkeys
       plugins : [ 'ui', 'html_data', 'themes', 'hotkeys', 'checkbox', 'types',
         'types', 'crrm', 'dnd', 'contextmenu', 'cookies', 'search' ]
 
     nextId = 2
     addId = (li) ->
-      nextId += 1 while ($(id = "##{sectionId}t#{nextId}", div).size() > 0)
+      nextId += 1 while ($(id = "##{sectionId}t#{nextId}#{key}", div).size() > 0)
       id = id.substring(1)
       li.attr('id', id)
       return id
 
     div.bind
-      'click.jstree': (event) ->
-        usdlc.setTasklistFocus(usdlc.inTasklist())
       'create.jstree': (event, data) -> addId(data.rslt.obj)
       'cut.jstree': (event, data) -> cut = true
       'copy.jstree': (event, data) -> cut = false
@@ -57,27 +60,75 @@ $ ->
         return false
       'select_node.jstree': (event, data) ->
         selectedNode = data.rslt.obj
+        usdlc.extendTasklistUpdateTimer selectedNode
         div.jstree 'open_node', selectedNode
-        showTask detailsPane, "#{selectedNode.attr('id')}d"
         return false
+      'check_node.jstree': (event, data) -> addHistory data.rslt.obj, "Complete"
+      'uncheck_node.jstree': (event, data) -> addHistory data.rslt.obj, "Reopen"
+      'open_node.jstree': (event, data) ->
+        usdlc.extendTasklistUpdateTimer data.rslt.obj
+      'close_node.jstree': (event, data) ->
+        usdlc.extendTasklistUpdateTimer data.rslt.obj
+      'rename_node.jstree': (event, data) -> addHistory data.rslt.obj, 'Rename'
+      'delete_node.jstree': (event, data) -> addHistory data.rslt.obj, 'Delete'
+      'move_node.jstree': (event, data) ->
+        targetName = usdlc.taskNameFromLi data.rslt.r
+        msg = "Move #{data.rslt.p} #{targetName}"
+        addHistory data.rslt.o, msg
 
     mover = (refDir, position) ->
-      selectedNode = $('.jstree-clicked', div).parents('li').first()
+#      selectedNode = $('.jstree-clicked', div).parents('li').first()
       reference = (selectedNode[refDir])('li').first()
       if reference.size()
+#        addHistory selectedNode,
+#          "Move #{refDir} #{position} of '#{$.trim(reference.text())}' -"
         div.jstree "move_node", selectedNode, reference, position
-    div.moveup = div.movedown = div.movein = div.moveout = mover
-    div.copyNode = -> div.jstree 'copy', selectedNode
-    div.cutNode = -> div.jstree 'cut', selectedNode
-    div.pasteNode = -> div.jstree 'paste', selectedNode
-    div.insertNode = -> div.jstree 'create', null, "last"
-    div.renameNode = -> div.jstree 'rename', null
-    setTimeout hideCompleted, 500
+    div.data 'actions',
+      copyNode: ->
+        addHistory selectedNode, 'Copy'
+        div.jstree 'copy', selectedNode
+      cutNode: ->
+        addHistory selectedNode, 'Cut'
+        div.jstree 'cut', selectedNode
+      deleteNode: -> div.jstree 'remove', selectedNode
+      pasteNode: ->
+        addHistory selectedNode, 'Paste in'
+        div.jstree 'paste', selectedNode
+      insertNode: ->
+        addHistory selectedNode, 'Create in'
+        div.jstree 'create', null, "last"
+      renameNode: -> div.jstree 'rename', null
+      moveup: mover
+      movedown: mover
+      movein: mover
+      moveout: mover
+
+  usdlc.activateTasklist = (div) ->
+    delayed = -> usdlc._activateTasklist div
+    setTimeout delayed, 500
+  usdlc._activateTasklist = (div) ->
+    hotkeys = $.extend {}, usdlc.treeHotkeys,
+      'esc': -> usdlc.setContext 'Tasklist'; return false
+      'tab': -> usdlc.clearFocus(); return false
+
+    for hotkey in "abcdefghijklmnopqrstuvwxyz"
+      actor = (hk) ->
+        return -> usdlc.menuKeystroke(hk); return false
+      hotkeys[hotkey] = actor(hotkey)
+
+    usdlc._activateChecklist div, 'T', tasklistHistoryFromTree, hotkeys
+    div.bind
+      'click.jstree': (event) -> usdlc.setTasklistFocus(usdlc.inTasklist())
+      'select_node.jstree': (event, data) ->
+        showTask detailsPane, "#{data.rslt.obj.attr('id')}d"
+        return false
+    hideme = -> hideCompleted div
+    setTimeout hideme, 500
 
   showTask = (detailsPane, id) ->
     detailsPane.children().hide()
     detailDiv = $("##{id}", detailsPane).first()
-    detailDiv = detailsPane.children('div').first() if not detailDiv.size()
+    detailDiv = usdlc.newDetail(detailsPane, id) if not detailDiv.size()
     detailDiv.show()
 
   getActiveTaskId = (elem) ->
@@ -86,8 +137,9 @@ $ ->
   usdlc.buildTaskDetail = (formElement) ->
     formElement = $ formElement
     parts = $('input:checked', formElement).toArray()
-    return if not parts
-    id = "#{getActiveTaskId(formElement)}d"
+    activeTaskId = getActiveTaskId(formElement)
+    return if not parts or not activeTaskId
+    id = "#{activeTaskId}d"
     detailDiv = $("<div/>").attr('id', id).addClass('taskDetail')
     detailsPane = formElement.closest('td')
     detailsPane.append detailDiv
@@ -107,16 +159,20 @@ $ ->
     treeContainer = $('.jstree', usdlc.inFocus).first()
     return treeContainer if treeContainer.size() > 0
     return null
+
   usdlc.inTreeMode = (event) ->
     if usdlc.inFocus
       return usdlc.inTasklist()
     else
       return usdlc.contentTreeContainer
 
+  usdlc.treeAction = (event) -> return usdlc.inTreeMode(event)?.data('actions')
+
   usdlc.setTasklistFocus = (section) ->
-    container = usdlc.setTreeFocus((section))
+    container = usdlc.setTreeFocus(section)
     if container
-      container.focus()
+      usdlc.extendTasklistUpdateTimer container
+      container.next().children('input').focus().blur()
       usdlc.setContext 'Tasklist'
       container.addClass('inFocus')
 
@@ -142,6 +198,7 @@ $ ->
 
   usdlc.destroyTasklists = ->
     lists = $('div.tasklist')
+    lists.each (index, div) -> usdlc.clearTasklistUpdateTimer($(div))
     $("li.jstree-checked", lists).attr('checked', 'true')
     lists.jstree('destroy')
     $('li[checked]', lists).removeAttr('checked').addClass('jstree-checked')
@@ -150,15 +207,16 @@ $ ->
       element = $(element)
       element.attr('class', $.trim(element.attr('class')))
 
-  usdlc.treeCopy = () -> usdlc.inTreeMode()?.copyNode()
-  usdlc.treeCut = () -> usdlc.inTreeMode()?.cutNode()
-  usdlc.treePaste = () -> usdlc.inTreeMode()?.pasteNode()
-  usdlc.treeInsert = () -> usdlc.inTreeMode()?.insertNode()
-  usdlc.treeRename = () -> usdlc.inTreeMode()?.renameNode()
-  usdlc.treeMoveDown = () -> usdlc.inTreeMode()?.movedown 'next', 'after'
-  usdlc.treeMoveLeft = () -> usdlc.inTreeMode()?.moveout 'parents', 'after'
-  usdlc.treeMoveRight = () -> usdlc.inTreeMode()?.movein 'prev', 'last'
-  usdlc.treeMoveUp = () -> usdlc.inTreeMode()?.moveup 'prev', 'before'
+  usdlc.treeCopy = () -> usdlc.treeAction()?.copyNode()
+  usdlc.treeCut = () -> usdlc.treeAction()?.cutNode()
+  usdlc.treeDelete = () -> usdlc.treeAction()?.deleteNode()
+  usdlc.treePaste = () -> usdlc.treeAction()?.pasteNode()
+  usdlc.treeInsert = () -> usdlc.treeAction()?.insertNode()
+  usdlc.treeRename = () -> usdlc.treeAction()?.renameNode()
+  usdlc.treeMoveDown = () -> usdlc.treeAction()?.movedown 'next', 'after'
+  usdlc.treeMoveLeft = () -> usdlc.treeAction()?.moveout 'parents', 'after'
+  usdlc.treeMoveRight = () -> usdlc.treeAction()?.movein 'prev', 'last'
+  usdlc.treeMoveUp = () -> usdlc.treeAction()?.moveup 'prev', 'before'
 
   usdlc.loadTaskUsers = (input) ->
     usdlc.listUsersAndGroupsAutocomplete(input)
@@ -187,7 +245,7 @@ $ ->
   usdlc.taskCheckbox = (input) ->
     input.change ->
       saveCheckbox input
-      usdlc.tasklistHistory input, "#{input.attr('value')}: #{input.attr('checked') ? 'no'}"
+      usdlc.tasklistHistory input, "#{input.attr('name')}: #{input.attr('checked') ? 'no'}"
 
   usdlc.taskAutocomplete = (input) ->
     usdlc.loadLocalAutocomplete(input)
@@ -195,6 +253,7 @@ $ ->
 
   usdlc.taskDatePicker = (input) ->
     usdlc.datePicker input,
+      dateFormat: 'D dd-M'
       onClose: (dateText) ->
         input.attr 'value', dateText
         usdlc.tasklistHistory input, "#{input.attr('name')} date: #{dateText}"
@@ -211,19 +270,37 @@ $ ->
 
   usdlc.addTasklistHistoryOnBlur = (element, label) ->
     element.change ->
-      element.attr 'value', element.val()
-      usdlc.tasklistHistory element, "#{label}: #{element.val()}"
+      oldValue = element.data 'value'
+      newValue = element.val()
+      if newValue isnt oldValue
+        element.attr 'value', newValue
+        element.data 'value', newValue
+        usdlc.tasklistHistory element, "#{label}: #{element.val()}"
 
   usdlc.tasklistHistory = (element, entry) ->
-    parent = $(element).closest('div.taskDetail')
-    history = $('fieldset.taskHistory', parent)
-    div = $('<div/>').addClass('taskHistoryItem')
-    date = $.datepicker.formatDate('D, dd-M-yy', new Date())
-    div.html("<span class='taskHistoryDate'>#{date}</span> #{entry}")
-    history.append(div)
+    usdlc.pokeTasklistUpdateTimer(element)
+    return if not entry
+    taskDetail = $(element).closest('div.taskDetail')
+    date = $.datepicker.formatDate('dd-M-y', new Date())
+    initials = usdlc.userInitials()
+    usdlc.saveTasklistHistory taskDetail, "#{date} #{initials}", entry
 
-  hideCompleted = -> $("li.jstree-checked", usdlc.inTasklist).addClass('hidden')
-  showCompleted = -> $("li.jstree-checked", usdlc.inTasklist).removeClass('hidden')
+  usdlc.saveTasklistHistory = (taskDetail, title, entry, end = 'prepend') ->
+    html = "<span class='taskHistoryDate'>#{title}</span>: #{entry}"
+    history = $('fieldset.taskHistory', taskDetail)
+    div = $('<div/>').addClass('taskHistoryItem')
+    div.html(html)
+    history[end](div)
+
+  usdlc.taskNameFromLi = (li) -> $.trim(li.children('a').text())
+
+  hideCompleted = (tasklist = usdlc.inTasklist())->
+    $("li.jstree-checked", tasklist).addClass('hidden')
+    usdlc.updateTreeCount(tasklist)
+  showCompleted = ->
+    tasklist = usdlc.inTasklist()
+    $("li.jstree-checked", tasklist).removeClass('hidden')
+    usdlc.updateTreeCount(tasklist)
 
   usdlc.completedCheckbox = (input) ->
     input.change ->
@@ -233,10 +310,98 @@ $ ->
       else
         hideCompleted()
 
+  usdlc.makeTaskDetailDefault = (button) ->
+    taskDetail = $(button).closest('div.taskDetail')
+    defaultId = taskDetail.attr('id').replace /\d+d$/, "0d"
+    taskDetailDefault = $("##{defaultId}")
+    taskDetailDefault.attr('copy', true)
+    taskDetailDefault.addClass('taskDetail')
+    taskDetailDefault.empty().append(taskDetail.clone().children())
+    usdlc.tasklistHistory taskDetailDefault, "Set as default"
+    usdlc.tasklistHistory taskDetail, "Used for default"
+
+  usdlc.newDetail = (detailsPane, id) ->
+      detailDiv = detailsPane.children('div').first()
+      if detailDiv.attr('copy')
+        detailDiv = detailDiv.clone()
+        detailDiv.attr('id', id)
+        detailDiv.find("[id]").each (index, element) ->
+          element = $(element)
+          element.attr("id", "#{id}-#{element.attr("id")}")
+        detailsPane.append detailDiv
+        usdlc.activateHtml detailDiv
+      return detailDiv
+
+  usdlc.saveTasklist = (div) ->
+    div = div.closest("div.section")
+    if usdlc.clearTasklistUpdateTimer(div)
+      usdlc.savePage()
+      usdlc.unsetTreeFocus(div)
+  usdlc.pokeTasklistUpdateTimer = (div) ->
+    div = $(div).closest("div.section")
+    usdlc.clearTasklistUpdateTimer(div)
+    updateTimeout = -> usdlc.saveTasklist div
+    div.data('needingSaveTimer', setTimeout(updateTimeout, 30000))
+  usdlc.extendTasklistUpdateTimer = (div) ->
+    div = div.closest("div.section")
+    if usdlc.clearTasklistUpdateTimer(div)
+      updateTimeout = -> usdlc.saveTasklist div
+      div.data('needingSaveTimer', setTimeout(updateTimeout, 30000))
+  usdlc.clearTasklistUpdateTimer = (div) ->
+    div = div.closest("div.section")
+    needingSaveTimer = div.data('needingSaveTimer')
+    if needingSaveTimer
+      clearTimeout(needingSaveTimer)
+      div.data('needingSaveTimer', null)
+    return needingSaveTimer
+
+  usdlc.updateTreeCount = (tasklist = usdlc.inTasklist())->
+    tasklist = tasklist?.closest("div.section")
+    if tasklist
+      count = $('.jstree-leaf', tasklist).not('.hidden').size()
+      $('.treeLeafCount', tasklist).text(count)
+
+  usdlc.showTasklistFilter = ->
+
+  usdlc.applyTasklistFilter = ->
+    usdlc.updateTreeCount()
+
+  usdlc.tasklistRefresh = ->
+    parameters =
+      pageURL: usdlc.pageContentsURL
+      sectionId: usdlc.inFocus.attr('id')
+    $.get '/usdlc/support/usdlc/refreshTasklist.groovy', parameters, (rslt) ->
+      usdlc.refreshPage()
+
+  usdlc.packTasklist = (div) ->
+    packed = []
+    processLevel = (parent, depth) ->
+      ul = parent.children('ul')
+      ul.children('li').each (index, li) ->
+        li = $(li)
+        checked = if li.hasClass('jstree-checked') then 1 else 0
+        packed.push "#{depth}#{checked}#{usdlc.taskNameFromLi li}"
+        processLevel(li, depth + 1)
+    processLevel(div, 1)
+    return packed.join('::')
+
+  usdlc.unpackTasklist = (packed) ->
+    depth = 0
+    unpacked = []
+    for task in packed.split('::')
+      taskDepth = +task[0]
+      checked = if +task[1] then " class='jstree-checked'" else ""
+      task = task[2..]
+      if taskDepth > depth
+        unpacked.push "<ul>"
+        depth = taskDepth
+      while taskDepth < depth
+        unpacked.push("</li></ul>")
+        depth -= 1
+      unpacked.push "<li #{checked}><a href='#'>#{task}</a>"
+    unpacked.push("</li></ul>") while depth-- > 0
+    return unpacked.join('\n')
+
   $('div.taskDetail').live 'focus', (ev) -> usdlc.unsetTreeFocus(usdlc.inTasklist())
   $('div.taskDetail').live 'blur', (ev) -> usdlc.setTasklistFocus(usdlc.inTasklist())
-
-# todo: button to make current detail the default
-# todo: make tree from clipboard entry
-# todo: button to refresh tree and sections connection
-# todo: add gantt chart
+  $('div.Tasklist.inFocus').live 'keydown click', -> usdlc.extendTasklistUpdateTimer $(this)

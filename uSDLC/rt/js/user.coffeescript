@@ -26,9 +26,11 @@ $ ->
       type : "POST"
       url : '/usdlc/support/usdlc/logIn.groovy'
       contentType: 'application/x-www-form-urlencoded'
-      data :  name:userName, password:password
+      data :
+        name:userName
+        password:password
       success : (data) ->
-        if data.length > 0
+        if data?.length
           $('#userName').html(data)
           usdlc.closeDialog()
           usdlc.goHome()
@@ -50,3 +52,5 @@ $ ->
         else
           usdlc.alert('Password Change Failure')
     return false
+
+  usdlc.userInitials = -> $('a#username').attr('initials')

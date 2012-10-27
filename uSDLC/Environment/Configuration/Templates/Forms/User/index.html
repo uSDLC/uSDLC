@@ -78,7 +78,7 @@
 	&nbsp;</p>
 </div><div id="s6" class="editable section"><h1 class="sectionType">
 	User: New</h1>
-<form onsubmit="javascript:return usdlc.createNewUser()" align="center" id="createNewUser">
+<form align="center" id="createNewUser" onsubmit="javascript:return usdlc.createNewUser()">
 	<div class="centreForm">
 		<table align="center">
 			<tbody>
@@ -86,13 +86,19 @@
 					<td>
 						Project:</td>
 					<td>
-						<input activate="loadUsdlcProjects" name="project" role="textbox" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" aria-autocomplete="list" aria-haspopup="true"></td>
+						<input activate="loadUsdlcProjects" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="project" role="textbox" size="66" type="text"></td>
 				</tr>
 				<tr>
 					<td>
 						User-name:</td>
 					<td>
 						<input name="username" size="66" type="text"></td>
+				</tr>
+				<tr>
+					<td>
+						Initials:</td>
+					<td>
+						<input name="initials" size="3" type="text"></td>
 				</tr>
 				<tr>
 					<td>
@@ -104,32 +110,31 @@
 					<td>
 						no access groups:</td>
 					<td>
-						<input activate="loadGroups" name="noAccessGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
+						<input activate="loadGroups" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="noAccessGroups" role="textbox" size="66" type="text"></td>
 				</tr>
 				<tr>
 					<td>
 						read groups:</td>
 					<td>
-						<input activate="loadGroups" name="readGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
+						<input activate="loadGroups" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="readGroups" role="textbox" size="66" type="text"></td>
 				</tr>
 				<tr>
 					<td>
 						write groups:</td>
 					<td>
-						<input activate="loadGroups" name="writeGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
+						<input activate="loadGroups" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="writeGroups" role="textbox" size="66" type="text"></td>
 				</tr>
 				<tr>
 					<td>
 						run groups:</td>
 					<td>
-						<input activate="loadGroups" name="runGroups" size="66" type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></td>
+						<input activate="loadGroups" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="runGroups" role="textbox" size="66" type="text"></td>
 				</tr>
 				<tr>
 					<td>
 						notes:</td>
 					<td>
-						<textarea name="notes" cols="45" rows="4"></textarea>
-					</td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
 				</tr>
 				<tr>
 					<td align="right" colspan="2">

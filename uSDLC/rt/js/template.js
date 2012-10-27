@@ -74,7 +74,6 @@ $(function () {
 						usdlc.setCookie('currentPage', usdlc.pageContentsURL)
 
 						usdlc.pageContents.html(data)
-
 						usdlc.activateHtml(usdlc.pageContents)
 						usdlc.setPageTitle()
 						usdlc.synopses()
@@ -129,6 +128,7 @@ $(function () {
 			usdlc.clearFocus()
 			usdlc.cleanSections($('div.editable'))
 			usdlc.destroyTasklists()
+			usdlc.packWorkflows()
 			usdlc.getPageTitle()
 			usdlc.scrollFiller(false)
 			usdlc.save(usdlc.pageContentsURL, usdlc.pageContents.html(), '&after=usdlc.synopses()')

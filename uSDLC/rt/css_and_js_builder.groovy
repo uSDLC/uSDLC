@@ -54,6 +54,7 @@ files = [
 		'usdlc/rt/js/run.coffeescript',
 		'usdlc/rt/js/sourceEditor.coffeescript',
 		'usdlc/rt/js/synopses.coffeescript',
+		'usdlc/rt/js/workflow.coffeescript',
 		'/usdlc/rt/js/footer.coffeescript',
 		'usdlc/rt/js/forms.coffeescript',
 		'usdlc/rt/js/dialog.coffeescript',

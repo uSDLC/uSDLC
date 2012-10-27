@@ -9,15 +9,16 @@
 		href="https://plus.google.com/116900499382012938759"
 		rel="publisher"/>
 	<% } %>
+	<link type="text/css" rel="stylesheet" href="/usdlc/rt/css/ui.css">
 	<link type="text/css" rel="stylesheet" href="/usdlc/rt/css/section.css">
-	<style type="text/css">
-	</style>
+	<!--<style type="text/css">-->
+	<!--</style>-->
 	<script>
-		testScripts = []
+		testScripts = [
+			"/usdlc/rt/js/tasklist.coffeescript",
+			"/usdlc/rt/js/workflow.coffeescript",
+		]
 	</script>
-	<!--<script>-->
-		<!--testScripts = ["/usdlc/rt/js/tasklist.coffeescript"]-->
-	<!--</script>-->
 </head>
 <body>
 

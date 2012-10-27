@@ -76,10 +76,11 @@ class User {
 	def login(userName, passwordEntered) {
 		try {
 			if (load(userName) && checkPassword(passwordEntered)) {
-				return this
+				return true
 			}
 		} catch (e) { /* drop through to return to guest */ }
-		return logout()
+		logout()
+		return false
 	}
 	def logout() {
 		def userName = config.userId ?: 'Administrator'
@@ -155,10 +156,16 @@ class User {
 
 	def toHtml() {
 		if (home) {
-			return "<a href='$home' class='contentLink' action='page'>$userName</a>"
+			return "<a id='username' href='$home' class='contentLink' initials='$initials' action='page'>$userName</a>"
 		}
 		return ''
 	}
+
+	def getInitials() {
+		if (!data.initials) { data.initials = userName.replaceAll(~/[^A-Z]/, '') }
+		return data.initials
+	}
+	def setInitials(to) {data.initials = to}
 
 	static csvRE = ~/\r*[\n,]\s*/
 

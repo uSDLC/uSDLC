@@ -29,8 +29,7 @@ $ ->
         data = usdlc.parseSection usdlc.inFocus
         url = "#{usdlc.pageContentsURL}@#{data.id}"
         $("a[href='#{url}']", clipboard).remove()
-        link = "<a href='#{url}' action='page' class='usdlc'>"
-        item = $ "<div>#{link}#{data.title}</a></div>"
+        item = usdlc.clipboard.makeLink url, data.title
         section = usdlc.inFocus.clone()
         section.find('.topMenu').remove()
         section.find('.inclusion').remove()
@@ -43,6 +42,9 @@ $ ->
         type.html("#{link}#{type.html()}</a>")
         item.data 'section', section
         clipboard.append item
+    makeLink: (url, title) ->
+      link = "<a href='#{url}' action='page' class='usdlc'>"
+      item = $ "<div>#{link}#{title}</a></div>"
     drop: ->
       clipboard.children('div').last().remove()
     show: -> open()
@@ -51,8 +53,8 @@ $ ->
     drain: ->
       clipboard.children('div').each (index, item) -> paste $ item
     pasteLink: (element, closest, linkContainer) ->
-      parent = $(element).closest(closest) if closest
-      container = $(linkContainer, parent)
+      element = $(element).closest(closest) if closest
+      container = $(linkContainer, element)
       item = clipboard.children('div').last()
       item.detach()
       container.append item

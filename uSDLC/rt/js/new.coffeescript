@@ -71,14 +71,18 @@ $ ->
   ###
   usdlc.newTasklistSection = () ->
     form = new usdlc.FormProcessor "#newTasklistSection"
-    title = form.fieldMap['title']
+    project = form.fieldMap.project
+    title = form.fieldMap.title
     section = usdlc.newSection "Tasklist"
     section.insertAfter usdlc.inFocus
     usdlc.closeDialog() if not form.fieldMap.KeepOpen
     usdlc.loadSection 'Tasklist', 'Sections', (h1) ->
       section.append h1.nextAll()
-      $('li:first', section).attr('id', "#{section.attr('id')}t1").html("<a href='#'>#{form.fieldMap['title']}</a>")
-      $('div#taskDetail', section).attr('id', "#{section.attr('id')}t0d")
+      if project
+        $('div.tasklist', section).attr('source', "~#{project}/usdlc")
+        title = usdlc.decamel(project) if not title
+      $('li:first', section).attr('id', "#{section.attr('id')}t1").html("<a href='#'>#{title}</a>")
+      $('div.taskDetail', section).attr('id', "#{section.attr('id')}t0d")
       usdlc.setFocus section
       usdlc.savePage()
     return false
@@ -219,6 +223,3 @@ $ ->
         usdlc.highlight('red')
         alert(rslt)
     return false
-
-  usdlc.loadGroups = (input) ->
-    input.autocomplete

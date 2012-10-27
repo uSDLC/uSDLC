@@ -212,7 +212,7 @@ class Exchange {
 
 	void save(String newContents) {
 		store.write newContents.bytes
-		new Page(store).updateRegisters()
+//		new Page(store).updateRegisters()
 	}
 	/**
 	 * Convenience function for Execute that keeps one copy in instance

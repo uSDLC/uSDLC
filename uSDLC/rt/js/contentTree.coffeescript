@@ -1,5 +1,15 @@
 $ ->
   usdlc.contentTreeContainer = $('#contentTree')
+
+  hotkeys = $.extend {}, usdlc.treeHotkeys,
+    'esc': -> usdlc.setContext 'ContentTree'; return false
+    'tab': -> usdlc.setFocus(usdlc.lastFocus); return false
+
+  for hotkey in "abcdefghijklmnopqrstuvwxyz"
+    actor = (hk) ->
+      return -> console.log(hk); usdlc.menuKeystroke(hk); return false
+    hotkeys[hotkey] = actor(hotkey)
+
   usdlc.contentTree = usdlc.contentTreeContainer.jstree
     animation : 0
     html_data :
@@ -26,18 +36,7 @@ $ ->
             rel = "rel='#{rel}'" if rel
             tree += "<li id='#{id}' class='jstree-closed' #{rel}><a href='#{href}' class='contentLink' action='page' #{state}>#{a.text()}</a></li>"
           return tree
-    hotkeys :
-      'tab': -> usdlc.setFocus(usdlc.lastFocus); return false
-      'x': -> usdlc.unsetTreeFocus(usdlc.contentTreeContainer); return false
-      'i': -> usdlc.contentTreeContainer.insertNode(); return false
-      'r': -> usdlc.contentTreeContainer.renameNode(); return false
-      'shift+up': -> moveup 'prev', 'before'; return false
-      'shift+down': -> movedown 'next', 'after'; return false
-      'shift+left': -> moveout 'parents', 'after'; return false
-      'shift+right': -> movein 'prev', 'last'; return false
-      'ctrl+c': -> usdlc.contentTree.jstree 'copy', selectedNode; return false
-      'ctrl+x': -> usdlc.contentTree.jstree 'cut', selectedNode; return false
-      'ctrl+v': -> usdlc.contentTree.jstree 'paste', selectedNode; return false
+    hotkeys : hotkeys
     cookies :
       cookie_options :
         expires : 1000
@@ -146,14 +145,13 @@ $ ->
       reference: pageFromLi reference
       position: position
 
-  usdlc.contentTreeContainer.movedown = (referenceDir, position) ->
+  moveupdown = (referenceDir, position) ->
     reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
-  usdlc.contentTreeContainer.moveup = usdlc.contentTreeContainer.movedown
 
-  usdlc.contentTreeContainer.moveout = (referenceDir, position) ->
+  moveout = (referenceDir, position) ->
     reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     href = href.split('/')
@@ -164,7 +162,7 @@ $ ->
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
 
-  usdlc.contentTreeContainer.movein = (referenceDir, position) ->
+  movein = (referenceDir, position) ->
     reference = (selectedNode[referenceDir])('li').first()
     href = pageFromLi selectedNode
     reference_name = pageFromLi(reference).split('/')
@@ -176,16 +174,17 @@ $ ->
     if reference.size()
       move parent(reference), href, selectedNode, reference, position
 
-  usdlc.contentTreeContainer.copyNode = ->
-    usdlc.contentTree.jstree 'copy', selectedNode
-  usdlc.contentTreeContainer.cutNode = ->
-    usdlc.contentTree.jstree 'cut', selectedNode
-  usdlc.contentTreeContainer.pasteNode = ->
-    usdlc.contentTree.jstree 'paste', selectedNode
-  usdlc.contentTreeContainer.insertNode = ->
-    usdlc.contentTree.jstree 'create', null, "last"
-  usdlc.contentTreeContainer.renameNode = ->
-    usdlc.contentTree.jstree 'rename', null
+  usdlc.contentTreeContainer.data 'actions',
+    copyNode: -> usdlc.contentTree.jstree 'copy', selectedNode
+    cutNode: -> usdlc.contentTree.jstree 'cut', selectedNode
+    deleteNode: -> usdlc.contentTree.jstree 'remove', selectedNode
+    pasteNode: -> usdlc.contentTree.jstree 'paste', selectedNode
+    insertNode: -> usdlc.contentTree.jstree 'create', null, "last"
+    renameNode: -> usdlc.contentTree.jstree 'rename', null
+    moveup: moveupdown
+    movedown: moveupdown
+    movein: movein
+    moveout: moveout
 
   usdlc.setContentTreeFocus = ->
     container = usdlc.setTreeFocus(usdlc.contentTreeContainer)

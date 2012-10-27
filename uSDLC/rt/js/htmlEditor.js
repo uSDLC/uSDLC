@@ -54,6 +54,7 @@ $(function () {
 		$section.ckeditor(function () {
 			usdlc.modalOn()
 		}, {
+			contentsCss: '/.store/css/usdlc.css',
 			skin: 'v2',
 			bodyClass:   "wayOnTop",
 			saveFunction:function (editor) {

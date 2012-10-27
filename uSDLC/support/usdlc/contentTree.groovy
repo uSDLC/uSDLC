@@ -1,5 +1,4 @@
-import usdlc.Page
-import usdlc.Store
+package usdlc
 
 query = exchange.request.query
 

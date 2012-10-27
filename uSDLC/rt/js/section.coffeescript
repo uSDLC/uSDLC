@@ -49,12 +49,8 @@ $ ->
       $('.inFocus').removeClass('inFocus ui-widget-content')
       usdlc.lastFocus = usdlc.inFocus
       usdlc.inFocus = null
-#      url = window.location.hash.split('@')
-#      window.location.hash = url[0]
     $('.inFocus').removeClass('inFocus ui-widget-content')
-    if inTasklist
-      usdlc.savePage()
-      usdlc.unsetTreeFocus(inTasklist)
+    usdlc.saveTasklist(inTasklist) if inTasklist
     usdlc.setContentTreeFocus()
 
   usdlc.toggleFocus = ->

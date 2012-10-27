@@ -13,6 +13,7 @@ package usdlc
 
 name = {name -> user.name = name}
 email = {email -> user.email = email}
+initials = {initials -> user.initials = initials}
 
 access = 'none'
 no = {access = 'none'}

@@ -1,0 +1,89 @@
+$ ->
+  loadWorkflowTemplate = (action) ->
+    workflowItem = $('<div/>').addClass('workflow taskDetail')
+    usdlc.loadSection "Workflow Detail", '~home/usdlc/Environment/Workflow', (h1) ->
+      workflowItem.append h1.nextAll()
+      usdlc.activateHtml workflowItem
+      action(workflowItem)
+    return workflowItem
+
+  createNewWorkflow = (section) ->
+    workflowItem = loadWorkflowTemplate ->
+    sectionType = $('div.sectionType', section)
+    if sectionType.size()
+      sectionType.after(workflowItem)
+    else
+      section.prepend(workflowItem)
+    return workflowItem
+
+  usdlc.activateWorkflowChecklist = (div) ->
+    usdlc._activateChecklist div, 'T', (li, action) ->
+      text = usdlc.taskNameFromLi li
+      usdlc.tasklistHistory(div, "#{action} task '#{text}'")
+    div.bind
+      'select_node.jstree': (event, data) ->
+        node = data.rslt.obj
+        if $.trim(node.text()).match(/\.\.\.$/)
+          div.jstree 'rename', node
+          div.jstree 'create', node, 'after', data: 'next...', null, true
+        return false
+
+  usdlc.toggleWorkflowView = ->
+    return if not usdlc.inFocus
+    workflowItem = $('div.workflow', usdlc.inFocus)
+    if not workflowItem.size()
+      workflowItem = createNewWorkflow usdlc.inFocus
+      workflowItem.addClass('visible')
+    else if workflowItem.hasClass 'visible'
+      workflowItem.removeClass('visible')
+    else
+      unpacked = workflowItem.children('form').size()
+      usdlc.unpackWorkflow workflowItem if not unpacked
+      workflowItem.addClass('visible')
+
+  usdlc.loadWorkflow = (input) ->
+    a = 1 # todo: finish
+
+  usdlc.packWorkflows = ->
+    $('div.workflow form').each (index, form) ->
+      form = $(form)
+      pack = []
+      data = new usdlc.FormProcessor form
+      for name in data.fieldList
+        value = data.fieldMap[name]
+        pack.push("#{name}=#{value}") if value.length
+      $('fieldset.taskPageLinks a.usdlc',form).each (index, a) ->
+        pack.push("Reference=#{a.attr('href')}::#{$(a).text()}")
+      $('div.taskHistoryItem',form).each (index, div) ->
+        pack.push("History=#{$(div).text().replace(/\n/g,'::')}")
+      $('div.tasklist',form).each (index, div) ->
+        pack.push("Tasklist=#{usdlc.packTasklist($(div))}")
+      form.parent().html(pack.join(';;'))
+
+  usdlc.unpackWorkflow = (workflowItem) ->
+    loadWorkflowTemplate (template) ->
+      packed = workflowItem.text().split(';;')
+      workflowItem.empty().append(template.clone().children())
+      workflowItem.find('input[type=checkbox]').removeAttr('checked')
+      for line in packed
+        [name,value] = line.split('=')
+        if name
+          field = $("[name=#{name}]", workflowItem)
+          if field.size()
+            field.val([value])
+          else if name is 'Tasklist'
+            tasklistHtml = usdlc.unpackTasklist(value)
+            $('div.tasklist', workflowItem).html(tasklistHtml)
+          else if name is 'Reference'
+            [url, title] = value.split('::')
+            item = usdlc.clipboard.makeLink url, title
+            $('fieldset.taskPageLinks', workflowItem).append item
+          else if name is 'History'
+            value = value.replace('::', '\n')
+            colon = value.indexOf ':'
+            title = value[0...colon]
+            message = value[colon+2..]
+            usdlc.saveTasklistHistory workflowItem, title, message, 'append'
+          else
+            usdlc.tasklistHistory workflowItem, "Unknown: '#{line}'"
+      usdlc.activateHtml workflowItem

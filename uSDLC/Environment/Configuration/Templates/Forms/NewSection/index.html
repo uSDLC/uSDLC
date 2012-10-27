@@ -263,8 +263,7 @@
 
 <div id="s23" class="editable section"><h1>
 	New Section: Issue</h1>
-<form onsubmit="javascript:return usdlc.newGeneralSection('Issue Register')"
-	id="newIssueRegisterSection" method="post">
+<form onsubmit="javascript:return usdlc.newGeneralSection('Issue Register')" id="newIssueRegisterSection" method="post">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 			<tbody>
@@ -296,8 +295,7 @@
 
 <div id="s24" class="editable section"><h1>
 	New Section: Bug</h1>
-<form onsubmit="javascript:return usdlc.newGeneralSection('Problem Register')"
-	id="newProblemRegisterSection" method="post">
+<form onsubmit="javascript:return usdlc.newGeneralSection('Problem Register')" id="newProblemRegisterSection" method="post">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 			<tbody>
@@ -327,8 +325,7 @@
 
 <div id="s25" class="editable section"><h1>
 	New Section: Idea</h1>
-<form onsubmit="javascript:return usdlc.newGeneralSection('Idea Register')"
-	id="newIdeaRegisterSection" method="post">
+<form onsubmit="javascript:return usdlc.newGeneralSection('Idea Register')" id="newIdeaRegisterSection" method="post">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 			<tbody>
@@ -360,8 +357,7 @@
 
 <div id="s26" class="editable section"><h1>
 	New Section: Tasks</h1>
-<form onsubmit="javascript:return usdlc.newTasklistSection()"
-	id="newTasklistSection" method="post">
+<form id="newTasklistSection" method="post" onsubmit="javascript:return usdlc.newTasklistSection()">
 	<div class="centreForm">
 		<table align="center" border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
 			<tbody>
@@ -371,14 +367,18 @@
 					<td>
 						<input name="title" size="32" type="text">&nbsp; <input type="submit" value="New Tasklist"><input name="KeepOpen" title="Keep form open" type="checkbox" value="KeepOpen"></td>
 				</tr>
+				<tr>
+					<td style="text-align: right; ">
+						<strong>or Project:</strong></td>
+					<td>
+						<input activate="loadUsdlcProjects" name="project" size="32" type="text"></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
 </form>
 <div class="centre600">
-	<b>uSDLC</b> auto-generates tasks list where it can, but there is always
-	room for team members to create their own.</b>
-</div>
+	<b>uSDLC</b> auto-generates tasks list where it can, but there is always room for team members to create their own.</div>
 </div>
 
 <div id="s2" class="editable section footer synopsis">

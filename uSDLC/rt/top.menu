@@ -58,30 +58,35 @@ Section_Menu
 		Log out,o,usdlc.logOut()
 		Change password,C,usdlc.form('User: Change Password')
 		New User,N,usdlc.form('User: New')
+	Workflow,W,usdlc.toggleWorkflowView()
 	Help,l,usdlc.popWindow("~uSDLC/usdlc/Guide"),F1
 Tasklist_Menu
+	Back, B, usdlc.unsetTreeFocus(usdlc.inTasklist())
 	Clipboard, C
-		Copy, c, usdlc.treeCopy(),##^C meta+C
+		Copy, C, usdlc.treeCopy(),##^C meta+C
 		Cut, u, usdlc.treeCut(),##^X meta+X
-		Paste, p, usdlc.treePaste(),##^V meta+V
+		Paste, P, usdlc.treePaste(),##^V meta+V
+	Delete, D, usdlc.treeDelete(),##Del
+	Filter, F, usdlc.showTasklistFilter()
 	Insert, I, usdlc.treeInsert()
-	Rename, R, usdlc.treeRename()
 	Move, M
 		Down, D, usdlc.treeMoveDown(),##shift+down
 		Left, L, usdlc.treeMoveLeft(),##shift+left
 		Right, R, usdlc.treeMoveRight(),##shift+right
 		Up, U, usdlc.treeMoveUp(),##shift+up
-	Exit, x, usdlc.unsetTreeFocus(usdlc.inTasklist())
+	Refresh, e, usdlc.tasklistRefresh()
+	Rename, R, usdlc.treeRename()
 ContentTree_Menu
+	Back, B, usdlc.unsetTreeFocus(usdlc.inTasklist())
 	Clipboard, C
-		Copy, c, usdlc.treeCopy(),##^C meta+C
+		Copy, C, usdlc.treeCopy(),##^C meta+C
 		Cut, u, usdlc.treeCut(),##^X meta+X
-		Paste, p, usdlc.treePaste(),##^V meta+V
+		Paste, P, usdlc.treePaste(),##^V meta+V
+	Delete, D, usdlc.treeDelete(),##Del
 	Insert, I, usdlc.treeInsert()
-	Rename, R, usdlc.treeRename()
 	Move, M
 		Down, D, usdlc.treeMoveDown(),##shift+down
 		Left, L, usdlc.treeMoveLeft(),##shift+left
 		Right, R, usdlc.treeMoveRight(),##shift+right
 		Up, U, usdlc.treeMoveUp(),##shift+up
-	Exit, x, usdlc.unsetTreeFocus(usdlc.contentTreeContainer)
+	Rename, R, usdlc.treeRename()

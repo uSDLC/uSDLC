@@ -17,6 +17,12 @@ class Store {
 		def homeIndex = path.indexOf(config.home)
 		if (homeIndex == 0 || homeIndex == 1) {
 			path = '~' + path[config.home.size() + homeIndex..-1]
+		} else {
+			def matcher = homeRE.matcher(path)
+			if (matcher) {
+				def (all, projectName, rest) = matcher[0]
+				path = projectName + rest
+			}
 		}
 		def matcher = pathRE.matcher(path)
 		path = camelCase(path)
@@ -32,6 +38,7 @@ class Store {
 	}
 
 	static pathRE = ~/^(.*)~\/?(\w*)(.*)$/
+	static homeRE = ~'^/?(~.*?)/.*~home(.*)$'
 
 	private Store(String path, project) {
 		if (path[0] == '/') path = ".$path"

@@ -31,7 +31,7 @@ def host = InetAddress.localHost.hostAddress
 def baseUrl = "http://$host:$config.port"
 println "Starting uSDLC on $baseUrl from ${new File('.').absolutePath}"
 println '''
-Copyright 2011 the Authors for http://usdlc.net
+Copyright 2010-12 the Authors for http://usdlc.net
 use http://github/usdlc/usdlc to confirm author contribution
 
 Licensed under the Apache License, Version 2.0 (the "License");

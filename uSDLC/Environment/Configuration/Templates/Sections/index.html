@@ -26,15 +26,23 @@
 					</ul>
 				</div>
 				<hr>
-				<span style="font-size:12px;"><input activate="completedCheckbox" type="checkbox"> Completed </span></td>
+				<p>
+					&nbsp;</p>
+				<div class="treeLeafCount">
+					0</div>
+				<span style="font-size:12px;"><input activate="completedCheckbox" type="checkbox"> Completed</span>
+				<p>
+					&nbsp;</p>
+			</td>
 			<td valign="top">
-				<div id="taskDetail">
+				<div class="taskDetail">
 					<form name="Task Detail" onsubmit="usdlc.buildTaskDetail(this);return false" style="width:100%">
 						<p>
+							<input checked="checked" name="State" type="checkbox" value="State">State<br>
+							<input checked="checked" name="Checklist" type="checkbox" value="Checklist">Checklist<br>
 							<input checked="checked" name="Assign" type="checkbox" value="Assign">Assign<br>
 							<input checked="checked" name="Priority" type="checkbox" value="Priority">Priority<br>
 							<input checked="checked" name="Schedule" type="checkbox" value="Schedule">Schedule<br>
-							<input checked="checked" name="Phase" type="checkbox" value="Phase">Phase<br>
 							<input checked="checked" name="Tags" type="checkbox" value="Tags">Tags<br>
 							<input checked="checked" name="Pages" type="checkbox" value="Pages">Pages<br>
 							<input checked="checked" name="Notes" type="checkbox" value="Notes">Notes<br>
@@ -50,6 +58,22 @@
 </table>
 <p>
 	&nbsp;</p>
+</div><div id="s7" class="editable section deleted"><h2>
+	<span>Workflow Detail</span></h2>
+<form name="Task Detail" onsubmit="usdlc.buildTaskDetail(this);return false" style="width:100%">
+	<p>
+		<input checked="checked" name="Workflow" type="checkbox" value="Workflow">Workflow<br>
+		<input checked="checked" name="State" type="checkbox" value="State">State<br>
+		<input checked="checked" name="Assign" type="checkbox" value="Assign">Assign<br>
+		<input checked="checked" name="Priority" type="checkbox" value="Priority">Priority<br>
+		<input checked="checked" name="Schedule" type="checkbox" value="Schedule">Schedule<br>
+		<input checked="checked" name="Tags" type="checkbox" value="Tags">Tags<br>
+		<input checked="checked" name="Pages" type="checkbox" value="Pages">Pages<br>
+		<input checked="checked" name="Notes" type="checkbox" value="Notes">Notes<br>
+		<input checked="checked" name="History" type="checkbox" value="History">History</p>
+	<p>
+		<input name="Assign" type="submit" value="Assign"></p>
+</form>
 </div>
 <div id="s2" class="editable section footer synopsis">
  <div>
