@@ -87,8 +87,8 @@ $ ->
           return if value is entered
         values.push entered
         usdlc.persist(key, values.join(';;'))
-      else
-        usdlc.persist(key, statement)
+#      else
+#        usdlc.persist(key, statement)
 
   usdlc.datePicker = (input, params = {}) ->
     input.removeClass 'hasDatepicker'

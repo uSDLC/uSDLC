@@ -38,13 +38,11 @@ $ ->
           href = a.attr 'href'
           if href.indexOf('/') == -1
             a.attr 'href', "#{usdlc.reduceUrl usdlc.pageContentsURL}/#{href}"
-        type = section.find('.sectionType')
-        type.html("#{link}#{type.html()}</a>")
         item.data 'section', section
         clipboard.append item
     makeLink: (url, title) ->
       link = "<a href='#{url}' action='page' class='usdlc'>"
-      item = $ "<div>#{link}#{title}</a></div>"
+      return $ "<div>#{link}#{title}</a></div>"
     drop: ->
       clipboard.children('div').last().remove()
     show: -> open()

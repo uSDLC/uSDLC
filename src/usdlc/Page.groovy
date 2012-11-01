@@ -219,7 +219,18 @@ class Page {
 		forceSave()
 	}
 
-	def childSection(href) { selectSection("h1 a[href^=$href]") }
+	def childSection(href) {
+		def a = allSections.select("a[href^=$href]")
+		if (a.size() > 1) {
+			a = allSections.find {
+				tag = it.parent().tagName().toLowerCase()
+				tag in (['h1','h2','h3'] as Set)
+			}
+		} else {
+			a = a.first()
+		}
+		findSectionFor(a)
+	}
 
 	def paste(fromName, toPage, toName, position, cut = 'true') {
 		cut = cut.toBoolean()
@@ -314,6 +325,21 @@ class Page {
 			return dom?.select('div.sectionType')?.text()?.trim() ?: 'General'
 		}
 		boolean isDeleted() {dom.hasClass('deleted')}
+
+		class Workflow {
+			def map = [:] as TreeMap;
+			Workflow(dom) {
+				if (dom) {
+					dom.text().trim().split(';;').each {
+						def (key, value) = it.split('=')
+						map[key] = map[key] ? "${map[key]}\n$value" : value
+					}
+				}
+			}
+		}
+		Workflow getWorkflow() {
+			new Workflow(dom?.select('div.workflow'))
+		}
 	}
 	/**
 	 * Walk from this page down and where there is a section that is a
@@ -346,36 +372,4 @@ class Page {
 		sourceContents.each {copySection.appendChild(it)}
 		return true
 	}
-//	/**
-//	 * If any sections on the page are of a register type, make sure that
-//	 * if they have changed this gets reflected in the registers.
-//	 */
-//	public updateRegisters() {
-//		allSections.select("div.sectionType").each { div ->
-//			def sectionType = div.text()
-//			def m = (sectionType =~ ~/^(\w+)\s+(\w+)$/)
-//			if (!m.size()) return
-//			def(all, type, register) = m[0]
-//
-//			if (register == "Register") {
-//				def sourceSection = findSectionFor(div)
-//				def url = "$store.href@${sourceSection.attr('id')}"
-//				def registerPage = new Page(
-//						"/~$store.project.dir/usdlc/Registers/${type}s")
-//				def copySection = registerPage.selectSection(
-//						"div.sectionType a[href=$url]")
-//				if (copySection) {
-//					if (copyReferenceContents(sourceSection, copySection)) {
-//						registerPage.forceSave()
-//					}
-//				} else {
-//					copySection = prepareSectionForMove(sourceSection.clone())
-//					def sectionTypeDiv = copySection.select("div.sectionType")
-//					sectionTypeDiv.html("<a href='$url' action='page' class='usdlc'>$sectionType</a>")
-//					registerPage.footer.before(copySection)
-//					registerPage.forceSave()
-//				}
-//			}
-//		}
-//	}
 }

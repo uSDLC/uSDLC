@@ -56,6 +56,7 @@ $ ->
     return element.closest('.ui-dialog').size() > 0
 
   showDialog = (name, page, after) ->
+    return if not usdlc.finalised
     split = name.split(':')
     if split.length > 1
       page = "#{page}/#{usdlc.camelCase(split[0])}"

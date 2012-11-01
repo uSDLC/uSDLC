@@ -8,7 +8,7 @@ div.sectionType, div.pageType, div.workflowSummary {
 	font-size: 0.7em;
 	float: right;
 	margin-right: -1em;
-	margin-top: -0em;
+	margin-top: -0.3em;
 	margin-bottom: -1em;
 	color:#00A;
 	background-color: white;
@@ -30,8 +30,13 @@ div.pageType {
 	margin-top: -1.8em;
 }
 
-.inFocus div.sectionType, div.workflowSummary {
+.inFocus div.sectionType, .inFocus div.workflowSummary {
 	margin-top: -1.3em;
+}
+
+div.workflowSummary {
+	margin-right: 8em;
+	color: #808080;
 }
 
 .section, #pageTitleTd {

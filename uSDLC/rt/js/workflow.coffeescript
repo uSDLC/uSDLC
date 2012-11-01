@@ -39,7 +39,6 @@ $ ->
     else
       unpacked = workflowItem.children('form').size()
       usdlc.unpackWorkflow workflowItem if not unpacked
-      workflowItem.addClass('visible')
 
   usdlc.loadWorkflow = (input) ->
     a = 1 # todo: finish
@@ -48,17 +47,31 @@ $ ->
     $('div.workflow form').each (index, form) ->
       form = $(form)
       pack = []
+      summary = []
       data = new usdlc.FormProcessor form
       for name in data.fieldList
         value = data.fieldMap[name]
-        pack.push("#{name}=#{value}") if value.length
+        if value.length
+          pack.push("#{name}=#{value}")
+          if value isnt 'true'
+            summary.push(value)
       $('fieldset.taskPageLinks a.usdlc',form).each (index, a) ->
         pack.push("Reference=#{a.attr('href')}::#{$(a).text()}")
       $('div.taskHistoryItem',form).each (index, div) ->
         pack.push("History=#{$(div).text().replace(/\n/g,'::')}")
       $('div.tasklist',form).each (index, div) ->
         pack.push("Tasklist=#{usdlc.packTasklist($(div))}")
-      form.parent().html(pack.join(';;'))
+
+      workflowDiv = form.parent()
+      workflowDiv.html(pack.join(';;'))
+      section = workflowDiv.parent()
+
+      summaryDiv = $('div.workflowSummary', section)
+      if not summaryDiv.size()
+        summaryDiv = $("<div/>").addClass('workflowSummary')
+        summaryDiv.insertBefore($('div.sectionType', section))
+      summaryDiv.html(summary.join(' - '))
+
 
   usdlc.unpackWorkflow = (workflowItem) ->
     loadWorkflowTemplate (template) ->
@@ -87,3 +100,25 @@ $ ->
           else
             usdlc.tasklistHistory workflowItem, "Unknown: '#{line}'"
       usdlc.activateHtml workflowItem
+      workflowItem.addClass('visible')
+
+  ###
+    Create a new section using the tasklist template
+  ###
+  usdlc.newWorkflowFilterSection = ->
+    usdlc.newGeneralSection 'WorkflowFilter', false
+    usdlc.loadSection 'Workflow Filter', 'Sections', (h1) ->
+      section = usdlc.inFocus
+      section.append h1.nextAll()
+      $('input[name=Users]', section).val(usdlc.userName())
+      usdlc.savePage()
+    return false
+
+  usdlc.newWorkflowReport = (formId) ->
+    params = []
+    if formId
+      for key,value of new usdlc.FormProcessor("##{formId}").fieldMap
+        params.push "#{key}=#{value}"
+    url = "~uSDLC/usdlc/support/usdlc/workflow_report.gsp?#{params.join('&')}"
+    usdlc.window '_blank', url
+    return false

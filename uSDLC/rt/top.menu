@@ -9,6 +9,8 @@ Section_Menu
 		Show,S,usdlc.clipboard.show()
 	Project,P
 		New,N,usdlc.form('New Project')
+		Workflow,W,usdlc.newWorkflowReport()
+		Filter,F,usdlc.form('Workflow: Filter')
 	Register,e
 		Ideas,d,usdlc.form('New Section: Ideas')
 		Issues,I,usdlc.form('New Section: Issues')
@@ -47,7 +49,7 @@ Section_Menu
 			Data,D,usdlc.form('New Section: Data')
 			Guide,u,usdlc.form('New Section: Guide')
 			Page,P,usdlc.form('New Section: Page')
-			Blank,B,usdlc.form('New Section: General')
+			Blank,l,usdlc.form('New Section: General')
 		Split,S
 			To new page,p,usdlc.extractSectionInFocus(),alt+E
 			Into section,s,usdlc.splitIntoSections(),alt+S
@@ -67,14 +69,12 @@ Tasklist_Menu
 		Cut, u, usdlc.treeCut(),##^X meta+X
 		Paste, P, usdlc.treePaste(),##^V meta+V
 	Delete, D, usdlc.treeDelete(),##Del
-	Filter, F, usdlc.showTasklistFilter()
 	Insert, I, usdlc.treeInsert()
 	Move, M
 		Down, D, usdlc.treeMoveDown(),##shift+down
 		Left, L, usdlc.treeMoveLeft(),##shift+left
 		Right, R, usdlc.treeMoveRight(),##shift+right
 		Up, U, usdlc.treeMoveUp(),##shift+up
-	Refresh, e, usdlc.tasklistRefresh()
 	Rename, R, usdlc.treeRename()
 ContentTree_Menu
 	Back, B, usdlc.unsetTreeFocus(usdlc.inTasklist())

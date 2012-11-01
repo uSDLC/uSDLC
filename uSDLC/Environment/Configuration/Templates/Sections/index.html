@@ -26,8 +26,6 @@
 					</ul>
 				</div>
 				<hr>
-				<p>
-					&nbsp;</p>
 				<div class="treeLeafCount">
 					0</div>
 				<span style="font-size:12px;"><input activate="completedCheckbox" type="checkbox"> Completed</span>
@@ -56,6 +54,50 @@
 		</tr>
 	</tbody>
 </table>
+<p>
+	&nbsp;</p>
+</div><div id="s8" class="editable section"><h2>
+	<span>Workflow Filter</span></h2>
+<form id="newWorkflowReport" onsubmit="javascript:return usdlc.newWorkflowReport('newWorkflowReport')">
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					Project:</td>
+				<td>
+					<input activate="loadUsdlcProjects" name="project" size="32" type="text"></td>
+			</tr>
+			<tr>
+				<td>
+					State:</td>
+				<td>
+					<input activate="taskAutocomplete" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="State" role="textbox" size="26" type="text" value="*"></td>
+			</tr>
+			<tr>
+				<td>
+					Assigned to:&nbsp;</td>
+				<td>
+					<input activate="loadTaskUsers" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="Users" role="textbox" size="46" type="text"></td>
+			</tr>
+			<tr>
+				<td>
+					Priority:</td>
+				<td>
+					<select activate="loadTaskPriority" class="taskPriority" name="Priority" size="1"><option value="*">All</option><option value="">Not Set</option><option value="1">Overdue</option><option value="2">Immediate</option><option value="3">Critical</option><option value="4">Urgent</option><option value="5">High</option><option value="6">Normal</option><option value="7">Moderate</option><option value="8">Low</option><option value="9">Base</option></select></td>
+			</tr>
+			<tr>
+				<td>
+					Tags:</td>
+				<td>
+					<input activate="taskAutocomplete" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="Tags" role="textbox" size="46" type="text" value="*"></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: right; ">
+					<em><span style="font-size:12px;">* for all, blank for empty</span></em> &nbsp; &nbsp; &nbsp;<input name="workflowReport" type="submit" value="Workflow Report"></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
 <p>
 	&nbsp;</p>
 </div><div id="s7" class="editable section deleted"><h2>

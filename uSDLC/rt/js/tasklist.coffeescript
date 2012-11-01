@@ -43,7 +43,7 @@ $ ->
       hotkeys: hotkeys
       plugins : [ 'ui', 'html_data', 'themes', 'hotkeys', 'checkbox', 'types',
         'types', 'crrm', 'dnd', 'contextmenu', 'cookies', 'search' ]
-
+    usdlc.unsetTreeFocus(div)
     nextId = 2
     addId = (li) ->
       nextId += 1 while ($(id = "##{sectionId}t#{nextId}#{key}", div).size() > 0)
@@ -109,7 +109,7 @@ $ ->
   usdlc._activateTasklist = (div) ->
     hotkeys = $.extend {}, usdlc.treeHotkeys,
       'esc': -> usdlc.setContext 'Tasklist'; return false
-      'tab': -> usdlc.clearFocus(); return false
+      'tab': -> usdlc.setContentTreeFocus(); return false
 
     for hotkey in "abcdefghijklmnopqrstuvwxyz"
       actor = (hk) ->
@@ -169,27 +169,30 @@ $ ->
   usdlc.treeAction = (event) -> return usdlc.inTreeMode(event)?.data('actions')
 
   usdlc.setTasklistFocus = (section) ->
-    container = usdlc.setTreeFocus(section)
-    if container
+    if usdlc.treeInFocus(section)
+      container = usdlc.setTreeFocus(section)
       usdlc.extendTasklistUpdateTimer container
       container.next().children('input').focus().blur()
       usdlc.setContext 'Tasklist'
       container.addClass('inFocus')
 
-  usdlc.setTreeFocus = (container) ->
+  usdlc.treeInFocus = (container) ->
     return false if not container
     if not container.hasClass('jstree')
       container = $('.jstree', container).first()
-    return null if container.size() is 0
+    return false if container.size() is 0
+    return container
+
+  usdlc.setTreeFocus = (container) ->
+    container = usdlc.treeInFocus(container)
+    return false if not container
     container.jstree('set_focus')
     container.jstree('enable_hotkeys')
     return container
 
   usdlc.unsetTreeFocus = (container) ->
+    container = usdlc.treeInFocus(container)
     return false if not container
-    if not container.hasClass('jstree')
-      container = $('.jstree', container).first()
-    return false if container.size() is 0
     container.jstree('unset_focus')
     container.jstree('disable_hotkeys')
     container.removeClass('rounded pale-gray-box inFocus')
@@ -361,18 +364,6 @@ $ ->
       count = $('.jstree-leaf', tasklist).not('.hidden').size()
       $('.treeLeafCount', tasklist).text(count)
 
-  usdlc.showTasklistFilter = ->
-
-  usdlc.applyTasklistFilter = ->
-    usdlc.updateTreeCount()
-
-  usdlc.tasklistRefresh = ->
-    parameters =
-      pageURL: usdlc.pageContentsURL
-      sectionId: usdlc.inFocus.attr('id')
-    $.get '/usdlc/support/usdlc/refreshTasklist.groovy', parameters, (rslt) ->
-      usdlc.refreshPage()
-
   usdlc.packTasklist = (div) ->
     packed = []
     processLevel = (parent, depth) ->
@@ -401,6 +392,23 @@ $ ->
       unpacked.push "<li #{checked}><a href='#'>#{task}</a>"
     unpacked.push("</li></ul>") while depth-- > 0
     return unpacked.join('\n')
+
+  ###
+    Create a new section using the tasklist template
+  ###
+  usdlc.newTasklistSection = () ->
+    form = new usdlc.FormProcessor "#newTasklistSection"
+    title = form.fieldMap.title
+    section = usdlc.newSection "Tasklist"
+    section.insertAfter usdlc.inFocus
+    usdlc.closeDialog() if not form.fieldMap.KeepOpen
+    usdlc.loadSection 'Tasklist', 'Sections', (h1) ->
+      section.append h1.nextAll()
+      $('li:first', section).attr('id', "#{section.attr('id')}t1").html("<a href='#'>#{title}</a>")
+      $('div.taskDetail', section).attr('id', "#{section.attr('id')}t0d")
+      usdlc.setFocus section
+      usdlc.savePage()
+    return false
 
   $('div.taskDetail').live 'focus', (ev) -> usdlc.unsetTreeFocus(usdlc.inTasklist())
   $('div.taskDetail').live 'blur', (ev) -> usdlc.setTasklistFocus(usdlc.inTasklist())

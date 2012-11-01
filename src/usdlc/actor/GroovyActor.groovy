@@ -28,6 +28,7 @@ class GroovyActor extends Actor {
 					groovy: groovy,
 					include: dsl.&include,
 					write: { text -> out.print text },
+					printStream: out,
 					config: config,
 					dsl: dsl,
 					compile: { String scriptName ->

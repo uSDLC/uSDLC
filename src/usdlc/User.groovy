@@ -156,7 +156,7 @@ class User {
 
 	def toHtml() {
 		if (home) {
-			return "<a id='username' href='$home' class='contentLink' initials='$initials' action='page'>$userName</a>"
+			return "<a href='$home' class='contentLink' initials='$initials' action='page'>$userName</a>"
 		}
 		return ''
 	}

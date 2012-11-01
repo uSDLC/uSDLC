@@ -65,38 +65,17 @@ $ ->
 
   createSingleLink = (form, href, action, id, title) ->
     usdlc.createLink href, action, id, title
-
-  ###
-    Create a new section using the tasklist template
-  ###
-  usdlc.newTasklistSection = () ->
-    form = new usdlc.FormProcessor "#newTasklistSection"
-    project = form.fieldMap.project
-    title = form.fieldMap.title
-    section = usdlc.newSection "Tasklist"
-    section.insertAfter usdlc.inFocus
-    usdlc.closeDialog() if not form.fieldMap.KeepOpen
-    usdlc.loadSection 'Tasklist', 'Sections', (h1) ->
-      section.append h1.nextAll()
-      if project
-        $('div.tasklist', section).attr('source', "~#{project}/usdlc")
-        title = usdlc.decamel(project) if not title
-      $('li:first', section).attr('id', "#{section.attr('id')}t1").html("<a href='#'>#{title}</a>")
-      $('div.taskDetail', section).attr('id', "#{section.attr('id')}t0d")
-      usdlc.setFocus section
-      usdlc.savePage()
-    return false
   ###
   Called by form to create a new section below the current one. It will create
   a new header link pointing to a child page based on the title.
   ###
-  usdlc.newGeneralSection = (type) ->
+  usdlc.newGeneralSection = (type, allowEditing = true) ->
     form = new usdlc.FormProcessor "#new#{usdlc.camelCase(type)}Section"
     title = form.fieldMap['title']
     id = usdlc.nextSectionId()
     heading = $ '<span/>'
     heading.html title
-    if insertNewSection form, heading, 2, id, type
+    if insertNewSection(form, heading, 2, id, type) and allowEditing
       usdlc.editSectionInFocus()
     return false
   ###
@@ -212,6 +191,7 @@ $ ->
 
   usdlc.loadUsdlcProjects = (input) ->
     usdlc.autocomplete input, '/usdlc/support/usdlc/loadProjects.groovy'
+    input.val(usdlc.getProject())
 
   usdlc.createNewUser = ->
     form = new usdlc.FormProcessor "#createNewUser"
@@ -223,3 +203,6 @@ $ ->
         usdlc.highlight('red')
         alert(rslt)
     return false
+
+  usdlc.getProject = ->
+    usdlc.decamel /\/~(.*?)\//.exec(usdlc.pageContentsURL)[1]

@@ -24,7 +24,6 @@ files = [
 		'usdlc/rt/css/sausage.css',
 		'usdlc/rt/css/editor.css',
 ]
-
 fileProcessorWithGzip('.store/css/usdlc.css', files) {
 	Store inputFile, Writer writer -> writer.write(inputFile.text)
 	// copy jQueryUI images as they are expected to be below the css
@@ -61,7 +60,6 @@ files = [
 		'usdlc/rt/js/new.coffeescript',
 		'usdlc/rt/js/postLoader.coffeescript',
 ]
-
 coffeeCompiler = new CoffeeScript()
 javascriptBuilder('.store/js/usdlcPre.js', files, coffeeCompiler)
 
@@ -81,5 +79,9 @@ files = [
 Store.base('usdlc/lib/CodeMirror/mode').dirs(~/\w+\.js/) { Store store ->
 	files += store.path;
 }
-
 javascriptBuilder('.store/js/usdlcPost.js', files, coffeeCompiler)
+
+files = [
+		'usdlc/lib/dhtmlx/dhtmlxgrid_std_full/dhtmlxgrid_std.js',
+]
+javascriptBuilder('.store/js/dhtmlx.js', files, coffeeCompiler)

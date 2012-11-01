@@ -123,9 +123,7 @@ $(function() {
 				path = window.location.hash || usdlc.cookie('currentPage') || path
 				if (path[0] == '#') path = path.substring(1)
 			}
-//			setTimeout(function(){
 			usdlc.absolutePageContents(path, callback)
-//			}, 500)
 		},
 		finalise : function() {
 			if (testScripts.length) {
@@ -134,12 +132,13 @@ $(function() {
 				// move from do-nothing to do-it-all and then generate
 				// for already loaded first page.
 				usdlc.synopses = usdlc.doSynopses
-				usdlc.synopses()
+//				usdlc.synopses()
 				usdlc.activateHtml($('body'))
 				while (usdlc.finalisers.length > 0) {
 					usdlc.finalisers.shift()()
 				}
 				usdlc.finalisers.done = true
+				usdlc.finalised = true
 				usdlc.refreshPage()
 			}
 		},

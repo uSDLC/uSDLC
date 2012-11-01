@@ -89,7 +89,7 @@ $(function() {
 					function(a, s, c) { return c.toUpperCase() })
 		},
 		decamel : function(text) {
-			return text.replace(/(\w)([A-Z])/g,
+			return text.replace(/([a-z0-9]{2})([A-Z])/g,
 					function(a, c1, c2) { return c1 + ' ' + c2 })
 		},
 		inEditMode: function(event) {

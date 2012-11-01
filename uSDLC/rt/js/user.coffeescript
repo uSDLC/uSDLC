@@ -53,4 +53,5 @@ $ ->
           usdlc.alert('Password Change Failure')
     return false
 
-  usdlc.userInitials = -> $('a#username').attr('initials')
+  usdlc.userInitials = -> $('div#username a').attr('initials')
+  usdlc.userName = -> $('div#username a').text()

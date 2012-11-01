@@ -7,11 +7,12 @@ $ ->
 
   for hotkey in "abcdefghijklmnopqrstuvwxyz"
     actor = (hk) ->
-      return -> console.log(hk); usdlc.menuKeystroke(hk); return false
+      return -> usdlc.menuKeystroke(hk); return false
     hotkeys[hotkey] = actor(hotkey)
 
   usdlc.contentTree = usdlc.contentTreeContainer.jstree
-    animation : 0
+    core :
+      animation : 0
     html_data :
       ajax :
         url : (li) ->
@@ -71,25 +72,36 @@ $ ->
     usdlc.contentTree.jstree 'refresh', li
     setTimeout("$('#contentTree').css('width','')", 500);
 
-  usdlc.contentTree.setFocus = (to) ->
-    steps = to.replace(/\/index\.html(@.*)?$/, '').split('/')
+  usdlc.contentTree.focussing = false
+
+  onAfterOpen = ->
+
+  contentTreeSetFocus = (to) ->
+    return if usdlc.contentTree.focussing
+    usdlc.contentTree.focussing = true
+    to = to.replace(/\/index\.html.*$/, '').replace(/^\/?~/, '')
+    steps = to.split('/')
     last = steps.length - 1
-    id = '#'
-    open_node = (index) ->
-      if steps[index][0] == '~'
-        id += usdlc.camelCase " #{steps[index].substring(1)}"
-        open_node(index + 1)
+    id = "##{steps[0]}"
+    index = 0
+    open_node = ->
+      index += 1
+      id += usdlc.camelCase " #{steps[index]}" # leading space = upper first
+      if index < last
+        onAfterOpen = -> open_node(index)
+        usdlc.contentTree.jstree 'open_node', id, false, true
       else
-        id += usdlc.camelCase " #{steps[index]}" # leading space = upper first
-        if index < last
-          callback = -> open_node(index + 1)
-          usdlc.contentTree.jstree 'open_node', id, callback, true
-        else
-          usdlc.contentTree.jstree 'select_node', id, true
-          usdlc.contentTree.jstree 'hover_node', id, true
-    open_node(1)
+        onAfterOpen = ->
+        usdlc.contentTree.jstree 'select_node', id, true
+        usdlc.contentTree.jstree 'hover_node', id, true
+        usdlc.contentTree.focussing = false
+    open_node()
+  usdlc.contentTree.setFocus = (to) ->
+    action = -> contentTreeSetFocus(to)
+    setTimeout(action, 1000)
 
   usdlc.contentTree.bind(
+    'after_open.jstree': -> setTimeout(onAfterOpen, 500)
     'rename.jstree': (event, data) ->
       renameTo = data.rslt.new_name
       if renameTo isnt data.rslt.old_name
@@ -187,6 +199,7 @@ $ ->
     moveout: moveout
 
   usdlc.setContentTreeFocus = ->
+    usdlc.clearFocus()
     container = usdlc.setTreeFocus(usdlc.contentTreeContainer)
     if container
       container.addClass 'rounded pale-gray-box inFocus'
@@ -196,3 +209,5 @@ $ ->
     $.get "/usdlc/support/usdlc/contentTree.groovy", data, (rslt) ->
       usdlc.reloadAfterRefresh = href
       usdlc.contentTree.jstree 'refresh', needingRefresh
+
+  usdlc.contentTreeContainer.bind 'click', usdlc.setContentTreeFocus()

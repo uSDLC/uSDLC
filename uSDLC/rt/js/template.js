@@ -47,7 +47,9 @@ $(function () {
 		},
 		refreshPage: function() {
 			pageHistory.pop()
-			usdlc.absolutePageContents(usdlc.pageContentsURL)
+			var section = usdlc.inFocus ? usdlc.inFocus : usdlc.lastFocus
+			var url = usdlc.pageContentsURL+'@'+section.attr('id')
+			usdlc.absolutePageContents(url)
 		},
 		absolutePageContents:function (path, afterwards) {
 			usdlc.clearFocus()
@@ -57,11 +59,12 @@ $(function () {
 					to == pageHistory[pageHistory.length - 1]) {
 				if (afterwards) afterwards()
 			} else {
-				$.get(to.split('@')[0], function (data) {
+				pageOnly = to.split('@')[0]
+				$.get(pageOnly, function (data) {
 					if (usdlc.pageIsLocked(data)) {
 						usdlc.highlight('pink')
 					} else if (to.indexOf("action=") == -1) {
-						usdlc.pageContentsURL = to.split('@')[0]
+						usdlc.pageContentsURL = pageOnly
 						window.location.hash = usdlc.reduceUrl(to)
 						pageHistory.push(to)
 						if (pageHistory.length > 100) {
@@ -71,7 +74,7 @@ $(function () {
 								setUrl(usdlc.pageContentsURL).attr("directory")
 						base = "http://" + window.location.host + base
 						$('base').attr('href', base)
-						usdlc.setCookie('currentPage', usdlc.pageContentsURL)
+						usdlc.setCookie('currentPage', to)
 
 						usdlc.pageContents.html(data)
 						usdlc.activateHtml(usdlc.pageContents)
@@ -79,10 +82,6 @@ $(function () {
 						usdlc.synopses()
 						usdlc.pageContentsSausages.sausage()
 						usdlc.scrollTop()
-						usdlc.finalisers.add(
-								function(){usdlc.contentTree.setFocus(to)})
-						usdlc.contentTree.setFocus(to)
-						usdlc.clearFocus()
 						path = path.split('@')
 						usdlc.finalisers.add(
 							function(){
