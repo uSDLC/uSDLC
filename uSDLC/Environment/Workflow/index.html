@@ -22,10 +22,11 @@
 <select name="Priority" size="1" activate="loadTaskPriority" class="taskPriority">
 <option value="1">Overdue</option> <option value="2">Immediate</option> <option value="3">Critical</option> <option value="4">Urgent</option> <option value="5">High</option> <option selected="selected" value="6">Normal</option> <option value="7">Moderate</option> <option value="8">Low</option> <option value="9">Base</option>
 </select>
-&nbsp;raise on start
-<input activate="taskCheckbox" checked="checked" name="raiseOnStart" type="checkbox" value="true">,
-overdue
-<input activate="taskCheckbox" checked="checked" name="raiseOnOverdue" type="checkbox" value="true"></p>
+Start
+<input activate="taskCheckbox" checked="checked" name="raiseOnStart" type="checkbox" value="true" title='Raise on start'>
+Over
+<input activate="taskCheckbox" checked="checked" name="raiseOnOverdue" type="checkbox" value="true" title='Raise on overdue'>
+Order <input name="Order" size="3" type="text"></p>
 <fieldset><legend>Schedule</legend>
 Start:
 <input activate="taskDatePicker" name="Start" pair="first" size="10" type="text">
@@ -37,7 +38,7 @@ Start:
 <fieldset class="taskPageLinks"> <legend>References</legend></fieldset>
 <input name="AddClip" onclick="usdlc.addTaskClip(this)" type="button" value="Add Clipboard Reference">
 <p>Notes<br>
-<textarea class="newTaskNote" cols="26" name="Notes" rows="5"></textarea><br>
+<textarea class="newTaskNote" cols="32" name="Notes" rows="5"></textarea><br>
 <input name="AddNote" onclick="usdlc.addTaskNote(this)" type="button" value="Add Note"></p>
 <fieldset class="taskHistory"><legend>History</legend></fieldset>
 </form></div>

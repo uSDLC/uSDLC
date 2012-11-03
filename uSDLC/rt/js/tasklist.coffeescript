@@ -180,8 +180,8 @@ $ ->
     return false if not container
     if not container.hasClass('jstree')
       container = $('.jstree', container).first()
-    return false if container.size() is 0
-    return container
+      return false if container.closest('.workflow').size() isnt 0
+    return if container.size() then container else false
 
   usdlc.setTreeFocus = (container) ->
     container = usdlc.treeInFocus(container)
