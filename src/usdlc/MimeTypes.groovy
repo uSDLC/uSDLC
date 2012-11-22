@@ -183,6 +183,7 @@ class MimeTypes {
 			vcf: 'text/x-vcard',
 			vrml: 'x-world/x-vrml',
 			wav: 'audio/x-wav',
+			workflow: 'application/javascript',
 			wcm: 'application/vnd.ms-works',
 			wdb: 'application/vnd.ms-works',
 			wks: 'application/vnd.ms-works',

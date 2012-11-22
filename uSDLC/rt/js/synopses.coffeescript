@@ -5,13 +5,14 @@ $ ->
     form = new usdlc.FormProcessor "#new#{type}Synopsis"
     html = form.toHtml()
     usdlc.closeDialog()
+    synopsisSection.append "<div class='pageType'>#{type}</div>"
     if html.length
       synopsisSection.append html
       usdlc.savePage()
 #      for name, value of form.fieldMap
 #        usdlc.saveLocalAutocomplete name, value
-    else
-      usdlc.editSectionInFocus()
+#    else
+#      usdlc.editSectionInFocus()
 
   usdlc.selectSynopsisTab = (tabs) ->
     type = $.trim($('div.pageType').text())
@@ -31,12 +32,12 @@ $ ->
     $("div.synopsis a[action]").each ->
       link = $ this
       action = link.attr "action"
-      if action is 'runnable'
+      if action in ['runnable','reference']
         loadSynopsis link, usdlc.displaySource
       else
         loadSynopsis link, (wrapper, data) ->
           html = $("<div/>").html(data).children("div.section").first()
-          $('.pageType', html).remove()
+          $('.pageType,.workflow', html).remove()
           if html.text()
             children = html.children()
             wrapper.append if children.length then children else html

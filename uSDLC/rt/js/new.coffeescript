@@ -7,7 +7,6 @@ $ ->
     form = new usdlc.FormProcessor "#new#{type}Section"
     title = form.fieldMap['title']
     href = usdlc.camelCase(title)
-    href = "#{type}_#{href}" if type isnt 'General'
     id = usdlc.nextSectionId()
     a = usdlc.createLink href, 'page', "#{id}a0", title
     insertNewSection form, a, 2, id, type
@@ -127,12 +126,17 @@ $ ->
   ###
   Creates basic new section code.
   ###
-  usdlc.newSection = (type = '', id = usdlc.nextSectionId()) ->
+  usdlc.newSection = (type = 'General', id = usdlc.nextSectionId()) ->
     div = $ "<div/>",
       id : id
       'class' : "editable section synopsis #{type}"
-    if type
-      div.append "<div class='sectionType'>#{type}</div>"
+    div.prepend "<div class='sectionType'>#{type}</div>"
+    return div
+
+  usdlc.getSectionTypeDiv = (section = usdlc.inFocus) ->
+    div = section.find('div.sectionType')
+    if not div.size()
+      section.prepend "<div class='sectionType'>General</div>"
     return div
 
   usdlc.loadActorTypes = (select) ->
@@ -204,5 +208,8 @@ $ ->
         alert(rslt)
     return false
 
-  usdlc.getProject = ->
-    usdlc.decamel /\/~(.*?)\//.exec(usdlc.pageContentsURL)[1]
+  usdlc.getProject = -> usdlc.decamel usdlc.getProjectURL()
+  usdlc.getProjectURL = -> /\/~(.*?)\//.exec(usdlc.pageContentsURL)[1]
+
+  usdlc.absolutePath = (path = usdlc.pageContentsURL) ->
+    path = usdlc.reduceUrl(path).split('@')[0]

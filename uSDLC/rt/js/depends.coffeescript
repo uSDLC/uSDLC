@@ -1,0 +1,44 @@
+$ ->
+  scriptIndex = 0
+
+  usdlc.depends = (url, callback) ->
+    if code = usdlc.depends.cache[url]
+      return callback code
+
+    globalVar = "_dependency_#{scriptIndex++}"
+
+    script = document.createElement("script")
+    script.type = "text/javascript"
+    script.async = "async"
+    onScriptLoaded = ->
+      code = usdlc.depends.cache[url] = window[globalVar]() ? {}
+      delete window[globalVar]
+      callback code
+
+    if script.readyState # IE
+      script.onreadystatechange = ->
+        if script.readyState == "loaded" || script.readyState == "complete"
+          script.onreadystatechange = null;
+          onScriptLoaded();
+    else # Other browsers
+     script.onload = -> onScriptLoaded()
+
+    script.src = "#{url}?globalVar=#{globalVar}"
+    head.appendChild(script)
+
+  usdlc.depends.module = (module) ->
+    # ~project/path/module -> ~project/path/module.coffeescript
+    # module -> ./module.coffeescript or on system path if not local
+    # ../path/module ->../path/module.coffeescript
+    # module/ -> ./module/index.coffeescript
+    url = module
+    url += 'index' if module[-1] is '/'
+    url += '.coffeescript' if url.lastIndexOf('/') >= url.lastIndexOf('.')
+    if url[0] isnt '~'
+      base = usdlc.reduceUrl(usdlc.pageContentsURL).split('@')[0]
+      url = "#{base}/#{url}"
+    return url
+
+  usdlc.depends.cache = {}
+
+  usdlc.depends.forceReload = (url) -> delete usdlc.depends.cache[url]

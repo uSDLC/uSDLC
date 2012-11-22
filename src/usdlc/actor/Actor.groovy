@@ -64,8 +64,8 @@ import static usdlc.config.Config.config
 					Groovy.loadClass(
 						"usdlc.actor.${data.baseLanguage.capitalize()}Actor")
 					cache[language] = actorClass ?
-					actorClass.newInstance() :
-					new DslActor("${data.baseLanguage.toLowerCase()}DSL")
+						actorClass.newInstance() :
+						new DslActor("${data.baseLanguage.toLowerCase()}DSL")
 			}
 			cache[language].backingScripts = data.scripts
 		}

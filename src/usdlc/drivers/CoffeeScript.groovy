@@ -32,13 +32,36 @@ class CoffeeScript {
 	 * Retrieve a reference to the javascript file created from a cs compile
 	 */
 	Store javascript(Store coffeescript, preprocessor = {text->text}) {
-		Store javascript = Store.base('~home/.store/coffeescript/base',
-				coffeescript.project).rebase(
-					coffeescript.fromProjectHome + '.js')
+		Store javascript = outputStore(coffeescript)
 
 		if (coffeescript.newer(javascript)) {
 			javascript.write(compile(coffeescript, preprocessor).bytes)
 		}
 		javascript
+	}
+
+	Store javascript(Collection coffeescripts) {
+		Store javascript = outputStore(coffeescripts[0])
+
+		def recompile = false
+		for (coffeescript in coffeescripts) {
+			if (coffeescript.newer(javascript)) {
+				recompile = true
+				break
+			}
+		}
+		if (recompile) {
+			javascript.delete();
+			for (coffeescript in coffeescripts) {
+				javascript.append(compile(coffeescript).bytes)
+			}
+		}
+		javascript
+	}
+
+	private outputStore(coffeescript) {
+		return Store.base('~home/.store/coffeescript/base',
+				coffeescript.project).rebase(
+					coffeescript.fromProjectHome + '.js')
 	}
 }

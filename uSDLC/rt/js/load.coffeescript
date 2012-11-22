@@ -1,3 +1,4 @@
+$ ->
 #window.usdlc =
 #	synopses : -> # we will provide one with teeth after
 #	###

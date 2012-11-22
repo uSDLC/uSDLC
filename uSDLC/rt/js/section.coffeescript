@@ -142,6 +142,7 @@ $ ->
             self.attr('action', 'runnable')
           self.addClass('sourceLink')
     )
+    usdlc.workflowForEdited($section)
     usdlc.checkForSynopsis($section)
     usdlc.savePage()
   ###
@@ -149,6 +150,7 @@ $ ->
   ###
   usdlc.deleteSectionInFocus = ->
     if usdlc.inFocus and not usdlc.inFocus.hasClass('deleted')
+      usdlc.markWorkflowSectionDeleted()
       usdlc.classify(usdlc.inFocus, 'deleted')
   ###
   restore a deleted section

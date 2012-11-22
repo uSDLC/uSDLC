@@ -154,7 +154,3 @@ div.taskHistoryItem {
 	font-size: small;
 	border-bottom: 1px #CCC solid;
 }
-
-span.taskHistoryDate {
-	font-weight: bold;
-}

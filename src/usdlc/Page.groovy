@@ -67,11 +67,7 @@ class Page {
 			} else {
 				title = fn.name
 			}
-			title = title.split('_')
-			page.select('div#pageTitle h1').html(Store.decamel(title[-1]))
-			if (title.size() > 1) {
-				page.select('div#s1').append("<div class='pageType'>${title[-2]}</div>\n")
-			}
+			page.select('div#pageTitle h1').html(Store.decamel(title))
 			page.save()
 		}
 		return store
@@ -331,8 +327,10 @@ class Page {
 			Workflow(dom) {
 				if (dom) {
 					dom.text().trim().split(';;').each {
-						def (key, value) = it.split('=')
-						map[key] = map[key] ? "${map[key]}\n$value" : value
+						if (it.indexOf('=') != -1) {
+							def (key, value) = it.split('=')
+							map[key] = map[key] ? "${map[key]}\n$value" : value
+						}
 					}
 				}
 			}

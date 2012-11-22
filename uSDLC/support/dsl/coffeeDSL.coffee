@@ -6,7 +6,8 @@ print = (text) -> exchange.response.print "#{text}\n"
 output = (text) -> exchange.response.print text
 
 session = exchange.getRequest().session
-include = run = dsl = (script) -> support.include script
+include = run = dsl = (scripts...) ->
+  support.include script for script in scripts
 # measure running time at any point (in seconds)
 startTime = java.lang.System.currentTimeMillis()
 timer = ->
@@ -19,6 +20,8 @@ random = (below) -> Math.floor Math.random() * below
 pick = (list) -> list.splice(random(list.length), 1)[0]
 # Do absolutely nothing when required
 do_nothing = ->
+# synonym for null
+nothing = null
 # swallow exceptions when they don't matter
 swallow = (action) ->
   try

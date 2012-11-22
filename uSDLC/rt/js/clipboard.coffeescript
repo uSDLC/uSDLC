@@ -13,12 +13,18 @@ $ ->
   paste = (item) ->
     return if not usdlc.inFocus
     contents = item.data 'section'
+    href = item.data 'href'
     section = usdlc.newSection()
+    section.empty()
     section.append contents.children()
+    sectionTypeDiv = section.find('div.sectionType')
+    sectionType = sectionTypeDiv.text()
+    sectionTypeDiv.html("<a href='#{href}' action='page' class='usdlc'> #{sectionType}</a>")
     section.insertAfter(usdlc.inFocus)
     usdlc.setFocus(section)
     usdlc.savePage()
     item.remove()
+    clipboard.dialog('close') if clipboard.children('div').size() == 0
 
   usdlc.clipboard =
     clear: ->
@@ -33,12 +39,15 @@ $ ->
         section = usdlc.inFocus.clone()
         section.find('.topMenu').remove()
         section.find('.inclusion').remove()
+        section.find('.workflowSummary').remove()
+        section.find('.workflow').remove()
         section.find('a.usdlc').each (index, a) ->
           a = $ a
           href = a.attr 'href'
           if href.indexOf('/') == -1
             a.attr 'href', "#{usdlc.reduceUrl usdlc.pageContentsURL}/#{href}"
         item.data 'section', section
+        item.data 'href', url
         clipboard.append item
     makeLink: (url, title) ->
       link = "<a href='#{url}' action='page' class='usdlc'>"

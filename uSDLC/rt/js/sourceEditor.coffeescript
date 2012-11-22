@@ -61,6 +61,8 @@ $ ->
           '&runstate=changed&after=usdlc.actorStates()')
       usdlc.activeSourceEditor.contentChanged = false
       usdlc.actorState()
+      usdlc.workflowForEdited()
+      usdlc.depends.forceReload(usdlc.activeSourceEditor.url)
   # Links that don't end in .html can be edited with the source editor
   usdlc.displaySource = (wrapper, data, url) ->
     if not usdlc.dsls
@@ -97,7 +99,7 @@ $ ->
       value : data
       mode : syntax
       theme : 'elegant'
-      indentUnit : 4
+      indentUnit : 2
       indentWithTabs : false
       tabMode : 'indent'
       enterMode : 'indent'

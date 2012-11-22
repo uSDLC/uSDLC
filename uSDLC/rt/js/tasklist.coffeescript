@@ -15,7 +15,7 @@ $ ->
     id = "#{li.attr('id')}d"
     detail = $("##{id}")
     if detail.size()
-      usdlc.tasklistHistory(detail, "#{action} task '#{text}'")
+      usdlc.tasklistHistory(detail, "#{action} task", text)
       usdlc.updateTreeCount(li)
     else
       usdlc.pokeTasklistUpdateTimer(li)
@@ -234,7 +234,7 @@ $ ->
       selectedOption = select.options[index]
       $(selectedOption).attr('selected', 'selected')
       $select.val(value)
-      usdlc.tasklistHistory $select, "Priority: #{selectedOption.text}"
+      usdlc.tasklistHistory $select, 'Priority', selectedOption.text
 
   saveCheckbox = (input) ->
     checked = input.attr 'checked'
@@ -248,7 +248,7 @@ $ ->
   usdlc.taskCheckbox = (input) ->
     input.change ->
       saveCheckbox input
-      usdlc.tasklistHistory input, "#{input.attr('name')}: #{input.attr('checked') ? 'no'}"
+      usdlc.tasklistHistory input, input.attr('name'), input.attr('checked') ? 'no'
 
   usdlc.taskAutocomplete = (input) ->
     usdlc.loadLocalAutocomplete(input)
@@ -259,16 +259,17 @@ $ ->
       dateFormat: 'D dd-M'
       onClose: (dateText) ->
         input.attr 'value', dateText
-        usdlc.tasklistHistory input, "#{input.attr('name')} date: #{dateText}"
+        usdlc.tasklistHistory input, "#{input.attr('name')} date", dateText
 
   usdlc.addTaskClip = (elem) ->
     a = usdlc.clipboard.pasteLink(elem,'div.taskDetail','fieldset.taskPageLinks')
-    usdlc.tasklistHistory(elem, "Reference: #{a.html()}")
+    usdlc.tasklistHistory(elem, 'Reference', a.html())
 
   usdlc.addTaskNote = (button) ->
     parent = $(button).closest('div.taskDetail')
     textarea = $('textarea.newTaskNote', parent)
-    usdlc.tasklistHistory(button, "Note: #{textarea.val()}")
+    contents = textarea.val()
+    usdlc.tasklistHistory(button, 'Note', contents) if contents
     textarea.val('')
 
   usdlc.addTasklistHistoryOnBlur = (element, label) ->
@@ -278,22 +279,29 @@ $ ->
       if newValue isnt oldValue
         element.attr 'value', newValue
         element.data 'value', newValue
-        usdlc.tasklistHistory element, "#{label}: #{element.val()}"
+        usdlc.tasklistHistory element, label, element.val()
 
-  usdlc.tasklistHistory = (element, entry) ->
+  usdlc.tasklistHistory = (element, type, message) ->
+    return if not element
     usdlc.pokeTasklistUpdateTimer(element)
-    return if not entry
+    return if not message
     taskDetail = $(element).closest('div.taskDetail')
     date = $.datepicker.formatDate('dd-M-y', new Date())
     initials = usdlc.userInitials()
-    usdlc.saveTasklistHistory taskDetail, "#{date} #{initials}", entry
 
-  usdlc.saveTasklistHistory = (taskDetail, title, entry, end = 'prepend') ->
-    html = "<span class='taskHistoryDate'>#{title}</span>: #{entry}"
-    history = $('fieldset.taskHistory', taskDetail)
-    div = $('<div/>').addClass('taskHistoryItem')
-    div.html(html)
-    history[end](div)
+    title = "#{date} #{initials}"
+    history = usdlc.getTasklistHistory(taskDetail)
+    lastTitle = history.find('b:first-child').text()
+    history.prepend("<b>#{title}</b><br>\n") if title isnt lastTitle
+    history.find('b').first().after("<br><i>#{type}</i>: #{message}\n")
+
+  usdlc.getTasklistHistory = (workflowItem) ->
+    historyFieldset = $('fieldset.taskHistory', workflowItem)
+    history = historyFieldset.find('div')
+    if not history.size()
+      historyFieldset.append('<div/>')
+      history = historyFieldset.find('div')
+    return history
 
   usdlc.taskNameFromLi = (li) -> $.trim(li.children('a').text())
 
@@ -320,8 +328,8 @@ $ ->
     taskDetailDefault.attr('copy', true)
     taskDetailDefault.addClass('taskDetail')
     taskDetailDefault.empty().append(taskDetail.clone().children())
-    usdlc.tasklistHistory taskDetailDefault, "Set as default"
-    usdlc.tasklistHistory taskDetail, "Used for default"
+    usdlc.tasklistHistory taskDetailDefault, 'Default', 'set'
+    usdlc.tasklistHistory taskDetail, 'Default', 'used'
 
   usdlc.newDetail = (detailsPane, id) ->
       detailDiv = detailsPane.children('div').first()
@@ -344,12 +352,12 @@ $ ->
     div = $(div).closest("div.section")
     usdlc.clearTasklistUpdateTimer(div)
     updateTimeout = -> usdlc.saveTasklist div
-    div.data('needingSaveTimer', setTimeout(updateTimeout, 30000))
+    div.data('needingSaveTimer', setTimeout(updateTimeout, 300000))
   usdlc.extendTasklistUpdateTimer = (div) ->
     div = div.closest("div.section")
     if usdlc.clearTasklistUpdateTimer(div)
       updateTimeout = -> usdlc.saveTasklist div
-      div.data('needingSaveTimer', setTimeout(updateTimeout, 30000))
+      div.data('needingSaveTimer', setTimeout(updateTimeout, 300000))
   usdlc.clearTasklistUpdateTimer = (div) ->
     div = div.closest("div.section")
     needingSaveTimer = div.data('needingSaveTimer')

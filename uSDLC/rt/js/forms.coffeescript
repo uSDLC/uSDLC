@@ -1,14 +1,14 @@
 $ ->
   class FormProcessor
     constructor: (selector) ->
-      @form = $ selector
+      @dom = $ selector
       @fieldMap = {}
       @altMap = {}
       @fieldList = []
       self = this
-      $.each @form.serializeArray(), (i, field) =>
+      $.each @dom.serializeArray(), (i, field) =>
         @fieldMap[field.name] = field.value
-        alt = $("[name=#{field.name}]", @form).attr('alt')
+        alt = $("[name=#{field.name}]", @dom).attr('alt')
         if not alt
           if field.name[field.name.length - 1] == '_'
             alt = field.name.replace(/_/g, ' ')
@@ -33,6 +33,12 @@ $ ->
             html.push value
       return '' if not html.length
       return "<div>#{html.join('<br/>')}</div>".replace(/<br.>::/, '&nbsp;')
+
+    setField: (name, value) ->
+      @fieldMap[name] = value
+      field = $("[name=#{name}]", @dom)
+      field.val value
+      field.attr('value', value)
 
   usdlc.FormProcessor = FormProcessor
 
@@ -70,6 +76,9 @@ $ ->
     $.get scriptPath, parameters, (response) ->
       parameters.source = eval response
       autocomplete input, parameters
+
+  usdlc.presetAutocomplete = (input, values) ->
+    autocomplete input, source: values
 
   usdlc.loadLocalAutocomplete = (input, parameters = {}) ->
     input.empty()

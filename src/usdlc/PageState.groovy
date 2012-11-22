@@ -17,7 +17,7 @@ class PageState {
 		}
 	}
 	/** Save the link states and walk up parents telling everyone */
-	def save(includes) {
+	def save(includes = {}) {
 		// add includes to succeeded
 		includes.each {linkStates[it] = 'succeeded'}
 		// save link states - used to display colour for all links

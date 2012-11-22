@@ -3,5 +3,7 @@ if not window.usdlc
   hash = url.hash.substring(1)
   if hash then document.cookie = "currentPage=#{hash}"
   url.href = "#{url.protocol}//#{url.host}/usdlc/home"
-else if $('div.section:first').text().length < 24
+else
+  synopsis = $('div.section:first')
+  if synopsis.text().length < 24
     usdlc.form 'Synopsis:', usdlc.selectSynopsisTab

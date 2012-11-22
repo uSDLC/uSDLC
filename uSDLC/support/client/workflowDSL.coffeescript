@@ -1,0 +1,49 @@
+form = usdlc.getWorkflowFormProcessor()
+sectionType = usdlc.getSectionType(usdlc.inFocus)
+
+# potential assignees
+owner =
+  name: owners[sectionType] ? ''
+  required:  ->
+    return true if owner.name in form.fieldMap.Users
+    alert "Must be assigned to #{owner.name} for this operation"
+    return false
+note =
+  contents: form.fieldMap.Notes
+  required: ->
+    return true if note.contents
+    alert "This operation requires a note of explanation.\nDon't press 'Add Note'"
+    return false
+
+editor = usdlc.userName()
+
+section = (action, allowed = true) ->
+  return if not allowed
+  switch action
+    when 'deleted' then usdlc.deleteSectionInFocus()
+
+deleted = 'deleted'
+
+requiring = (field_name) -> return field_name.required()
+
+assign = (person, allowed = true) ->
+  return if not allowed
+  form.setField 'Users', person
+
+prior = ->
+  # find prior editor from history
+
+clear = (field, do_clear = true) ->
+  form.setField(field, '')
+assignment = 'Users'
+
+mark = (state, allowed) ->
+  return if not allowed
+  usdlc.changeState form, state
+
+exported =
+  workflows: workflows
+  default_workflow: default_workflow
+  default_actions: default_actions
+
+`return exported`

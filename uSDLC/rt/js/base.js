@@ -123,7 +123,8 @@ $(function() {
 			if (usdlc.pageContentsURL.indexOf('/Configuration/Templates/') == -1) {
 				$('*[activate]', html).each(function() {
 					var element = $(this)
-					if (!element.hasClass('template')) {
+					var form = element.closest('form')
+					if (!element.hasClass('template') && !form.hasClass('template')) {
 						var action = element.attr('activate')
 						try {
 							usdlc[action](element)

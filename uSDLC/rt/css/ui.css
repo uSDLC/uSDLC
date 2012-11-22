@@ -103,7 +103,11 @@ div.taskDetail fieldset {
 }
 div.taskDetail fieldset.taskHistory {
 	font-weight: normal;
-	white-space: pre-wrap;
+	/*white-space: pre-wrap;*/
+}
+
+div.taskDetail fieldset.taskHistory b, div.taskDetail fieldset.taskHistory i {
+	color: blue;
 }
 
 div.workflow div.tasklist {

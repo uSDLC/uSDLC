@@ -2,20 +2,81 @@
  <h1>Forms</h1>
  <h2></h2>
 </div>
-<div id="s1" class="editable section"><div><b class="blue">As a</b> uSDLC Administrator<br><b class="blue">I want</b> to be able to change the new section forms<br><b class="blue">so that</b> a customised experience for my site</div></div><div id="s11" class="editable section"><div class="sectionType">
-	Guide</div>
-<h2>
-	<span>Synopsis</span></h2>
-<p>
-	The first section on any page is a synopsis that is displayed in the referencing parent page. <em><strong>uSDLC</strong></em> facilitates organised design by offering a form of ubiqitous language fields that will fill the synopsis.</p>
-<p>
-	This form is only an option. You can always press escape and edit the synopsis section yourself.</p>
-<p>
-	The <strong><em>As a // I want // so that</em></strong> ubiqitous language introduced in behaviour driven development (BDD) provides the default questions for Project through to Feature pages. This can be changed to anything your team requires by editing any or all of the forms. Input elements have an alt attribute that is used for the bold ubiqitous sentence start.</p>
+<div id="s1" class="editable section"><p>
+	When you open a page for the first time <em><strong>uSDLC</strong></em> offers advice on filling it the synopsis that can be seen from the parent page.</p>
 </div>
 <div id="s10" class="editable section"><h1>
 	Synopsis: General</h1>
 <form action="javascript:usdlc.newSynopsis('General')" id="newGeneralSynopsis" method="post">
+	<div class="centreForm">
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right" valign="bottom">
+						<input name="newGeneralSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	Enter the synopsis for this general unclassified page. Accept the responsibility to put in more detail because this page type does not lie within the formal design by decomposition guidelines.</div>
+</div>
+<div id="s23" class="editable section"><h1>
+	Synopsis: Project</h1>
+<form action="javascript:usdlc.newSynopsis('Project')" id="newProjectSynopsis" method="post">
+	<div class="centreForm">
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right" valign="bottom">
+						<input name="newGeneralSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	Enter a complete but concise overview of the project. If you feel the need to elucidate, create a guide section below the synopsis. Sections on this page are usually vision points.</div>
+</div>
+<div id="s15" class="editable section"><h1>
+	Synopsis: Vision</h1>
+<form action="javascript:usdlc.newSynopsis('Vision')" id="newVisionSynopsis" method="post">
+	<div class="centreForm">
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right" valign="bottom">
+						<input name="newGeneralSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="centre600">
+	Vision clarification and recording is highly individual. &nbsp;One beneficial approach is decomposition. When describing a vision to others you will use a number of key and telling points. A vision page is for one of these points.</div>
+</div>
+<div id="s16" class="editable section"><h1>
+	Synopsis: Goal</h1>
+<form action="javascript:usdlc.newSynopsis('Goal')" id="newGoalSynopsis" method="post">
 	<div class="centreForm">
 		<table border="0" cellpadding="1" cellspacing="1">
 			<tbody>
@@ -33,180 +94,25 @@
 	</div>
 </form>
 	<div class="centre600">
-	Enter the synopsis for this general unclassified page. Describe why this page exists.</div>
-</div>
-<div id="s23" class="editable section"><h1>
-	Synopsis: Project</h1>
-<form action="javascript:usdlc.newSynopsis('Project')" id="newProjectSynopsis" method="post">
-	<div class="centreForm">
-		<fieldset style="text-align: left;">
-			<legend>Vision</legend>
-			<p>
-				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" name="In_order_to_" size="68" type="text"></p>
-			<p>
-				<strong>As a</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="As a" name="as_a" size="31" synopsis="Vision" type="text" value="vision holder">&nbsp; <strong>I want</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="::I want" name="i_want" size="31" type="text"></p>
-			<p>
-				<strong>to</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="to" name="to" size="82" type="text"></p>
-		</fieldset>
-		<div>
-			<table align="right" border="0" cellpadding="1" cellspacing="1">
-				<tbody>
-					<tr>
-						<td>
-							<strong>Notes:&nbsp;</strong></td>
-						<td>
-							<textarea cols="70" name="notes" rows="3"></textarea></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="text-align: right" valign="bottom">
-							<input name="button" type="submit" value="New Synopsis"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</form>
-<div class="centre600">
-	Please enter a short synopsis for this project or sub-project. Sections here will, by default, be elements of the vision.</div>
-</div>
-<div id="s15" class="editable section"><h1>
-	Synopsis: Vision</h1>
-<form action="javascript:usdlc.newSynopsis('Vision')" id="newVisionSynopsis" method="post">
-	<div class="centreForm">
-		<fieldset style="text-align: left;">
-			<legend>Vision</legend>
-			<p>
-				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" type="text"></p>
-			<p>
-				<strong>As a</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="As a" name="as_a" size="31" type="text" value="vision holder">&nbsp; <strong>I want</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="::I want" name="i_want" size="31" type="text"></p>
-			<p>
-				<strong>to</strong>&nbsp;<input activate="loadLocalAutocomplete" alt="to" name="to" size="82" type="text"></p>
-<fieldset>
-			<legend>The five whys</legend>
-			<p>
-				<strong>Why?</strong>&nbsp;<input alt=" Why?" name="why_1" size="70" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_2" size="70" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_3" size="70" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_4" size="70" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_5" size="70" activate="loadLocalAutocomplete" type="text"></p>
-		</fieldset>
-		</fieldset>
-		<div>
-			<table align="right" border="0" cellpadding="1" cellspacing="1">
-				<tbody>
-					<tr>
-						<td>
-							<strong>Notes:&nbsp;</strong></td>
-						<td>
-							<textarea cols="70" name="notes" rows="3"></textarea></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="text-align: right" valign="bottom">
-							<input name="button" type="submit" value="New Synopsis"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</form>
-<div class="centre600">
-	Vision clarification and recording is highly individual. It is still beneficial, where suitable to use the ubiquitous As a/I want/so that language to provide focus. Vision sections are the default for project pages.</div>
-</div>
-<div id="s16" class="editable section"><h1>
-	Synopsis: Goal</h1>
-<form action="javascript:usdlc.newSynopsis('Goal')" id="newGoalSynopsis" method="post">
-	<div class="centreForm">
-		<fieldset style="text-align: left;">
-			<legend>Goal</legend>
-			<p>
-				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
-			<p>
-				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="stake-holder">&nbsp;
-				<strong>I want</strong>&nbsp;<input alt="::I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
-			<fieldset>
-						<legend>The five whys</legend>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt=" Why?" name="why_1" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_2" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_3" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_4" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_5" size="70" activate="loadLocalAutocomplete" type="text"></p>
-					</fieldset>
-		</fieldset>
-		<div>
-			<table align="right" border="0" cellpadding="1" cellspacing="1">
-				<tbody>
-					<tr>
-						<td>
-							<strong>Notes:&nbsp;</strong></td>
-						<td>
-							<textarea cols="70" name="notes" rows="3"></textarea></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="text-align: right" valign="bottom">
-							<input name="button" type="submit" value="New Synopsis"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		</div>
-</form>
-	<div class="centre600">
 	All stakeholders will have goals. Most can be tied directly to the vision, but some (such as <em>the system must be secure</em>) are independently driven. Typically there will be a catch-all vision statement on a project page called "<em>Meet stakeholder independent requirements</em>".</div>
 </div>
 <div id="s17" class="editable section"><h1>Synopsis: Capability</h1>
 <form action="javascript:usdlc.newSynopsis('Capability')" id="newCapabilitySynopsis" method="post">
 	<div class="centreForm">
-		<fieldset style="text-align: left;">
-			<legend>Capability</legend>
-			<p>
-				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
-			<p>
-				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="user">&nbsp;
-				<strong>I want</strong>&nbsp;<input alt="::I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" activate="loadLocalAutocomplete" type="text"></p>
-			<fieldset>
-						<legend>The five whys</legend>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt=" Why?" name="why_1" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_2" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_3" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_4" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_5" size="70" activate="loadLocalAutocomplete" type="text"></p>
-					</fieldset>
-		</fieldset>
-		<div>
-			<table align="right" border="0" cellpadding="1" cellspacing="1">
-				<tbody>
-					<tr>
-						<td>
-							<strong>Notes:&nbsp;</strong></td>
-						<td>
-							<textarea cols="70" name="notes" rows="3"></textarea></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="text-align: right" valign="bottom">
-							<input name="button" type="submit" value="New Synopsis"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		</div>
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+				</tr><tr>
+				<td colspan="2" valign="bottom" style="text-align: right">
+						<input name="newGeneralSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </form>
 	<div class="centre600">
 		Capabilities are about what the software needs to do, while features
@@ -217,46 +123,20 @@
 	Synopsis: Feature</h1>
 <form action="javascript:usdlc.newSynopsis('Feature')" id="newFeatureSynopsis" method="post">
 	<div class="centreForm">
-		<fieldset style="text-align: left;">
-			<legend>Feature</legend>
-			<p>
-				<strong>In order to</strong>&nbsp; <input activate="loadLocalAutocomplete" alt="In order to" name="in_order_to" size="68" synopsis="Goal" type="text"></p>
-			<p>
-				<strong>As a</strong>&nbsp;<input alt="As a" name="as_a" size="31" type="text" activate="loadLocalAutocomplete" value="user">&nbsp;
-				<strong>I want</strong>&nbsp;<input alt="::I want" name="i_want" size="31" activate="loadLocalAutocomplete" type="text"></p>
-			<p>
-				<strong>to</strong>&nbsp;<input alt="to" name="to" size="82" type="text"></p>
-			<fieldset>
-						<legend>The five whys</legend>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt=" Why?" name="why_1" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_2" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_3" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_4" size="70" activate="loadLocalAutocomplete" type="text"></p>
-						<p>
-							<strong>Why?</strong>&nbsp;<input alt="Why?" name="why_5" size="70" activate="loadLocalAutocomplete" type="text"></p>
-					</fieldset>
-		</fieldset>
-		<div>
-			<table align="right" border="0" cellpadding="1" cellspacing="1">
-				<tbody>
-					<tr>
-						<td>
-							<strong>Notes:&nbsp;</strong></td>
-						<td>
-							<textarea cols="70" name="notes" rows="3"></textarea></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="text-align: right" valign="bottom">
-							<input name="button" type="submit" value="New Synopsis"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		</div>
+		<table border="0" cellpadding="1" cellspacing="1">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Notes:&nbsp;</strong></td>
+					<td>
+						<textarea cols="45" name="notes" rows="4"></textarea></td>
+				</tr><tr>
+				<td colspan="2" valign="bottom" style="text-align: right">
+						<input name="newGeneralSynopsis" type="submit" value="New Synopsis"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </form>
 	<div class="centre600">
 		Capabilities are about what the software needs to do, while features

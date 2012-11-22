@@ -35,5 +35,4 @@ class DslActor extends GroovyActor {
 		Groovy.runClass(languageScriptClass, new UsdlcBinding(dslContext, context))
 	}
 	static gse = new GroovyScriptEngine(config.dslPathUrls as URL[])
-//	boolean asBoolean() {exists}
 }

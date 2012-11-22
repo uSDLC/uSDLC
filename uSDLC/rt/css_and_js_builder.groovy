@@ -40,6 +40,7 @@ files = [
 		'usdlc/lib/jquery/js/jquery.url.js',
 		'usdlc/rt/js/base.js',
 		'usdlc/rt/js/init.js',
+		'usdlc/rt/js/depends.coffeescript',
 		'usdlc/rt/js/menu.coffeescript',
 		'usdlc/rt/js/user.coffeescript',
 		'usdlc/rt/js/tasklist.coffeescript',

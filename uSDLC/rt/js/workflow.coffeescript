@@ -1,25 +1,34 @@
 $ ->
+  workflowDefinition = '~home/usdlc/Environment/Workflow'
+  usdlc.loadSection "Workflow Detail", workflowDefinition, (h1) ->
+    workflowDefinition = h1.nextAll()
+
   loadWorkflowTemplate = (action) ->
     workflowItem = $('<div/>').addClass('workflow taskDetail')
-    usdlc.loadSection "Workflow Detail", '~home/usdlc/Environment/Workflow', (h1) ->
-      workflowItem.append h1.nextAll()
-      usdlc.activateHtml workflowItem
-      action(workflowItem)
+    workflowItem.append workflowDefinition.clone()
+    action(workflowItem)
     return workflowItem
+
+  usdlc.getSectionType = (section) ->
+    return $.trim(usdlc.getSectionTypeDiv(section).text())
 
   createNewWorkflow = (section) ->
     workflowItem = loadWorkflowTemplate ->
     sectionType = $('div.sectionType', section)
     if sectionType.size()
+      sectionName = $.trim(sectionType.text())
       sectionType.after(workflowItem)
     else
+      sectionName = 'General'
       section.prepend(workflowItem)
+    $('input[name=Workflow]', workflowItem).val(sectionName)
+    usdlc.activateHtml workflowItem
     return workflowItem
 
   usdlc.activateWorkflowChecklist = (div) ->
     usdlc._activateChecklist div, 'T', (li, action) ->
       text = usdlc.taskNameFromLi li
-      usdlc.tasklistHistory(div, "#{action} task '#{text}'")
+      usdlc.tasklistHistory(div, "#{action} list", text)
     div.bind
       'select_node.jstree': (event, data) ->
         node = data.rslt.obj
@@ -28,23 +37,24 @@ $ ->
           div.jstree 'create', node, 'after', data: 'next...', null, true
         return false
 
+  usdlc.getWorkflowItem = (element = usdlc.inFocus) ->
+    section = usdlc.getSection(element)
+    workflowItem = $('div.workflow', section)
+    if not workflowItem.size()
+      workflowItem = createNewWorkflow section
+    return workflowItem
+
   usdlc.toggleWorkflowView = ->
     return if not usdlc.inFocus
-    workflowItem = $('div.workflow', usdlc.inFocus)
-    if not workflowItem.size()
-      workflowItem = createNewWorkflow usdlc.inFocus
-      workflowItem.addClass('visible')
-    else if workflowItem.hasClass 'visible'
+    workflowItem = usdlc.getWorkflowItem()
+    if workflowItem.hasClass 'visible'
       workflowItem.removeClass('visible')
-    else
-      unpacked = workflowItem.children('form').size()
-      if unpacked
-        workflowItem.addClass('visible')
-      else
-        usdlc.unpackWorkflow workflowItem
+    else if not usdlc.unpackWorkflow workflowItem
+      workflowItem.addClass('visible')
 
-  usdlc.loadWorkflow = (input) ->
-    a = 1 # todo: finish
+  usdlc.getWorkflowForm = (workflowItem = usdlc.inFocus) ->
+    form = usdlc.getWorkflowItem(workflowItem).children('form')
+    return if form.size() then form else null
 
   usdlc.packWorkflows = ->
     $('div.workflow form').each (index, form) ->
@@ -53,7 +63,7 @@ $ ->
       summary = []
       data = new usdlc.FormProcessor form
       for name in data.fieldList
-        value = data.fieldMap[name]
+        value = $.trim data.fieldMap[name]
         if value.length
           array = value.split /,\s*/
           if array.length > 1
@@ -62,10 +72,14 @@ $ ->
           pack.push("#{name}=#{value}")
           if value isnt 'true'
             summary.push(value)
+
+      history = $.trim($('fieldset.taskHistory div',form).html())
+      pack.push("History=#{history}")
+
       $('fieldset.taskPageLinks a.usdlc',form).each (index, a) ->
-        pack.push("Reference=#{a.attr('href')}::#{$(a).text()}")
-      $('div.taskHistoryItem',form).each (index, div) ->
-        pack.push("History=#{$(div).text().replace(/\n/g,'::')}")
+        a = $(a)
+        pack.push("Reference=#{a.attr('href')}::#{a.text()}")
+
       $('div.tasklist',form).each (index, div) ->
         pack.push("Tasklist=#{usdlc.packTasklist($(div))}")
 
@@ -80,13 +94,20 @@ $ ->
       summaryDiv.html(summary.join(' - '))
 
 
-  usdlc.unpackWorkflow = (workflowItem) ->
+  usdlc.unpackWorkflow = (element, makeVisible = true) ->
+    section = usdlc.getSection(element)
+    workflowItem = $('div.workflow', section)
+    return false if usdlc.getWorkflowForm(workflowItem)
+
+    packed = workflowItem.html().split(';;')
+
     loadWorkflowTemplate (template) ->
-      packed = workflowItem.text().split(';;')
       workflowItem.empty().append(template.clone().children())
       workflowItem.find('input[type=checkbox]').removeAttr('checked')
       for line in packed
-        [name,value] = line.split('=')
+        split = line.split('=')
+        name = $.trim(split[0])
+        value = $.trim(split[1])
         if name
           field = $("[name=#{name}]", workflowItem)
           if field.size()
@@ -99,15 +120,12 @@ $ ->
             item = usdlc.clipboard.makeLink url, title
             $('fieldset.taskPageLinks', workflowItem).append item
           else if name is 'History'
-            value = value.replace('::', '\n')
-            colon = value.indexOf ':'
-            title = value[0...colon]
-            message = value[colon+2..]
-            usdlc.saveTasklistHistory workflowItem, title, message, 'append'
+            usdlc.getTasklistHistory(workflowItem).append($(value))
           else
-            usdlc.tasklistHistory workflowItem, "Unknown: '#{line}'"
+            usdlc.tasklistHistory workflowItem, 'Unknown', line
       usdlc.activateHtml workflowItem
-      workflowItem.addClass('visible')
+      workflowItem.addClass('visible') if makeVisible
+      return true
 
   ###
     Create a new section using the tasklist template
@@ -129,3 +147,77 @@ $ ->
     url = "~uSDLC/usdlc/support/usdlc/workflow_report.gsp?#{params.join('&')}"
     usdlc.window '_blank', url
     return false
+
+  useProjectWorkflow = (input, projectWorkflow) ->
+    usdlc.presetAutocomplete(input, projectWorkflow.values)
+    form = new usdlc.FormProcessor(input.closest('form'))
+    if not (workflowName = input.val())
+      form.setField('Workflow', workflowName = usdlc.getSectionType())
+    # now we fill the buttons
+    taskActionsFieldset = $('fieldset.taskActions', form.dom)
+    taskActionsFieldset.remove('input')
+    stateActions = projectWorkflow.workflows[workflowName] ? projectWorkflow.default_workflow
+    if not (state = form.fieldMap.State)
+      form.setField('State', state = 'New')
+    buttons = stateActions[state]?.buttons
+    buttons = buttons ? projectWorkflow.default_workflow[state]?.buttons ? ''
+    actions = stateActions[state] ? projectWorkflow.default_actions
+    for button in buttons.split(' ')
+      action = actions[button] ? (projectWorkflow.default_actions[button])
+      taskActionsFieldset.append(usdlc.createButton(button, action))
+
+  usdlc.loadWorkflow = (input) ->
+    section = usdlc.getSection(input)
+    projectWorkflow = section.data('projectWorkflow')
+    if projectWorkflow
+      useProjectWorkflow(input, projectWorkflow)
+    else
+      project = usdlc.getProjectURL()
+      path = 'usdlc/Environment/Workflow/ProjectWorkflow.workflow'
+      script = "~#{project}/#{path}"
+      module = usdlc.depends.module(script)
+      usdlc.depends module, (pwf) ->
+        pwf.values = (item for item, actions of pwf.workflows).sort()
+        section.data('projectWorkflow', pwf)
+        useProjectWorkflow(input, pwf)
+
+  usdlc.createButton = (name, action) ->
+    return $('<input/>').attr('value', name).attr('type', 'button').click(action)
+
+  usdlc.getWorkflowFormProcessor = (section = usdlc.inFocus) ->
+    form = usdlc.getWorkflowForm(section)
+    if not form
+      usdlc.unpackWorkflow(section, false)
+      form = usdlc.getWorkflowForm(section)
+    return new usdlc.FormProcessor(form)
+
+  usdlc.workflowHistory = (type, message) ->
+    usdlc.tasklistHistory usdlc.getWorkflowItem(), type, message
+
+  usdlc.markWorkflowSectionDeleted = ->
+    usdlc.workflowHistory 'Section', 'Deleted'
+
+  usdlc.workflowForEdited = (section = usdlc.inFocus) ->
+    form = usdlc.getWorkflowFormProcessor(section)
+    if usdlc.changeState form, 'Updated' or
+       usdlc.changeAssignee form, usdlc.userName()
+      usdlc.packWorkflows()
+
+  usdlc.changeAssignee = (form, users) ->
+    oldUsers = form.fieldMap.Users
+    return false if users is oldUsers
+    usdlc.workflowHistory('Assignee', "#{oldUsers} -> #{users}")
+    form.setField 'Users', users
+    return true
+
+  usdlc.changeState = (form, state) ->
+    oldState = form.fieldMap.State
+    return false if state is oldState
+    usdlc.workflowHistory('State', "#{oldState} -> #{state}")
+    form.setField('State', state)
+    form.setField('Estimate', '')
+    form.setField('Order', '')
+    form.setField('Start', '')
+    form.setField('Due', '')
+    usdlc.addTaskNote(form.dom)
+    return true

@@ -14,6 +14,7 @@
 	<!--</style>-->
 	<script>
 		testScripts = [
+//			"/usdlc/rt/js/tasklist.coffeescript",
 			"/usdlc/rt/js/workflow.coffeescript"
 		]
 	</script>
