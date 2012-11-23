@@ -1,128 +1,0 @@
-Tios-usdlc-connector
-v5
-r1
-cCheck dependencies
-cProcessPCH "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth" ios-usdlc-connector/ios-usdlc-connector-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o" "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o" "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a" normal i386
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk
-c00000000501064140000000000000110
-t1343251476
-s272
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk/System/Library/Frameworks/Foundation.framework/Foundation
-c000000004FD6A14C0000000000353830
-t1339466060
-s3487792
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.h
-c00000000501660CD000000000000BAAD
-t1343643853
-s47789
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m
-c00000000501660CD000000000002FA60
-t1343643853
-s195168
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios-usdlc-connector-Prefix.pch
-c000000004FF41D1F00000000000000B3
-t1341398303
-s179
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.h
-c000000005018E0E60000000000000154
-t1343807718
-s340
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m
-c00000000501F20850000000000000C2A
-t1344217221
-s3114
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth
-t1344424404
-s2571864
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o
-t1344424404
-s467692
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios-usdlc-connector.LinkFileList
-c00000000502249D400000000000001D3
-t1344424404
-s467
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o
-t1344424404
-s21688
-
-N/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a
-t1344424404
-s493160
-
-CBuild AST from "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m"
-r0
-
-CBuild AST from "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m"
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies8aabea5c20d5b541^753feb5c20d5b541^---0#1#0#--18"Check dependencies36"F8B2284A-7299-4523-A16C-DBF7E0838F62-
-
-CCompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o" "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s366117204.286368
-e366117204.711621
-r1
-xCompileC
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection130"Compile /Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.md47c495481d2b541^772cb65481d2b541^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/paul/Dropbox/My%20Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m0000000000000000^4802"CompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o" ios-usdlc-connector/GCDAsyncSocket.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector"    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-sign-compare -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -D__IPHONE_OS_VERSION_MIN_REQUIRED=50100 -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-generated-files.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-own-target-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-all-target-headers.hmap" -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-project-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/include" -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources/i386" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources" "-F/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator" -include "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch" -MMD -MT dependencies -MF "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.d" --serialize-diagnostics "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.dia" -c "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/GCDAsyncSocket.m" -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/GCDAsyncSocket.o"36"6D1E00A2-93B6-43C7-B88C-96A5B39710CB-
-
-CCompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o" "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s366117204.286374
-e366117204.330526
-r1
-xCompileC
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection135"Compile /Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m4a7d495481d2b541^c39c545481d2b541^---0#0#0#-19%DVTDocumentLocation2@145"file://localhost/Users/paul/Dropbox/My%20Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m0000000000000000^4832"CompileC "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o" ios-usdlc-connector/ios_usdlc_connector.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector"    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-sign-compare -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -D__IPHONE_OS_VERSION_MIN_REQUIRED=50100 -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-generated-files.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-own-target-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-all-target-headers.hmap" -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-project-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/include" -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources/i386" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources" "-F/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator" -include "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch" -MMD -MT dependencies -MF "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.d" --serialize-diagnostics "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.dia" -c "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios_usdlc_connector.m" -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios_usdlc_connector.o"36"A77308CC-A62B-4886-9B44-36617BAEFDDB-
-
-CLibtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a" normal i386
-s366117204.718315
-e366117204.727556
-r1
-xLibtool
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a
-xnormal
-xi386
-o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: -dynamic not specified the following flags are invalid: -ObjC 
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection183"Libtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a" normal i3862503b85481d2b541^d940ba5481d2b541^-159"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: -dynamic not specified the following flags are invalid: -ObjC -0#0#0#--1361"Libtool "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a" normal i386    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector"    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only i386 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk "-L/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator" -filelist "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/Objects-normal/i386/ios-usdlc-connector.LinkFileList" -ObjC -framework Foundation -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/libios-usdlc-connector.a"36"89FCF3C5-4946-45FA-B830-C626464420CB-
-
-CProcessPCH "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth" ios-usdlc-connector/ios-usdlc-connector-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s366117204.106238
-e366117204.279372
-r1
-xProcessPCH
-x/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth
-xios-usdlc-connector/ios-usdlc-connector-Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection61"Precompile ios-usdlc-connector/ios-usdlc-connector-Prefix.pch47591b5481d2b541^3484475481d2b541^---0#0#0#-19%DVTDocumentLocation2@154"file://localhost/Users/paul/Dropbox/My%20Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios-usdlc-connector-Prefix.pch0000000000000000^4594"ProcessPCH "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth" ios-usdlc-connector/ios-usdlc-connector-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector"    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-sign-compare -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -D__IPHONE_OS_VERSION_MIN_REQUIRED=50100 -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-generated-files.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-own-target-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-all-target-headers.hmap" -iquote "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/ios-usdlc-connector-project-headers.hmap" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator/include" -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources/i386" "-I/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/ios-usdlc-connector.build/Debug-iphonesimulator/ios-usdlc-connector.build/DerivedSources" "-F/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Products/Debug-iphonesimulator" --serialize-diagnostics "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.dia" -c "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/ios-usdlc-connector/ios-usdlc-connector/ios-usdlc-connector-Prefix.pch" -o "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.pth" -MMD -MT dependencies -MF "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Build/Intermediates/PrecompiledHeaders/ios-usdlc-connector-Prefix-ffvwcoxezvyudobuuqgpyfrxgqlp/ios-usdlc-connector-Prefix.pch.d"36"33D9424E-2EC4-4EFE-87F6-CF6F7235E48B-
-
-CProcessPCH "/Users/paul/Dropbox/My Cabinets/Development/uSDLC/platforms/cocoa/test-usdlc/DerivedData/test-usdlc/Index/PrecompiledHeaders/ios-usdlc-connector-Prefix-alvmxcvcaxmsexajljlbxtorxdvo_ast/ios-usdlc-connector-Prefix.pch.pth" ios-usdlc-connector/ios-usdlc-connector-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
-r0
-
