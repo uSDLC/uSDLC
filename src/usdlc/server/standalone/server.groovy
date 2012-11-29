@@ -27,7 +27,8 @@ import usdlc.HttpClient
  */
 Config.load('standalone', args)
 
-def host = InetAddress.localHost.hostAddress
+/*def host = InetAddress.localHost.hostAddress*/
+def host = "localhost"
 def baseUrl = "http://$host:$config.port"
 println "Starting uSDLC on $baseUrl from ${new File('.').absolutePath}"
 println '''
