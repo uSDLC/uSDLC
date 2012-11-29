@@ -12,7 +12,6 @@ import static usdlc.MimeTypes.mimeType
 import com.google.common.base.CaseFormat
 import javax.swing.text.html.HTML
 import usdlc.CSV
-import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader
 import usdlc.PageState
 
 @AutoClone class SectionRunnerActor extends Actor {
