@@ -1,16 +1,16 @@
 workflows =
-  Project:
-  Vision:
-  Goal:
-  Capability:
-  Feature:
-  Scenario:
-  Script:
-  Data:
-  Guide:
-  Page:
-  General:
-  Issue:
-  Bug:
-  Idea:
-  Tasks:
+  Project: nothing
+  Vision: nothing
+  Goal: nothing
+  Capability: nothing
+  Feature: nothing
+  Scenario: nothing
+  Script: nothing
+  Data: nothing
+  Guide: nothing
+  Page: nothing
+  General: nothing
+  Issue: nothing
+  Bug: nothing
+  Idea: nothing
+  Tasks: nothing

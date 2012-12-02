@@ -1,6 +1,6 @@
 package net.usdlc.android;
 
-import android.util.Log;
+//import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,11 +8,10 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
 
-public abstract class SocketListener extends Thread {
+public class SocketListener extends Thread {
 	private PrintWriter writer;
-	protected String address;
+	public String address;
 
 	public SocketListener() { address = "http://127.0.0.1:9000/socket"; }
 	public SocketListener(String url) { address = url; }
@@ -28,9 +27,9 @@ public abstract class SocketListener extends Thread {
 		String host = url.getHost();
 		int port = url.getPort();
 		String request = "GET " + url.getFile() +
-				" HTTP/1.1\r\nUser-Agent: uSDLC/1.0\r\n\r\n";
+				" HTTP/1.1\r\nUser-Agent: uSDLC/2.0\r\n\r\n";
 		//noinspection InfiniteLoopStatement
-		while (true) {
+		while (running) {
 			Socket socket = null;
 			try {
 				socket = new Socket(host, port);
@@ -42,9 +41,9 @@ public abstract class SocketListener extends Thread {
 					InputStreamReader(socket.getInputStream()), 512);
 				log("reconnect");
 				send(request);
-				String header = readBlock(reader);
-				while (true) {
-					String code = readBlock(reader);
+//				String header = readBlock(reader);
+				while (running) {
+					String code = readBlock(reader).trim();
 					if (code.length() == 0) break;
 					String response = process(code);
 					send(response + "\r\n");
@@ -53,12 +52,17 @@ public abstract class SocketListener extends Thread {
 				error("", e);
 			} finally {
 				try { socket.close(); } catch (Exception ignored) {}
-				waitForConnection();
+				if (running) waitForConnection();
 			}
 		}
 	}
+	boolean running = true;
+	public void terminate() {
+		running = false;
+		this.notifyAll();
+	}
 	/**
-	 * Wait for a connections (override if more than time can be used
+	 * Wait for a connections (override if more than time can be used)
  	 */
 	protected void waitForConnection() {
 		try {
@@ -75,9 +79,9 @@ public abstract class SocketListener extends Thread {
 		// drop blank lines
 		do {
 			line = reader.readLine();
-		} while (line != null  &&  line.length() == 0);
+		} while (running && line != null  &&  line.length() == 0);
 
-		while (line != null  &&  line.length() != 0) {
+		while (running && line != null  &&  line.length() != 0) {
 			block.append(line).append('\n');
 			line = reader.readLine();
 		}
@@ -85,8 +89,8 @@ public abstract class SocketListener extends Thread {
 		return block.toString();
 	}
 	/**
-	 * Override to process a command block. Return null of command not
-	 * implemented.
+	 * Override to process a command block. Return null if command not
+	 * implemented. Otherwise send the response line.
 	 */
 	protected String process(String code) { return null; }
 	/**
@@ -99,12 +103,12 @@ public abstract class SocketListener extends Thread {
 
 	protected static final String TAG = "Socket Listener";
 	protected void error(String message, Throwable exception) {
-		Log.e(TAG, message, exception);
+//		Log.e(TAG, message, exception);
 	}
 	protected void error(Object message) {
-		Log.e(TAG, message.toString());
+//		Log.e(TAG, message.toString());
 	}
 	protected void log(String message) {
-		Log.i(TAG, message);
+//		Log.i(TAG, message);
 	}
 }

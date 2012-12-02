@@ -7,71 +7,48 @@
 	This page contains project specific workflow configuration - including a
 	details template and the workflow scripts.</p>
 </div><div id="s5" class="editable section synopsis Reference page"><div class="sectionType">Reference</div><h2><a href="ProjectWorkflow.workflow" action="reference" id="s5a0" class="usdlc">Project Workflow</a></h2></div><div id="s6" class="editable section synopsis Reference page"><div class="sectionType">Reference</div><h2><a href="Owners.workflow" action="reference" id="s6a0" class="usdlc">Owners</a></h2></div><div id="s7" class="editable section synopsis Reference page"><div class="sectionType">Reference</div><h2><a href="Defaults.workflow" action="reference" id="s7a0" class="usdlc">Defaults</a></h2></div><div id="s8" class="editable section synopsis Reference page"><div class="sectionType">Reference</div><h2><a href="Workflows.workflow" action="reference" id="s8a0" class="usdlc">Workflows</a></h2></div>
-<div id="s4" class="editable section synopsis">
-	<h2>Workflow Detail</h2>
-
-	<form>
-		<p>Workflow<br>
-			<input activate="loadWorkflow" name="Workflow" size="46" type="text"></p>
-		<fieldset class="taskActions">
-			<legend>Action</legend>
-		</fieldset>
-		<p>State<br>
-			<input activate="taskAutocomplete" name="State" size="26" type="text">
-			&nbsp;- estimate&nbsp;
-			<input activate="taskAutocomplete" name="Estimate" size="3" type="text"></p>
-
-		<p></p>
-
-		<div activate="activateWorkflowChecklist" class="tasklist template">
-			<ul>
-				<li><a href="#">Checklist...</a></li>
-			</ul>
-		</div>
-		<p></p>
-
-		<p>Assign to<br>
-			<input activate="loadTaskUsers" name="Users" size="46" type="text">
-		</p>
-
-		<p>Priority<br>
-			<select name="Priority" size="1" activate="loadTaskPriority" class="taskPriority">
-				<option value="1">Overdue</option>
-				<option value="2">Immediate</option>
-				<option value="3">Critical</option>
-				<option value="4">Urgent</option>
-				<option value="5">High</option>
-				<option selected="selected" value="6">Normal</option>
-				<option value="7">Moderate</option>
-				<option value="8">Low</option>
-				<option value="9">Base</option>
-			</select>
-			Start
-			<input activate="taskCheckbox" checked="checked" name="raiseOnStart" type="checkbox" value="true" title="Raise on start">
-			Over
-			<input activate="taskCheckbox" checked="checked" name="raiseOnOverdue" type="checkbox" value="true" title="Raise on overdue">
-			Order <input name="Order" size="3" type="text"></p>
-		<fieldset>
-			<legend>Schedule</legend>
-			Start:
-			<input activate="taskDatePicker" name="Start" pair="first" size="10" type="text">
-			&nbsp;Due:
-			<input activate="taskDatePicker" name="Due" pair="last" size="10" type="text">
-		</fieldset>
-		<p>Tags<br>
-			<input activate="taskAutocomplete" name="Tags" size="46" type="text"></p>
-		<fieldset class="taskPageLinks">
-			<legend>References</legend>
-		</fieldset>
-		<input name="AddClip" onclick="usdlc.addTaskClip(this)" type="button" value="Add Clipboard Reference">
-
-		<p>Notes<br>
-			<textarea class="newTaskNote" cols="32" name="Notes" rows="5"></textarea><br>
-			<input name="AddNote" onclick="usdlc.addTaskNote(this)" type="button" value="Add Note"></p>
-		<fieldset class="taskHistory">
-			<legend>History</legend>
-		</fieldset>
-	</form>
+<div id="s4" class="editable section"><h2>
+	Workflow Detail</h2>
+<form class="template">
+	<p>
+		Workflow<br>
+		<input activate="loadWorkflow" name="Workflow" size="46" type="text"></p>
+	<fieldset class="taskActions">
+		<legend>Action</legend></fieldset>
+	<p>
+		State<br>
+		<input activate="taskAutocomplete" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="State" role="textbox" size="26" type="text"> &nbsp;- estimate&nbsp; <input name="Estimate" size="3" type="text"></p>
+	<p>
+		&nbsp;</p>
+	<div activate="activateWorkflowChecklist" class="tasklist template">
+		<ul>
+			<li>
+				<a href="#" id="s4a9">Checklist...</a></li>
+		</ul>
+	</div>
+	<p>
+		&nbsp;</p>
+	<p>
+		Assign to<br>
+		<input activate="loadTaskUsers" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="Users" role="textbox" size="46" type="text"></p>
+	<p>
+		Priority<br>
+		<select activate="loadTaskPriority" class="taskPriority" name="Priority" size="1"><option value="1">Overdue</option><option value="2">Immediate</option><option value="3">Critical</option><option value="4">Urgent</option><option value="5">High</option><option selected="selected" value="6">Normal</option><option value="7">Moderate</option><option value="8">Low</option><option value="9">Base</option></select> Start <input activate="taskCheckbox" checked="checked" name="raiseOnStart" title="Raise on start" type="checkbox" value="true"> Over <input activate="taskCheckbox" checked="checked" name="raiseOnOverdue" title="Raise on overdue" type="checkbox" value="true"> Order <input name="Order" size="3" type="text"></p>
+	<fieldset>
+		<legend>Schedule</legend> Start: <input activate="taskDatePicker" class="hasDatepicker" id="dp1352105595568" name="Start" pair="first" size="10" type="text"> &nbsp;Due: <input activate="taskDatePicker" class="hasDatepicker" id="dp1352105595569" name="Due" pair="last" size="10" type="text"></fieldset>
+	<p>
+		Tags<br>
+		<input activate="taskAutocomplete" aria-autocomplete="list" aria-haspopup="true" autocomplete="off" class="ui-autocomplete-input" name="Tags" role="textbox" size="46" type="text"></p>
+	<fieldset class="taskPageLinks">
+		<legend>References</legend></fieldset>
+	<input name="AddClip" onclick="usdlc.addTaskClip(this)" type="button" value="Add Clipboard Reference">
+	<p>
+		Notes<br>
+		<textarea class="newTaskNote" cols="32" name="Notes" rows="5"></textarea><br>
+		<input name="AddNote" onclick="usdlc.addTaskNote(this)" type="button" value="Add Note"></p>
+	<fieldset class="taskHistory">
+		<legend>History</legend></fieldset>
+</form>
 </div>
 <div id="s2" class="editable section footer synopsis">
 	<div>

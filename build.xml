@@ -86,7 +86,7 @@
   <target name="run" depends="build" description="Run uSDLC">
 	  <java classname="usdlc.server.standalone.server"
 	        fork="true">
-		  <arg line="userId=Administrator"/>
+		  <arg line="'userId=Paul Marrington'"/>
 	    <classpath>
 	      <pathelement location="${usdlc.output.dir}"/>
 		  <pathelement location="${basedir}/lib"/>

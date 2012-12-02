@@ -66,7 +66,8 @@ class CSV {
 		if (store.exists()) {
 			store.file.eachLine {
 				def nvp = it.split(',')
-				map[nvp[0]] = nvp[1]
+				def value = (nvp.size() > 1) ? nvp[1] : null
+				map[nvp[0]] = value
 			}
 		}
 		return map

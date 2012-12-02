@@ -1,0 +1,3 @@
+wait for a connection
+and wait 2 seconds
+and send "exit"
