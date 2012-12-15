@@ -1,5 +1,5 @@
 defaults =
-  url: 'http://localhost:9000/usdlc/support/injection.coffee'
+  url: 'http://localhost:9000/usdlc/support/injection.groovy'
   clientIdentifier: "webclient"
 # This is the unique id for this client. Any
 # unique string will do.
@@ -26,9 +26,9 @@ class UsdlcInstrumentClient
       (testScript) =>
         try
           eval testScript
-          @_sendResponse("ok")
+          @_sendResponse "ok"
         catch e
-          @_sendResponse("error #{e.message}")
+          @_sendResponse "error #{e}"
     ).fail(
       () =>
         console?.log 'Connection failed.'
@@ -42,7 +42,7 @@ class UsdlcInstrumentClient
     @wantingTests = false
 
   _sendResponse: (testResult) ->
-    $.post @settings.url,
+    $.get @settings.url,
       name: @settings.clientIdentifier,
       result: testResult
 
