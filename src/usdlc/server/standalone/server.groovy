@@ -69,7 +69,7 @@ server.createContext '/', { HttpExchange httpExchange ->
 				fragment: ru.fragment,
 				cookie: (rh.Cookie ?: [''])[0],
 				acceptEncoding: (rh?.'Accept-Encoding' ?: [''])[0],
-				contentType: (rh.'Content-type' ?: [''])[0],
+				contentType: (rh.'Content-Type' ?: [''])[0],
 		)
 		Exchange exchange = new Exchange()
 		exchange.processRequest(requestBody, header).

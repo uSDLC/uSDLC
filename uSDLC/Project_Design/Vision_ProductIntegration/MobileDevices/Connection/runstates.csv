@@ -1,5 +1,5 @@
 Setup.coffee,succeeded
-MockDevice.groovy,succeeded
+MockDevice.groovy,failed
 gwtDSL.coffee,succeeded
 Instrument.coffee,succeeded
 Given_Connecting.gwt,succeeded
