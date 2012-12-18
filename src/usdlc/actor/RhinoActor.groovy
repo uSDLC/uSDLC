@@ -42,6 +42,9 @@ class RhinoActor extends Actor {
 			}
 			return;
 		}
+        if (!context._includes) {
+            context._includes = []
+        }
 		context._includes.push(name);
 		stack.push(found)
 		try { run found }

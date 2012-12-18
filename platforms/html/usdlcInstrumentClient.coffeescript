@@ -1,0 +1,49 @@
+defaults =
+  url: 'http://localhost:9000/usdlc/support/injection.groovy'
+  clientIdentifier: "webclient"
+# This is the unique id for this client. Any
+# unique string will do.
+
+class UsdlcInstrumentClient
+  constructor: (options) ->
+    @settings = $.extend defaults, options
+    @wantingTests = true
+
+
+  # Opens a new long-running uSDLC connection and configures it to
+  # receive and execute injected tests.
+  #
+  # The client will keep the connection open for as long as possible,
+  # and reopen a connection if it's dropped. Use closeConnection to
+  # stop this and clean up.
+  openConnection: ->
+    $.ajax({
+      url: @settings.url,
+      data:
+        name: @settings.clientIdentifier
+      dataType: 'text'
+    }).done(
+      (testScript) =>
+        try
+          eval testScript
+          @_sendResponse "ok"
+        catch e
+          @_sendResponse "error #{e}"
+    ).fail(
+      () =>
+        console?.log 'Connection failed.'
+    ).always(=>
+      if @wantingTests
+        @openConnection(@settings.url)
+    )
+
+  # Closes the connection to uSDLC and cancels the auto-reconnect function
+  closeConnection: ->
+    @wantingTests = false
+
+  _sendResponse: (testResult) ->
+    $.get @settings.url,
+      name: @settings.clientIdentifier,
+      result: testResult
+
+window.UsdlcInstrumentClient = UsdlcInstrumentClient
