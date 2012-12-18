@@ -1,7 +1,8 @@
 Given_BasicConnectBackTes.gwt,succeeded
 ,succeeded
-When_BasicConnectBackTes.gwt,succeeded
+When_BasicConnectBackTes.gwt,changed
 Then_BasicConnectBackTes.gwt,failed
 Setup.coffee,succeeded
 gwtDSL.coffee,succeeded
 Instrument.coffee,succeeded
+,succeeded
