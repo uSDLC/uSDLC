@@ -4,4 +4,5 @@ When_BasicConnectBackTest.gwt,succeeded
 Then_BasicConnectBackTest.gwt,failed
 Setup.coffee,succeeded
 gwtDSL.coffee,succeeded
-Instrument.coffee,succeeded
+Instrument.coffee,changed
+,succeeded
