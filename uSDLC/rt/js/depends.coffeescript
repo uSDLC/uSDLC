@@ -2,8 +2,7 @@ $ ->
   scriptIndex = 0
 
   usdlc.depends = (url, callback) ->
-    if code = usdlc.depends.cache[url]
-      return callback code
+    return callback code if code = usdlc.depends.cache[url]
 
     globalVar = "_dependency_#{scriptIndex++}"
 
