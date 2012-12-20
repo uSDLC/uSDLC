@@ -13,4 +13,13 @@ class RemoteComms {
 		if (!(name in connections)) connections[name] = new RemoteComms()
 		return connections[name]
 	}
+
+    def static clear(name) {
+        name = name.toString()
+        if (name in connections) {
+            RemoteComms queues = connections[name]
+            queues.fromUSDLC.clear()
+            queues.toUSDLC.clear()
+        }
+    }
 }
