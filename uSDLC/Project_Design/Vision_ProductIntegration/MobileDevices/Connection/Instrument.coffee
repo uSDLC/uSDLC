@@ -13,4 +13,4 @@ gwt /the device will disconnect/, ->
   throw "bad response - #{response}" if response isnt 'ok'
     
 gwt /and wait for 2 seconds/, (all) ->
-    throw 'Undefined'
+    

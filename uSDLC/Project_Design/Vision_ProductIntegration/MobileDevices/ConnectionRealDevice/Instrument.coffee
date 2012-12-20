@@ -1,5 +1,7 @@
 include 'Instrument'
 remote = usdlc.RemoteComms.get('handset')
+remote.clear()
+
 gwt /A connected mobile device/, (all) ->
 gwt /I send "(.*)"/, (all, code) ->
   remote.fromUSDLC.put(code)
