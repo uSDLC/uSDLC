@@ -39,7 +39,7 @@ class HttpClient {
 					header: it.allHeaders.collectEntries{[it.name, it.value]},
 					body: entity ? EntityUtils.toString(entity) : '',
 			]
-			if (entity) entity.content.close()
+//			if (entity) entity.content.close()
 			semaphore.release()
 		} as ResponseHandler
 		try {
