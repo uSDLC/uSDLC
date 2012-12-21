@@ -13,6 +13,6 @@ if (result) {
     println "Connected to ${device}, waiting for code..."
     code = remote.fromUSDLC.take()
     println "Injecting code into ${device}"
-    write code
+    write "$code\r\n"
 }
 
